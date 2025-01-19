@@ -1,0 +1,25 @@
+{
+  "extends": "./tsconfig.base.root.json",
+  "compilerOptions": {
+    "rootDir": "src"
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.spec.ts"],
+  "references": [
+    {
+      "path": "./libs/calver/tsconfig.build.json"
+    },
+    {
+      "path": "./libs/config/tsconfig.build.json"
+    },
+    {
+      "path": "./libs/semver/tsconfig.build.json"
+    },
+    {
+      "path": "./libs/testing/tsconfig.build.json"
+    },
+    {
+      "path": "./libs/versioning/tsconfig.build.json"
+    }
+  ]
+}

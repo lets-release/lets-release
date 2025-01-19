@@ -1,0 +1,66 @@
+{
+  "name": "@lets-release/git-host",
+  "version": "1.0.0",
+  "description": "Let's Release git-host library",
+  "author": "Sean Tu <manlao@gmail.com> (https://github.com/manlao)",
+  "license": "MIT",
+  "homepage": "https://github.com/lets-release/lets-release/tree/main/libs/git-host",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lets-release/lets-release.git"
+  },
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "types": "./src/*.ts",
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {
+    "test": "vitest --config ./vitest.unit.config.ts",
+    "test:cov": "vitest --config ./vitest.unit.config.ts --coverage.enabled --coverage.thresholds.100",
+    "type-check": "rimraf ./dist && tsc --build",
+    "build": "rimraf ./dist && tspc --build tsconfig.build.json"
+  },
+  "dependencies": {
+    "@lets-release/config": "workspace:^",
+    "debug": "^4.4.0",
+    "dir-glob": "^3.0.1",
+    "globby": "^14.0.2",
+    "issue-parser": "^7.0.1",
+    "lodash-es": "^4.17.21",
+    "undici": "^7.2.3",
+    "zod": "^3.24.1"
+  },
+  "files": [
+    "package.json",
+    "README.md",
+    "dist/*",
+    "!dist/*.tsbuildinfo"
+  ],
+  "publishConfig": {
+    "provenance": true,
+    "access": "public",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./*": {
+        "types": "./dist/*.d.ts",
+        "default": "./dist/*.js"
+      }
+    }
+  },
+  "devDependencies": {
+    "@types/issue-parser": "^3.0.5"
+  }
+}

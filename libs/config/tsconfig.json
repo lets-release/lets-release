@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.base.json",
+  "include": ["src/**/*.ts", "vitest.unit.config.ts"],
+  "references": [
+    {
+      "path": "../../tsconfig.eslint.json"
+    },
+    {
+      "path": "../../libs/calver/tsconfig.json"
+    },
+    {
+      "path": "../../libs/semver/tsconfig.json"
+    },
+    {
+      "path": "../../libs/versioning/tsconfig.json"
+    }
+  ]
+}

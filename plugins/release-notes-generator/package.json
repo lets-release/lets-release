@@ -1,0 +1,77 @@
+{
+  "name": "@lets-release/release-notes-generator",
+  "version": "1.0.0",
+  "description": "Let's Release release-notes-generator plugin",
+  "author": "Sean Tu <manlao@gmail.com> (https://github.com/manlao)",
+  "license": "MIT",
+  "homepage": "https://github.com/lets-release/lets-release/tree/main/plugins/release-notes-generator",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lets-release/lets-release.git"
+  },
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "types": "./src/*.ts",
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {
+    "test": "vitest --config ./vitest.unit.config.ts",
+    "test:cov": "vitest --config ./vitest.unit.config.ts --coverage.enabled --coverage.thresholds.100",
+    "type-check": "rimraf ./dist && tsc --build",
+    "build": "rimraf ./dist && tspc --build tsconfig.build.json"
+  },
+  "dependencies": {
+    "@lets-release/config": "workspace:^",
+    "@lets-release/conventional-changelog": "workspace:^",
+    "conventional-changelog-writer": "^8.0.0",
+    "debug": "^4.4.0",
+    "get-stream": "^9.0.1",
+    "into-stream": "^8.0.1",
+    "lodash-es": "^4.17.21",
+    "read-package-up": "^11.0.0",
+    "read-pkg": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "conventional-changelog-angular": "^8.0.0",
+    "conventional-changelog-atom": "5.0.0",
+    "conventional-changelog-conventionalcommits": "8.0.0",
+    "conventional-changelog-ember": "5.0.0",
+    "conventional-changelog-eslint": "6.0.0",
+    "conventional-changelog-express": "5.0.0",
+    "conventional-changelog-jquery": "6.0.0",
+    "conventional-changelog-jshint": "5.0.0",
+    "fs-extra": "^11.3.0",
+    "tempy": "^3.1.0"
+  },
+  "files": [
+    "package.json",
+    "README.md",
+    "dist/*",
+    "!dist/*.tsbuildinfo"
+  ],
+  "publishConfig": {
+    "provenance": true,
+    "access": "public",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./*": {
+        "types": "./dist/*.d.ts",
+        "default": "./dist/*.js"
+      }
+    }
+  }
+}

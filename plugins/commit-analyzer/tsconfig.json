@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.base.json",
+  "include": ["src/**/*.ts", "vitest.unit.config.ts"],
+  "references": [
+    {
+      "path": "../../tsconfig.eslint.json"
+    },
+    {
+      "path": "../../libs/config/tsconfig.json"
+    },
+    {
+      "path": "../../libs/conventional-changelog/tsconfig.json"
+    }
+  ]
+}

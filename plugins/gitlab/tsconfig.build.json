@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src"
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.spec.ts"],
+  "references": [
+    {
+      "path": "../../libs/config/tsconfig.build.json"
+    },
+    {
+      "path": "../../libs/git-host/tsconfig.build.json"
+    }
+  ]
+}
