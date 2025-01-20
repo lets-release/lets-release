@@ -79,9 +79,10 @@ jobs:
           cache: pnpm
       - run: corepack enable
       - run: npm config set "//registry.npmjs.org/:_authToken" "${NPM_TOKEN}" # pnpm config set is broken
+        env:
+          NPM_TOKEN: ${{ secrets.LETS_RELEASE_NPM_TOKEN }}
       - run: pnpm install
       - run: pnpm --workspace-concurrency=1 --recursive run build
       - run: pnpm vite-node src/cli.ts
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.LETS_RELEASE_NPM_TOKEN }}
