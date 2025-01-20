@@ -330,7 +330,10 @@ describe("cli", () => {
 
     const options: Options = {
       cwd,
-      env: processEnvWithoutGitHubActionsVariables,
+      env: {
+        ...processEnvWithoutGitHubActionsVariables,
+        GH_TOKEN: gitCredential,
+      },
       preferLocal: true,
       reject: false,
       extendEnv: false,
@@ -342,7 +345,9 @@ describe("cli", () => {
     await commit(cwd, "feat: initial commit");
     await pushBranch(cwd, authUrl, "main");
 
-    const result = await $(options)`npx vite-node -c ${viteConfig} ${cli}`;
+    const result = await $(
+      options,
+    )`npx vite-node -c ${viteConfig} ${cli} --dry-run`;
     const version = "1.0.0";
 
     expect(result.exitCode).toBe(0);
@@ -401,7 +406,10 @@ describe("cli", () => {
 
     const options: Options = {
       cwd,
-      env: processEnvWithoutGitHubActionsVariables,
+      env: {
+        ...processEnvWithoutGitHubActionsVariables,
+        GH_TOKEN: gitCredential,
+      },
       preferLocal: true,
       reject: false,
       extendEnv: false,
