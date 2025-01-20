@@ -1,3 +1,4 @@
+import { mkdir } from "node:fs/promises";
 import path from "node:path";
 
 import { $, ResultPromise } from "execa";
@@ -9,7 +10,7 @@ import { NpmOptions } from "src/schemas/NpmOptions";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
 
 // eslint-disable-next-line import-x/no-named-as-default-member
-const { mkdir, move } = fsExtra;
+const { move } = fsExtra;
 
 export async function preparePackage(
   {

@@ -1,6 +1,7 @@
+import { mkdir } from "node:fs/promises";
 import path from "node:path";
 
-import { mkdir, outputJson } from "fs-extra";
+import { outputJson } from "fs-extra";
 import { temporaryDirectory } from "tempy";
 
 import { FindPackagesContext } from "@lets-release/config";

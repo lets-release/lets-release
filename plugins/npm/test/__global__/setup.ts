@@ -1,8 +1,8 @@
+import { mkdir } from "node:fs/promises";
 import { homedir, platform } from "node:os";
 import path from "node:path";
 
 import { $ } from "execa";
-import { mkdir } from "fs-extra";
 import { TestProject } from "vitest/node";
 
 import { Verdaccio } from "@lets-release/testing";

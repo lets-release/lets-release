@@ -1,6 +1,5 @@
 import path from "node:path";
 
-import { Debugger, debug } from "debug";
 import { ZodError } from "zod";
 
 import {
@@ -15,9 +14,6 @@ import { analyzeCommits } from "src/steps/analyzeCommits";
 const invalidReleaseRulesModule = vi.hoisted(() => "invalid-release-rules");
 const releaseRulesFixture = vi.hoisted(() => "src/__fixtures__/releaseRules");
 
-vi.mock("debug", () => ({
-  debug: vi.fn(),
-}));
 vi.mock(import("@lets-release/config"), async (importOriginal) => {
   const { loadModule, ...rest } = await importOriginal();
   const { releaseRules } = await vi.importActual(releaseRulesFixture);
@@ -50,8 +46,6 @@ const repositoryRoot = "repositoryRoot";
 const log = vi.fn();
 const logger = { log };
 const pkg = { name: "test", path: pkgRoot };
-
-vi.mocked(debug).mockReturnValue(log as unknown as Debugger);
 
 describe("analyzeCommits", () => {
   beforeEach(() => {

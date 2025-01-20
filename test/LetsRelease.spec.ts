@@ -1,6 +1,5 @@
 import envCi, { CiEnv } from "env-ci";
 import { omit } from "lodash-es";
-import { Signale } from "signale";
 import { WritableStreamBuffer } from "stream-buffers";
 import { ZodError } from "zod";
 
@@ -38,8 +37,10 @@ import { pushBranch } from "test/__helpers__/git/pushBranch";
 import { rebaseBranch } from "test/__helpers__/git/rebaseBranch";
 import { writeFile } from "test/__helpers__/writeFile";
 
+const Signale = vi.hoisted(() => vi.fn());
+
 vi.mock("env-ci");
-vi.mock("signale", () => ({ Signale: vi.fn() }));
+vi.mock("signale", () => ({ default: { Signale } }));
 
 const logger = {
   log: vi.fn(),
@@ -159,7 +160,7 @@ async function testAddChannels(
 
 describe("LetsRelease", () => {
   beforeAll(() => {
-    vi.mocked(Signale).mockReturnValue(logger as never);
+    Signale.mockReturnValue(logger as never);
   });
 
   beforeEach(() => {

@@ -5,9 +5,11 @@ import { PrepareContext } from "@lets-release/config";
 import { preparePackage } from "src/helpers/preparePackage";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
 
+const move = vi.hoisted(() => vi.fn());
+
+vi.mock("node:fs/promises");
 vi.mock("fs-extra", () => ({
-  mkdir: vi.fn(),
-  move: vi.fn(),
+  default: { move },
 }));
 vi.mock("execa");
 

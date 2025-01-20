@@ -1,20 +1,18 @@
-import { readFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
-
-import { ensureFile, writeFile } from "fs-extra";
 
 import { PrepareContext } from "@lets-release/config";
 
 import { prepare } from "src/steps/prepare";
 
+const ensureFile = vi.hoisted(() => vi.fn());
+
 vi.mock("node:fs/promises");
-vi.mock("fs-extra", () => {
-  return {
-    ensureFile: vi.fn(),
-    readFile,
-    writeFile: vi.fn(),
-  };
-});
+vi.mock("fs-extra", () => ({
+  default: {
+    ensureFile,
+  },
+}));
 
 const logger = { log: vi.fn() };
 const repositoryRoot = path.resolve("/path/to/workspace");
@@ -24,8 +22,8 @@ const options = { changelogFile: "CHANGELOG.md" };
 describe("prepare", () => {
   beforeEach(() => {
     vi.mocked(readFile).mockReset();
-    vi.mocked(ensureFile).mockClear();
     vi.mocked(writeFile).mockClear();
+    ensureFile.mockClear();
   });
 
   it("should create changelog", async () => {

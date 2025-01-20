@@ -1,6 +1,6 @@
+import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
-import { outputFile, readFile } from "fs-extra";
 import { temporaryDirectory } from "tempy";
 
 import { PrepareContext } from "@lets-release/config";
@@ -35,7 +35,7 @@ describe("prepare", () => {
     const changelogFile = "CHANGELOG.txt";
     const changelogPath = path.resolve(pkgRoot, changelogFile);
     const notes = "Initial CHANGELOG";
-    await outputFile(changelogPath, notes);
+    await writeFile(changelogPath, notes);
 
     await prepare(
       {
@@ -57,7 +57,7 @@ describe("prepare", () => {
     const changelogPath = path.resolve(pkgRoot, changelogFile);
     const notes = "Initial CHANGELOG";
     const newNotes = "New release note";
-    await outputFile(changelogPath, notes);
+    await writeFile(changelogPath, notes);
 
     await prepare(
       {
@@ -80,7 +80,7 @@ describe("prepare", () => {
     const changelogPath = path.resolve(pkgRoot, changelogFile);
     const notes = "Initial CHANGELOG";
     const newNotes = "New release note";
-    await outputFile(changelogPath, `${changelogTitle}\n\n${notes}\n`);
+    await writeFile(changelogPath, `${changelogTitle}\n\n${notes}\n`);
 
     await prepare(
       {

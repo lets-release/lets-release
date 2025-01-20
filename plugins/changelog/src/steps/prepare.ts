@@ -1,3 +1,4 @@
+import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import fsExtra from "fs-extra";
@@ -7,7 +8,7 @@ import { Step, StepFunction } from "@lets-release/config";
 import { ChangelogOptions } from "src/schemas/ChangelogOptions";
 
 // eslint-disable-next-line import-x/no-named-as-default-member
-const { ensureFile, readFile, writeFile } = fsExtra;
+const { ensureFile } = fsExtra;
 
 export const prepare: StepFunction<Step.prepare, ChangelogOptions> = async (
   { logger, package: pkg, nextRelease: { notes } },

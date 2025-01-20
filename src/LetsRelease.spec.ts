@@ -43,7 +43,7 @@ import { getStepPipelinesList } from "src/utils/plugin/getStepPipelinesList";
 
 const Signale = vi.hoisted(() => vi.fn());
 
-vi.mock("signale", () => ({ Signale }));
+vi.mock("signale", () => ({ default: { Signale } }));
 vi.mock("env-ci");
 vi.mock("dir-glob");
 vi.mock("micromatch");
