@@ -217,14 +217,14 @@ importers:
         specifier: ^3.5.3
         version: 3.5.3(typescript@5.7.3)
       vite:
-        specifier: ^6.0.7
-        version: 6.0.7(@types/node@22.10.7)(jiti@2.4.2)(yaml@2.6.1)
+        specifier: ^6.0.9
+        version: 6.0.9(@types/node@22.10.7)(jiti@2.4.2)(yaml@2.6.1)
       vite-node:
         specifier: ^3.0.2
         version: 3.0.2(@types/node@22.10.7)(jiti@2.4.2)(yaml@2.6.1)
       vite-tsconfig-paths:
         specifier: ^5.1.4
-        version: 5.1.4(typescript@5.7.3)(vite@6.0.7(@types/node@22.10.7)(jiti@2.4.2)(yaml@2.6.1))
+        version: 5.1.4(typescript@5.7.3)(vite@6.0.9(@types/node@22.10.7)(jiti@2.4.2)(yaml@2.6.1))
       vitest:
         specifier: ^3.0.2
         version: 3.0.2(@types/node@22.10.7)(jiti@2.4.2)(yaml@2.6.1)
@@ -502,14 +502,14 @@ importers:
   plugins/gitlab:
     dependencies:
       '@gitbeaker/core':
-        specifier: ^42.0.2
-        version: 42.0.2
+        specifier: ^42.1.0
+        version: 42.1.0
       '@gitbeaker/requester-utils':
-        specifier: ^42.0.2
-        version: 42.0.2
+        specifier: ^42.1.0
+        version: 42.1.0
       '@gitbeaker/rest':
-        specifier: ^42.0.2
-        version: 42.0.2
+        specifier: ^42.1.0
+        version: 42.1.0
       '@lets-release/config':
         specifier: workspace:^
         version: link:../../libs/config
@@ -941,16 +941,16 @@ packages:
     resolution: {integrity: sha512-lB05FkqEdUg2AA0xEbUz0SnkXT1LcCTa438W4IWTUh4hdOnVbQyOJ81OrDXsJk/LSiJHubgGEFoR5EHq1NsH1A==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@gitbeaker/core@42.0.2':
-    resolution: {integrity: sha512-4RbOU+FZzzV7LDGgiOLoxQbOXAMDx+QYsoMRV8ZiuYYwN7+3oKUGt6W+bfQC1baDfwqwprjA1hlLwP+09PyFeQ==}
+  '@gitbeaker/core@42.1.0':
+    resolution: {integrity: sha512-xoP3mUjiGyUdN+utmQ+wDh9r7b4bcf3wa8jxkDTZTiuyd7Tg+354nJhwBNBsq2vFfyQvONOyOT1hsFjTGbTpBA==}
     engines: {node: '>=18.20.0'}
 
-  '@gitbeaker/requester-utils@42.0.2':
-    resolution: {integrity: sha512-pLc8ZrFvnQW21ge58IDxNheLojZ5kIlj+tfr8fYMmgfw4vVQ0Y+qUZ84chb86zttOFWmvVAyrJufrf2487c+Pg==}
+  '@gitbeaker/requester-utils@42.1.0':
+    resolution: {integrity: sha512-q5NXy563UUM2AisM/V6Z3A92hIVQNMyx/VBj5Mg7gJkEtIYL+pEyibjIQxcq6nQ3bnj6bkM8NYguCs5tg7GR0Q==}
     engines: {node: '>=18.20.0'}
 
-  '@gitbeaker/rest@42.0.2':
-    resolution: {integrity: sha512-xDyUY3xQsAuHPgiS2/Nn3pSTEHZhduV7GypexjxoS8wRF6w5EXVqBy64nLUdd9hAHznxB4qF+1+AXF7likPiCw==}
+  '@gitbeaker/rest@42.1.0':
+    resolution: {integrity: sha512-7eSXktkUEF2O2A3F1cO/ZJ/3Mco4v59rptghzhrvjZryPcAxlYWxNJbuFtjc5bc0OnJW7i5AYfJSYvZQSh3gYg==}
     engines: {node: '>=18.20.0'}
 
   '@grpc/grpc-js@1.12.5':
@@ -2266,8 +2266,8 @@ packages:
     resolution: {integrity: sha512-kVCxPF3vQM/N0B1PmoqVUqgHP+EeVjmZSQn+1oCRPxd2P21P2F19lIgbR3HBosbB1PUhOAoctJnfEn2GbN2eZA==}
     engines: {node: '>=18'}
 
-  get-tsconfig@4.8.1:
-    resolution: {integrity: sha512-k9PN+cFBmaLWtVz29SkUoqU5O0slLuHJXt/2P+tMVFT+phsSGXGkp9t3rQIqdz0e+06EHNGs3oM6ZX1s2zHxRg==}
+  get-tsconfig@4.9.0:
+    resolution: {integrity: sha512-52n24W52sIueosRe0XZ8Ex5Yle+WbhfCKnV/gWXpbVR8FXNTfqdKEKUSypKso66VRHTvvcQxL44UTZbJRlCTnw==}
 
   git-log-parser@1.2.1:
     resolution: {integrity: sha512-PI+sPDvHXNPl5WNOErAK05s3j0lgwUzMN6o8cyQrDaKfT3qd7TmNJKeXX+SknI5I0QhG5fVPAEwSY4tRGDtYoQ==}
@@ -3719,8 +3719,8 @@ packages:
       vite:
         optional: true
 
-  vite@6.0.7:
-    resolution: {integrity: sha512-RDt8r/7qx9940f8FcOIAH9PTViRrghKaK2K1jY3RaAURrEUbm9Du1mJ72G+jlhtG3WwodnfzY8ORQZbBavZEAQ==}
+  vite@6.0.9:
+    resolution: {integrity: sha512-MSgUxHcaXLtnBPktkbUSoQUANApKYuxZ6DrbVENlIorbhL2dZydTLaZ01tjUoE3szeFzlFk9ANOKk0xurh4MKA==}
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
     hasBin: true
     peerDependencies:
@@ -4170,23 +4170,23 @@ snapshots:
       '@eslint/core': 0.10.0
       levn: 0.4.1
 
-  '@gitbeaker/core@42.0.2':
+  '@gitbeaker/core@42.1.0':
     dependencies:
-      '@gitbeaker/requester-utils': 42.0.2
+      '@gitbeaker/requester-utils': 42.1.0
       qs: 6.14.0
       xcase: 2.0.1
 
-  '@gitbeaker/requester-utils@42.0.2':
+  '@gitbeaker/requester-utils@42.1.0':
     dependencies:
       picomatch-browser: 2.2.6
       qs: 6.14.0
       rate-limiter-flexible: 4.0.1
       xcase: 2.0.1
 
-  '@gitbeaker/rest@42.0.2':
+  '@gitbeaker/rest@42.1.0':
     dependencies:
-      '@gitbeaker/core': 42.0.2
-      '@gitbeaker/requester-utils': 42.0.2
+      '@gitbeaker/core': 42.1.0
+      '@gitbeaker/requester-utils': 42.1.0
 
   '@grpc/grpc-js@1.12.5':
     dependencies:
@@ -4703,13 +4703,13 @@ snapshots:
       chai: 5.1.2
       tinyrainbow: 2.0.0
 
-  '@vitest/mocker@3.0.2(vite@6.0.7(@types/node@22.10.7)(jiti@2.4.2)(yaml@2.6.1))':
+  '@vitest/mocker@3.0.2(vite@6.0.9(@types/node@22.10.7)(jiti@2.4.2)(yaml@2.6.1))':
     dependencies:
       '@vitest/spy': 3.0.2
       estree-walker: 3.0.3
       magic-string: 0.30.17
     optionalDependencies:
-      vite: 6.0.7(@types/node@22.10.7)(jiti@2.4.2)(yaml@2.6.1)
+      vite: 6.0.9(@types/node@22.10.7)(jiti@2.4.2)(yaml@2.6.1)
 
   '@vitest/pretty-format@3.0.2':
     dependencies:
@@ -5261,7 +5261,7 @@ snapshots:
       enhanced-resolve: 5.18.0
       eslint: 9.18.0(jiti@2.4.2)
       fast-glob: 3.3.3
-      get-tsconfig: 4.8.1
+      get-tsconfig: 4.9.0
       is-bun-module: 1.3.0
       is-glob: 4.0.3
       stable-hash: 0.0.4
@@ -5280,7 +5280,7 @@ snapshots:
       enhanced-resolve: 5.18.0
       eslint: 9.18.0(jiti@2.4.2)
       eslint-import-resolver-node: 0.3.9
-      get-tsconfig: 4.8.1
+      get-tsconfig: 4.9.0
       is-glob: 4.0.3
       minimatch: 9.0.5
       semver: 7.6.3
@@ -5629,7 +5629,7 @@ snapshots:
       '@sec-ant/readable-stream': 0.4.1
       is-stream: 4.0.1
 
-  get-tsconfig@4.8.1:
+  get-tsconfig@4.9.0:
     dependencies:
       resolve-pkg-maps: 1.0.0
 
@@ -6997,7 +6997,7 @@ snapshots:
       debug: 4.4.0
       es-module-lexer: 1.6.0
       pathe: 2.0.2
-      vite: 6.0.7(@types/node@22.10.7)(jiti@2.4.2)(yaml@2.6.1)
+      vite: 6.0.9(@types/node@22.10.7)(jiti@2.4.2)(yaml@2.6.1)
     transitivePeerDependencies:
       - '@types/node'
       - jiti
@@ -7012,18 +7012,18 @@ snapshots:
       - tsx
       - yaml
 
-  vite-tsconfig-paths@5.1.4(typescript@5.7.3)(vite@6.0.7(@types/node@22.10.7)(jiti@2.4.2)(yaml@2.6.1)):
+  vite-tsconfig-paths@5.1.4(typescript@5.7.3)(vite@6.0.9(@types/node@22.10.7)(jiti@2.4.2)(yaml@2.6.1)):
     dependencies:
       debug: 4.4.0
       globrex: 0.1.2
       tsconfck: 3.1.4(typescript@5.7.3)
     optionalDependencies:
-      vite: 6.0.7(@types/node@22.10.7)(jiti@2.4.2)(yaml@2.6.1)
+      vite: 6.0.9(@types/node@22.10.7)(jiti@2.4.2)(yaml@2.6.1)
     transitivePeerDependencies:
       - supports-color
       - typescript
 
-  vite@6.0.7(@types/node@22.10.7)(jiti@2.4.2)(yaml@2.6.1):
+  vite@6.0.9(@types/node@22.10.7)(jiti@2.4.2)(yaml@2.6.1):
     dependencies:
       esbuild: 0.24.2
       postcss: 8.5.1
@@ -7037,7 +7037,7 @@ snapshots:
   vitest@3.0.2(@types/node@22.10.7)(jiti@2.4.2)(yaml@2.6.1):
     dependencies:
       '@vitest/expect': 3.0.2
-      '@vitest/mocker': 3.0.2(vite@6.0.7(@types/node@22.10.7)(jiti@2.4.2)(yaml@2.6.1))
+      '@vitest/mocker': 3.0.2(vite@6.0.9(@types/node@22.10.7)(jiti@2.4.2)(yaml@2.6.1))
       '@vitest/pretty-format': 3.0.2
       '@vitest/runner': 3.0.2
       '@vitest/snapshot': 3.0.2
@@ -7053,7 +7053,7 @@ snapshots:
       tinyexec: 0.3.2
       tinypool: 1.0.2
       tinyrainbow: 2.0.0
-      vite: 6.0.7(@types/node@22.10.7)(jiti@2.4.2)(yaml@2.6.1)
+      vite: 6.0.9(@types/node@22.10.7)(jiti@2.4.2)(yaml@2.6.1)
       vite-node: 3.0.2(@types/node@22.10.7)(jiti@2.4.2)(yaml@2.6.1)
       why-is-node-running: 2.3.0
     optionalDependencies:
