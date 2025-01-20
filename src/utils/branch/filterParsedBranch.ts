@@ -1,8 +1,10 @@
-import { isMatch } from "micromatch";
+import micromatch from "micromatch";
 
 import { BranchType } from "@lets-release/config";
 
 import { ParsedBranch } from "src/types/ParsedBranch";
+
+const { isMatch } = micromatch;
 
 export function filterParsedBranch(
   type: BranchType,

@@ -1,6 +1,6 @@
 import path from "node:path";
 
-import { debug } from "debug";
+import debug from "debug";
 
 import { BaseContext, Commit, Package } from "@lets-release/config";
 

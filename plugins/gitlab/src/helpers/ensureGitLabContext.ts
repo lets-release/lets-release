@@ -1,6 +1,6 @@
 import { GitbeakerRequestError } from "@gitbeaker/requester-utils";
 import { Gitlab } from "@gitbeaker/rest";
-import { debug } from "debug";
+import debug from "debug";
 
 import { Step, StepContext } from "@lets-release/config";
 import { generateFetchFunction } from "@lets-release/git-host";

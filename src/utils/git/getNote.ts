@@ -1,4 +1,4 @@
-import { debug } from "debug";
+import debug from "debug";
 import { $, ExecaError, Options } from "execa";
 import { merge } from "lodash-es";
 

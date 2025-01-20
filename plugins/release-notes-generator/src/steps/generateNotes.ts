@@ -1,7 +1,7 @@
 import { format } from "node:url";
 
 import { Context, writeChangelogStream } from "conventional-changelog-writer";
-import { debug } from "debug";
+import debug from "debug";
 import getStream from "get-stream";
 import intoStream from "into-stream";
 import { find, merge } from "lodash-es";

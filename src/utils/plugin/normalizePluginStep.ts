@@ -1,4 +1,4 @@
-import { debug } from "debug";
+import debug from "debug";
 import { cloneDeep, isString, omit } from "lodash-es";
 
 import {

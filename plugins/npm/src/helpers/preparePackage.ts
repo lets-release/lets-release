@@ -1,12 +1,15 @@
 import path from "node:path";
 
 import { $, ResultPromise } from "execa";
-import { mkdir, move } from "fs-extra";
+import fsExtra from "fs-extra";
 
 import { PrepareContext } from "@lets-release/config";
 
 import { NpmOptions } from "src/schemas/NpmOptions";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
+
+// eslint-disable-next-line import-x/no-named-as-default-member
+const { mkdir, move } = fsExtra;
 
 export async function preparePackage(
   {

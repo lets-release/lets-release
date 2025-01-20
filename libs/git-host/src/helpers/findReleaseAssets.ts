@@ -1,6 +1,6 @@
 import path from "node:path";
 
-import { debug } from "debug";
+import debug from "debug";
 import dirGlob from "dir-glob";
 import { globby } from "globby";
 import { isArray, isString, uniq } from "lodash-es";

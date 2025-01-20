@@ -1,6 +1,6 @@
 import { filterRevertedCommitsSync } from "conventional-commits-filter";
 import { CommitParser, ParserOptions } from "conventional-commits-parser";
-import { debug } from "debug";
+import debug from "debug";
 
 import { Commit } from "@lets-release/config";
 

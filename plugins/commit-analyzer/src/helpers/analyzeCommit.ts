@@ -1,4 +1,4 @@
-import { debug } from "debug";
+import debug from "debug";
 import { isMatchWith, isString } from "lodash-es";
 import micromatch from "micromatch";
 

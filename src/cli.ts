@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { cac } from "cac";
-import { debug } from "debug";
+import debug from "debug";
 
 import { CliOptions } from "@lets-release/config";
 

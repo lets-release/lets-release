@@ -1,5 +1,5 @@
 import { RequestError } from "@octokit/request-error";
-import { debug } from "debug";
+import debug from "debug";
 
 import { FindPackagesContext } from "@lets-release/config";
 import { generateFetchFunction } from "@lets-release/git-host";

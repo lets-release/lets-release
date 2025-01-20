@@ -1,5 +1,5 @@
 import { GitbeakerRequestError } from "@gitbeaker/requester-utils";
-import { debug } from "debug";
+import debug from "debug";
 import urlJoin from "url-join";
 
 import { Step, StepFunction } from "@lets-release/config";

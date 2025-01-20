@@ -1,4 +1,4 @@
-import { debug } from "debug";
+import debug from "debug";
 import { escapeRegExp, template } from "lodash-es";
 
 import { isValidCalVer } from "@lets-release/calver";

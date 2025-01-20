@@ -1,4 +1,4 @@
-import { debug } from "debug";
+import debug from "debug";
 import { isNil, uniqBy } from "lodash-es";
 import pFilter from "p-filter";
 

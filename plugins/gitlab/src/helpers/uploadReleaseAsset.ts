@@ -2,7 +2,7 @@ import { readFile, stat } from "node:fs/promises";
 import path from "node:path";
 
 import { ReleaseAssetLink } from "@gitbeaker/core";
-import { debug } from "debug";
+import debug from "debug";
 import { isString, template } from "lodash-es";
 import urlJoin from "url-join";
 

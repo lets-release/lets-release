@@ -1,7 +1,7 @@
 import { readFile, stat } from "node:fs/promises";
 import path from "node:path";
 
-import { debug } from "debug";
+import debug from "debug";
 import { isString, template } from "lodash-es";
 import mime from "mime";
 

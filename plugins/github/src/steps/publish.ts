@@ -1,5 +1,5 @@
 import { RequestError } from "@octokit/request-error";
-import { debug } from "debug";
+import debug from "debug";
 import { template } from "lodash-es";
 
 import { BranchType, Step, StepFunction } from "@lets-release/config";

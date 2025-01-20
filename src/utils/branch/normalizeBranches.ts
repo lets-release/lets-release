@@ -1,4 +1,4 @@
-import { debug } from "debug";
+import debug from "debug";
 import { isNil, pickBy } from "lodash-es";
 
 import { BranchType, Branches, Package } from "@lets-release/config";

@@ -1,5 +1,5 @@
 import { RequestError } from "@octokit/request-error";
-import { debug } from "debug";
+import debug from "debug";
 
 import { BranchType, Step, StepFunction } from "@lets-release/config";
 

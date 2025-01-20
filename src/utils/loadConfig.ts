@@ -1,5 +1,5 @@
 import { cosmiconfig } from "cosmiconfig";
-import { debug } from "debug";
+import debug from "debug";
 import { isNil, pickBy } from "lodash-es";
 
 import { BaseContext, NormalizedOptions, Options } from "@lets-release/config";

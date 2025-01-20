@@ -1,11 +1,11 @@
-import { debug } from "debug";
+import debug from "debug";
 import dirGlob from "dir-glob";
 import envCi, { JenkinsEnv } from "env-ci";
 import figures from "figures";
 import { hookStd } from "hook-std";
 import { isArray, template, uniq } from "lodash-es";
 import micromatch from "micromatch";
-import { Signale } from "signale";
+import signale from "signale";
 
 import {
   BaseContext,
@@ -72,6 +72,9 @@ import { parseMarkdown } from "src/utils/parseMarkdown";
 import { getStepPipelinesList } from "src/utils/plugin/getStepPipelinesList";
 import { verifyEngines } from "src/utils/verifyEngines";
 import { verifyGitVersion } from "src/utils/verifyGitVersion";
+
+// eslint-disable-next-line import-x/no-named-as-default-member
+const { Signale } = signale;
 
 export class LetsRelease {
   private pluginContexts: Record<string, unknown>[] = [];
