@@ -1,6 +1,6 @@
 {
   "name": "@lets-release/npm",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Let's Release npm plugin",
   "author": "Sean Tu <manlao@gmail.com> (https://github.com/manlao)",
   "license": "MIT",

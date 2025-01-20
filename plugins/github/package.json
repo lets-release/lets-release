@@ -1,6 +1,6 @@
 {
   "name": "@lets-release/github",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Let's Release github plugin",
   "author": "Sean Tu <manlao@gmail.com> (https://github.com/manlao)",
   "license": "MIT",
