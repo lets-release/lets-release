@@ -3,14 +3,10 @@ import { z } from "zod";
 import { NonEmptyString, PartialRequired } from "@lets-release/config";
 import { GitHostOptions } from "@lets-release/git-host";
 
+/**
+ * GitHub options.
+ */
 export const GitHubOptions = GitHostOptions.extend({
-  /**
-   * The GitHub Token.
-   *
-   * Default: `GH_TOKEN` or `GITHUB_TOKEN` environment variable.
-   */
-  token: NonEmptyString.optional(),
-
   /**
    * The GitHub server endpoint.
    *
@@ -24,6 +20,13 @@ export const GitHubOptions = GitHostOptions.extend({
    * Default: `GITHUB_API_URL` environment variable.
    */
   apiUrl: NonEmptyString.optional(),
+
+  /**
+   * The GitHub Token.
+   *
+   * Default: `GH_TOKEN` or `GITHUB_TOKEN` environment variable.
+   */
+  token: NonEmptyString.optional(),
 
   /**
    * Set the release as latest for the main package only.

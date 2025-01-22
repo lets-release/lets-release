@@ -7,6 +7,20 @@ import { GitLabAsset } from "src/schemas/GitLabAsset";
 
 export const GitLabOptions = GitHostOptions.extend({
   /**
+   * The GitLab endpoint.
+   *
+   * Default: `CI_SERVER_URL` or get from `repositoryUrl` options.
+   */
+  url: NonEmptyString.optional(),
+
+  /**
+   * The GitLab API endpoint.
+   *
+   * Default: `CI_API_V4_URL` environment variable.
+   */
+  apiUrl: NonEmptyString.optional(),
+
+  /**
    * The GitLab Token.
    *
    * Default: `GL_TOKEN` or `GITLAB_TOKEN` environment variable.
@@ -24,20 +38,6 @@ export const GitLabOptions = GitHostOptions.extend({
    * Default: `CI_JOB_TOKEN` environment variable.
    */
   jobToken: NonEmptyString.optional(),
-
-  /**
-   * The GitLab endpoint.
-   *
-   * Default: `CI_SERVER_URL` or get from `repositoryUrl` options.
-   */
-  url: NonEmptyString.optional(),
-
-  /**
-   * The GitLab API endpoint.
-   *
-   * Default: `CI_API_V4_URL` environment variable.
-   */
-  apiUrl: NonEmptyString.optional(),
 
   /**
    * An array of files to upload to the release.
