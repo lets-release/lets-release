@@ -7,7 +7,7 @@ import { CalVerBuildMetadataSpec } from "src/schemas/CalVerBuildMetadataSpec";
 import { CalVerFormat } from "src/schemas/CalVerFormat";
 import { CalVerPrereleaseOptions } from "src/schemas/CalVerPrereleaseOptions";
 
-/*
+/**
  * Calendar versioning options.
  */
 export const CalVerOptions = VersioningOptions.extend({
