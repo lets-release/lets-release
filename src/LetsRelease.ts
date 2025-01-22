@@ -644,7 +644,7 @@ export class LetsRelease {
 
         const commits = await getCommits(
           context,
-          [pkg],
+          packages,
           lastRelease?.hash,
           nextRelease.hash,
         );
@@ -796,7 +796,7 @@ export class LetsRelease {
               hash: await getTagHash(last.tag, { cwd: repositoryRoot, env }),
             }
           : undefined;
-        const commits = await getCommits(context, [pkg], lastRelease?.hash);
+        const commits = await getCommits(context, packages, lastRelease?.hash);
         const normalizedContext: NormalizedStepContext<Step.analyzeCommits> =
           this.normalizeContext<Step.analyzeCommits>(
             {
