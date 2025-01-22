@@ -35,8 +35,11 @@
     "globby": "^14.0.2",
     "issue-parser": "^7.0.1",
     "lodash-es": "^4.17.21",
-    "undici": "^7.2.3",
+    "undici": "^7.3.0",
     "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/issue-parser": "^3.0.5"
   },
   "files": [
     "package.json",
@@ -59,8 +62,5 @@
         "default": "./dist/*.js"
       }
     }
-  },
-  "devDependencies": {
-    "@types/issue-parser": "^3.0.5"
   }
 }
