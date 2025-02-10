@@ -179,7 +179,15 @@ The `successLabels` ``['released<%= nextRelease.channel ? ` on @\${nextRelease.c
 
 > released on @next from branch next
 
+[environment variables]: #environment-variables
+[assets]: #assets
+[commentOnSuccess]: #commentonsuccess
+[successComment]: #successcomment
+[successLabels]: #successlabels
+
 [lets-release]: ../../
+[getSuccessComment]: ../../libs/git-host/src/helpers/getSuccessComment.ts
+
 [GitHub release]: https://help.github.com/articles/about-releases
 [GitHub Issue]: https://help.github.com/articles/about-issues
 [Pull Request]: https://help.github.com/articles/about-pull-requests
@@ -192,9 +200,3 @@ The `successLabels` ``['released<%= nextRelease.channel ? ` on @\${nextRelease.c
 [Lodash template]: https://lodash.com/docs#template
 [undici]: https://undici.nodejs.org/#/docs/api/ProxyAgent.md
 [glob]: https://github.com/isaacs/node-glob#glob-primer
-[environment variables]: #environment-variables
-[assets]: #assets
-[commentOnSuccess]: #commentonsuccess
-[successComment]: #successcomment
-[successLabels]: #successlabels
-[getSuccessComment]: ../../libs/git-host/src/helpers/getSuccessComment.ts

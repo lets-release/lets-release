@@ -68,6 +68,8 @@ With this example:
 If `preset` or `config` are not set, only the properties set in `parserOptions` and `writerOptions` will be used.
 
 [lets-release]: ../../
+[repositoryurl]: ../../libs/config/src/schemas/Options.ts
+
 [conventional-changelog]: https://github.com/conventional-changelog/conventional-changelog
 [angular]: https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-angular
 [atom]: https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-atom
@@ -81,4 +83,3 @@ If `preset` or `config` are not set, only the properties set in `parserOptions` 
 [conventional-changelog-conventionalcommits]: https://github.com/conventional-changelog/conventional-changelog-config-spec
 [conventional-commits-parser]: https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-commits-parser
 [conventional-changelog-writer]: https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-writer
-[repositoryurl]: ../../libs/config/src/schemas/Options.ts

@@ -195,7 +195,13 @@ module.exports = [
 ];
 ```
 
+[releaseRules]: #releaserules
+
 [lets-release]: ../../
+[release types]: ../../libs/config/src/constants/RELEASE_TYPES.ts
+[default release rules]: ./src/constants/DEFAULT_RELEASE_RULES.ts
+
+[glob]: https://github.com/micromatch/micromatch#matching-features
 [conventional-changelog]: https://github.com/conventional-changelog/conventional-changelog
 [Angular Commit Message Conventions]: https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines
 [angular]: https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-angular
@@ -209,7 +215,3 @@ module.exports = [
 [jshint]: https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-jshint
 [conventional-changelog-conventionalcommits]: https://github.com/conventional-changelog/conventional-changelog-config-spec
 [conventional-commits-parser]: https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-commits-parser
-[releaseRules]: #releaserules
-[default release rules]: src/constants/DEFAULT_RELEASE_RULES.ts
-[glob]: https://github.com/micromatch/micromatch#matching-features
-[release types]: ../../libs/config/src/constants/RELEASE_TYPES.ts

@@ -166,7 +166,15 @@ The latest version of this plugin is compatible with all currently-supported ver
 [which is the current major version and previous two major versions][].
 This plugin is not guaranteed to work with unsupported versions of GitLab.
 
+[environment variables]: #environment-variables
+[assets]: #assets
+[commentOnSuccess]: #commentonsuccess
+[successComment]: #successcomment
+[successLabels]: #successlabels
+
 [lets-release]: ../../
+[getSuccessComment]: ../../libs/git-host/src/helpers/getSuccessComment.ts
+
 [GitLab release]: https://docs.gitlab.com/ee/user/project/releases/
 [GitLab Issue]: https://docs.gitlab.com/ee/user/project/issues/
 [remote Git repository authentication]: https://github.com/lets-release/lets-release/blob/master/docs/usage/ci-configuration.md#authentication
@@ -182,9 +190,3 @@ This plugin is not guaranteed to work with unsupported versions of GitLab.
 [@gitbeaker/rest]: https://github.com/jdalrymple/gitbeaker/tree/main/packages/rest#api-client
 [Lodash template]: https://lodash.com/docs#template
 [glob]: https://github.com/isaacs/node-glob#glob-primer
-[environment variables]: #environment-variables
-[assets]: #assets
-[commentOnSuccess]: #commentonsuccess
-[successComment]: #successcomment
-[successLabels]: #successlabels
-[getSuccessComment]: ../../libs/git-host/src/helpers/getSuccessComment.ts

@@ -141,9 +141,6 @@ Each shell command is generated with [Lodash template][]. All the objects passed
 | `stdout`         | Can be used for logging.                                                                                        |
 | `stderr`         | Can be used for logging.                                                                                        |
 
-[lets-release]: ../../
-[steps]: ../../libs/config/src/enums/Step.ts
-[@lets-release/commit-analyzer]: ../commit-analyzer
 [findPackagesCmd]: #findpackagescmd
 [verifyConditionsCmd]: #verifyconditionscmd
 [analyzeCommitsCmd]: #analyzecommitscmd
@@ -154,5 +151,10 @@ Each shell command is generated with [Lodash template][]. All the objects passed
 [publishCmd]: #publishcmd
 [successCmd]: #successcmd
 [failCmd]: #failcmd
+
+[lets-release]: ../../
+[@lets-release/commit-analyzer]: ../commit-analyzer
+[steps]: ../../libs/config/src/enums/Step.ts
+
 [execa]: https://github.com/sindresorhus/execa
 [Lodash template]: https://lodash.com/docs#template

@@ -111,6 +111,8 @@ release the package tarball with another plugin. For example with the [@lets-rel
 ```
 
 [lets-release]: ../../
+[@lets-release/github]: ../github
+
 [npm]: https://www.npmjs.com
 [create]: https://docs.npmjs.com/cli/pack
 [Add a release to dist-tags]: https://docs.npmjs.com/cli/dist-tag
@@ -119,7 +121,6 @@ release the package tarball with another plugin. For example with the [@lets-rel
 [provider that is supported by npm for provenance]: https://docs.npmjs.com/generating-provenance-statements#provenance-limitations
 [publish with provenance]: https://docs.npmjs.com/generating-provenance-statements
 [other configuration options exposed by npm]: https://docs.npmjs.com/generating-provenance-statements#using-third-party-package-publishing-tools
-[@lets-release/github]: ../github
 [private]: https://docs.npmjs.com/files/package.json#private
 [preferred-pm]: https://www.npmjs.com/package/preferred-pm
 [registry]: https://docs.npmjs.com/misc/registry
