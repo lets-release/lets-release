@@ -32,11 +32,11 @@
     "@lets-release/config": "workspace:^",
     "debug": "^4.4.0",
     "dir-glob": "^3.0.1",
-    "globby": "^14.0.2",
+    "globby": "^14.1.0",
     "issue-parser": "^7.0.1",
     "lodash-es": "^4.17.21",
     "undici": "^7.3.0",
-    "zod": "^3.24.1"
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@types/issue-parser": "^3.0.5"

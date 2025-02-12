@@ -40,10 +40,10 @@
     "mime": "^4.0.6",
     "p-filter": "^4.1.0",
     "read-pkg": "^9.0.1",
-    "zod": "^3.24.1"
+    "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@octokit/types": "^13.7.0",
+    "@octokit/types": "^13.8.0",
     "undici": "^7.3.0"
   },
   "files": [

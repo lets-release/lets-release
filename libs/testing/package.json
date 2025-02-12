@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "dockerode": "^4.0.4",
-    "got": "^14.4.5",
+    "got": "^14.4.6",
     "p-retry": "^6.2.1"
   },
   "devDependencies": {
