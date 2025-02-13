@@ -65,6 +65,7 @@ permissions:
 ### Package manager
 
 The plugin uses [`preferred-pm`][preferred-pm] to get your package manager.
+Supported package managers are: npm, pnpm, yarn.
 
 ### Publish configuration
 
