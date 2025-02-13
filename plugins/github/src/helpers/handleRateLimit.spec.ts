@@ -13,7 +13,7 @@ const mockOctokit = {
   },
 } as unknown as Octokit;
 
-const options: Required<EndpointDefaults> = {
+const options = {
   method: "GET",
   url: "https://api.github.com",
   baseUrl: "https://api.github.com",
@@ -27,7 +27,7 @@ const options: Required<EndpointDefaults> = {
     format: "",
     previews: [],
   },
-};
+} as unknown as Required<EndpointDefaults>;
 
 describe("handleRateLimit", () => {
   beforeEach(() => {

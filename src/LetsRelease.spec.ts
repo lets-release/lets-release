@@ -241,7 +241,7 @@ describe("LetsRelease", () => {
     prepare.mockReset();
     publish.mockReset().mockResolvedValue(artifacts);
     success.mockReset();
-    write.mockClear();
+    write.mockReset().mockImplementation(() => true);
     Signale.mockReset().mockReturnValue(logger);
     vi.mocked(micromatch).mockReset().mockReturnValue(files);
     vi.mocked(dirGlob).mockClear();
