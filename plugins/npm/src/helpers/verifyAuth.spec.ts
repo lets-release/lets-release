@@ -5,6 +5,7 @@ import { $ } from "execa";
 import { VerifyConditionsContext } from "@lets-release/config";
 
 import { verifyAuth } from "src/helpers/verifyAuth";
+import { NpmPackageContext } from "src/types/NpmPackageContext";
 
 vi.mock("execa");
 vi.mock("src/helpers/getRegistry");
@@ -27,9 +28,9 @@ describe("verifyAuth", () => {
 
     await expect(
       verifyAuth(context, {
-        cwd: "./",
+        pm: { name: "npm", version: "*", root: "./" },
         registry,
-      }),
+      } as NpmPackageContext),
     ).rejects.toThrow(AggregateError);
   });
 
@@ -52,10 +53,10 @@ describe("verifyAuth", () => {
         pm: {
           name: "pnpm",
           version: "9.0.0",
+          root: "./",
         },
-        cwd: "./",
         registry,
-      }),
+      } as NpmPackageContext),
     ).resolves.toBe(undefined);
   });
 
@@ -78,10 +79,10 @@ describe("verifyAuth", () => {
         pm: {
           name: "yarn",
           version: "4.0.0",
+          root: "./",
         },
-        cwd: "./",
         registry,
-      }),
+      } as NpmPackageContext),
     ).resolves.toBe(undefined);
   });
 
@@ -104,11 +105,11 @@ describe("verifyAuth", () => {
         pm: {
           name: "yarn",
           version: "4.0.0",
+          root: "./",
         },
-        cwd: "./",
         scope: "@scope",
         registry,
-      }),
+      } as NpmPackageContext),
     ).resolves.toBe(undefined);
   });
 
@@ -128,9 +129,13 @@ describe("verifyAuth", () => {
 
     await expect(
       verifyAuth(context, {
-        cwd: "./",
+        pm: {
+          name: "npm",
+          version: "4.0.0",
+          root: "./",
+        },
         registry,
-      }),
+      } as NpmPackageContext),
     ).resolves.toBe(undefined);
   });
 });

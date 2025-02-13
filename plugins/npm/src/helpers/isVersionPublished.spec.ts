@@ -32,15 +32,13 @@ describe("isVersionPublished", () => {
 
     await expect(
       isVersionPublished(context, {
-        pm: { name: "pnpm" },
-        cwd,
+        pm: { name: "pnpm", root: cwd },
         registry,
       } as NpmPackageContext),
     ).resolves.toBe(true);
     await expect(
       isVersionPublished(context, {
-        pm: { name: "pnpm" },
-        cwd,
+        pm: { name: "pnpm", root: cwd },
         registry,
       } as NpmPackageContext),
     ).resolves.toBe(false);
@@ -56,15 +54,13 @@ describe("isVersionPublished", () => {
 
     await expect(
       isVersionPublished(context, {
-        pm: { name: "yarn" },
-        cwd,
+        pm: { name: "yarn", root: cwd },
         registry,
       } as NpmPackageContext),
     ).resolves.toBe(true);
     await expect(
       isVersionPublished(context, {
-        pm: { name: "yarn" },
-        cwd,
+        pm: { name: "yarn", root: cwd },
         registry,
       } as NpmPackageContext),
     ).resolves.toBe(false);
@@ -76,10 +72,16 @@ describe("isVersionPublished", () => {
       .mockResolvedValueOnce({ exitCode: 1, stdout: "" });
 
     await expect(
-      isVersionPublished(context, { cwd, registry } as NpmPackageContext),
+      isVersionPublished(context, {
+        pm: { name: "npm", root: cwd },
+        registry,
+      } as NpmPackageContext),
     ).resolves.toBe(true);
     await expect(
-      isVersionPublished(context, { cwd, registry } as NpmPackageContext),
+      isVersionPublished(context, {
+        pm: { name: "npm", root: cwd },
+        registry,
+      } as NpmPackageContext),
     ).resolves.toBe(false);
   });
 });

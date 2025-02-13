@@ -3,7 +3,6 @@ import path from "node:path";
 
 import { $ } from "execa";
 import { outputJson } from "fs-extra";
-import { NormalizedPackageJson } from "read-pkg";
 import { temporaryDirectory } from "tempy";
 
 import { VerifyConditionsContext } from "@lets-release/config";
@@ -47,8 +46,11 @@ describe("getRegistry", () => {
       await expect(
         getRegistry(
           { env: process.env } as VerifyConditionsContext,
-          {} as NormalizedPackageJson,
-          { pm: { name: "pnpm" }, cwd, scope } as NpmPackageContext,
+          {
+            pm: { name: "pnpm", root: cwd },
+            pkg: {},
+            scope,
+          } as NpmPackageContext,
         ),
       ).resolves.toBe(scopeRegistry);
     });
@@ -63,8 +65,7 @@ describe("getRegistry", () => {
                 process.env.npm_config_registry || DEFAULT_NPM_REGISTRY,
             },
           } as unknown as VerifyConditionsContext,
-          {} as NormalizedPackageJson,
-          { pm: { name: "pnpm" }, cwd } as NpmPackageContext,
+          { pm: { name: "pnpm", root: cwd }, pkg: {} } as NpmPackageContext,
         ),
       ).resolves.toBe(process.env.npm_config_registry || DEFAULT_NPM_REGISTRY);
     });
@@ -79,8 +80,7 @@ describe("getRegistry", () => {
               NPM_CONFIG_REGISTRY: undefined,
             },
           } as unknown as VerifyConditionsContext,
-          {} as NormalizedPackageJson,
-          { pm: { name: "pnpm" }, cwd } as NpmPackageContext,
+          { pm: { name: "pnpm", root: cwd }, pkg: {} } as NpmPackageContext,
         ),
       ).resolves.toBe(registry);
     });
@@ -110,8 +110,11 @@ describe("getRegistry", () => {
       await expect(
         getRegistry(
           { env: process.env } as VerifyConditionsContext,
-          {} as NormalizedPackageJson,
-          { pm: { name: "yarn" }, cwd, scope } as NpmPackageContext,
+          {
+            pm: { name: "yarn", root: cwd },
+            pkg: {},
+            scope,
+          } as NpmPackageContext,
         ),
       ).resolves.toBe(scopeRegistry);
     });
@@ -126,8 +129,7 @@ describe("getRegistry", () => {
                 process.env.npm_config_registry || DEFAULT_NPM_REGISTRY,
             },
           } as unknown as VerifyConditionsContext,
-          {} as NormalizedPackageJson,
-          { pm: { name: "yarn" }, cwd } as NpmPackageContext,
+          { pm: { name: "yarn", root: cwd }, pkg: {} } as NpmPackageContext,
         ),
       ).resolves.toBe(registry);
     });
@@ -142,8 +144,7 @@ describe("getRegistry", () => {
               NPM_CONFIG_REGISTRY: undefined,
             },
           } as unknown as VerifyConditionsContext,
-          {} as NormalizedPackageJson,
-          { pm: { name: "yarn" }, cwd } as NpmPackageContext,
+          { pm: { name: "yarn", root: cwd }, pkg: {} } as NpmPackageContext,
         ),
       ).resolves.toBe(registry);
     });
@@ -174,8 +175,11 @@ registry = ${registry}`,
       await expect(
         getRegistry(
           { env: process.env } as VerifyConditionsContext,
-          {} as NormalizedPackageJson,
-          { pm: { name: "npm" }, cwd, scope } as NpmPackageContext,
+          {
+            pm: { name: "npm", root: cwd },
+            pkg: {},
+            scope,
+          } as NpmPackageContext,
         ),
       ).resolves.toBe(scopeRegistry);
     });
@@ -190,8 +194,7 @@ registry = ${registry}`,
                 process.env.npm_config_registry || DEFAULT_NPM_REGISTRY,
             },
           } as unknown as VerifyConditionsContext,
-          {} as NormalizedPackageJson,
-          { pm: { name: "npm" }, cwd } as NpmPackageContext,
+          { pm: { name: "npm", root: cwd }, pkg: {} } as NpmPackageContext,
         ),
       ).resolves.toBe(process.env.npm_config_registry || DEFAULT_NPM_REGISTRY);
     });
@@ -206,8 +209,7 @@ registry = ${registry}`,
               NPM_CONFIG_REGISTRY: undefined,
             },
           } as unknown as VerifyConditionsContext,
-          {} as NormalizedPackageJson,
-          { pm: { name: "npm" }, cwd } as NpmPackageContext,
+          { pm: { name: "npm", root: cwd }, pkg: {} } as NpmPackageContext,
         ),
       ).resolves.toBe(registry);
     });

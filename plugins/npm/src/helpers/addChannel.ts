@@ -27,9 +27,9 @@ export async function addChannel(
       message: `Adding version ${version} to npm registry on dist-tag ${distTag}`,
     });
 
-    const { pm, cwd, registry } = pkgContext;
+    const { pm, registry } = pkgContext;
     const options = {
-      cwd,
+      cwd: pm.root,
       env,
       preferLocal: true,
     };
@@ -40,7 +40,7 @@ export async function addChannel(
       await promise;
     };
 
-    switch (pm?.name) {
+    switch (pm.name) {
       case "pnpm": {
         await addDistTag(
           $(

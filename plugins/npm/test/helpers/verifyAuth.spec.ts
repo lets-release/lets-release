@@ -42,8 +42,7 @@ describe("verifyAuth", () => {
       verifyAuth(
         {} as VerifyConditionsContext,
         {
-          pm: { name: "pnpm" },
-          cwd,
+          pm: { name: "pnpm", root: cwd },
           registry,
         } as NpmPackageContext,
       ),
@@ -71,8 +70,7 @@ describe("verifyAuth", () => {
       verifyAuth(
         {} as VerifyConditionsContext,
         {
-          pm: { name: "yarn" },
-          cwd,
+          pm: { name: "yarn", root: cwd },
           registry,
         } as NpmPackageContext,
       ),
@@ -99,8 +97,7 @@ describe("verifyAuth", () => {
       verifyAuth(
         {} as VerifyConditionsContext,
         {
-          pm: { name: "npm" },
-          cwd,
+          pm: { name: "npm", root: cwd },
           registry,
         } as NpmPackageContext,
       ),

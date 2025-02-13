@@ -1,5 +1,4 @@
 import { $, ResultPromise } from "execa";
-import { NormalizedPackageJson } from "read-pkg";
 
 import { VerifyConditionsContext } from "@lets-release/config";
 
@@ -21,18 +20,19 @@ const getConfig = async (
 };
 
 export async function getRegistry(
-  { env }: VerifyConditionsContext,
+  { env }: Pick<VerifyConditionsContext, "env">,
   {
-    publishConfig: { registry } = { registry: undefined },
-  }: NormalizedPackageJson,
-  { pm, cwd, scope }: Pick<NpmPackageContext, "pm" | "cwd" | "scope">,
+    pm,
+    pkg: { publishConfig: { registry } = { registry: undefined } },
+    scope,
+  }: Pick<NpmPackageContext, "pm" | "pkg" | "scope">,
 ): Promise<string> {
   if (registry) {
     return registry;
   }
 
   const options = {
-    cwd,
+    cwd: pm.root,
     env,
     preferLocal: true,
     reject: false,
@@ -45,7 +45,7 @@ export async function getRegistry(
   // - npmrc Files
   // - Default Configs
 
-  switch (pm?.name) {
+  switch (pm.name) {
     case "pnpm": {
       return (
         (scope
@@ -70,6 +70,7 @@ export async function getRegistry(
       );
     }
 
+    // npm
     default: {
       return (
         (scope

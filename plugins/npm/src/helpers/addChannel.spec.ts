@@ -20,9 +20,9 @@ const context = {
   package: { name: "test" },
 };
 const pkgContext = {
-  cwd: "/path/to/pkg/cwd",
+  pm: { root: "/path/to/pkg/cwd" },
   registry: "https://registry.npmjs.org",
-};
+} as NpmPackageContext;
 
 class ExtendedPromise extends Promise<unknown> {
   stdout = {
@@ -56,7 +56,7 @@ describe("addChannel", () => {
           ...context,
           nextRelease: { version: "1.0.0" },
         } as unknown as VerifyReleaseContext,
-        pkgContext as NpmPackageContext,
+        pkgContext,
         "latest",
       ),
     ).resolves.toBeUndefined();
@@ -75,7 +75,7 @@ describe("addChannel", () => {
           ...context,
           nextRelease: { version: "1.0.0" },
         } as unknown as VerifyReleaseContext,
-        pkgContext as NpmPackageContext,
+        pkgContext,
         "latest",
       ),
     ).resolves.toBeUndefined();
@@ -94,7 +94,7 @@ describe("addChannel", () => {
           ...context,
           nextRelease: { version: "1.0.0" },
         } as unknown as VerifyReleaseContext,
-        pkgContext as NpmPackageContext,
+        pkgContext,
         "latest",
       ),
     ).resolves.toBeUndefined();
@@ -112,7 +112,7 @@ describe("addChannel", () => {
           ...context,
           nextRelease: { version: "2.0.0" },
         } as unknown as VerifyReleaseContext,
-        pkgContext as NpmPackageContext,
+        pkgContext,
         "latest",
       ),
     ).resolves.toBeUndefined();
@@ -130,7 +130,10 @@ describe("addChannel", () => {
           ...context,
           nextRelease: { version: "2.0.0" },
         } as unknown as VerifyReleaseContext,
-        { ...pkgContext, pm: { name: "pnpm" } } as NpmPackageContext,
+        {
+          ...pkgContext,
+          pm: { ...pkgContext.pm, name: "pnpm" },
+        },
         "latest",
       ),
     ).resolves.toBeUndefined();
@@ -148,7 +151,10 @@ describe("addChannel", () => {
           ...context,
           nextRelease: { version: "2.0.0" },
         } as unknown as VerifyReleaseContext,
-        { ...pkgContext, pm: { name: "yarn" } } as NpmPackageContext,
+        {
+          ...pkgContext,
+          pm: { ...pkgContext.pm, name: "yarn" },
+        },
         "latest",
       ),
     ).resolves.toBeUndefined();

@@ -6,11 +6,11 @@ import { NpmPackageContext } from "src/types/NpmPackageContext";
 
 export async function getDistTagVersion(
   { env, package: { name } }: VerifyReleaseContext,
-  { pm, cwd, registry }: NpmPackageContext,
+  { pm, registry }: NpmPackageContext,
   distTag: string,
 ) {
   const options = {
-    cwd,
+    cwd: pm.root,
     env,
     lines: true as const,
     preferLocal: true as const,
@@ -37,7 +37,7 @@ export async function getDistTagVersion(
       .find(([tag]) => tag === distTag)?.[1];
   };
 
-  switch (pm?.name) {
+  switch (pm.name) {
     case "pnpm": {
       return await getVersion(
         $(options)`pnpm dist-tag ls ${name} --registry ${registry}`,

@@ -1,6 +1,7 @@
 import { mkdir } from "node:fs/promises";
 import path from "node:path";
 
+import { $ } from "execa";
 import { outputJson } from "fs-extra";
 import { temporaryDirectory } from "tempy";
 
@@ -23,9 +24,20 @@ describe("findPackages", () => {
   beforeAll(async () => {
     await mkdir(path.resolve(cwd, "packages", "a"), { recursive: true });
     await outputJson(path.resolve(cwd, "packages", "a", "package.json"), pkgA);
+    await $({ cwd: path.resolve(cwd, "packages", "a") })`npm install`;
     await mkdir(path.resolve(cwd, "packages", "b"), { recursive: true });
     await outputJson(path.resolve(cwd, "packages", "b", "package.json"), pkgB);
+    await $({ cwd: path.resolve(cwd, "packages", "b") })`npm install`;
     await mkdir(path.resolve(cwd, "packages", "c"), { recursive: true });
+    await outputJson(path.resolve(cwd, "packages", "c", "package.json"), {
+      name: "find-packages-c",
+    });
+    await mkdir(path.resolve(cwd, "packages", "d"), { recursive: true });
+  });
+
+  beforeEach(() => {
+    info.mockClear();
+    warn.mockClear();
   });
 
   it("should find packages", async () => {
@@ -36,6 +48,7 @@ describe("findPackages", () => {
           logger,
           repositoryRoot: cwd,
           packageOptions: { paths: ["packages/*"] },
+          setPluginPackageContext: vi.fn(),
         } as unknown as FindPackagesContext,
         {},
       ),
@@ -51,6 +64,6 @@ describe("findPackages", () => {
     ]);
 
     expect(info).toHaveBeenCalledTimes(2);
-    expect(warn).toHaveBeenCalledTimes(1);
+    expect(warn).toHaveBeenCalledTimes(2);
   });
 });

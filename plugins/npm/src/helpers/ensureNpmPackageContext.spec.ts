@@ -1,122 +1,80 @@
-import { findUp } from "find-up-simple";
-// eslint-disable-next-line import-x/default
-import preferredPM from "preferred-pm";
-import { NormalizedPackageJson } from "read-pkg";
+import { AnalyzeCommitsContext } from "@lets-release/config";
 
-import {
-  VerifyConditionsContext,
-  VerifyReleaseContext,
-} from "@lets-release/config";
-
+import { UnsupportedNpmPackageManagerError } from "src/errors/UnsupportedNpmPackageManagerError";
 import { ensureNpmPackageContext } from "src/helpers/ensureNpmPackageContext";
-import { getRegistry } from "src/helpers/getRegistry";
+import { getNpmPackageContext } from "src/helpers/getNpmPackageContext";
+import { NpmPackageContext } from "src/types/NpmPackageContext";
 
-vi.mock("find-up-simple");
-vi.mock("preferred-pm");
-vi.mock("src/helpers/getRegistry");
+vi.mock("src/helpers/getNpmPackageContext");
 vi.mock("src/helpers/verifyAuth");
 
-const registry = "https://test.org";
-
-vi.mocked(getRegistry).mockResolvedValue(registry);
-
+const env = {};
 const repositoryRoot = "/root";
 const pkg = {
   name: "pkg",
   path: "path",
 };
+const getPluginPackageContext = vi.fn();
+const setPluginPackageContext = vi.fn();
 const context = {
+  env,
+  repositoryRoot,
+  package: pkg,
+  getPluginPackageContext,
+  setPluginPackageContext,
+} as unknown as Pick<
+  AnalyzeCommitsContext,
+  | "env"
+  | "repositoryRoot"
+  | "package"
+  | "getPluginPackageContext"
+  | "setPluginPackageContext"
+>;
+const pkgContext = {
   pm: {
     name: "npm",
     version: "7.0.0",
+    root: "/path/to/pkg/cwd",
   },
-};
-const getPluginPackageContext = vi.fn();
-const setPluginPackageContext = vi.fn();
+  pkg,
+} as unknown as NpmPackageContext;
 
 describe("ensureNpmPackageContext", () => {
   beforeEach(() => {
-    vi.mocked(findUp).mockReset();
-    vi.mocked(preferredPM).mockReset();
+    vi.mocked(getNpmPackageContext).mockReset();
     getPluginPackageContext.mockReset();
     setPluginPackageContext.mockClear();
   });
 
-  it("should return the existing context", async () => {
-    getPluginPackageContext.mockReturnValue(context);
-
-    await expect(
-      ensureNpmPackageContext(
-        {
-          repositoryRoot,
-          package: pkg,
-          getPluginPackageContext,
-          setPluginPackageContext,
-        } as unknown as VerifyConditionsContext &
-          Pick<VerifyReleaseContext, "package">,
-        { name: "pkg" } as NormalizedPackageJson,
-        {},
-      ),
-    ).resolves.toEqual(context);
-    expect(getPluginPackageContext).toHaveBeenCalledTimes(1);
-    expect(setPluginPackageContext).not.toHaveBeenCalled();
-    expect(preferredPM).not.toHaveBeenCalled();
+  it("should throw error if the package context is not found", async () => {
+    await expect(ensureNpmPackageContext(context, {})).rejects.toThrow(
+      UnsupportedNpmPackageManagerError,
+    );
   });
 
-  it("should create a new context with yarn", async () => {
-    vi.mocked(preferredPM).mockResolvedValue({ name: "yarn", version: "1" });
-    getPluginPackageContext.mockReturnValue(null);
+  it("should return the existing package context", async () => {
+    getPluginPackageContext.mockReturnValue(pkgContext);
 
-    await expect(
-      ensureNpmPackageContext(
-        {
-          repositoryRoot,
-          package: pkg,
-          getPluginPackageContext,
-          setPluginPackageContext,
-        } as unknown as VerifyConditionsContext &
-          Pick<VerifyReleaseContext, "package">,
-        { name: "pkg" } as NormalizedPackageJson,
-        {},
-      ),
-    ).resolves.toEqual({
-      pm: { name: "yarn", version: "1" },
-      cwd: pkg.path,
-      registry,
+    await expect(ensureNpmPackageContext(context, {})).resolves.toEqual({
+      ...pkgContext,
+      verified: true,
     });
-    expect(vi.mocked(findUp)).toHaveBeenCalledTimes(2);
-    expect(getPluginPackageContext).toHaveBeenCalledTimes(1);
-    expect(setPluginPackageContext).toHaveBeenCalledTimes(1);
-    expect(preferredPM).toHaveBeenCalledTimes(1);
-    expect(preferredPM).toHaveBeenCalledWith(pkg.path);
+    expect(setPluginPackageContext).toHaveBeenNthCalledWith(1, {
+      ...pkgContext,
+      verified: true,
+    });
   });
 
-  it("should create a new context with other pm", async () => {
-    getPluginPackageContext.mockReturnValue(null);
-    vi.mocked(findUp).mockResolvedValue(`${pkg.path}/.npmrc`);
+  it("should return new package context", async () => {
+    vi.mocked(getNpmPackageContext).mockResolvedValue(pkgContext);
 
-    await expect(
-      ensureNpmPackageContext(
-        {
-          repositoryRoot,
-          package: { ...pkg, name: "@scope/pkg" },
-          getPluginPackageContext,
-          setPluginPackageContext,
-        } as unknown as VerifyConditionsContext &
-          Pick<VerifyReleaseContext, "package">,
-        { name: "@scope/pkg" } as NormalizedPackageJson,
-        { skipPublishing: true },
-      ),
-    ).resolves.toEqual({
-      pm: undefined,
-      cwd: pkg.path,
-      scope: "@scope",
-      registry,
+    await expect(ensureNpmPackageContext(context, {})).resolves.toEqual({
+      ...pkgContext,
+      verified: true,
     });
-    expect(vi.mocked(findUp)).toHaveBeenCalledTimes(1);
-    expect(getPluginPackageContext).toHaveBeenCalledTimes(1);
-    expect(setPluginPackageContext).toHaveBeenCalledTimes(1);
-    expect(preferredPM).toHaveBeenCalledTimes(1);
-    expect(preferredPM).toHaveBeenCalledWith(pkg.path);
+    expect(setPluginPackageContext).toHaveBeenNthCalledWith(1, {
+      ...pkgContext,
+      verified: true,
+    });
   });
 });

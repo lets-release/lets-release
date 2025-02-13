@@ -63,6 +63,7 @@ describe("verifyConditions", () => {
       private: true,
     };
     await outputJson(path.resolve(cwd, "package.json"), pkg);
+    await $({ cwd })`npm install`;
 
     let pkgContext: NpmPackageContext;
 
@@ -100,6 +101,7 @@ describe("verifyConditions", () => {
       publishConfig: { registry },
     };
     await outputJson(path.resolve(cwd, "package.json"), pkg);
+    await $({ cwd })`npm install`;
 
     let pkgContext: NpmPackageContext;
 
@@ -171,8 +173,11 @@ describe("verifyConditions", () => {
 
     let pkgContext: NpmPackageContext;
 
-    const getPluginPackageContext = () => pkgContext;
-    const setPluginPackageContext = (context: NpmPackageContext) => {
+    const getPluginPackageContext = (_pkgName: string) => pkgContext;
+    const setPluginPackageContext = (
+      _pkgName: string,
+      context: NpmPackageContext,
+    ) => {
       pkgContext = context;
     };
 
@@ -235,8 +240,11 @@ describe("verifyConditions", () => {
 
     let pkgContext: NpmPackageContext;
 
-    const getPluginPackageContext = () => pkgContext;
-    const setPluginPackageContext = (context: NpmPackageContext) => {
+    const getPluginPackageContext = (_pkgName: string) => pkgContext;
+    const setPluginPackageContext = (
+      _pkgName: string,
+      context: NpmPackageContext,
+    ) => {
       pkgContext = context;
     };
 
@@ -298,8 +306,11 @@ describe("verifyConditions", () => {
 
     let pkgContext: NpmPackageContext;
 
-    const getPluginPackageContext = () => pkgContext;
-    const setPluginPackageContext = (context: NpmPackageContext) => {
+    const getPluginPackageContext = (_pkgName: string) => pkgContext;
+    const setPluginPackageContext = (
+      _pkgName: string,
+      context: NpmPackageContext,
+    ) => {
       pkgContext = context;
     };
 

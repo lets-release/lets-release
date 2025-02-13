@@ -23,7 +23,7 @@ export async function preparePackage(
     nextRelease: { version },
     setPluginPackageContext,
   }: PrepareContext,
-  { pm, cwd, registry }: NpmPackageContext,
+  { pm, registry, ...rest }: NpmPackageContext,
   { tarballDir }: NpmOptions,
 ) {
   logger.log({
@@ -38,7 +38,7 @@ export async function preparePackage(
 
   let versionPromise: ResultPromise<typeof options>;
 
-  switch (pm?.name) {
+  switch (pm.name) {
     case "pnpm": {
       versionPromise = $({
         ...options,
@@ -77,7 +77,7 @@ export async function preparePackage(
 
     let promise: ResultPromise<typeof options>;
 
-    switch (pm?.name) {
+    switch (pm.name) {
       case "pnpm": {
         // FIXME: https://github.com/pnpm/pnpm/issues/4351
         promise = $({
@@ -90,7 +90,7 @@ export async function preparePackage(
       case "yarn": {
         promise = $({
           ...options,
-          cwd,
+          cwd: pm.root,
         })`yarn workspace ${name} pack --out ${path.resolve(pkgRoot, "%s-%v.tgz")} --json`;
         break;
       }
@@ -98,7 +98,7 @@ export async function preparePackage(
       default: {
         promise = $({
           ...options,
-          cwd,
+          cwd: pm.root,
         })`npm pack ${pkgRoot} --pack-destination ${pkgRoot} --json`;
         break;
       }
@@ -111,7 +111,7 @@ export async function preparePackage(
 
     let tgz: string;
 
-    switch (pm?.name) {
+    switch (pm.name) {
       case "pnpm": {
         tgz = result.stdout
           .trim()
@@ -157,8 +157,8 @@ export async function preparePackage(
   }
 
   setPluginPackageContext<NpmPackageContext>({
+    ...rest,
     pm,
-    cwd,
     registry,
     prepared: true,
   });

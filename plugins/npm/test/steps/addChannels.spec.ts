@@ -44,6 +44,7 @@ describe("addChannels", () => {
       publishConfig: { registry },
     };
     await outputJson(path.resolve(cwd, "package.json"), pkg);
+    await $({ cwd })`npm install`;
 
     let pkgContext: NpmPackageContext;
 
@@ -111,6 +112,7 @@ describe("addChannels", () => {
       private: true,
     };
     await outputJson(path.resolve(cwd, "package.json"), pkg);
+    await $({ cwd })`npm install`;
 
     let pkgContext: NpmPackageContext;
 

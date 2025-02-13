@@ -1,14 +1,14 @@
-import { NormalizedPackageJson } from "read-pkg";
-
 import { VerifyConditionsContext } from "@lets-release/config";
 
-import { getPackage } from "src/helpers/getPackage";
+import { ensureNpmPackageContext } from "src/helpers/ensureNpmPackageContext";
 import { verifyConditions } from "src/steps/verifyConditions";
+import { NpmPackageContext } from "src/types/NpmPackageContext";
 
 vi.mock("src/helpers/ensureNpmPackageContext");
-vi.mock("src/helpers/getPackage");
 
 const options = { skipPublishing: false };
+const getPluginPackageContext = vi.fn();
+const setPluginPackageContext = vi.fn();
 const context = {
   packages: [
     {
@@ -20,23 +20,32 @@ const context = {
       name: "b",
     },
   ],
-} as VerifyConditionsContext;
+  getPluginPackageContext,
+  setPluginPackageContext,
+} as unknown as VerifyConditionsContext;
 
-vi.mocked(getPackage).mockImplementation(async (path) => {
-  if (path === "/root/a") {
-    return { private: false } as NormalizedPackageJson;
-  }
+vi.mocked(ensureNpmPackageContext).mockImplementation(
+  async ({ getPluginPackageContext, setPluginPackageContext }) => {
+    getPluginPackageContext();
+    setPluginPackageContext({});
 
-  return { private: true } as NormalizedPackageJson;
-});
+    return {} as NpmPackageContext;
+  },
+);
 
 describe("verifyConditions", async () => {
   beforeEach(() => {
-    vi.mocked(getPackage).mockClear();
+    getPluginPackageContext.mockClear();
+    setPluginPackageContext.mockClear();
   });
 
   it("should verify conditions", async () => {
     await expect(verifyConditions(context, options)).resolves.toBe(undefined);
-    expect(getPackage).toHaveBeenCalledTimes(2);
+    expect(getPluginPackageContext).toHaveBeenCalledTimes(2);
+    expect(getPluginPackageContext).toHaveBeenNthCalledWith(1, "a");
+    expect(getPluginPackageContext).toHaveBeenNthCalledWith(2, "b");
+    expect(setPluginPackageContext).toHaveBeenCalledTimes(2);
+    expect(setPluginPackageContext).toHaveBeenNthCalledWith(1, "a", {});
+    expect(setPluginPackageContext).toHaveBeenNthCalledWith(2, "b", {});
   });
 });

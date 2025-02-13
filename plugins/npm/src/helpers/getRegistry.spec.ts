@@ -1,5 +1,4 @@
 import { $ } from "execa";
-import { NormalizedPackageJson } from "read-pkg";
 
 import { VerifyConditionsContext } from "@lets-release/config";
 
@@ -32,8 +31,10 @@ describe("getRegistry", () => {
     await expect(
       getRegistry(
         {} as VerifyConditionsContext,
-        { publishConfig: { registry } } as NormalizedPackageJson,
-        { cwd } as NpmPackageContext,
+        {
+          pm: { root: cwd },
+          pkg: { publishConfig: { registry } },
+        } as NpmPackageContext,
       ),
     ).resolves.toBe(registry);
     expect(vi.mocked($)).not.toHaveBeenCalled();
@@ -43,8 +44,10 @@ describe("getRegistry", () => {
     await expect(
       getRegistry(
         {} as VerifyConditionsContext,
-        { name } as NormalizedPackageJson,
-        { pm: { name: "pnpm", version: "9.0.0" }, cwd } as NpmPackageContext,
+        {
+          pm: { name: "pnpm", version: "9.0.0", root: cwd },
+          pkg: { name },
+        } as NpmPackageContext,
       ),
     ).resolves.toBe(DEFAULT_NPM_REGISTRY);
     expect(vi.mocked($)).toHaveBeenCalledTimes(1);
@@ -54,10 +57,9 @@ describe("getRegistry", () => {
     await expect(
       getRegistry(
         {} as VerifyConditionsContext,
-        { name } as NormalizedPackageJson,
         {
-          pm: { name: "pnpm", version: "9.0.0" },
-          cwd,
+          pm: { name: "pnpm", version: "9.0.0", root: cwd },
+          pkg: { name },
           scope: "@scope",
         } as NpmPackageContext,
       ),
@@ -69,10 +71,9 @@ describe("getRegistry", () => {
     await expect(
       getRegistry(
         {} as VerifyConditionsContext,
-        { name } as NormalizedPackageJson,
         {
-          pm: { name: "yarn", version: "4.0.0" },
-          cwd,
+          pm: { name: "yarn", version: "4.0.0", root: cwd },
+          pkg: { name },
         } as NpmPackageContext,
       ),
     ).resolves.toBe(DEFAULT_NPM_REGISTRY);
@@ -83,10 +84,9 @@ describe("getRegistry", () => {
     await expect(
       getRegistry(
         {} as VerifyConditionsContext,
-        { name } as NormalizedPackageJson,
         {
-          pm: { name: "yarn", version: "4.0.0" },
-          cwd,
+          pm: { name: "yarn", version: "4.0.0", root: cwd },
+          pkg: { name },
           scope: "@scope",
         } as NpmPackageContext,
       ),
@@ -98,8 +98,10 @@ describe("getRegistry", () => {
     await expect(
       getRegistry(
         {} as VerifyConditionsContext,
-        { name } as NormalizedPackageJson,
-        { cwd } as NpmPackageContext,
+        {
+          pm: { root: cwd },
+          pkg: { name },
+        } as NpmPackageContext,
       ),
     ).resolves.toBe(DEFAULT_NPM_REGISTRY);
     expect(vi.mocked($)).toHaveBeenCalledTimes(1);
@@ -109,8 +111,11 @@ describe("getRegistry", () => {
     await expect(
       getRegistry(
         {} as VerifyConditionsContext,
-        { name } as NormalizedPackageJson,
-        { cwd, scope: "@scope" } as NpmPackageContext,
+        {
+          pm: { root: cwd },
+          pkg: { name },
+          scope: "@scope",
+        } as NpmPackageContext,
       ),
     ).resolves.toBe(DEFAULT_NPM_REGISTRY);
     expect(vi.mocked($)).toHaveBeenCalledTimes(2);

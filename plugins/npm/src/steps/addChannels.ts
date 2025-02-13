@@ -20,7 +20,7 @@ export const addChannels: StepFunction<Step.addChannels, NpmOptions> = async (
   const pkg = await getPackage(path);
 
   if (!skipPublishing && !pkg.private) {
-    const pkgContext = await ensureNpmPackageContext(context, pkg, {
+    const pkgContext = await ensureNpmPackageContext(context, {
       skipPublishing,
     });
     const distTags = channelsToDistTags(channels);

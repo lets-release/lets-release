@@ -22,10 +22,10 @@ describe("getDistTagVersion", () => {
 
   it("should get the version of the dist tag with pnpm", async () => {
     const pkgContext = {
-      cwd,
       registry,
       pm: {
         name: "pnpm",
+        root: cwd,
       },
     } as NpmPackageContext;
     const exec = vi.fn().mockResolvedValue({
@@ -50,10 +50,10 @@ describe("getDistTagVersion", () => {
 
   it("should get the version of the dist tag with yarn", async () => {
     const pkgContext = {
-      cwd,
       registry,
       pm: {
         name: "yarn",
+        root: cwd,
       },
     } as NpmPackageContext;
     const exec = vi.fn().mockResolvedValue({
@@ -82,8 +82,11 @@ describe("getDistTagVersion", () => {
 
   it("should get the version of the dist tag with npm", async () => {
     const pkgContext = {
-      cwd,
       registry,
+      pm: {
+        name: "npm",
+        root: cwd,
+      },
     } as NpmPackageContext;
     const exec = vi.fn().mockResolvedValue({
       stdout: ["latest: 1.0.0", "next: 1.1.0", "next-major: 2.0.0"],

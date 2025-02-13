@@ -5,7 +5,7 @@ import { glob } from "glob";
 
 import { PackageInfo, Step, StepFunction } from "@lets-release/config";
 
-import { getPackage } from "src/helpers/getPackage";
+import { getNpmPackageContext } from "src/helpers/getNpmPackageContext";
 import { NpmOptions } from "src/schemas/NpmOptions";
 
 export const findPackages: StepFunction<Step.findPackages, NpmOptions> = async (
@@ -18,6 +18,7 @@ export const findPackages: StepFunction<Step.findPackages, NpmOptions> = async (
     logger,
     repositoryRoot,
     packageOptions: { paths },
+    setPluginPackageContext,
   } = context;
 
   const pkgs: PackageInfo[] = [];
@@ -27,16 +28,29 @@ export const findPackages: StepFunction<Step.findPackages, NpmOptions> = async (
     const pkgRoot = path.resolve(repositoryRoot, folder);
 
     try {
-      const { name } = await getPackage(pkgRoot);
+      const pkgContext = await getNpmPackageContext({
+        ...context,
+        package: { path: pkgRoot },
+      });
+
+      if (!pkgContext) {
+        logger.warn(
+          `Skipping package at ${pkgRoot}: Unsupported npm package manager`,
+        );
+
+        continue;
+      }
 
       logger.info(
-        `Found package ${name} at ./${path.relative(repositoryRoot, pkgRoot)}`,
+        `Found package ${pkgContext.pkg.name} at ./${path.relative(repositoryRoot, pkgRoot)}`,
       );
 
       pkgs.push({
+        name: pkgContext.pkg.name,
         path: pkgRoot,
-        name,
       });
+
+      setPluginPackageContext(pkgContext.pkg.name, pkgContext);
     } catch (error) {
       logger.warn(
         `Skipping package at ${pkgRoot}: ${inspect(error, { breakLength: Infinity, depth: 2, maxArrayLength: 5 })}`,

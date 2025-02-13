@@ -50,7 +50,7 @@ describe("preparePackage", () => {
           package: { path: "/root/a" },
           nextRelease: {},
         } as unknown as PrepareContext,
-        { cwd } as NpmPackageContext,
+        { pm: { name: "npm", root: cwd } } as NpmPackageContext,
         {},
       ),
     ).resolves.toBe(undefined);
@@ -77,8 +77,8 @@ describe("preparePackage", () => {
           pm: {
             name: "pnpm",
             version: "1",
+            root: cwd,
           },
-          cwd,
         } as NpmPackageContext,
         { tarballDir: "b" },
       ),
@@ -113,8 +113,8 @@ describe("preparePackage", () => {
           pm: {
             name: "yarn",
             version: "1",
+            root: cwd,
           },
-          cwd,
         } as NpmPackageContext,
         { tarballDir: "b" },
       ),
@@ -157,7 +157,7 @@ describe("preparePackage", () => {
           nextRelease: {},
         } as unknown as PrepareContext,
         {
-          cwd,
+          pm: { name: "npm", root: cwd },
         } as NpmPackageContext,
         { tarballDir: "b" },
       ),

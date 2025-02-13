@@ -1,9 +1,12 @@
-import { PackageManager } from "src/types/PackageManager";
+import { NormalizedPackageJson } from "read-pkg";
+
+import { NpmPackageManager } from "src/types/NpmPackageManager";
 
 export interface NpmPackageContext {
-  pm?: PackageManager;
-  cwd: string;
+  pm: NpmPackageManager;
+  pkg: NormalizedPackageJson;
   scope?: string;
   registry: string;
+  verified?: boolean;
   prepared?: boolean;
 }

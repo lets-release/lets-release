@@ -10,6 +10,7 @@ import { getPackage } from "src/helpers/getPackage";
 import { isVersionPublished } from "src/helpers/isVersionPublished";
 import { preparePackage } from "src/helpers/preparePackage";
 import { publish } from "src/steps/publish";
+import { NpmPackageContext } from "src/types/NpmPackageContext";
 
 vi.mock("execa");
 vi.mock("src/helpers/addChannel");
@@ -51,7 +52,10 @@ describe("publish", () => {
     vi.mocked(addChannel).mockClear();
     vi.mocked(ensureNpmPackageContext)
       .mockReset()
-      .mockResolvedValue({ cwd: "cwd", registry });
+      .mockResolvedValue({
+        pm: { name: "npm", version: "*", root: "cwd" },
+        registry,
+      } as NpmPackageContext);
     vi.mocked(getPackage).mockReset();
     vi.mocked(getArtifactInfo).mockClear();
     vi.mocked(isVersionPublished).mockReset();
@@ -114,10 +118,10 @@ describe("publish", () => {
       pm: {
         name: "pnpm",
         version: "1",
+        root: "cwd",
       },
-      cwd: "cwd",
       registry,
-    });
+    } as NpmPackageContext);
     vi.mocked(getPackage).mockResolvedValue({} as NormalizedPackageJson);
 
     await expect(
@@ -139,10 +143,10 @@ describe("publish", () => {
       pm: {
         name: "yarn",
         version: "1",
+        root: "cwd",
       },
-      cwd: "cwd",
       registry,
-    });
+    } as NpmPackageContext);
     vi.mocked(getPackage).mockResolvedValue({} as NormalizedPackageJson);
 
     await expect(
@@ -161,9 +165,13 @@ describe("publish", () => {
 
   it("should publish package with npm", async () => {
     vi.mocked(ensureNpmPackageContext).mockResolvedValue({
-      cwd: "cwd",
+      pm: {
+        name: "npm",
+        version: "1",
+        root: "cwd",
+      },
       registry,
-    });
+    } as NpmPackageContext);
     vi.mocked(getPackage).mockResolvedValue({} as NormalizedPackageJson);
 
     await expect(

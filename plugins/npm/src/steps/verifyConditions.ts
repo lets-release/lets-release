@@ -1,7 +1,6 @@
 import { Step, StepFunction } from "@lets-release/config";
 
 import { ensureNpmPackageContext } from "src/helpers/ensureNpmPackageContext";
-import { getPackage } from "src/helpers/getPackage";
 import { NpmOptions } from "src/schemas/NpmOptions";
 
 export const verifyConditions: StepFunction<
@@ -16,8 +15,14 @@ export const verifyConditions: StepFunction<
 
     for (const pkg of packages) {
       await ensureNpmPackageContext(
-        { ...context, package: pkg },
-        await getPackage(pkg.path),
+        {
+          ...context,
+          package: pkg,
+          getPluginPackageContext: () =>
+            context.getPluginPackageContext(pkg.name),
+          setPluginPackageContext: (pkgContext) =>
+            context.setPluginPackageContext(pkg.name, pkgContext),
+        },
         parsedOptions,
       );
     }

@@ -210,6 +210,7 @@ describe("prepare", () => {
         name: "prepare-npm",
         version: "0.0.0-dev",
         publishConfig: { registry },
+        workspaces: ["packages/*"],
         path: cwd,
       },
       {

@@ -6,11 +6,11 @@ import { NeedAuthError } from "src/errors/NeedAuthError";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
 
 export async function verifyAuth(
-  { env }: VerifyConditionsContext,
-  { pm, cwd, scope, registry }: NpmPackageContext,
+  { env }: Pick<VerifyConditionsContext, "env">,
+  { pm, scope, registry }: NpmPackageContext,
 ) {
   const options = {
-    cwd,
+    cwd: pm.root,
     env,
     preferLocal: true as const,
   };

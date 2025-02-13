@@ -25,7 +25,7 @@ export const publish: StepFunction<Step.publish, NpmOptions> = async (
     nextRelease: { version, channels },
   } = context;
   const pkg = await getPackage(pkgRoot);
-  const pkgContext = await ensureNpmPackageContext(context, pkg, {
+  const pkgContext = await ensureNpmPackageContext(context, {
     skipPublishing,
   });
 
@@ -34,7 +34,7 @@ export const publish: StepFunction<Step.publish, NpmOptions> = async (
   }
 
   if (!skipPublishing && !pkg.private) {
-    const { pm, cwd, registry } = pkgContext;
+    const { pm, registry } = pkgContext;
     const distTags = channelsToDistTags(channels);
     const isPublish = await isVersionPublished(context, pkgContext);
 
@@ -53,14 +53,14 @@ export const publish: StepFunction<Step.publish, NpmOptions> = async (
       });
 
       const execaOptions = {
-        cwd,
+        cwd: pm.root,
         env,
         preferLocal: true as const,
       };
 
       let result: ResultPromise<typeof execaOptions>;
 
-      switch (pm?.name) {
+      switch (pm.name) {
         case "pnpm": {
           result = $(execaOptions)`pnpm publish ${pkgRoot} --tag ${tag}`;
           break;

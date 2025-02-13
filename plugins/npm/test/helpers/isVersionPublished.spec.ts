@@ -105,7 +105,7 @@ describe("isVersionPublished", () => {
             package: pkg,
             nextRelease: { version: "1.0.0" },
           } as unknown as VerifyReleaseContext,
-          { pm: { name: "pnpm" }, cwd, registry } as NpmPackageContext,
+          { pm: { name: "pnpm", root: cwd }, registry } as NpmPackageContext,
         ),
       ).resolves.toBe(true);
     });
@@ -117,7 +117,7 @@ describe("isVersionPublished", () => {
             package: pkg,
             nextRelease: { version: "2.0.0" },
           } as unknown as VerifyReleaseContext,
-          { pm: { name: "pnpm" }, cwd, registry } as NpmPackageContext,
+          { pm: { name: "pnpm", root: cwd }, registry } as NpmPackageContext,
         ),
       ).resolves.toBe(false);
     });
@@ -151,7 +151,7 @@ describe("isVersionPublished", () => {
             package: pkg,
             nextRelease: { version: "1.0.0" },
           } as unknown as VerifyReleaseContext,
-          { pm: { name: "yarn" }, cwd, registry } as NpmPackageContext,
+          { pm: { name: "yarn", root: cwd }, registry } as NpmPackageContext,
         ),
       ).resolves.toBe(true);
     });
@@ -163,7 +163,7 @@ describe("isVersionPublished", () => {
             package: pkg,
             nextRelease: { version: "2.0.0" },
           } as unknown as VerifyReleaseContext,
-          { pm: { name: "yarn" }, cwd, registry } as NpmPackageContext,
+          { pm: { name: "yarn", root: cwd }, registry } as NpmPackageContext,
         ),
       ).resolves.toBe(false);
     });
@@ -196,7 +196,7 @@ describe("isVersionPublished", () => {
             package: pkg,
             nextRelease: { version: "1.0.0" },
           } as unknown as VerifyReleaseContext,
-          { pm: { name: "npm" }, cwd, registry } as NpmPackageContext,
+          { pm: { name: "npm", root: cwd }, registry } as NpmPackageContext,
         ),
       ).resolves.toBe(true);
     });
@@ -208,7 +208,7 @@ describe("isVersionPublished", () => {
             package: pkg,
             nextRelease: { version: "2.0.0" },
           } as unknown as VerifyReleaseContext,
-          { pm: { name: "npm" }, cwd, registry } as NpmPackageContext,
+          { pm: { name: "npm", root: cwd }, registry } as NpmPackageContext,
         ),
       ).resolves.toBe(false);
     });

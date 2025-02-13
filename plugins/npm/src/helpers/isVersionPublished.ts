@@ -18,16 +18,16 @@ const isPublished = async (
 
 export async function isVersionPublished(
   { env, package: { name }, nextRelease: { version } }: VerifyReleaseContext,
-  { pm, cwd, registry }: NpmPackageContext,
+  { pm, registry }: NpmPackageContext,
 ) {
   const options = {
-    cwd,
+    cwd: pm.root,
     env,
     preferLocal: true,
     reject: false,
   };
 
-  switch (pm?.name) {
+  switch (pm.name) {
     case "pnpm": {
       return isPublished(
         $(options)`pnpm view ${`${name}@${version}`} --registry ${registry}`,

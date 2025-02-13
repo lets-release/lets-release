@@ -37,6 +37,7 @@ describe("publish", () => {
       publishConfig: { registry },
     };
     await outputJson(path.resolve(cwd, "package.json"), pkg);
+    await $({ cwd })`npm install`;
 
     let pkgContext: NpmPackageContext;
 
@@ -92,6 +93,7 @@ describe("publish", () => {
       private: true,
     };
     await outputJson(path.resolve(cwd, "package.json"), pkg);
+    await $({ cwd })`npm install`;
 
     let pkgContext: NpmPackageContext;
 
@@ -151,6 +153,7 @@ describe("publish", () => {
       publishConfig: { registry },
     };
     await outputJson(path.resolve(cwd, "package.json"), pkg);
+    await $({ cwd })`npm install`;
 
     let pkgContext: NpmPackageContext;
 
