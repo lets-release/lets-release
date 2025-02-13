@@ -99,18 +99,27 @@ export async function normalizePluginStep<T extends Step = Step>(
           normalizedContext.getPluginContext<T>(pluginName),
         setPluginContext: <T>(value: T) =>
           normalizedContext.setPluginContext<T>(pluginName, value),
-        getPluginPackageContext: <T>() =>
-          (pkg
-            ? normalizedContext.getPluginPackageContext<T>(pluginName, pkg.name)
-            : undefined) as T,
-        setPluginPackageContext: <T>(value: T) =>
-          pkg
-            ? normalizedContext.setPluginPackageContext(
+        getPluginPackageContext: pkg
+          ? <T>() =>
+              normalizedContext.getPluginPackageContext<T>(pluginName, pkg.name)
+          : <T>(packageName: string) =>
+              normalizedContext.getPluginPackageContext<T>(
+                pluginName,
+                packageName,
+              ),
+        setPluginPackageContext: pkg
+          ? <T>(value: T) =>
+              normalizedContext.setPluginPackageContext(
                 pluginName,
                 pkg.name,
                 value,
               )
-            : undefined,
+          : <T>(packageName: string, value: T) =>
+              normalizedContext.setPluginPackageContext(
+                pluginName,
+                packageName,
+                value,
+              ),
       } as unknown as StepContext<T>;
 
       if (context.options.dryRun && !dryRunnable) {

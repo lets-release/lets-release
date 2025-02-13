@@ -19,4 +19,17 @@ export interface FindPackagesContext extends BaseContext {
    * Plugin context setter.
    */
   setPluginContext: <T>(pluginContext: T) => void;
+
+  /**
+   * Plugin package context getter.
+   */
+  getPluginPackageContext: <T>(packageName: string) => T | undefined;
+
+  /**
+   * Plugin package context setter.
+   */
+  setPluginPackageContext: <T>(
+    packageName: string,
+    pluginPackageContext: T,
+  ) => void;
 }

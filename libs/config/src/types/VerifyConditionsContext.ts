@@ -30,14 +30,4 @@ export interface VerifyConditionsContext extends FindPackagesContext {
     | NextMajorBranch
     | MaintenanceBranch
     | PrereleaseBranch;
-
-  /**
-   * Plugin package context getter.
-   */
-  getPluginPackageContext: <T>() => T | undefined;
-
-  /**
-   * Plugin package context setter.
-   */
-  setPluginPackageContext: <T>(pluginPackageContext: T) => void;
 }

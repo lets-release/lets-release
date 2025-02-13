@@ -21,4 +21,14 @@ export interface AnalyzeCommitsContext extends VerifyConditionsContext {
    * Last release.
    */
   lastRelease?: HistoricalRelease;
+
+  /**
+   * Plugin package context getter.
+   */
+  getPluginPackageContext: <T>() => T | undefined;
+
+  /**
+   * Plugin package context setter.
+   */
+  setPluginPackageContext: <T>(pluginPackageContext: T) => void;
 }
