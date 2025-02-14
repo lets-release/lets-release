@@ -1,6 +1,6 @@
 import { $, ResultPromise } from "execa";
 
-import { VerifyConditionsContext } from "@lets-release/config";
+import { FindPackagesContext } from "@lets-release/config";
 
 import { DEFAULT_NPM_REGISTRY } from "src/constants/DEFAULT_NPM_REGISTRY";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
@@ -20,7 +20,7 @@ const getConfig = async (
 };
 
 export async function getRegistry(
-  { env }: Pick<VerifyConditionsContext, "env">,
+  { env }: Pick<FindPackagesContext, "env">,
   {
     pm,
     pkg: { publishConfig: { registry } = { registry: undefined } },
