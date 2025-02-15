@@ -7,6 +7,7 @@ export default mergeConfig(
   config,
   defineConfig({
     test: {
+      name: "changelog.e2e",
       include: ["test/**/*.spec.ts"],
     },
   }),

@@ -7,6 +7,7 @@ export default mergeConfig(
   config,
   defineConfig({
     test: {
+      name: "testing.e2e",
       testTimeout: 120_000,
       include: ["test/**/*.spec.ts"],
     },

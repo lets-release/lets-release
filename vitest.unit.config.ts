@@ -6,6 +6,7 @@ export default mergeConfig(
   viteConfig,
   defineConfig({
     test: {
+      name: "unit",
       include: ["src/**/*.spec.ts"],
     },
   }),

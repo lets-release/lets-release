@@ -7,6 +7,7 @@ export default mergeConfig(
   config,
   defineConfig({
     test: {
+      name: "github.unit",
       exclude: ["src/queries/*.ts"],
     },
   }),
