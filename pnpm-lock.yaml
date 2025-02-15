@@ -148,8 +148,8 @@ importers:
         specifier: ^10.0.1
         version: 10.0.1(eslint@9.20.1(jiti@2.4.2))
       eslint-import-resolver-typescript:
-        specifier: ^3.8.0
-        version: 3.8.0(eslint-plugin-import-x@4.6.1(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3))(eslint@9.20.1(jiti@2.4.2))
+        specifier: ^3.7.0
+        version: 3.7.0(eslint-plugin-import-x@4.6.1(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3))(eslint@9.20.1(jiti@2.4.2))
       eslint-plugin-import-x:
         specifier: ^4.6.1
         version: 4.6.1(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3)
@@ -420,25 +420,25 @@ importers:
         specifier: ^8.0.0
         version: 8.0.0
       conventional-changelog-atom:
-        specifier: 5.0.0
+        specifier: ^5.0.0
         version: 5.0.0
       conventional-changelog-conventionalcommits:
         specifier: ^8.0.0
         version: 8.0.0
       conventional-changelog-ember:
-        specifier: 5.0.0
+        specifier: ^5.0.0
         version: 5.0.0
       conventional-changelog-eslint:
-        specifier: 6.0.0
+        specifier: ^6.0.0
         version: 6.0.0
       conventional-changelog-express:
-        specifier: 5.0.0
+        specifier: ^5.0.0
         version: 5.0.0
       conventional-changelog-jquery:
-        specifier: 6.0.0
+        specifier: ^6.0.0
         version: 6.0.0
       conventional-changelog-jshint:
-        specifier: 5.0.0
+        specifier: ^5.0.0
         version: 5.0.0
 
   plugins/exec:
@@ -610,25 +610,25 @@ importers:
         specifier: ^8.0.0
         version: 8.0.0
       conventional-changelog-atom:
-        specifier: 5.0.0
+        specifier: ^5.0.0
         version: 5.0.0
       conventional-changelog-conventionalcommits:
-        specifier: 8.0.0
+        specifier: ^8.0.0
         version: 8.0.0
       conventional-changelog-ember:
-        specifier: 5.0.0
+        specifier: ^5.0.0
         version: 5.0.0
       conventional-changelog-eslint:
-        specifier: 6.0.0
+        specifier: ^6.0.0
         version: 6.0.0
       conventional-changelog-express:
-        specifier: 5.0.0
+        specifier: ^5.0.0
         version: 5.0.0
       conventional-changelog-jquery:
-        specifier: 6.0.0
+        specifier: ^6.0.0
         version: 6.0.0
       conventional-changelog-jshint:
-        specifier: 5.0.0
+        specifier: ^5.0.0
         version: 5.0.0
       fs-extra:
         specifier: ^11.3.0
@@ -1994,8 +1994,8 @@ packages:
   eslint-import-resolver-node@0.3.9:
     resolution: {integrity: sha512-WFj2isz22JahUv+B788TlO3N6zL3nNJGU8CcZbPZvVEkBPaJdCV4vy5wyghty5ROFbCRnm132v8BScu5/1BQ8g==}
 
-  eslint-import-resolver-typescript@3.8.0:
-    resolution: {integrity: sha512-fItUrP/+xwpavWgadrn6lsvcMe80s08xIVFXkUXvhR4cZD2ga96kRF/z/iFGDI7ZDnvtlaZ0wGic7Tw+DhgVnA==}
+  eslint-import-resolver-typescript@3.7.0:
+    resolution: {integrity: sha512-Vrwyi8HHxY97K5ebydMtffsWAn1SCR9eol49eCd5fJS4O1WV7PaAjbcjmbfJJSMz/t4Mal212Uz/fQZrOB8mow==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       eslint: '*'
@@ -2145,14 +2145,6 @@ packages:
 
   fastq@1.19.0:
     resolution: {integrity: sha512-7SFSRCNjBQIZH/xZR3iy5iQYR8aGBE0h3VG6/cwlbrpdciNYBMotQav8c1XI3HjHH+NikUpP53nPdlZSdWmFzA==}
-
-  fdir@6.4.3:
-    resolution: {integrity: sha512-PMXmW2y1hDDfTSRc9gaXIuCCRpuoz3Kaz8cUelp3smouvfT632ozg2vrT6lJsHKKOF59YLbOGfAWGUcKEfRMQw==}
-    peerDependencies:
-      picomatch: ^3 || ^4
-    peerDependenciesMeta:
-      picomatch:
-        optional: true
 
   figures@2.0.0:
     resolution: {integrity: sha512-Oa2M9atig69ZkfwiApY8F2Yy+tzMbazyvqv21R0NsSC8floSOC09BbT1ITWAdoMGQvJ/aZnR1KMwdx9tvHnTNA==}
@@ -3555,10 +3547,6 @@ packages:
 
   tinyexec@0.3.2:
     resolution: {integrity: sha512-KQQR9yN7R5+OSwaK0XQoj22pwHoTlgYqmUscPYoknOoWCWfj/5/ABTMRi69FrKU5ffPVh5QcFikpWJI/P1ocHA==}
-
-  tinyglobby@0.2.10:
-    resolution: {integrity: sha512-Zc+8eJlFMvgatPZTl6A9L/yht8QqdmUNtURHaKZLmKBE12hNPSrqNkUp2cs3M/UKmNVVAMFQYSjYIVHDjW5zew==}
-    engines: {node: '>=12.0.0'}
 
   tinypool@1.0.2:
     resolution: {integrity: sha512-al6n+QEANGFOMf/dmUMsuS5/r9B06uwlyNjZZql/zv8J7ybHCgoihBNORZCY2mzUuAnomQa2JdhyHKzZxPCrFA==}
@@ -5264,16 +5252,17 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-import-resolver-typescript@3.8.0(eslint-plugin-import-x@4.6.1(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3))(eslint@9.20.1(jiti@2.4.2)):
+  eslint-import-resolver-typescript@3.7.0(eslint-plugin-import-x@4.6.1(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3))(eslint@9.20.1(jiti@2.4.2)):
     dependencies:
       '@nolyfill/is-core-module': 1.0.39
       debug: 4.4.0
       enhanced-resolve: 5.18.1
       eslint: 9.20.1(jiti@2.4.2)
+      fast-glob: 3.3.3
       get-tsconfig: 4.10.0
       is-bun-module: 1.3.0
+      is-glob: 4.0.3
       stable-hash: 0.0.4
-      tinyglobby: 0.2.10
     optionalDependencies:
       eslint-plugin-import-x: 4.6.1(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3)
     transitivePeerDependencies:
@@ -5516,10 +5505,6 @@ snapshots:
   fastq@1.19.0:
     dependencies:
       reusify: 1.0.4
-
-  fdir@6.4.3(picomatch@4.0.2):
-    optionalDependencies:
-      picomatch: 4.0.2
 
   figures@2.0.0:
     dependencies:
@@ -6890,11 +6875,6 @@ snapshots:
   tinybench@2.9.0: {}
 
   tinyexec@0.3.2: {}
-
-  tinyglobby@0.2.10:
-    dependencies:
-      fdir: 6.4.3(picomatch@4.0.2)
-      picomatch: 4.0.2
 
   tinypool@1.0.2: {}
 
