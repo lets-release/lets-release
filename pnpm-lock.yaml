@@ -287,13 +287,13 @@ importers:
         specifier: ^8.0.0
         version: 8.0.0
       conventional-changelog-writer:
-        specifier: ^8.0.0
+        specifier: ^8.0.1
         version: 8.0.1
       conventional-commits-filter:
         specifier: ^5.0.0
         version: 5.0.0
       conventional-commits-parser:
-        specifier: ^6.0.0
+        specifier: ^6.1.0
         version: 6.1.0
       debug:
         specifier: ^4.4.0
@@ -582,7 +582,7 @@ importers:
         specifier: workspace:^
         version: link:../../libs/conventional-changelog
       conventional-changelog-writer:
-        specifier: ^8.0.0
+        specifier: ^8.0.1
         version: 8.0.1
       debug:
         specifier: ^4.4.0

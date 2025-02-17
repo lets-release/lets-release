@@ -31,9 +31,9 @@
   "dependencies": {
     "@lets-release/config": "workspace:^",
     "conventional-changelog-conventionalcommits": "^8.0.0",
-    "conventional-changelog-writer": "^8.0.0",
+    "conventional-changelog-writer": "^8.0.1",
     "conventional-commits-filter": "^5.0.0",
-    "conventional-commits-parser": "^6.0.0",
+    "conventional-commits-parser": "^6.1.0",
     "debug": "^4.4.0",
     "zod": "^3.24.2"
   },
