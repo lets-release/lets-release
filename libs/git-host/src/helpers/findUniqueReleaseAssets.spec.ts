@@ -3,7 +3,7 @@ import { findUniqueReleaseAssets } from "src/helpers/findUniqueReleaseAssets";
 
 vi.mock("src/helpers/findReleaseAssets");
 
-const cwd = "/test/directory";
+const repositoryRoot = "/test/directory";
 const assets = ["asset1.txt", "asset2.txt", { path: "asset3.txt" }];
 const returnedAssets = [{ path: "asset3.txt" }, "asset1.txt", "asset2.txt"];
 
@@ -13,7 +13,7 @@ describe("findUniqueReleaseAssets", () => {
   });
 
   it("should return unique sorted assets", async () => {
-    const result = await findUniqueReleaseAssets({ cwd }, assets);
+    const result = await findUniqueReleaseAssets({ repositoryRoot }, assets);
 
     expect(result).toEqual(returnedAssets);
   });

@@ -8,7 +8,7 @@ import { AssetObject } from "src/schemas/AssetObject";
 vi.mock("globby");
 vi.mock("dir-glob");
 
-const cwd = "/test/directory";
+const repositoryRoot = "/test/directory";
 
 describe("findReleaseAssets", () => {
   beforeEach(() => {
@@ -18,7 +18,7 @@ describe("findReleaseAssets", () => {
 
   it("should skip solo negated pattern", async () => {
     const asset: Asset<AssetObject> = "!**/*.js";
-    const result = await findReleaseAssets({ cwd }, asset);
+    const result = await findReleaseAssets({ repositoryRoot }, asset);
 
     expect(result).toEqual([]);
   });
@@ -27,7 +27,7 @@ describe("findReleaseAssets", () => {
     vi.mocked(globby).mockResolvedValue(["test/file1.js", "test/file2.js"]);
 
     const asset: Asset<AssetObject> = "test/*.js";
-    const result = await findReleaseAssets({ cwd }, asset);
+    const result = await findReleaseAssets({ repositoryRoot }, asset);
 
     expect(result).toEqual(["test/file1.js", "test/file2.js"]);
   });
@@ -36,7 +36,7 @@ describe("findReleaseAssets", () => {
     vi.mocked(globby).mockResolvedValue(["test/file1.js", "test/file2.js"]);
 
     const asset: Asset<AssetObject> = ["test/*.js"];
-    const result = await findReleaseAssets({ cwd }, asset);
+    const result = await findReleaseAssets({ repositoryRoot }, asset);
 
     expect(result).toEqual(["test/file1.js", "test/file2.js"]);
   });
@@ -45,7 +45,7 @@ describe("findReleaseAssets", () => {
     vi.mocked(globby).mockResolvedValue(["test/file1.js"]);
 
     const asset: Asset<AssetObject> = { path: "test/*.js" };
-    const result = await findReleaseAssets({ cwd }, asset);
+    const result = await findReleaseAssets({ repositoryRoot }, asset);
 
     expect(result).toEqual([{ path: "test/file1.js" }]);
   });
@@ -54,7 +54,7 @@ describe("findReleaseAssets", () => {
     vi.mocked(globby).mockResolvedValue(["test/file1.js"]);
 
     const asset: Asset<AssetObject> = { path: ["test/*.js"] };
-    const result = await findReleaseAssets({ cwd }, asset);
+    const result = await findReleaseAssets({ repositoryRoot }, asset);
 
     expect(result).toEqual([{ path: "test/file1.js" }]);
   });
@@ -63,7 +63,7 @@ describe("findReleaseAssets", () => {
     vi.mocked(globby).mockResolvedValue(["test/file1.js", "test/file2.js"]);
 
     const asset: Asset<AssetObject> = { path: "test/*.js" };
-    const result = await findReleaseAssets({ cwd }, asset);
+    const result = await findReleaseAssets({ repositoryRoot }, asset);
 
     expect(result).toEqual([
       { path: "test/file1.js", name: "file1.js" },
@@ -75,7 +75,7 @@ describe("findReleaseAssets", () => {
     vi.mocked(globby).mockResolvedValue([]);
 
     const asset: Asset<AssetObject> = "test/*.js";
-    const result = await findReleaseAssets({ cwd }, asset);
+    const result = await findReleaseAssets({ repositoryRoot }, asset);
 
     expect(result).toEqual(["test/*.js"]);
   });
@@ -84,7 +84,7 @@ describe("findReleaseAssets", () => {
     vi.mocked(globby).mockResolvedValue([]);
 
     const asset: Asset<AssetObject> = ["test/*.js"];
-    const result = await findReleaseAssets({ cwd }, asset);
+    const result = await findReleaseAssets({ repositoryRoot }, asset);
 
     expect(result).toEqual(["test/*.js"]);
   });
@@ -93,7 +93,7 @@ describe("findReleaseAssets", () => {
     vi.mocked(globby).mockResolvedValue([]);
 
     const asset: Asset<AssetObject> = { path: "test/*.js" };
-    const result = await findReleaseAssets({ cwd }, asset);
+    const result = await findReleaseAssets({ repositoryRoot }, asset);
 
     expect(result).toEqual([{ path: "test/*.js" }]);
   });
@@ -102,7 +102,7 @@ describe("findReleaseAssets", () => {
     vi.mocked(globby).mockResolvedValue([]);
 
     const asset: Asset<AssetObject> = { path: ["test/*.js"] };
-    const result = await findReleaseAssets({ cwd }, asset);
+    const result = await findReleaseAssets({ repositoryRoot }, asset);
 
     expect(result).toEqual([{ path: "test/*.js" }]);
   });

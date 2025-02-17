@@ -18,7 +18,7 @@ export async function findReleaseAssets<
   T extends ReleaseAssetObject,
   U extends AssetObject,
 >(
-  { cwd }: Pick<BaseContext, "cwd">,
+  { repositoryRoot }: Pick<BaseContext, "repositoryRoot">,
   asset: Asset<U>,
 ): Promise<ReleaseAsset<T>[]> {
   // Wrap single glob definition in Array
@@ -31,7 +31,7 @@ export async function findReleaseAssets<
         : asset.path;
 
   // FIXME: Temporary workaround for https://github.com/mrmlnc/fast-glob/issues/47
-  glob = uniq([...(await dirGlob(glob, { cwd })), ...glob]);
+  glob = uniq([...(await dirGlob(glob, { cwd: repositoryRoot })), ...glob]);
 
   // Skip solo negated pattern (avoid to include every non js file with `!**/*.js`)
   if (glob.length === 1 && glob[0].startsWith("!")) {
@@ -43,7 +43,7 @@ export async function findReleaseAssets<
   }
 
   const items = await globby(glob, {
-    cwd,
+    cwd: repositoryRoot,
     expandDirectories: false, // FIXME: Temporary workaround for https://github.com/mrmlnc/fast-glob/issues/47
     gitignore: false,
     dot: true,

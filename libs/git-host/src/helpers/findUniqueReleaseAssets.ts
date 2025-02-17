@@ -14,11 +14,13 @@ export async function findUniqueReleaseAssets<
   T extends ReleaseAssetObject,
   U extends AssetObject,
 >(
-  { cwd }: Pick<BaseContext, "cwd">,
+  { repositoryRoot }: Pick<BaseContext, "repositoryRoot">,
   assets: Asset<U>[],
 ): Promise<ReleaseAsset<T>[]> {
   const list = await Promise.all(
-    assets.map(async (asset) => await findReleaseAssets<T, U>({ cwd }, asset)),
+    assets.map(
+      async (asset) => await findReleaseAssets<T, U>({ repositoryRoot }, asset),
+    ),
   );
 
   return uniqWith(
@@ -28,7 +30,7 @@ export async function findUniqueReleaseAssets<
       .sort((asset) => (!isArray(asset) && !isString(asset) ? -1 : 1)),
     // Compare `path` property if Object definition, value itself if String
     (a, b) =>
-      path.resolve(cwd, isString(a) ? a : a.path) ===
-      path.resolve(cwd, isString(b) ? b : b.path),
+      path.resolve(repositoryRoot, isString(a) ? a : a.path) ===
+      path.resolve(repositoryRoot, isString(b) ? b : b.path),
   );
 }
