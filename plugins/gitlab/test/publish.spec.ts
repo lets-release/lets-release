@@ -148,6 +148,7 @@ describe("publish", () => {
         {
           env,
           logger,
+          repositoryRoot: cwd,
           options: { repositoryUrl },
           branch: { type: BranchType.main, main: true, name: "main" },
           package: { name: "pkg" },
@@ -200,6 +201,7 @@ describe("publish", () => {
           cwd,
           env,
           logger,
+          repositoryRoot: cwd,
           options: { repositoryUrl },
           branch: { type: BranchType.main, main: true, name: "main" },
           package: { name: "pkg" },
