@@ -1,7 +1,8 @@
 import path from "node:path";
 import { inspect } from "node:util";
 
-import { glob } from "glob";
+import { globbySync } from "globby";
+import { uniq } from "lodash-es";
 
 import { PackageInfo, Step, StepFunction } from "@lets-release/config";
 
@@ -22,7 +23,17 @@ export const findPackages: StepFunction<Step.findPackages, NpmOptions> = async (
   } = context;
 
   const pkgs: PackageInfo[] = [];
-  const folders = await glob(paths, { cwd: repositoryRoot });
+  const folders = uniq(
+    paths.flatMap((p) =>
+      globbySync(p, {
+        cwd: repositoryRoot,
+        expandDirectories: false, // FIXME: Temporary workaround for https://github.com/mrmlnc/fast-glob/issues/47
+        gitignore: false,
+        dot: true,
+        onlyFiles: false,
+      }),
+    ),
+  );
 
   for (const folder of folders.toSorted()) {
     const pkgRoot = path.resolve(repositoryRoot, folder);

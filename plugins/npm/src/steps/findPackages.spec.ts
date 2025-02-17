@@ -1,6 +1,6 @@
 import path from "node:path";
 
-import { glob } from "glob";
+import { globbySync } from "globby";
 
 import { FindPackagesContext, PackageInfo } from "@lets-release/config";
 
@@ -9,7 +9,7 @@ import { getNpmPackageContext } from "src/helpers/getNpmPackageContext";
 import { findPackages } from "src/steps/findPackages";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
 
-vi.mock("glob");
+vi.mock("globby");
 vi.mock("src/helpers/getNpmPackageContext");
 
 const repositoryRoot = "/root";
@@ -19,11 +19,11 @@ const name = "test";
 const info = vi.fn();
 const warn = vi.fn();
 
-vi.mocked(glob).mockResolvedValue(folders);
+vi.mocked(globbySync).mockReturnValue(folders);
 
 describe("findPackages", () => {
   beforeEach(() => {
-    vi.mocked(glob).mockClear();
+    vi.mocked(globbySync).mockClear();
     vi.mocked(getNpmPackageContext).mockReset();
   });
 
@@ -51,13 +51,13 @@ describe("findPackages", () => {
         {
           logger: { info, warn },
           repositoryRoot,
-          packageOptions: { paths: ["packages/*"] },
+          packageOptions: { paths: ["packages/*", ["apps/*"]] },
           setPluginPackageContext: vi.fn(),
         } as unknown as FindPackagesContext,
         {},
       ),
     ).resolves.toEqual([{ name, path: path.resolve(repositoryRoot, "a") }]);
-    expect(glob).toHaveBeenCalledTimes(1);
+    expect(globbySync).toHaveBeenCalledTimes(2);
     expect(vi.mocked(getNpmPackageContext)).toHaveBeenCalledTimes(3);
     expect(info).toHaveBeenCalledOnce();
     expect(warn).toHaveBeenCalledTimes(2);

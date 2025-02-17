@@ -2,15 +2,16 @@ import { z } from "zod";
 
 import { CalVerOptions, NormalizedCalVerOptions } from "@lets-release/calver";
 import { NormalizedSemVerOptions, SemVerOptions } from "@lets-release/semver";
-import { NonEmptyString, VersioningScheme } from "@lets-release/versioning";
+import { VersioningScheme } from "@lets-release/versioning";
 
 import { Step } from "src/enums/Step";
+import { GlobPattern } from "src/schemas/GlobPattern";
 import { PluginSpec } from "src/schemas/PluginSpec";
 import { PluginStepSpec } from "src/schemas/PluginStepSpec";
 import { PartialRequired } from "src/types/PartialRequired";
 
 export const PackageOptions = z.object({
-  paths: z.array(NonEmptyString).min(1),
+  paths: z.array(GlobPattern).min(1),
   versioning: z.union([SemVerOptions, CalVerOptions]).default(
     SemVerOptions.parse({
       scheme: VersioningScheme.SemVer,
@@ -45,11 +46,11 @@ export interface PackageOptions {
    * any findPackages plugin. Usually, a path is a glob pattern or a glob
    * string relative to the repo root.
    *
-   * For example, this value will be used by [glob][] in @lets-release/npm plugin.
+   * For example, this value will be used by [glob][] in "@lets-release/npm" plugin.
    *
    * [glob]: https://github.com/isaacs/node-glob
    */
-  paths: string[];
+  paths: (string | string[])[];
 
   /**
    * Versioning options.
