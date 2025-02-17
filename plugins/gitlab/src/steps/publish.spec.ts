@@ -22,6 +22,7 @@ const error = vi.fn();
 const tag = "v1.0.0";
 const context = {
   cwd: "/path/to/repo",
+  repositoryRoot: "/path/to/repo",
   nextRelease: { tag, hash: "abc123", notes: "Release notes" },
   logger: { log, warn, error },
   package: { name: "pkg" },

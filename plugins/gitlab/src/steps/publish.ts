@@ -30,7 +30,6 @@ export const publish: StepFunction<Step.publish, GitLabOptions> = async (
   } = gitLabContext;
 
   const {
-    cwd,
     logger,
     package: pkg,
     nextRelease: { tag, hash, notes },
@@ -78,7 +77,7 @@ export const publish: StepFunction<Step.publish, GitLabOptions> = async (
     ResolvedGitLabAssetObjectWithPath,
     PartialRequired<GitLabAssetObject, "path">
   >(
-    { cwd },
+    context,
     assets?.filter(
       (asset): asset is string | string[] | ResolvedGitLabAssetObjectWithPath =>
         isString(asset) || isArray(asset) || !!asset.path,
