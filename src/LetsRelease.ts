@@ -393,22 +393,31 @@ export class LetsRelease {
         const files = assets
           ? await Promise.all(
               assets.map(async (asset) => {
+                // Wrap single glob definition in Array
+                let glob = isArray(asset) ? asset : [asset];
+
+                // FIXME: Temporary workaround for https://github.com/mrmlnc/fast-glob/issues/47
+                glob = uniq([
+                  ...(await dirGlob(glob, { cwd: repositoryRoot })),
+                  ...glob,
+                ]);
+
+                let nonegate = false;
+
                 // Skip solo negated pattern (avoid to include every non js file with `!**/*.js`)
-                if (asset.startsWith("!")) {
+                if (glob.length <= 1 && glob[0].startsWith("!")) {
+                  nonegate = true;
+
                   debug(name)(
-                    `skipping the negated glob ${asset} as its alone in its group and would retrieve a large amount of files`,
+                    `skipping the negated glob ${glob[0]} as its alone in its group and would retrieve a large amount of files`,
                   );
                 }
 
-                return micromatch(
-                  modifiedFiles,
-                  await dirGlob(asset, { cwd: repositoryRoot }),
-                  {
-                    cwd: repositoryRoot,
-                    dot: true,
-                    nonegate: asset.startsWith("!"),
-                  },
-                );
+                return micromatch(modifiedFiles, glob, {
+                  cwd: repositoryRoot,
+                  dot: true,
+                  nonegate,
+                });
               }),
             )
           : [];

@@ -28,6 +28,7 @@ export * from "src/schemas/Channels";
 export * from "src/schemas/CliOptions";
 export * from "src/schemas/FindPackagesResult";
 export * from "src/schemas/GenerateNotesResult";
+export * from "src/schemas/GlobPattern";
 export * from "src/schemas/Options";
 export * from "src/schemas/PackageInfo";
 export * from "src/schemas/PackageOptions";

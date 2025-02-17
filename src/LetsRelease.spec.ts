@@ -244,7 +244,7 @@ describe("LetsRelease", () => {
     write.mockReset().mockImplementation(() => true);
     Signale.mockReset().mockReturnValue(logger);
     vi.mocked(micromatch).mockReset().mockReturnValue(files);
-    vi.mocked(dirGlob).mockClear();
+    vi.mocked(dirGlob).mockReset().mockResolvedValue([]);
     vi.mocked(envCi)
       .mockReset()
       .mockReturnValue({
@@ -938,7 +938,7 @@ describe("LetsRelease", () => {
         tagFormat: "v${version}",
         refSeparator: "/",
         releaseCommit: {
-          assets: ["!CHANGELOG.md", "a", "b", "c"],
+          assets: ["!CHANGELOG.md", ["!CHANGELOG.md"]],
           message:
             "chore(release): [skip ci]\n\n${releases.map(x => x.tag).join('\\n')}",
         },
