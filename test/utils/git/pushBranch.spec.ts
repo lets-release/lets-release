@@ -37,6 +37,7 @@ describe("pushBranch", () => {
       getCommits(
         {
           repositoryRoot,
+          options: {},
         } as BaseContext,
         [
           {

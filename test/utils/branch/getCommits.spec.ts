@@ -30,6 +30,7 @@ describe("getCommits", () => {
       getCommits(
         {
           repositoryRoot: cwd,
+          options: {},
         } as BaseContext,
         [
           {
@@ -97,6 +98,7 @@ describe("getCommits", () => {
       getCommits(
         {
           repositoryRoot: cwd,
+          options: {},
         } as BaseContext,
         [
           {
@@ -138,6 +140,7 @@ describe("getCommits", () => {
       getCommits(
         {
           repositoryRoot: cwd,
+          options: {},
         } as BaseContext,
         [
           {

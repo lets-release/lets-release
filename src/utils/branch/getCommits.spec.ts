@@ -16,6 +16,7 @@ vi.mock("src/utils/git/getLogs");
 const context = {
   env: process.env,
   repositoryRoot: "/path/to/repo",
+  options: {},
 } as BaseContext;
 const prerelease: NormalizedSemVerPrereleaseOptions = {
   initialNumber: 1,
@@ -83,6 +84,32 @@ describe("getCommits", () => {
 
   it("should retrieve commits from the provided `from` commit", async () => {
     await expect(getCommits(context, packages, "from")).resolves.toEqual({
+      a: [
+        {
+          hash: "a",
+        },
+      ],
+      b: [
+        {
+          hash: "b",
+        },
+      ],
+    });
+  });
+
+  it("should filter out shared workspace files", async () => {
+    await expect(
+      getCommits(
+        {
+          ...context,
+          options: {
+            sharedWorkspaceFiles: ["file"],
+          },
+        } as unknown as BaseContext,
+        packages,
+        "from",
+      ),
+    ).resolves.toEqual({
       a: [
         {
           hash: "a",

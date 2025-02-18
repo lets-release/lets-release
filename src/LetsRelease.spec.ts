@@ -1,6 +1,4 @@
-import dirGlob from "dir-glob";
 import envCi, { JenkinsEnv } from "env-ci";
-import micromatch from "micromatch";
 
 import {
   Artifact,
@@ -26,6 +24,7 @@ import { getMergingContexts } from "src/utils/branch/getMergingContexts";
 import { getNextVersion } from "src/utils/branch/getNextVersion";
 import { getReleases } from "src/utils/branch/getReleases";
 import { verifyMaintenanceMergeRange } from "src/utils/branch/verifyMaintenanceMergeRange";
+import { getMatchFiles } from "src/utils/getMatchFiles";
 import { addNote } from "src/utils/git/addNote";
 import { addTag } from "src/utils/git/addTag";
 import { commit } from "src/utils/git/commit";
@@ -45,36 +44,35 @@ const Signale = vi.hoisted(() => vi.fn());
 
 vi.mock("signale", () => ({ default: { Signale } }));
 vi.mock("env-ci");
-vi.mock("dir-glob");
-vi.mock("micromatch");
+vi.mock("src/utils/getMatchFiles");
+vi.mock("src/utils/loadConfig");
+vi.mock("src/utils/logErrors");
+vi.mock("src/utils/parseMarkdown");
 vi.mock("src/utils/verifyEngines");
 vi.mock("src/utils/verifyGitVersion");
-vi.mock("src/utils/git/isGitRepo");
-vi.mock("src/utils/git/getRoot");
-vi.mock("src/utils/loadConfig");
-vi.mock("src/utils/plugin/getStepPipelinesList");
-vi.mock("src/utils/git/getAuthUrl");
-vi.mock("src/utils/logErrors");
 vi.mock("src/utils/branch/getBranches");
-vi.mock("src/utils/git/isBranchUpToDate");
-vi.mock("src/utils/branch/getMergingContexts");
 vi.mock("src/utils/branch/getCommits");
+vi.mock("src/utils/branch/getMergingContexts");
+vi.mock("src/utils/branch/getNextVersion");
+vi.mock("src/utils/branch/getReleases");
 vi.mock("src/utils/branch/verifyMaintenanceMergeRange");
+vi.mock("src/utils/git/addFiles");
 vi.mock("src/utils/git/addNote");
+vi.mock("src/utils/git/addTag");
+vi.mock("src/utils/git/commit");
+vi.mock("src/utils/git/getAuthUrl");
 vi.mock("src/utils/git/getHeadHash");
 vi.mock("src/utils/git/getHeadName");
+vi.mock("src/utils/git/getModifiedFiles");
+vi.mock("src/utils/git/getRoot");
 vi.mock("src/utils/git/getTagHash");
-vi.mock("src/utils/git/verifyAuth");
-vi.mock("src/utils/branch/getReleases");
-vi.mock("src/utils/branch/getNextVersion");
-vi.mock("src/utils/git/pushTag");
+vi.mock("src/utils/git/isBranchUpToDate");
+vi.mock("src/utils/git/isGitRepo");
 vi.mock("src/utils/git/pushBranch");
 vi.mock("src/utils/git/pushNote");
-vi.mock("src/utils/git/addTag");
-vi.mock("src/utils/parseMarkdown");
-vi.mock("src/utils/git/getModifiedFiles");
-vi.mock("src/utils/git/commit");
-vi.mock("src/utils/git/addFiles");
+vi.mock("src/utils/git/pushTag");
+vi.mock("src/utils/git/verifyAuth");
+vi.mock("src/utils/plugin/getStepPipelinesList");
 
 const write = vi.spyOn(process.stdout, "write");
 
@@ -243,8 +241,7 @@ describe("LetsRelease", () => {
     success.mockReset();
     write.mockReset().mockImplementation(() => true);
     Signale.mockReset().mockReturnValue(logger);
-    vi.mocked(micromatch).mockReset().mockReturnValue(files);
-    vi.mocked(dirGlob).mockReset().mockResolvedValue([]);
+    vi.mocked(getMatchFiles).mockReset().mockReturnValue(files);
     vi.mocked(envCi)
       .mockReset()
       .mockReturnValue({

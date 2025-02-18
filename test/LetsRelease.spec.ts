@@ -407,7 +407,7 @@ describe("LetsRelease", () => {
     );
 
     const commits = await getCommits(
-      { repositoryRoot: cwd } as BaseContext,
+      { repositoryRoot: cwd, options: {} } as BaseContext,
       [{ name: "main", path: cwd }] as Package[],
     );
     const baseAddChannelsContext = {
@@ -2235,7 +2235,7 @@ describe("LetsRelease", () => {
     ).resolves.toEqual([]);
 
     const commits = await getCommits(
-      { repositoryRoot: cwd } as BaseContext,
+      { repositoryRoot: cwd, options: {} } as BaseContext,
       [{ name: "main", path: cwd }] as Package[],
     );
 

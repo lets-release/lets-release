@@ -7,6 +7,7 @@ import {
   NormalizedBranchesOptions,
 } from "src/schemas/BranchesOptions";
 import { CliOptions } from "src/schemas/CliOptions";
+import { GlobPattern } from "src/schemas/GlobPattern";
 import {
   NormalizedPackageOptions,
   PackageOptions,
@@ -26,6 +27,7 @@ export const Options = CliOptions.extend({
   mainPackage: NonEmptyString.optional(),
   releaseCommit: ReleaseCommit.optional(),
   branches: BranchesOptions.default(BranchesOptions.parse({})),
+  sharedWorkspaceFiles: z.array(GlobPattern).optional(),
   packages: z.array(PackageOptions).min(1),
 });
 
@@ -72,17 +74,6 @@ export interface Options extends CliOptions {
   refSeparator?: string;
 
   /**
-   * The main package name.
-   *
-   * Main package is used to determine the version format and the maintenance
-   * branch format without package name.
-   *
-   * If not set and only one package found in workspace, it will be used as
-   * main package.
-   */
-  mainPackage?: string;
-
-  /**
    * Release commit options.
    *
    * If not set, **lets-release** will not generate a release commit.
@@ -122,6 +113,22 @@ export interface Options extends CliOptions {
    * [GitHub protected branches]: https://help.github.com/articles/about-protected-branches
    */
   branches?: BranchesOptions;
+
+  /**
+   * List of files(glob) shared between packages in a monorepo.
+   */
+  sharedWorkspaceFiles?: (string | string[])[];
+
+  /**
+   * The main package name.
+   *
+   * Main package is used to determine the version format and the maintenance
+   * branch format without package name.
+   *
+   * If not set and only one package found in workspace, it will be used as
+   * main package.
+   */
+  mainPackage?: string;
 
   /**
    * Package options list.

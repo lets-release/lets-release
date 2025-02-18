@@ -26,17 +26,20 @@ describe("addFiles & commit", () => {
 
     await commit("Test commit", { cwd });
 
-    const commits = await getCommits({ repositoryRoot: cwd } as BaseContext, [
-      {
-        main: true,
-        name: "main",
-        path: cwd,
-        pluginName: "npm",
-        versioning: await SemVerOptions.parseAsync({
-          scheme: VersioningScheme.SemVer,
-        }),
-      },
-    ]);
+    const commits = await getCommits(
+      { repositoryRoot: cwd, options: {} } as BaseContext,
+      [
+        {
+          main: true,
+          name: "main",
+          path: cwd,
+          pluginName: "npm",
+          versioning: await SemVerOptions.parseAsync({
+            scheme: VersioningScheme.SemVer,
+          }),
+        },
+      ],
+    );
 
     expect(commits.main).toHaveLength(1);
   });

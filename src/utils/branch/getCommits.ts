@@ -1,10 +1,12 @@
 import path from "node:path";
 
 import debug from "debug";
+import { uniq } from "lodash-es";
 
 import { BaseContext, Commit, Package } from "@lets-release/config";
 
 import { name } from "src/program";
+import { getMatchFiles } from "src/utils/getMatchFiles";
 import { getCommittedFiles } from "src/utils/git/getCommittedFiles";
 import { getLogs } from "src/utils/git/getLogs";
 
@@ -14,7 +16,7 @@ const namespace = `${name}:utils.branch.getCommits`;
  * Retrieve the list of commits on the current branch since the commit sha associated with the last release, or all the commits of the current branch if there is no last released version.
  */
 export async function getCommits(
-  { env, repositoryRoot }: BaseContext,
+  { env, repositoryRoot, options: { sharedWorkspaceFiles = [] } }: BaseContext,
   packages: Package[],
   from?: string,
   to = "HEAD",
@@ -30,7 +32,7 @@ export async function getCommits(
   debug(namespace)(`Found ${commits.length} commits`);
   debug(namespace)("Parsed commits: %o", commits);
 
-  const files = await Promise.all(
+  const committedFiles = await Promise.all(
     commits.map(
       async ({ hash }) =>
         await getCommittedFiles(hash, {
@@ -45,21 +47,31 @@ export async function getCommits(
   return Object.fromEntries(
     packages.map((pkg) => [
       pkg.name,
-      commits.filter((_, index) =>
-        files[index].some((file) => {
-          let dir = path.dirname(path.resolve(repositoryRoot, file));
+      commits.filter((_, index) => {
+        const sharedFiles = new Set(
+          uniq(
+            sharedWorkspaceFiles.flatMap((asset) =>
+              getMatchFiles({ repositoryRoot }, committedFiles[index], asset),
+            ),
+          ),
+        );
 
-          while (!pkgPaths.has(dir)) {
-            const nextDir = path.dirname(dir);
+        return committedFiles[index]
+          .filter((file) => !sharedFiles.has(file))
+          .some((file) => {
+            let dir = path.dirname(path.resolve(repositoryRoot, file));
 
-            if (nextDir === dir) return false;
+            while (!pkgPaths.has(dir)) {
+              const nextDir = path.dirname(dir);
 
-            dir = nextDir;
-          }
+              if (nextDir === dir) return false;
 
-          return dir === pkg.path;
-        }),
-      ),
+              dir = nextDir;
+            }
+
+            return dir === pkg.path;
+          });
+      }),
     ]),
   );
 }

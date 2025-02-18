@@ -1,10 +1,8 @@
 import debug from "debug";
-import dirGlob from "dir-glob";
 import envCi, { JenkinsEnv } from "env-ci";
 import figures from "figures";
 import { hookStd } from "hook-std";
 import { isArray, template, uniq } from "lodash-es";
-import micromatch from "micromatch";
 import signale from "signale";
 
 import {
@@ -50,6 +48,7 @@ import { getReleases } from "src/utils/branch/getReleases";
 import { mergeArtifacts } from "src/utils/branch/mergeArtifacts";
 import { verifyMaintenanceMergeRange } from "src/utils/branch/verifyMaintenanceMergeRange";
 import { getMaskingHandler } from "src/utils/getMaskingHandler";
+import { getMatchFiles } from "src/utils/getMatchFiles";
 import { addFiles } from "src/utils/git/addFiles";
 import { addNote } from "src/utils/git/addNote";
 import { addTag } from "src/utils/git/addTag";
@@ -390,38 +389,13 @@ export class LetsRelease {
           cwd: repositoryRoot,
           env,
         });
-        const files = assets
-          ? await Promise.all(
-              assets.map(async (asset) => {
-                // Wrap single glob definition in Array
-                let glob = isArray(asset) ? asset : [asset];
-
-                // FIXME: Temporary workaround for https://github.com/mrmlnc/fast-glob/issues/47
-                glob = uniq([
-                  ...(await dirGlob(glob, { cwd: repositoryRoot })),
-                  ...glob,
-                ]);
-
-                let nonegate = false;
-
-                // Skip solo negated pattern (avoid to include every non js file with `!**/*.js`)
-                if (glob.length <= 1 && glob[0].startsWith("!")) {
-                  nonegate = true;
-
-                  debug(name)(
-                    `skipping the negated glob ${glob[0]} as its alone in its group and would retrieve a large amount of files`,
-                  );
-                }
-
-                return micromatch(modifiedFiles, glob, {
-                  cwd: repositoryRoot,
-                  dot: true,
-                  nonegate,
-                });
-              }),
+        const filesToCommit = assets
+          ? uniq(
+              assets.flatMap((asset) =>
+                getMatchFiles(baseContext, modifiedFiles, asset),
+              ),
             )
           : [];
-        const filesToCommit = uniq(files.flat());
 
         if (filesToCommit.length > 0) {
           debug(name)("committed files: %o", filesToCommit);
