@@ -1,12 +1,10 @@
 import { $ } from "execa";
-import { NormalizedPackageJson } from "read-pkg";
 
 import { PublishContext } from "@lets-release/config";
 
 import { addChannel } from "src/helpers/addChannel";
 import { ensureNpmPackageContext } from "src/helpers/ensureNpmPackageContext";
 import { getArtifactInfo } from "src/helpers/getArtifactInfo";
-import { getPackage } from "src/helpers/getPackage";
 import { isVersionPublished } from "src/helpers/isVersionPublished";
 import { preparePackage } from "src/helpers/preparePackage";
 import { publish } from "src/steps/publish";
@@ -15,7 +13,6 @@ import { NpmPackageContext } from "src/types/NpmPackageContext";
 vi.mock("execa");
 vi.mock("src/helpers/addChannel");
 vi.mock("src/helpers/ensureNpmPackageContext");
-vi.mock("src/helpers/getPackage");
 vi.mock("src/helpers/getArtifactInfo");
 vi.mock("src/helpers/isVersionPublished");
 vi.mock("src/helpers/preparePackage");
@@ -24,9 +21,13 @@ const log = vi.fn();
 const warn = vi.fn();
 const logger = { log, warn };
 const registry = "https://test.org";
-const name = "test";
-const pkg = { path: "/root/a", name };
-const artifact = { name, url: registry };
+const pkg = {
+  path: "/root/a",
+  type: "npm",
+  name: "pkg",
+  uniqueName: "npm/pkg",
+};
+const artifact = { name: pkg.name, url: registry };
 
 class ExtendedPromise extends Promise<unknown> {
   stdout = {
@@ -54,17 +55,15 @@ describe("publish", () => {
       .mockReset()
       .mockResolvedValue({
         pm: { name: "npm", version: "*", root: "cwd" },
+        pkg: {},
         registry,
       } as NpmPackageContext);
-    vi.mocked(getPackage).mockReset();
     vi.mocked(getArtifactInfo).mockClear();
     vi.mocked(isVersionPublished).mockReset();
     vi.mocked(preparePackage).mockClear();
   });
 
   it("should skip publish if skipPublishing is true", async () => {
-    vi.mocked(getPackage).mockResolvedValue({} as NormalizedPackageJson);
-
     await expect(
       publish(
         {
@@ -79,9 +78,13 @@ describe("publish", () => {
   });
 
   it("should skip publish if package.json's private property is true", async () => {
-    vi.mocked(getPackage).mockResolvedValue({
-      private: true,
-    } as NormalizedPackageJson);
+    vi.mocked(ensureNpmPackageContext)
+      .mockReset()
+      .mockResolvedValue({
+        pm: { name: "npm", version: "*", root: "cwd" },
+        pkg: { private: true },
+        registry,
+      } as NpmPackageContext);
 
     await expect(
       publish(
@@ -97,7 +100,6 @@ describe("publish", () => {
   });
 
   it("should skip publish if version is already published", async () => {
-    vi.mocked(getPackage).mockResolvedValue({} as NormalizedPackageJson);
     vi.mocked(isVersionPublished).mockResolvedValue(true);
 
     await expect(
@@ -120,9 +122,9 @@ describe("publish", () => {
         version: "1",
         root: "cwd",
       },
+      pkg: {},
       registry,
     } as NpmPackageContext);
-    vi.mocked(getPackage).mockResolvedValue({} as NormalizedPackageJson);
 
     await expect(
       publish(
@@ -145,9 +147,9 @@ describe("publish", () => {
         version: "1",
         root: "cwd",
       },
+      pkg: {},
       registry,
     } as NpmPackageContext);
-    vi.mocked(getPackage).mockResolvedValue({} as NormalizedPackageJson);
 
     await expect(
       publish(
@@ -170,9 +172,9 @@ describe("publish", () => {
         version: "1",
         root: "cwd",
       },
+      pkg: {},
       registry,
     } as NpmPackageContext);
-    vi.mocked(getPackage).mockResolvedValue({} as NormalizedPackageJson);
 
     await expect(
       publish(

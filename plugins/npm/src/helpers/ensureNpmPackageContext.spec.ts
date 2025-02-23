@@ -11,8 +11,8 @@ vi.mock("src/helpers/verifyAuth");
 const env = {};
 const repositoryRoot = "/root";
 const pkg = {
-  name: "pkg",
-  path: "path",
+  path: "/root/path",
+  uniqueName: "npm/pkg",
 };
 const getPluginPackageContext = vi.fn();
 const setPluginPackageContext = vi.fn();

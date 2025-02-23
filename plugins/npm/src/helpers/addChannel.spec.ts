@@ -17,7 +17,10 @@ const context = {
   stdout: process.stdout,
   stderr: process.stderr,
   logger: { log, warn },
-  package: { name: "test" },
+  package: {
+    name: "pkg",
+    uniqueName: "npm/pkg",
+  },
 };
 const pkgContext = {
   pm: { root: "/path/to/pkg/cwd" },

@@ -6,7 +6,6 @@ import { addChannel } from "src/helpers/addChannel";
 import { channelsToDistTags } from "src/helpers/channelsToDistTags";
 import { ensureNpmPackageContext } from "src/helpers/ensureNpmPackageContext";
 import { getArtifactInfo } from "src/helpers/getArtifactInfo";
-import { getPackage } from "src/helpers/getPackage";
 import { isVersionPublished } from "src/helpers/isVersionPublished";
 import { preparePackage } from "src/helpers/preparePackage";
 import { NpmOptions } from "src/schemas/NpmOptions";
@@ -21,10 +20,9 @@ export const publish: StepFunction<Step.publish, NpmOptions> = async (
     stdout,
     stderr,
     logger,
-    package: { name, path: pkgRoot },
+    package: { path: pkgRoot, name, uniqueName },
     nextRelease: { version, channels },
   } = context;
-  const pkg = await getPackage(pkgRoot);
   const pkgContext = await ensureNpmPackageContext(context, {
     skipPublishing,
   });
@@ -33,7 +31,7 @@ export const publish: StepFunction<Step.publish, NpmOptions> = async (
     await preparePackage(context, pkgContext, { skipPublishing, tarballDir });
   }
 
-  if (!skipPublishing && !pkg.private) {
+  if (!skipPublishing && !pkgContext.pkg.private) {
     const { pm, registry } = pkgContext;
     const distTags = channelsToDistTags(channels);
     const isPublish = await isVersionPublished(context, pkgContext);
@@ -43,12 +41,12 @@ export const publish: StepFunction<Step.publish, NpmOptions> = async (
 
     if (isPublish) {
       logger.warn({
-        prefix: `[${pkg.name}]`,
+        prefix: `[${uniqueName}]`,
         message: `Skip publishing as version ${version} is already published`,
       });
     } else {
       logger.log({
-        prefix: `[${pkg.name}]`,
+        prefix: `[${uniqueName}]`,
         message: `Publishing version ${version} to npm registry on dist-tag ${tag}`,
       });
 
@@ -87,8 +85,8 @@ export const publish: StepFunction<Step.publish, NpmOptions> = async (
       await result;
 
       logger.log({
-        prefix: `[${pkg.name}]`,
-        message: `Published ${pkg.name}@${version} to dist-tag @${tag} on ${registry}`,
+        prefix: `[${uniqueName}]`,
+        message: `Published ${name}@${version} to dist-tag @${tag} on ${registry}`,
       });
     }
 
@@ -100,7 +98,7 @@ export const publish: StepFunction<Step.publish, NpmOptions> = async (
   }
 
   logger.log({
-    prefix: `[${pkg.name}]`,
+    prefix: `[${uniqueName}]`,
     message: `Skip publishing to npm registry as ${skipPublishing ? "skipPublishing" : "package.json's private property"} is true`,
   });
 };

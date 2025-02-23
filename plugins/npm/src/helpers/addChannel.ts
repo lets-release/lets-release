@@ -16,14 +16,14 @@ export async function addChannel(
     stdout,
     stderr,
     logger,
-    package: { name },
+    package: { name, uniqueName },
     nextRelease: { version },
   } = context;
   const distTagVersion = await getDistTagVersion(context, pkgContext, distTag);
 
   if (!distTagVersion || gt(version, distTagVersion)) {
     logger.log({
-      prefix: `[${name}]`,
+      prefix: `[${uniqueName}]`,
       message: `Adding version ${version} to npm registry on dist-tag ${distTag}`,
     });
 
@@ -68,12 +68,12 @@ export async function addChannel(
     }
 
     logger.log({
-      prefix: `[${name}]`,
+      prefix: `[${uniqueName}]`,
       message: `Added ${name}@${version} to dist-tag @${distTag} on ${registry}`,
     });
   } else {
     logger.warn({
-      prefix: `[${name}]`,
+      prefix: `[${uniqueName}]`,
       message: `Skip adding channel ${distTag} as a later version is already in the channel`,
     });
   }

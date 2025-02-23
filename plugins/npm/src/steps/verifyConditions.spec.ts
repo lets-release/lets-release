@@ -13,11 +13,15 @@ const context = {
   packages: [
     {
       path: "/root/a",
+      type: "npm",
       name: "a",
+      uniqueName: "npm/a",
     },
     {
       path: "/root/b",
+      type: "npm",
       name: "b",
+      uniqueName: "npm/b",
     },
   ],
   getPluginPackageContext,
@@ -42,10 +46,10 @@ describe("verifyConditions", async () => {
   it("should verify conditions", async () => {
     await expect(verifyConditions(context, options)).resolves.toBe(undefined);
     expect(getPluginPackageContext).toHaveBeenCalledTimes(2);
-    expect(getPluginPackageContext).toHaveBeenNthCalledWith(1, "a");
-    expect(getPluginPackageContext).toHaveBeenNthCalledWith(2, "b");
+    expect(getPluginPackageContext).toHaveBeenNthCalledWith(1, "npm", "a");
+    expect(getPluginPackageContext).toHaveBeenNthCalledWith(2, "npm", "b");
     expect(setPluginPackageContext).toHaveBeenCalledTimes(2);
-    expect(setPluginPackageContext).toHaveBeenNthCalledWith(1, "a", {});
-    expect(setPluginPackageContext).toHaveBeenNthCalledWith(2, "b", {});
+    expect(setPluginPackageContext).toHaveBeenNthCalledWith(1, "npm", "a", {});
+    expect(setPluginPackageContext).toHaveBeenNthCalledWith(2, "npm", "b", {});
   });
 });

@@ -7,7 +7,9 @@ import { temporaryDirectory } from "tempy";
 
 import { FindPackagesContext } from "@lets-release/config";
 
+import { NPM_PACKAGE_TYPE } from "src/constants/NPM_PACKAGE_TYPE";
 import { findPackages } from "src/steps/findPackages";
+import { NpmPackageContext } from "src/types/NpmPackageContext";
 
 const cwd = temporaryDirectory();
 const info = vi.fn();
@@ -41,6 +43,16 @@ describe("findPackages", () => {
   });
 
   it("should find packages", async () => {
+    const contexts: Record<string, NpmPackageContext> = {};
+    const setPluginPackageContext = vi
+      .fn()
+      .mockImplementation((type, name, context) => {
+        contexts[`${type}/${name}`] = context;
+      });
+    const getPluginPackageContext = vi.fn().mockImplementation((type, name) => {
+      return contexts[`${type}/${name}`];
+    });
+
     await expect(
       findPackages(
         {
@@ -48,18 +60,23 @@ describe("findPackages", () => {
           logger,
           repositoryRoot: cwd,
           packageOptions: { paths: ["packages/*"] },
-          setPluginPackageContext: vi.fn(),
+          getPluginPackageContext,
+          setPluginPackageContext,
         } as unknown as FindPackagesContext,
         {},
       ),
     ).resolves.toEqual([
       {
-        name: pkgA.name,
         path: path.resolve(cwd, "packages", "a"),
+        type: NPM_PACKAGE_TYPE,
+        name: pkgA.name,
+        dependencies: [],
       },
       {
-        name: pkgB.name,
         path: path.resolve(cwd, "packages", "b"),
+        type: NPM_PACKAGE_TYPE,
+        name: pkgB.name,
+        dependencies: [],
       },
     ]);
 

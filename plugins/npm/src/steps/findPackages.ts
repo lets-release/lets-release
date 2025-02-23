@@ -1,13 +1,15 @@
 import path from "node:path";
 import { inspect } from "node:util";
 
-import { globbySync } from "globby";
 import { uniq } from "lodash-es";
+import { globSync } from "tinyglobby";
 
 import { PackageInfo, Step, StepFunction } from "@lets-release/config";
 
+import { NPM_PACKAGE_TYPE } from "src/constants/NPM_PACKAGE_TYPE";
 import { getNpmPackageContext } from "src/helpers/getNpmPackageContext";
 import { NpmOptions } from "src/schemas/NpmOptions";
+import { NpmPackageContext } from "src/types/NpmPackageContext";
 
 export const findPackages: StepFunction<Step.findPackages, NpmOptions> = async (
   context,
@@ -19,18 +21,18 @@ export const findPackages: StepFunction<Step.findPackages, NpmOptions> = async (
     logger,
     repositoryRoot,
     packageOptions: { paths },
+    getPluginPackageContext,
     setPluginPackageContext,
   } = context;
 
   const pkgs: PackageInfo[] = [];
   const folders = uniq(
     paths.flatMap((p) =>
-      globbySync(p, {
+      globSync(p, {
         cwd: repositoryRoot,
-        expandDirectories: false, // FIXME: Temporary workaround for https://github.com/mrmlnc/fast-glob/issues/47
-        gitignore: false,
+        expandDirectories: false,
         dot: true,
-        onlyFiles: false,
+        onlyDirectories: true,
       }),
     ),
   );
@@ -57,11 +59,16 @@ export const findPackages: StepFunction<Step.findPackages, NpmOptions> = async (
       );
 
       pkgs.push({
-        name: pkgContext.pkg.name,
         path: pkgRoot,
+        type: NPM_PACKAGE_TYPE,
+        name: pkgContext.pkg.name,
       });
 
-      setPluginPackageContext(pkgContext.pkg.name, pkgContext);
+      setPluginPackageContext(
+        NPM_PACKAGE_TYPE,
+        pkgContext.pkg.name,
+        pkgContext,
+      );
     } catch (error) {
       logger.warn(
         `Skipping package at ${pkgRoot}: ${inspect(error, { breakLength: Infinity, depth: 2, maxArrayLength: 5 })}`,
@@ -69,5 +76,18 @@ export const findPackages: StepFunction<Step.findPackages, NpmOptions> = async (
     }
   }
 
-  return pkgs;
+  return pkgs.map(({ type, name, ...rest }) => ({
+    ...rest,
+    type,
+    name,
+    dependencies: pkgs.filter((pkg) => {
+      const {
+        pkg: { dependencies, devDependencies },
+      } = getPluginPackageContext<NpmPackageContext>(type, name)!;
+
+      return Object.keys({ ...dependencies, ...devDependencies }).includes(
+        pkg.name,
+      );
+    }),
+  }));
 };

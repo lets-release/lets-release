@@ -10,7 +10,17 @@ vi.mock("src/helpers/preparePackage");
 describe("prepare", () => {
   it("should prepare", async () => {
     await expect(
-      prepare({ package: { path: "/root/a" } } as PrepareContext, {}),
+      prepare(
+        {
+          package: {
+            path: "/root/a",
+            type: "npm",
+            name: "pkg",
+            uniqueName: "npm/pkg",
+          },
+        } as PrepareContext,
+        {},
+      ),
     ).resolves.toBe(undefined);
     expect(vi.mocked(ensureNpmPackageContext)).toHaveBeenCalledOnce();
     expect(vi.mocked(preparePackage)).toHaveBeenCalledOnce();

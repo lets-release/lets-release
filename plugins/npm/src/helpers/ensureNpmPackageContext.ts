@@ -18,7 +18,7 @@ export async function ensureNpmPackageContext(
   { skipPublishing }: Pick<NpmOptions, "skipPublishing">,
 ): Promise<NpmPackageContext> {
   const {
-    package: { name: pkgName },
+    package: { uniqueName },
     getPluginPackageContext,
     setPluginPackageContext,
   } = context;
@@ -28,7 +28,7 @@ export async function ensureNpmPackageContext(
     (await getNpmPackageContext(context));
 
   if (!pkgContext) {
-    throw new UnsupportedNpmPackageManagerError(pkgName);
+    throw new UnsupportedNpmPackageManagerError(uniqueName);
   }
 
   // Verify the npm authentication only if `skipPublishing` is not `true` and `pkg.private` is not `true`

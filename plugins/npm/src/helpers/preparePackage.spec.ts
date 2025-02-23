@@ -47,7 +47,12 @@ describe("preparePackage", () => {
           logger,
           setPluginPackageContext,
           repositoryRoot: "/root",
-          package: { path: "/root/a" },
+          package: {
+            path: "/root/a",
+            type: "npm",
+            name: "pkg",
+            uniqueName: "npm/pkg",
+          },
           nextRelease: {},
         } as unknown as PrepareContext,
         { pm: { name: "npm", root: cwd } } as NpmPackageContext,
@@ -70,7 +75,12 @@ describe("preparePackage", () => {
           logger,
           setPluginPackageContext,
           repositoryRoot: "/root",
-          package: { path: "/root/a" },
+          package: {
+            path: "/root/a",
+            type: "npm",
+            name: "pkg",
+            uniqueName: "npm/pkg",
+          },
           nextRelease: {},
         } as unknown as PrepareContext,
         {
@@ -106,7 +116,12 @@ describe("preparePackage", () => {
           logger,
           setPluginPackageContext,
           repositoryRoot: "/root",
-          package: { path: "/root/a" },
+          package: {
+            path: "/root/a",
+            type: "npm",
+            name: "pkg",
+            uniqueName: "npm/pkg",
+          },
           nextRelease: {},
         } as unknown as PrepareContext,
         {
@@ -153,7 +168,12 @@ describe("preparePackage", () => {
           logger,
           setPluginPackageContext,
           repositoryRoot: "/root",
-          package: { path: "/root/a" },
+          package: {
+            path: "/root/a",
+            type: "npm",
+            name: "pkg",
+            uniqueName: "npm/pkg",
+          },
           nextRelease: {},
         } as unknown as PrepareContext,
         {

@@ -68,7 +68,11 @@ describe("verifyConditions", () => {
     let pkgContext: NpmPackageContext;
 
     const getPluginPackageContext = () => pkgContext;
-    const setPluginPackageContext = (context: NpmPackageContext) => {
+    const setPluginPackageContext = (
+      type: string,
+      name: string,
+      context: NpmPackageContext,
+    ) => {
       pkgContext = context;
     };
 
@@ -106,7 +110,11 @@ describe("verifyConditions", () => {
     let pkgContext: NpmPackageContext;
 
     const getPluginPackageContext = () => pkgContext;
-    const setPluginPackageContext = (context: NpmPackageContext) => {
+    const setPluginPackageContext = (
+      type: string,
+      name: string,
+      context: NpmPackageContext,
+    ) => {
       pkgContext = context;
     };
 
@@ -173,9 +181,10 @@ describe("verifyConditions", () => {
 
     let pkgContext: NpmPackageContext;
 
-    const getPluginPackageContext = (_pkgName: string) => pkgContext;
+    const getPluginPackageContext = () => pkgContext;
     const setPluginPackageContext = (
-      _pkgName: string,
+      type: string,
+      name: string,
       context: NpmPackageContext,
     ) => {
       pkgContext = context;
@@ -240,9 +249,10 @@ describe("verifyConditions", () => {
 
     let pkgContext: NpmPackageContext;
 
-    const getPluginPackageContext = (_pkgName: string) => pkgContext;
+    const getPluginPackageContext = () => pkgContext;
     const setPluginPackageContext = (
-      _pkgName: string,
+      type: string,
+      name: string,
       context: NpmPackageContext,
     ) => {
       pkgContext = context;
@@ -306,9 +316,10 @@ describe("verifyConditions", () => {
 
     let pkgContext: NpmPackageContext;
 
-    const getPluginPackageContext = (_pkgName: string) => pkgContext;
+    const getPluginPackageContext = () => pkgContext;
     const setPluginPackageContext = (
-      _pkgName: string,
+      type: string,
+      name: string,
       context: NpmPackageContext,
     ) => {
       pkgContext = context;

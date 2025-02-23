@@ -19,7 +19,7 @@ export async function preparePackage(
     stderr,
     logger,
     repositoryRoot,
-    package: { name, path: pkgRoot },
+    package: { path: pkgRoot, name, uniqueName },
     nextRelease: { version },
     setPluginPackageContext,
   }: PrepareContext,
@@ -27,7 +27,7 @@ export async function preparePackage(
   { tarballDir }: NpmOptions,
 ) {
   logger.log({
-    prefix: `[${name}]`,
+    prefix: `[${uniqueName}]`,
     message: `Write version ${version} to package.json in ./${path.relative(repositoryRoot, pkgRoot)}`,
   });
 
@@ -71,7 +71,7 @@ export async function preparePackage(
 
   if (tarballDir) {
     logger.log({
-      prefix: `[${name}]`,
+      prefix: `[${uniqueName}]`,
       message: `Creating npm package version ${version}`,
     });
 

@@ -19,9 +19,9 @@ export const verifyConditions: StepFunction<
           ...context,
           package: pkg,
           getPluginPackageContext: () =>
-            context.getPluginPackageContext(pkg.name),
+            context.getPluginPackageContext(pkg.type, pkg.name),
           setPluginPackageContext: (pkgContext) =>
-            context.setPluginPackageContext(pkg.name, pkgContext),
+            context.setPluginPackageContext(pkg.type, pkg.name, pkgContext),
         },
         parsedOptions,
       );

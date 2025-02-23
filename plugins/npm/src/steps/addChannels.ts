@@ -4,7 +4,6 @@ import { addChannel } from "src/helpers/addChannel";
 import { channelsToDistTags } from "src/helpers/channelsToDistTags";
 import { ensureNpmPackageContext } from "src/helpers/ensureNpmPackageContext";
 import { getArtifactInfo } from "src/helpers/getArtifactInfo";
-import { getPackage } from "src/helpers/getPackage";
 import { NpmOptions } from "src/schemas/NpmOptions";
 
 export const addChannels: StepFunction<Step.addChannels, NpmOptions> = async (
@@ -14,15 +13,14 @@ export const addChannels: StepFunction<Step.addChannels, NpmOptions> = async (
   const { skipPublishing } = await NpmOptions.parseAsync(options);
   const {
     logger,
-    package: { path },
+    package: { uniqueName },
     nextRelease: { channels },
   } = context;
-  const pkg = await getPackage(path);
+  const pkgContext = await ensureNpmPackageContext(context, {
+    skipPublishing,
+  });
 
-  if (!skipPublishing && !pkg.private) {
-    const pkgContext = await ensureNpmPackageContext(context, {
-      skipPublishing,
-    });
+  if (!skipPublishing && !pkgContext.pkg.private) {
     const distTags = channelsToDistTags(channels);
 
     for (const distTag of distTags) {
@@ -33,7 +31,7 @@ export const addChannels: StepFunction<Step.addChannels, NpmOptions> = async (
   }
 
   logger.log({
-    prefix: `[${pkg.name}]`,
+    prefix: `[${uniqueName}]`,
     message: `Skip adding to npm channel as ${skipPublishing ? "skipPublishing" : "package.json's private property"} is true`,
   });
 };
