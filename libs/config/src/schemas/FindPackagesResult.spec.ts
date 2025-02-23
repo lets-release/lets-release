@@ -1,14 +1,15 @@
 import { FindPackagesResult } from "src/schemas/FindPackagesResult";
 
 describe("FindPackagesResult", () => {
-  it("should validate find packages result", () => {
+  it("should validate find packages result", async () => {
     const pkgs = [
       {
         path: "/path/package",
+        type: "npm",
         name: "test",
       },
     ];
 
-    expect(FindPackagesResult.parse(pkgs)).toEqual(pkgs);
+    await expect(FindPackagesResult.parseAsync(pkgs)).resolves.toEqual(pkgs);
   });
 });

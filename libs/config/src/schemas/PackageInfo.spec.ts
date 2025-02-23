@@ -1,12 +1,28 @@
+import { ZodError } from "zod";
+
 import { PackageInfo } from "src/schemas/PackageInfo";
 
 describe("PackageInfo", () => {
-  it("should validate package info", () => {
+  it("should validate package info", async () => {
     const pkg = {
-      name: "test",
       path: "/path/package",
+      type: "npm",
+      name: "test",
+      dependencies: [
+        {
+          type: "npm",
+          name: "test",
+        },
+      ],
     };
 
-    expect(PackageInfo.parse(pkg)).toEqual(pkg);
+    await expect(PackageInfo.parseAsync(pkg)).resolves.toEqual(pkg);
+    await expect(
+      PackageInfo.parseAsync({
+        path: "/path/package",
+        type: "npm:",
+        name: "test",
+      }),
+    ).rejects.toThrow(ZodError);
   });
 });

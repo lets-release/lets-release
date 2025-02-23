@@ -46,9 +46,9 @@ export interface PackageOptions {
    * any findPackages plugin. Usually, a path is a glob pattern or a glob
    * string relative to the repo root.
    *
-   * For example, this value will be used by [glob][] in "@lets-release/npm" plugin.
+   * For example, this value will be used by [tinyglobby][] in "@lets-release/npm" plugin.
    *
-   * [glob]: https://github.com/isaacs/node-glob
+   * [tinyglobby]: https://github.com/SuperchupuDev/tinyglobby
    */
   paths: (string | string[])[];
 

@@ -18,6 +18,11 @@ export interface Package extends PackageInfo {
   versioning: NormalizedSemVerOptions | NormalizedCalVerOptions;
 
   /**
+   * The unique package name: either `name` or `${type}/${name}`.
+   */
+  uniqueName: string;
+
+  /**
    * The package name.
    */
   pluginName: string;

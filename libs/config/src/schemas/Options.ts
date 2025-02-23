@@ -115,7 +115,7 @@ export interface Options extends CliOptions {
   branches?: BranchesOptions;
 
   /**
-   * List of files(glob) shared between packages in a monorepo.
+   * List of files shared between packages in a monorepo.
    */
   sharedWorkspaceFiles?: (string | string[])[];
 
