@@ -30,6 +30,7 @@ export * from "src/schemas/FindPackagesResult";
 export * from "src/schemas/GenerateNotesResult";
 export * from "src/schemas/GlobPattern";
 export * from "src/schemas/Options";
+export * from "src/schemas/PackageDependency";
 export * from "src/schemas/PackageInfo";
 export * from "src/schemas/PackageOptions";
 export * from "src/schemas/PluginObject";
