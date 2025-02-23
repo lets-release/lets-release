@@ -2,27 +2,29 @@ import path from "node:path";
 
 import debug from "debug";
 import dirGlob from "dir-glob";
-import { globby } from "globby";
 import { isArray, isString, uniq } from "lodash-es";
+import { glob } from "tinyglobby";
 
-import { BaseContext } from "@lets-release/config";
+import { PublishContext } from "@lets-release/config";
 
+import { name } from "src/plugin";
 import { Asset } from "src/schemas/Asset";
 import { AssetObject } from "src/schemas/AssetObject";
 import { ReleaseAsset } from "src/types/ReleaseAsset";
 import { ReleaseAssetObject } from "src/types/ReleaseAssetObject";
 
-const namespace = "@lets-release/git-host";
-
 export async function findReleaseAssets<
   T extends ReleaseAssetObject,
   U extends AssetObject,
 >(
-  { repositoryRoot }: Pick<BaseContext, "repositoryRoot">,
+  {
+    repositoryRoot,
+    package: { uniqueName },
+  }: Pick<PublishContext, "repositoryRoot" | "package">,
   asset: Asset<U>,
 ): Promise<ReleaseAsset<T>[]> {
   // Wrap single glob definition in Array
-  let glob = isArray(asset)
+  let patterns = isArray(asset)
     ? asset
     : isString(asset)
       ? [asset]
@@ -30,22 +32,23 @@ export async function findReleaseAssets<
         ? [asset.path]
         : asset.path;
 
-  // FIXME: Temporary workaround for https://github.com/mrmlnc/fast-glob/issues/47
-  glob = uniq([...(await dirGlob(glob, { cwd: repositoryRoot })), ...glob]);
+  patterns = uniq([
+    ...(await dirGlob(patterns, { cwd: repositoryRoot })),
+    ...patterns,
+  ]);
 
   // Skip solo negated pattern (avoid to include every non js file with `!**/*.js`)
-  if (glob.length === 1 && glob[0].startsWith("!")) {
-    debug(namespace)(
-      `skipping the negated glob ${glob[0]} as its alone in its group and would retrieve a large amount of files`,
+  if (patterns.length === 1 && patterns[0].startsWith("!")) {
+    debug(`${name}:${uniqueName}`)(
+      `skipping the negated glob ${patterns[0]} as its alone in its group and would retrieve a large amount of files`,
     );
 
     return [];
   }
 
-  const items = await globby(glob, {
+  const items = await glob(patterns, {
     cwd: repositoryRoot,
-    expandDirectories: false, // FIXME: Temporary workaround for https://github.com/mrmlnc/fast-glob/issues/47
-    gitignore: false,
+    expandDirectories: false,
     dot: true,
     onlyFiles: false,
   });
@@ -88,5 +91,5 @@ export async function findReleaseAssets<
   }
 
   // If asset is a String definition but no match is found, output the elements of the original glob (each one will be considered as a missing file)
-  return glob as ReleaseAsset<T>[];
+  return patterns as ReleaseAsset<T>[];
 }

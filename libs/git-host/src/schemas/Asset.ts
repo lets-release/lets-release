@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { NonEmptyString } from "@lets-release/config";
+import { GlobPattern } from "@lets-release/config";
 
 import { AssetObject } from "src/schemas/AssetObject";
 
@@ -32,10 +32,6 @@ import { AssetObject } from "src/schemas/AssetObject";
  * [glob]: https://github.com/isaacs/node-glob#glob-primer
  * [Lodash template]: https://lodash.com/docs#template
  */
-export const Asset = z.union([
-  NonEmptyString,
-  z.array(NonEmptyString).min(1),
-  AssetObject,
-]);
+export const Asset = z.union([GlobPattern, AssetObject]);
 
 export type Asset<T extends AssetObject> = string | string[] | T;

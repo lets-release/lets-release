@@ -2,19 +2,24 @@ import { filterRevertedCommitsSync } from "conventional-commits-filter";
 import { CommitParser, ParserOptions } from "conventional-commits-parser";
 import debug from "debug";
 
-import { Commit } from "@lets-release/config";
+import { Commit, Package } from "@lets-release/config";
 
+import { name } from "src/plugin";
 import { ParsedCommit } from "src/types/ParsedCommit";
 
-const namespace = "@lets-release/conventional-changelog";
-
-export function parseCommits(commits: Commit[], parserOptions: ParserOptions) {
+export function parseCommits(
+  pkg: Package,
+  commits: Commit[],
+  parserOptions: ParserOptions,
+) {
   return [
     ...filterRevertedCommitsSync<ParsedCommit>(
       commits
         .filter(({ hash, message }: Commit) => {
           if (!message.trim()) {
-            debug(namespace)(`Skip commit ${hash} with empty message`);
+            debug(`${name}:${pkg.uniqueName}`)(
+              `Skip commit ${hash} with empty message`,
+            );
 
             return false;
           }

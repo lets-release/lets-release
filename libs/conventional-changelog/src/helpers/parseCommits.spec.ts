@@ -3,12 +3,13 @@ import {
   Commit as ParsedCommit,
 } from "conventional-commits-parser";
 
-import { Commit } from "@lets-release/config";
+import { Commit, Package } from "@lets-release/config";
 
 import { parseCommits } from "src/helpers/parseCommits";
 
 vi.mock("conventional-commits-parser");
 
+const pkg = { uniqueName: "npm/pkg" } as unknown as Package;
 const parserOptions = {};
 const extraCommit = {
   test: "test",
@@ -22,6 +23,7 @@ describe("parseCommits", () => {
   it("should parse commits", () => {
     expect(
       parseCommits(
+        pkg,
         [
           {
             hash: "123",

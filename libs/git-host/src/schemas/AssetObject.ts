@@ -1,12 +1,12 @@
 import { z } from "zod";
 
-import { NonEmptyString } from "@lets-release/config";
+import { GlobPattern, NonEmptyString } from "@lets-release/config";
 
 export const AssetObject = z.object({
   /**
    * **Required**. A glob to identify the files to upload.
    */
-  path: z.union([NonEmptyString, z.array(NonEmptyString).min(1)]),
+  path: GlobPattern,
 
   /**
    * The name of the downloadable file on the release.

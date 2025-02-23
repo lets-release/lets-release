@@ -2,7 +2,7 @@ import path from "node:path";
 
 import { isArray, isString, uniqWith } from "lodash-es";
 
-import { BaseContext } from "@lets-release/config";
+import { PublishContext } from "@lets-release/config";
 
 import { findReleaseAssets } from "src/helpers/findReleaseAssets";
 import { Asset } from "src/schemas/Asset";
@@ -14,14 +14,14 @@ export async function findUniqueReleaseAssets<
   T extends ReleaseAssetObject,
   U extends AssetObject,
 >(
-  { repositoryRoot }: Pick<BaseContext, "repositoryRoot">,
+  context: Pick<PublishContext, "repositoryRoot" | "package">,
   assets: Asset<U>[],
 ): Promise<ReleaseAsset<T>[]> {
   const list = await Promise.all(
-    assets.map(
-      async (asset) => await findReleaseAssets<T, U>({ repositoryRoot }, asset),
-    ),
+    assets.map(async (asset) => await findReleaseAssets<T, U>(context, asset)),
   );
+
+  const { repositoryRoot } = context;
 
   return uniqWith(
     list
