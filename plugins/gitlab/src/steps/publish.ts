@@ -37,7 +37,7 @@ export const publish: StepFunction<Step.publish, GitLabOptions> = async (
 
   if (mainPackageOnly && !pkg.main) {
     logger.warn({
-      prefix: `[${pkg.name}]`,
+      prefix: `[${pkg.uniqueName}]`,
       message: `Skip as it is not the main package`,
     });
 
@@ -49,7 +49,7 @@ export const publish: StepFunction<Step.publish, GitLabOptions> = async (
     await gitlab.ProjectReleases.show(projectId, tag);
 
     logger.warn({
-      prefix: `[${pkg.name}]`,
+      prefix: `[${pkg.uniqueName}]`,
       message: `Skip publishing as tag ${tag} is already published`,
     });
 
@@ -63,9 +63,10 @@ export const publish: StepFunction<Step.publish, GitLabOptions> = async (
     }
   }
 
-  debug(name)(`release tag: ${tag}`);
-  debug(name)(`release tag hash: ${hash}`);
-  debug(name)("milestones: %o", milestones);
+  const namespace = `${name}:${pkg.uniqueName}`;
+  debug(namespace)(`release tag: ${tag}`);
+  debug(namespace)(`release tag hash: ${hash}`);
+  debug(namespace)("milestones: %o", milestones);
 
   // Skip glob if url is provided
   const urlAssets =
@@ -86,7 +87,7 @@ export const publish: StepFunction<Step.publish, GitLabOptions> = async (
   const releaseAssets = [...urlAssets, ...globAssets];
 
   if (releaseAssets.length > 0) {
-    debug(name)("release assets: %o", releaseAssets);
+    debug(namespace)("release assets: %o", releaseAssets);
   }
 
   const linkLists = await Promise.all(
@@ -95,7 +96,7 @@ export const publish: StepFunction<Step.publish, GitLabOptions> = async (
     ),
   );
 
-  debug(name)(`Create a release for git tag ${tag} with commit ${hash}`);
+  debug(namespace)(`Create a release for git tag ${tag} with commit ${hash}`);
 
   const release = {
     tag_name: tag,
@@ -106,13 +107,13 @@ export const publish: StepFunction<Step.publish, GitLabOptions> = async (
     },
   };
 
-  debug(name)("Release payload: %O", release);
+  debug(namespace)("Release payload: %O", release);
 
   try {
     await gitlab.ProjectReleases.create(projectId, release);
   } catch (error) {
     logger.error({
-      prefix: `[${pkg.name}]`,
+      prefix: `[${pkg.uniqueName}]`,
       message: [
         "An error occurred while making a request to the GitLab release API:\n%O",
         error,
@@ -123,7 +124,7 @@ export const publish: StepFunction<Step.publish, GitLabOptions> = async (
   }
 
   logger.log({
-    prefix: `[${pkg.name}]`,
+    prefix: `[${pkg.uniqueName}]`,
     message: `Published GitLab release: ${tag}`,
   });
 

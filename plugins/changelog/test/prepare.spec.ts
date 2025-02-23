@@ -19,7 +19,10 @@ describe("prepare", () => {
     await prepare(
       {
         logger,
-        package: { path: pkgRoot },
+        package: {
+          path: pkgRoot,
+          uniqueName: "npm/pkg",
+        },
         nextRelease: { notes },
       } as unknown as PrepareContext,
       { changelogFile },
@@ -40,7 +43,10 @@ describe("prepare", () => {
     await prepare(
       {
         logger,
-        package: { path: pkgRoot },
+        package: {
+          path: pkgRoot,
+          uniqueName: "npm/pkg",
+        },
         nextRelease: {},
       } as unknown as PrepareContext,
       { changelogFile },
@@ -62,7 +68,10 @@ describe("prepare", () => {
     await prepare(
       {
         logger,
-        package: { path: pkgRoot },
+        package: {
+          path: pkgRoot,
+          uniqueName: "npm/pkg",
+        },
         nextRelease: { notes: newNotes },
       } as unknown as PrepareContext,
       { changelogFile },
@@ -85,7 +94,10 @@ describe("prepare", () => {
     await prepare(
       {
         logger,
-        package: { path: pkgRoot },
+        package: {
+          path: pkgRoot,
+          uniqueName: "npm/pkg",
+        },
         nextRelease: { notes: newNotes },
       } as unknown as PrepareContext,
       { changelogTitle, changelogFile },

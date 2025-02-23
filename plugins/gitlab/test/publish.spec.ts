@@ -89,7 +89,9 @@ describe("publish", () => {
           logger,
           options: { repositoryUrl },
           branch: { type: BranchType.main, main: true, name: "main" },
-          package: { name: "pkg" },
+          package: {
+            uniqueName: "npm/pkg",
+          },
           nextRelease,
           getPluginContext,
           setPluginContext,
@@ -116,7 +118,9 @@ describe("publish", () => {
           logger,
           options: { repositoryUrl },
           branch: { type: BranchType.main, main: true, name: "main" },
-          package: { name: "pkg" },
+          package: {
+            uniqueName: "npm/pkg",
+          },
           nextRelease,
           getPluginContext,
           setPluginContext,
@@ -151,7 +155,9 @@ describe("publish", () => {
           repositoryRoot: cwd,
           options: { repositoryUrl },
           branch: { type: BranchType.main, main: true, name: "main" },
-          package: { name: "pkg" },
+          package: {
+            uniqueName: "npm/pkg",
+          },
           nextRelease,
           getPluginContext,
           setPluginContext,
@@ -204,7 +210,9 @@ describe("publish", () => {
           repositoryRoot: cwd,
           options: { repositoryUrl },
           branch: { type: BranchType.main, main: true, name: "main" },
-          package: { name: "pkg" },
+          package: {
+            uniqueName: "npm/pkg",
+          },
           nextRelease,
           getPluginContext,
           setPluginContext,

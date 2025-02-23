@@ -28,6 +28,7 @@ const octokit = { graphql, request } as unknown as LetsReleaseOctokit;
 const tag = "v1.0.0";
 const context = {
   options: { repositoryUrl: "https://github.com/owner/repo" },
+  package: { uniqueName: "npm/pkg" },
   commits: [],
   nextRelease: { tag, notes: "Release notes" },
   releases: [

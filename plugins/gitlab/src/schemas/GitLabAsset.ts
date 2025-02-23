@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { NonEmptyString } from "@lets-release/config";
+import { GlobPattern } from "@lets-release/config";
 
 import { GitLabAssetObject } from "src/schemas/GitLabAssetObject";
 
@@ -32,11 +32,7 @@ import { GitLabAssetObject } from "src/schemas/GitLabAssetObject";
  * [project upload]: https://docs.gitlab.com/ee/api/projects.html#upload-a-file
  * [generic package]: https://docs.gitlab.com/ee/user/packages/generic_packages/
  */
-export const GitLabAsset = z.union([
-  NonEmptyString,
-  z.array(NonEmptyString).min(1),
-  GitLabAssetObject,
-]);
+export const GitLabAsset = z.union([GlobPattern, GitLabAssetObject]);
 
 export type GitLabAsset = z.input<typeof GitLabAsset>;
 

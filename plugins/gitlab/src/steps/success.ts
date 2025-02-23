@@ -38,10 +38,11 @@ export const success: StepFunction<Step.success, GitLabOptions> = async (
 
   const { commits, nextRelease, releases } = context;
 
+  const namespace = `${name}:${context.package.uniqueName}`;
   const errors: unknown[] = [];
 
   if (commits.length === 0) {
-    debug(name)("No commits found in release");
+    debug(namespace)("No commits found in release");
   } else if (commentOnSuccess !== false) {
     const associatedMRs = await Promise.all(
       commits.map(
@@ -51,7 +52,7 @@ export const success: StepFunction<Step.success, GitLabOptions> = async (
     );
     const mrs = uniqBy(associatedMRs.flat(), "iid");
 
-    debug(name)(
+    debug(namespace)(
       "found merge requests: %O",
       mrs.map((mr) => mr.iid),
     );
@@ -81,7 +82,7 @@ export const success: StepFunction<Step.success, GitLabOptions> = async (
     const issues = uniqBy([...mrIssues.flat(), ...commitIssues], "iid");
 
     if (issues.length > 0) {
-      debug(name)(
+      debug(namespace)(
         "found related issues via PRs and Commits: %O",
         issues.map(({ iid }) => iid),
       );

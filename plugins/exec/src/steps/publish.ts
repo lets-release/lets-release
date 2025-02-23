@@ -22,10 +22,11 @@ export const publish: StepFunction<Step.publish, ExecOptions> = async (
   try {
     return stdout ? JSON.parse(stdout) : undefined;
   } catch (error) {
-    debug(name)(stdout);
-    debug(name)(error);
+    const namespace = `${name}:${context.package.uniqueName}`;
 
-    debug(name)(
+    debug(namespace)(stdout);
+    debug(namespace)(error);
+    debug(namespace)(
       `The command ${
         options.publishCmd
       } wrote invalid JSON to stdout. The stdout content will be ignored.`,

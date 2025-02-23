@@ -35,6 +35,7 @@ export async function uploadReleaseAsset(
     package: pkg,
     nextRelease: { version },
   } = context;
+  const namespace = `${name}:${pkg.uniqueName}`;
 
   if (isString(asset) || asset.path) {
     const filePath = isString(asset) ? asset : asset.path!;
@@ -45,7 +46,7 @@ export async function uploadReleaseAsset(
 
       if (!stats.isFile()) {
         logger.error({
-          prefix: `[${pkg.name}]`,
+          prefix: `[${pkg.uniqueName}]`,
           message: `The asset ${filePath} is not a file, and will be ignored.`,
         });
 
@@ -58,12 +59,9 @@ export async function uploadReleaseAsset(
           : undefined;
       const filename = label || path.basename(file);
 
-      debug(name)(`file path: ${filePath}`);
-      debug(name)(`file label: ${label}`);
-
-      const encodedVersion = encodeURIComponent(version);
-
-      debug(name)(`Uploading the file ${file}`);
+      debug(namespace)(`file path: ${filePath}`);
+      debug(namespace)(`file label: ${label}`);
+      debug(namespace)(`Uploading the file ${file}`);
 
       if (!isString(asset) && asset.target === AssetTarget.GenericPackage) {
         // Upload generic packages
@@ -84,6 +82,7 @@ export async function uploadReleaseAsset(
             },
           );
 
+          const encodedVersion = encodeURIComponent(version);
           const encodedFilename = encodeURIComponent(filename);
           // https://docs.gitlab.com/ee/user/packages/generic_packages/#download-package-file
           const downloadUrl = urlJoin(
@@ -92,7 +91,7 @@ export async function uploadReleaseAsset(
           );
 
           logger.log({
-            prefix: `[${pkg.name}]`,
+            prefix: `[${pkg.uniqueName}]`,
             message: `Uploaded file: ${downloadUrl} (${url})`,
           });
 
@@ -106,7 +105,7 @@ export async function uploadReleaseAsset(
           ];
         } catch (error) {
           logger.error({
-            prefix: `[${pkg.name}]`,
+            prefix: `[${pkg.uniqueName}]`,
             message: [
               `An error occurred while uploading ${file} to the GitLab generics package API:\n%O`,
               error,
@@ -129,7 +128,7 @@ export async function uploadReleaseAsset(
           const url = urlJoin(host, full_path);
 
           logger.log({
-            prefix: `[${pkg.name}]`,
+            prefix: `[${pkg.uniqueName}]`,
             message: `Uploaded file: ${url}`,
           });
 
@@ -143,7 +142,7 @@ export async function uploadReleaseAsset(
           ];
         } catch (error) {
           logger.error({
-            prefix: `[${pkg.name}]`,
+            prefix: `[${pkg.uniqueName}]`,
             message: [
               `An error occurred while uploading ${file} to the GitLab project uploads API:\n%O`,
               error,
@@ -155,7 +154,7 @@ export async function uploadReleaseAsset(
       }
     } catch {
       logger.error({
-        prefix: `[${pkg.name}]`,
+        prefix: `[${pkg.uniqueName}]`,
         message: `The asset ${filePath} cannot be read, and will be ignored.`,
       });
 
@@ -164,7 +163,7 @@ export async function uploadReleaseAsset(
   } else {
     const { url, label, type, filepath } = asset;
 
-    debug(`use link from release setting: ${url}`);
+    debug(namespace)(`use link from release setting: ${url}`);
 
     return [
       {

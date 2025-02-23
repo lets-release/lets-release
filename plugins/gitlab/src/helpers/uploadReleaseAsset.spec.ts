@@ -26,7 +26,7 @@ const context = {
     error,
   },
   package: {
-    name: "pkg",
+    uniqueName: "npm/pkg",
   },
   nextRelease: {
     version: "1.0.0",
@@ -186,7 +186,7 @@ describe("uploadReleaseAsset", () => {
 
     expect(result).toEqual([]);
     expect(error).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "The asset test-file.txt is not a file, and will be ignored.",
     });
   });
@@ -206,7 +206,7 @@ describe("uploadReleaseAsset", () => {
 
     expect(result).toEqual([]);
     expect(error).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "The asset test-file.txt cannot be read, and will be ignored.",
     });
   });
@@ -226,7 +226,7 @@ describe("uploadReleaseAsset", () => {
 
     expect(result).toEqual([]);
     expect(error).toHaveBeenNthCalledWith(1, {
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: [
         expect.stringContaining(
           `An error occurred while uploading ${path.resolve("/mock/path/test-file.txt")} to the GitLab generics package API:`,
@@ -251,7 +251,7 @@ describe("uploadReleaseAsset", () => {
 
     expect(result).toEqual([]);
     expect(error).toHaveBeenNthCalledWith(1, {
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: [
         expect.stringContaining(
           `An error occurred while uploading ${path.resolve("/mock/path/test-file.txt")} to the GitLab project uploads API:`,

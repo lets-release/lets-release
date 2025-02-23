@@ -27,7 +27,7 @@ export const addChannels: StepFunction<
 
   if (mainPackageOnly && !pkg.main) {
     logger.warn({
-      prefix: `[${pkg.name}]`,
+      prefix: `[${pkg.uniqueName}]`,
       message: `Skip as it is not the main package`,
     });
 
@@ -39,7 +39,7 @@ export const addChannels: StepFunction<
     milestones,
   };
 
-  debug(name)("release object: %O", release);
+  debug(`${name}:${context.package.uniqueName}`)("release object: %O", release);
 
   try {
     await gitlab.ProjectReleases.edit(
@@ -49,7 +49,7 @@ export const addChannels: StepFunction<
     );
 
     logger.log({
-      prefix: `[${pkg.name}]`,
+      prefix: `[${pkg.uniqueName}]`,
       message: `Updated GitLab release: ${tag}`,
     });
   } catch (error) {
@@ -58,7 +58,7 @@ export const addChannels: StepFunction<
       error.cause?.response.status === 404
     ) {
       logger.log({
-        prefix: `[${pkg.name}]`,
+        prefix: `[${pkg.uniqueName}]`,
         message: `There is no release for tag ${tag}, creating a new one`,
       });
 
@@ -68,7 +68,7 @@ export const addChannels: StepFunction<
       });
 
       logger.log({
-        prefix: `[${pkg.name}]`,
+        prefix: `[${pkg.uniqueName}]`,
         message: `Published GitLab release: ${tag}`,
       });
     } else {

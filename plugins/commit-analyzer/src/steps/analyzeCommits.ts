@@ -33,8 +33,8 @@ export const analyzeCommits: StepFunction<
   );
   let releaseType: ReleaseType | undefined;
 
-  const namespace = `${name}:${pkg.name}`;
-  const parsedCommits = parseCommits(commits, preset.parser);
+  const namespace = `${name}:${pkg.uniqueName}`;
+  const parsedCommits = parseCommits(pkg, commits, preset.parser);
 
   for (const { rawMsg, ...commit } of parsedCommits) {
     debug(namespace)(`Analyzing commit: ${rawMsg}`);
@@ -76,7 +76,7 @@ export const analyzeCommits: StepFunction<
   }
 
   logger.log({
-    prefix: `[${pkg.name}]`,
+    prefix: `[${pkg.uniqueName}]`,
     message: `Analysis of ${commits.length} commits complete: ${releaseType || "no"} release`,
   });
 

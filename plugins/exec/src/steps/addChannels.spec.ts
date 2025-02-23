@@ -11,6 +11,7 @@ const cwd = process.cwd();
 const env = process.env;
 const stdout = process.stdout;
 const stderr = process.stderr;
+const pkg = { uniqueName: "npm/pkg" };
 
 describe("addChannels", () => {
   beforeEach(() => {
@@ -20,7 +21,14 @@ describe("addChannels", () => {
   it("should return undefined if command is not set", async () => {
     await expect(
       addChannels(
-        { cwd, env, stdout, stderr, logger } as unknown as AddChannelsContext,
+        {
+          cwd,
+          env,
+          stdout,
+          stderr,
+          logger,
+          package: pkg,
+        } as unknown as AddChannelsContext,
         {},
       ),
     ).resolves.toBeUndefined();
@@ -31,7 +39,14 @@ describe("addChannels", () => {
 
     await expect(
       addChannels(
-        { cwd, env, stdout, stderr, logger } as unknown as AddChannelsContext,
+        {
+          cwd,
+          env,
+          stdout,
+          stderr,
+          logger,
+          package: pkg,
+        } as unknown as AddChannelsContext,
         {
           addChannelsCmd: "echo ''",
         },
@@ -44,7 +59,14 @@ describe("addChannels", () => {
 
     await expect(
       addChannels(
-        { cwd, env, stdout, stderr, logger } as unknown as AddChannelsContext,
+        {
+          cwd,
+          env,
+          stdout,
+          stderr,
+          logger,
+          package: pkg,
+        } as unknown as AddChannelsContext,
         {
           addChannelsCmd: "echo 'Hello World'",
         },
@@ -57,7 +79,14 @@ describe("addChannels", () => {
 
     await expect(
       addChannels(
-        { cwd, env, stdout, stderr, logger } as unknown as AddChannelsContext,
+        {
+          cwd,
+          env,
+          stdout,
+          stderr,
+          logger,
+          package: pkg,
+        } as unknown as AddChannelsContext,
         {
           addChannelsCmd: 'echo \'{"channels": ["stable"]}\'',
         },

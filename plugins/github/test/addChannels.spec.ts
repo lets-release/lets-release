@@ -79,7 +79,9 @@ describe("addChannels", () => {
           logger,
           options: { repositoryUrl },
           branch: { type: BranchType.main, main: true },
-          package: { name: "pkg" },
+          package: {
+            uniqueName: "npm/pkg",
+          },
           nextRelease,
           getPluginContext,
           setPluginContext,
@@ -116,7 +118,9 @@ describe("addChannels", () => {
           logger,
           options: { repositoryUrl },
           branch: { type: BranchType.prerelease },
-          package: { name: "pkg" },
+          package: {
+            uniqueName: "npm/pkg",
+          },
           nextRelease,
           getPluginContext,
           setPluginContext,
@@ -154,7 +158,9 @@ describe("addChannels", () => {
           logger,
           options: { repositoryUrl },
           branch: { type: BranchType.main, main: true },
-          package: { name: "pkg" },
+          package: {
+            uniqueName: "npm/pkg",
+          },
           nextRelease,
           getPluginContext,
           setPluginContext,
@@ -186,7 +192,9 @@ describe("addChannels", () => {
           logger,
           options: { repositoryUrl },
           branch: { type: BranchType.main, main: true },
-          package: { name: "pkg" },
+          package: {
+            uniqueName: "npm/pkg",
+          },
           nextRelease,
           getPluginContext,
           setPluginContext,

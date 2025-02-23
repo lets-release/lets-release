@@ -126,7 +126,7 @@ export const generateNotes: StepFunction<
     [pkg.path, repositoryRoot],
     cwd,
   );
-  const parsedCommits = parseCommits(commits, {
+  const parsedCommits = parseCommits(pkg, commits, {
     referenceActions,
     issuePrefixes,
     ...preset.parser,
@@ -170,8 +170,7 @@ export const generateNotes: StepFunction<
     currentTag: string;
   };
 
-  const namespace = `${name}:${pkg.name}`;
-
+  const namespace = `${name}:${pkg.uniqueName}`;
   debug(namespace)(`version: ${changelogContext.version}`);
   debug(namespace)(`host: ${changelogContext.host}`);
   debug(namespace)(`owner: ${changelogContext.owner}`);

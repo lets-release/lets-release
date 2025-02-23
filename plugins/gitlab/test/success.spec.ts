@@ -185,7 +185,9 @@ describe("success", () => {
           options: { repositoryUrl },
           branch: { type: BranchType.main, main: true, name: "main" },
           commits,
-          package: { name: "pkg" },
+          package: {
+            uniqueName: "npm/pkg",
+          },
           nextRelease,
           releases: [],
           getPluginContext,
@@ -219,7 +221,9 @@ describe("success", () => {
           options: { repositoryUrl },
           branch: { type: BranchType.main, main: true, name: "main" },
           commits: [],
-          package: { name: "pkg" },
+          package: {
+            uniqueName: "npm/pkg",
+          },
           nextRelease,
           releases: [
             {

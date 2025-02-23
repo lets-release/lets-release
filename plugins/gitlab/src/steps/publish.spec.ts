@@ -25,7 +25,9 @@ const context = {
   repositoryRoot: "/path/to/repo",
   nextRelease: { tag, hash: "abc123", notes: "Release notes" },
   logger: { log, warn, error },
-  package: { name: "pkg" },
+  package: {
+    uniqueName: "npm/pkg",
+  },
 } as unknown as PublishContext;
 const options = {};
 const show = vi.fn();
@@ -91,7 +93,7 @@ describe("publish", () => {
     const result = await publish(context, options);
 
     expect(warn).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "Skip as it is not the main package",
     });
     expect(result).toBeUndefined();
@@ -101,7 +103,7 @@ describe("publish", () => {
     const result = await publish(context, options);
 
     expect(warn).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: `Skip publishing as tag ${tag} is already published`,
     });
     expect(result).toBeUndefined();
@@ -153,7 +155,7 @@ describe("publish", () => {
       },
     });
     expect(log).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "Published GitLab release: v1.0.0",
     });
   });
@@ -179,23 +181,23 @@ describe("publish", () => {
       },
     });
     expect(log).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "Published GitLab release: v1.0.0",
     });
   });
 
   it("should handle errors when creating a release", async () => {
-    const error = new Error("API error");
+    const e = new Error("API error");
     show.mockRejectedValueOnce(gitlabError);
-    create.mockRejectedValue(error);
+    create.mockRejectedValue(e);
 
-    await expect(publish(context, options)).rejects.toThrow(error);
+    await expect(publish(context, options)).rejects.toThrow(e);
 
-    expect(context.logger.error).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+    expect(error).toHaveBeenCalledWith({
+      prefix: "[npm/pkg]",
       message: [
         "An error occurred while making a request to the GitLab release API:\n%O",
-        error,
+        e,
       ],
     });
   });

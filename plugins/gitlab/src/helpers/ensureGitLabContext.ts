@@ -27,9 +27,7 @@ export async function ensureGitLabContext<T extends Step>(
   }
 
   const {
-    logger,
     options: { dryRun },
-    package: pkg,
   } = rest as unknown as StepContext<Step.fail>;
 
   const resolvedOptions = await resolveGitLabOptions(rest, options);
@@ -45,17 +43,10 @@ export async function ensureGitLabContext<T extends Step>(
     jobToken,
   });
 
-  debug(name)(`url: ${url}`);
-  debug(name)(`owner: ${owner}`);
-  debug(name)(`repo: ${repo}`);
-
   const errors = [];
 
   if (token || oauthToken || jobToken) {
-    logger.log({
-      prefix: pkg ? `[${pkg.name}]` : undefined,
-      message: `Verify GitLab authentication (${url})`,
-    });
+    debug(name)(`Verify GitLab authentication (${url})`);
 
     try {
       const {

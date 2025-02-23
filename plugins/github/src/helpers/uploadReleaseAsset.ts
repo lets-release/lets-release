@@ -26,7 +26,7 @@ export async function uploadReleaseAsset(
 
     if (!stats.isFile()) {
       logger.error({
-        prefix: `[${pkg.name}]`,
+        prefix: `[${pkg.uniqueName}]`,
         message: `The asset ${filePath} is not a file, and will be ignored.`,
       });
 
@@ -48,8 +48,9 @@ export async function uploadReleaseAsset(
       },
     };
 
-    debug(name)(`file path: ${filePath}`);
-    debug(name)(`file name: ${fileName}`);
+    const namespace = `${name}:${pkg.uniqueName}`;
+    debug(namespace)(`file path: ${filePath}`);
+    debug(namespace)(`file name: ${fileName}`);
 
     const {
       data: { browser_download_url: downloadUrl },
@@ -63,12 +64,12 @@ export async function uploadReleaseAsset(
     });
 
     logger.log({
-      prefix: `[${pkg.name}]`,
+      prefix: `[${pkg.uniqueName}]`,
       message: `Published file ${downloadUrl}`,
     });
   } catch {
     logger.error({
-      prefix: `[${pkg.name}]`,
+      prefix: `[${pkg.uniqueName}]`,
       message: `The asset ${filePath} cannot be read, and will be ignored.`,
     });
   }

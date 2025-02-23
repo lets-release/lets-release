@@ -49,10 +49,11 @@ export const success: StepFunction<Step.success, GitHubOptions> = async (
   // In case the repo changed name, get the new `repo`/`owner` as the search API will not follow redirects
   const { owner, repo } = await getRepoInfo(octokit, repositoryUrl);
 
+  const namespace = `${name}:${context.package.uniqueName}`;
   const errors: unknown[] = [];
 
   if (commits.length === 0) {
-    debug(name)("No commits found in release");
+    debug(namespace)("No commits found in release");
   } else if (commentOnSuccess !== false) {
     const shas = commits.map(({ hash }) => hash);
 
@@ -71,7 +72,7 @@ export const success: StepFunction<Step.success, GitHubOptions> = async (
         await filterPullRequest(octokit, owner, repo, shas, pullRequest),
     );
 
-    debug(name)(
+    debug(namespace)(
       "found pull requests: %O",
       prs.map((pr) => pr.number),
     );
@@ -105,7 +106,7 @@ export const success: StepFunction<Step.success, GitHubOptions> = async (
     );
 
     if (issues.length > 0) {
-      debug(name)(
+      debug(namespace)(
         "found related issues via PRs and Commits: %O",
         issues.map(({ number }) => number),
       );

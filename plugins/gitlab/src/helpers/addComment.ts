@@ -34,7 +34,7 @@ export async function addComment(
     !(await commentOnSuccess({ ...context, issue }))
   ) {
     logger.log({
-      prefix: `[${pkg.name}]`,
+      prefix: `[${pkg.uniqueName}]`,
       message: `Skip commenting to ${issueOrMR} #${iid}.`,
     });
 
@@ -60,7 +60,7 @@ export async function addComment(
       : gitlab.IssueNotes.create(project_id, iid, body));
 
     logger.log({
-      prefix: `[${pkg.name}]`,
+      prefix: `[${pkg.uniqueName}]`,
       message: `Added comment to ${issueOrMR} #${iid}`,
     });
 
@@ -76,7 +76,7 @@ export async function addComment(
           } as never));
 
       logger.log({
-        prefix: `[${pkg.name}]`,
+        prefix: `[${pkg.uniqueName}]`,
         message: [`Added labels %O to ${issueOrMR} #${iid}`, labels],
       });
     }
@@ -86,7 +86,7 @@ export async function addComment(
       error.cause?.response.status === 403
     ) {
       logger.error({
-        prefix: `[${pkg.name}]`,
+        prefix: `[${pkg.uniqueName}]`,
         message: `Not allowed to add a comment to the ${issueOrMR} #${iid}.`,
       });
     } else if (
@@ -94,14 +94,14 @@ export async function addComment(
       error.cause?.response.status === 404
     ) {
       logger.error({
-        prefix: `[${pkg.name}]`,
+        prefix: `[${pkg.uniqueName}]`,
         message: `Failed to add a comment to the ${issueOrMR} #${iid} as it doesn't exist.`,
       });
     } else {
       errors.push(error);
 
       logger.error({
-        prefix: `[${pkg.name}]`,
+        prefix: `[${pkg.uniqueName}]`,
         message: `Failed to add a comment to the ${issueOrMR} #${iid}.`,
       });
     }

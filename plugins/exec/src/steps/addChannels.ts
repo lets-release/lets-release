@@ -22,9 +22,11 @@ export const addChannels: StepFunction<Step.addChannels, ExecOptions> = async (
   try {
     return stdout ? JSON.parse(stdout) : undefined;
   } catch (error) {
-    debug(name)(stdout);
-    debug(name)(error);
-    debug(name)(
+    const namespace = `${name}:${context.package.uniqueName}`;
+
+    debug(namespace)(stdout);
+    debug(namespace)(error);
+    debug(namespace)(
       `The command ${options.addChannelsCmd} wrote invalid JSON to stdout. The stdout content will be ignored.`,
     );
   }

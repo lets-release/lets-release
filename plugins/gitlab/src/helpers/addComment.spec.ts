@@ -11,7 +11,9 @@ const error = vi.fn();
 const tag = "v1.0.0";
 const context = {
   logger: { log, error },
-  package: { name: "pkg" },
+  package: {
+    uniqueName: "npm/pkg",
+  },
   nextRelease: { tag },
   releases: [
     {
@@ -59,7 +61,7 @@ describe("addComment", () => {
     await addComment(context, gitlab, { ...options, commentOnSuccess }, issue);
 
     expect(log).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "Skip commenting to issue #1.",
     });
     expect(createIssueNotes).not.toHaveBeenCalled();
@@ -76,7 +78,7 @@ describe("addComment", () => {
       ),
     );
     expect(log).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "Added comment to issue #1",
     });
   });
@@ -91,7 +93,7 @@ describe("addComment", () => {
 
     expect(createMRNotes).toHaveBeenCalledWith(1, 1, "message");
     expect(log).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "Added comment to MR #1",
     });
   });
@@ -110,7 +112,7 @@ describe("addComment", () => {
       add_labels: "label1,label2",
     });
     expect(log).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: ["Added labels %O to MR #1", ["label1", "label2"]],
     });
   });
@@ -124,7 +126,7 @@ describe("addComment", () => {
       add_labels: "label1,label2",
     });
     expect(log).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: ["Added labels %O to issue #1", ["label1", "label2"]],
     });
   });
@@ -138,7 +140,7 @@ describe("addComment", () => {
     await addComment(context, gitlab, options, issue);
 
     expect(error).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "Not allowed to add a comment to the issue #1.",
     });
   });
@@ -152,7 +154,7 @@ describe("addComment", () => {
     await addComment(context, gitlab, options, issue);
 
     expect(error).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "Failed to add a comment to the issue #1 as it doesn't exist.",
     });
   });
@@ -165,7 +167,7 @@ describe("addComment", () => {
 
     expect(errors).toContain(e);
     expect(error).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "Failed to add a comment to the issue #1.",
     });
   });

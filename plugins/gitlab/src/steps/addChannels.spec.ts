@@ -14,7 +14,9 @@ vi.mock("src/helpers/ensureGitLabContext");
 const log = vi.fn();
 const warn = vi.fn();
 const context = {
-  package: { name: "pkg" },
+  package: {
+    uniqueName: "npm/pkg",
+  },
   nextRelease: { tag: "v1.0.0", notes: "Release notes" },
   logger: { log, warn },
 } as unknown as AddChannelsContext;
@@ -60,7 +62,7 @@ describe("addChannels", () => {
     const result = await addChannels(context, options);
 
     expect(warn).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "Skip as it is not the main package",
     });
     expect(result).toBeUndefined();
@@ -78,7 +80,7 @@ describe("addChannels", () => {
       milestones: ["milestone1"],
     });
     expect(log).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "Updated GitLab release: v1.0.0",
     });
   });
@@ -99,7 +101,7 @@ describe("addChannels", () => {
       milestones: ["milestone1"],
     });
     expect(log).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "Updated GitLab release: v1.0.0",
     });
   });
@@ -122,11 +124,11 @@ describe("addChannels", () => {
       milestones: ["milestone1"],
     });
     expect(log).toHaveBeenNthCalledWith(1, {
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "There is no release for tag v1.0.0, creating a new one",
     });
     expect(log).toHaveBeenNthCalledWith(2, {
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "Published GitLab release: v1.0.0",
     });
   });
@@ -154,11 +156,11 @@ describe("addChannels", () => {
       milestones: ["milestone1"],
     });
     expect(log).toHaveBeenNthCalledWith(1, {
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "There is no release for tag v1.0.0, creating a new one",
     });
     expect(log).toHaveBeenNthCalledWith(2, {
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "Published GitLab release: v1.0.0",
     });
   });

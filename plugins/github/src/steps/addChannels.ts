@@ -29,13 +29,14 @@ export const addChannels: StepFunction<
 
   if (mainPackageOnly && !pkg.main) {
     logger.warn({
-      prefix: `[${pkg.name}]`,
+      prefix: `[${pkg.uniqueName}]`,
       message: `Skip as it is not the main package`,
     });
 
     return;
   }
 
+  const namespace = `${name}:${pkg.uniqueName}`;
   const release = {
     owner,
     repo,
@@ -44,7 +45,7 @@ export const addChannels: StepFunction<
     tag_name: tag,
   };
 
-  debug(name)("release object: %O", release);
+  debug(namespace)("release object: %O", release);
 
   try {
     const {
@@ -55,7 +56,7 @@ export const addChannels: StepFunction<
       tag,
     });
 
-    debug(name)(`release release_id: ${releaseId}`);
+    debug(namespace)(`release release_id: ${releaseId}`);
 
     const {
       data: { html_url: url },
@@ -65,7 +66,7 @@ export const addChannels: StepFunction<
     );
 
     logger.log({
-      prefix: `[${pkg.name}]`,
+      prefix: `[${pkg.uniqueName}]`,
       message: `Updated GitHub release: ${url}`,
     });
 
@@ -73,7 +74,7 @@ export const addChannels: StepFunction<
   } catch (error) {
     if (error instanceof RequestError && error.status === 404) {
       logger.log({
-        prefix: `[${pkg.name}]`,
+        prefix: `[${pkg.uniqueName}]`,
         message: `There is no release for tag ${tag}, creating a new one`,
       });
 
@@ -85,7 +86,7 @@ export const addChannels: StepFunction<
       });
 
       logger.log({
-        prefix: `[${pkg.name}]`,
+        prefix: `[${pkg.uniqueName}]`,
         message: `Published GitHub release: ${url}`,
       });
 

@@ -39,7 +39,7 @@ export async function addComment(
     !(await commentOnSuccess({ ...context, issue }))
   ) {
     logger.log({
-      prefix: `[${pkg.name}]`,
+      prefix: `[${pkg.uniqueName}]`,
       message: `Skip commenting to ${issueOrPR} #${number}.`,
     });
 
@@ -62,7 +62,7 @@ export async function addComment(
   try {
     const comment = { owner, repo, issue_number: number, body };
 
-    debug(name)("create comment: %O", comment);
+    debug(`${name}:${pkg.uniqueName}`)("create comment: %O", comment);
 
     const {
       data: { html_url: url },
@@ -72,7 +72,7 @@ export async function addComment(
     );
 
     logger.log({
-      prefix: `[${pkg.name}]`,
+      prefix: `[${pkg.uniqueName}]`,
       message: `Added comment to ${issueOrPR} #${number}: ${url}`,
     });
 
@@ -90,26 +90,26 @@ export async function addComment(
       );
 
       logger.log({
-        prefix: `[${pkg.name}]`,
+        prefix: `[${pkg.uniqueName}]`,
         message: [`Added labels %O to ${issueOrPR} #${number}`, labels],
       });
     }
   } catch (error) {
     if (error instanceof RequestError && error.status === 403) {
       logger.error({
-        prefix: `[${pkg.name}]`,
+        prefix: `[${pkg.uniqueName}]`,
         message: `Not allowed to add a comment to the ${issueOrPR} #${number}.`,
       });
     } else if (error instanceof RequestError && error.status === 404) {
       logger.error({
-        prefix: `[${pkg.name}]`,
+        prefix: `[${pkg.uniqueName}]`,
         message: `Failed to add a comment to the ${issueOrPR} #${number} as it doesn't exist.`,
       });
     } else {
       errors.push(error);
 
       logger.error({
-        prefix: `[${pkg.name}]`,
+        prefix: `[${pkg.uniqueName}]`,
         message: `Failed to add a comment to the ${issueOrPR} #${number}.`,
       });
     }

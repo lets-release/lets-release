@@ -25,7 +25,9 @@ const context = {
       artifacts: [{ name: "release" }],
     },
   ],
-  package: { name: "pkg" },
+  package: {
+    uniqueName: "npm/pkg",
+  },
 } as unknown as SuccessContext;
 const issue = {
   __typename: "Issue",
@@ -53,7 +55,7 @@ describe("addComment", () => {
 
     expect(commentOnSuccess).toHaveBeenCalled();
     expect(log).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "Skip commenting to issue #1.",
     });
     expect(errors).toEqual([]);
@@ -93,11 +95,11 @@ describe("addComment", () => {
       },
     );
     expect(log).toHaveBeenNthCalledWith(1, {
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "Added comment to issue #1: http://example.com",
     });
     expect(log).toHaveBeenNthCalledWith(2, {
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: ["Added labels %O to issue #1", ["label1", "label2"]],
     });
     expect(errors).toEqual([]);
@@ -144,11 +146,11 @@ describe("addComment", () => {
       },
     );
     expect(log).toHaveBeenNthCalledWith(1, {
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "Added comment to PR #1: http://example.com",
     });
     expect(log).toHaveBeenNthCalledWith(2, {
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: ["Added labels %O to PR #1", ["label1", "label2"]],
     });
     expect(errors).toEqual([]);
@@ -182,7 +184,7 @@ describe("addComment", () => {
     );
 
     expect(error).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "Not allowed to add a comment to the issue #1.",
     });
     expect(errors).toEqual([]);
@@ -216,7 +218,7 @@ describe("addComment", () => {
     );
 
     expect(error).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "Failed to add a comment to the issue #1 as it doesn't exist.",
     });
     expect(errors).toEqual([]);
@@ -240,7 +242,7 @@ describe("addComment", () => {
     );
 
     expect(error).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "Failed to add a comment to the issue #1.",
     });
     expect(errors).toEqual([unknownError]);

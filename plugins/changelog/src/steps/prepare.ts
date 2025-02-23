@@ -25,12 +25,12 @@ export const prepare: StepFunction<Step.prepare, ChangelogOptions> = async (
 
     if (currentFile) {
       logger.log({
-        prefix: `[${pkg.name}]`,
+        prefix: `[${pkg.uniqueName}]`,
         message: `Update ${changelogPath}`,
       });
     } else {
       logger.log({
-        prefix: `[${pkg.name}]`,
+        prefix: `[${pkg.uniqueName}]`,
         message: `Create ${changelogPath}`,
       });
     }

@@ -190,7 +190,12 @@ describe("ensureGitLabContext", () => {
     });
 
     const result = await ensureGitLabContext(
-      { ...context, package: { name: "pkg" } } as AnalyzeCommitsContext,
+      {
+        ...context,
+        package: {
+          uniqueName: "npm/pkg",
+        },
+      } as AnalyzeCommitsContext,
       {},
     );
 

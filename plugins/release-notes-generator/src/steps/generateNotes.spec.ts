@@ -16,12 +16,15 @@ import { generateNotes } from "src/steps/generateNotes";
 
 vi.mock("conventional-changelog-writer", { spy: true });
 
-const cwd = "cwd";
+const cwd = path.resolve(import.meta.dirname, "../../");
 const host = "https://github.com";
 const owner = "owner";
 const repository = "repo";
 const repositoryUrl = `${host}/${owner}/${repository}`;
-const pkg = { name: "test", path: cwd };
+const pkg = {
+  path: cwd,
+  uniqueName: "npm/pkg",
+};
 const repositoryRoot = process.cwd();
 const lastRelease = { tag: "v1.0.0" };
 const nextRelease = { tag: "v2.0.0", version: "2.0.0" };

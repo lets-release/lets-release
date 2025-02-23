@@ -58,7 +58,9 @@ describe("exec", () => {
           stdout,
           stderr,
           logger,
-          package: { name: "pkg" },
+          package: {
+            uniqueName: "npm/pkg",
+          },
         } as unknown as AddChannelsContext,
         {
           cwd: "src",

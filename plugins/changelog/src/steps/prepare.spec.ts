@@ -32,7 +32,10 @@ describe("prepare", () => {
     await prepare(
       {
         logger,
-        package: { path: repositoryRoot },
+        package: {
+          path: repositoryRoot,
+          uniqueName: "npm/pkg",
+        },
         nextRelease,
       } as unknown as PrepareContext,
       options,
@@ -56,7 +59,10 @@ describe("prepare", () => {
     await prepare(
       {
         logger,
-        package: { path: repositoryRoot },
+        package: {
+          path: repositoryRoot,
+          uniqueName: "npm/pkg",
+        },
         nextRelease,
       } as unknown as PrepareContext,
       options,
@@ -84,7 +90,10 @@ describe("prepare", () => {
     await prepare(
       {
         logger,
-        package: { path: repositoryRoot },
+        package: {
+          path: repositoryRoot,
+          uniqueName: "npm/pkg",
+        },
         nextRelease,
       } as unknown as PrepareContext,
       {

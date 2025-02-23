@@ -17,7 +17,8 @@ export function analyzeCommit(
   commit: Omit<ParsedCommit, "rawMsg">,
   releaseRules: ReleaseRule[],
 ): ReleaseType | null | undefined {
-  const namespace = `${name}:${pkg.name}`;
+  const namespace = `${name}:${pkg.uniqueName}`;
+
   let releaseType: ReleaseType | null | undefined;
 
   releaseRules

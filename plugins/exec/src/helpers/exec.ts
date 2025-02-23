@@ -19,7 +19,7 @@ export async function exec<T extends Step>(
   >;
 
   logger.log({
-    prefix: pkg ? `[${pkg.name}]` : undefined,
+    prefix: pkg ? `[${pkg.uniqueName}]` : undefined,
     message: `Call script ${script}`,
   });
 

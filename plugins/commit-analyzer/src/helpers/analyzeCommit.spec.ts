@@ -4,7 +4,7 @@ import { ParsedCommit } from "@lets-release/conventional-changelog";
 import { analyzeCommit } from "src/helpers/analyzeCommit";
 import { ReleaseRule } from "src/schemas/ReleaseRule";
 
-const pkg = { name: "lets-release" } as Package;
+const pkg = { uniqueName: "lets-release" } as Package;
 
 describe("analyzeCommit", () => {
   it("should match breaking change", () => {

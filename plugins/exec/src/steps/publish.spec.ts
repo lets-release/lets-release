@@ -11,6 +11,7 @@ const cwd = process.cwd();
 const env = process.env;
 const stdout = process.stdout;
 const stderr = process.stderr;
+const pkg = { uniqueName: "npm/pkg" };
 
 describe("publish", () => {
   beforeEach(() => {
@@ -20,7 +21,14 @@ describe("publish", () => {
   it("should return undefined if command is not set", async () => {
     await expect(
       publish(
-        { cwd, env, stdout, stderr, logger } as unknown as PublishContext,
+        {
+          cwd,
+          env,
+          stdout,
+          stderr,
+          logger,
+          package: pkg,
+        } as unknown as PublishContext,
         {},
       ),
     ).resolves.toBeUndefined();
@@ -31,7 +39,14 @@ describe("publish", () => {
 
     await expect(
       publish(
-        { cwd, env, stdout, stderr, logger } as unknown as PublishContext,
+        {
+          cwd,
+          env,
+          stdout,
+          stderr,
+          logger,
+          package: pkg,
+        } as unknown as PublishContext,
         {
           publishCmd: "echo ''",
         },
@@ -44,7 +59,14 @@ describe("publish", () => {
 
     await expect(
       publish(
-        { cwd, env, stdout, stderr, logger } as unknown as PublishContext,
+        {
+          cwd,
+          env,
+          stdout,
+          stderr,
+          logger,
+          package: pkg,
+        } as unknown as PublishContext,
         {
           publishCmd: "echo 'Hello World'",
         },
@@ -57,7 +79,14 @@ describe("publish", () => {
 
     await expect(
       publish(
-        { cwd, env, stdout, stderr, logger } as unknown as PublishContext,
+        {
+          cwd,
+          env,
+          stdout,
+          stderr,
+          logger,
+          package: pkg,
+        } as unknown as PublishContext,
         {
           publishCmd: 'echo \'{"channels": ["stable"]}\'',
         },

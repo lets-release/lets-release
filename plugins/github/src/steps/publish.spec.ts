@@ -23,7 +23,9 @@ const repo = "repo";
 const tag = "v1.0.0";
 const context = {
   branch: { name: "main", type: BranchType.main },
-  package: { name: "pkg" },
+  package: {
+    uniqueName: "npm/pkg",
+  },
   nextRelease: { tag },
   logger: { log, warn },
   options: {},
@@ -81,7 +83,7 @@ describe("publish", () => {
     const result = await publish(context, options);
 
     expect(warn).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "Skip as it is not the main package",
     });
     expect(result).toBeUndefined();
@@ -99,7 +101,7 @@ describe("publish", () => {
       },
     );
     expect(warn).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: `Skip publishing as tag ${tag} is already published`,
     });
     expect(result).toBeUndefined();
@@ -178,11 +180,11 @@ describe("publish", () => {
       }),
     );
     expect(log).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "Published GitHub release: release_url",
     });
     expect(log).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "Created GitHub release discussion: discussion_url",
     });
     expect(result).toEqual({
@@ -217,7 +219,7 @@ describe("publish", () => {
       expect.objectContaining({ draft: true, make_latest: "false" }),
     );
     expect(log).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "Created GitHub draft release: draft_url",
     });
     expect(result).toEqual({
@@ -246,11 +248,11 @@ describe("publish", () => {
       }),
     );
     expect(log).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "Published GitHub release: release_url",
     });
     expect(log).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "Created GitHub release discussion: discussion_url",
     });
     expect(result).toEqual({
@@ -291,7 +293,7 @@ describe("publish", () => {
       }),
     );
     expect(log).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "Published GitHub release: release_url",
     });
     expect(result).toEqual({
@@ -330,7 +332,7 @@ describe("publish", () => {
       expect.objectContaining({ draft: true }),
     );
     expect(log).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "Created GitHub draft release: draft_url",
     });
     expect(uploadReleaseAsset).toHaveBeenCalledTimes(2);
@@ -373,11 +375,11 @@ describe("publish", () => {
       expect.objectContaining({ draft: false }),
     );
     expect(log).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "Published GitHub release: release_url",
     });
     expect(log).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "Created GitHub release discussion: discussion_url",
     });
     expect(uploadReleaseAsset).toHaveBeenCalledTimes(2);
@@ -422,7 +424,7 @@ describe("publish", () => {
       expect.objectContaining({ draft: false }),
     );
     expect(log).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "Published GitHub release: release_url",
     });
     expect(uploadReleaseAsset).toHaveBeenCalledTimes(2);

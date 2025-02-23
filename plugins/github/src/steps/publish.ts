@@ -41,7 +41,7 @@ export const publish: StepFunction<Step.publish, GitHubOptions> = async (
 
   if (mainPackageOnly && !pkg.main) {
     logger.warn({
-      prefix: `[${pkg.name}]`,
+      prefix: `[${pkg.uniqueName}]`,
       message: `Skip as it is not the main package`,
     });
 
@@ -57,7 +57,7 @@ export const publish: StepFunction<Step.publish, GitHubOptions> = async (
     });
 
     logger.warn({
-      prefix: `[${pkg.name}]`,
+      prefix: `[${pkg.uniqueName}]`,
       message: `Skip publishing as tag ${tag} is already published`,
     });
 
@@ -68,6 +68,7 @@ export const publish: StepFunction<Step.publish, GitHubOptions> = async (
     }
   }
 
+  const namespace = `${name}:${pkg.uniqueName}`;
   const release = {
     owner,
     repo,
@@ -83,7 +84,7 @@ export const publish: StepFunction<Step.publish, GitHubOptions> = async (
         : ("false" as const),
   };
 
-  debug(name)("release object: %O", release);
+  debug(namespace)("release object: %O", release);
 
   const draftReleaseOptions = { ...release, draft: true };
 
@@ -99,7 +100,7 @@ export const publish: StepFunction<Step.publish, GitHubOptions> = async (
       );
 
       logger.log({
-        prefix: `[${pkg.name}]`,
+        prefix: `[${pkg.uniqueName}]`,
         message: `Created GitHub draft release: ${url}`,
       });
 
@@ -119,13 +120,13 @@ export const publish: StepFunction<Step.publish, GitHubOptions> = async (
     });
 
     logger.log({
-      prefix: `[${pkg.name}]`,
+      prefix: `[${pkg.uniqueName}]`,
       message: `Published GitHub release: ${url}`,
     });
 
     if (discussionCategoryName) {
       logger.log({
-        prefix: `[${pkg.name}]`,
+        prefix: `[${pkg.uniqueName}]`,
         message: `Created GitHub release discussion: ${discussion_url}`,
       });
     }
@@ -145,7 +146,7 @@ export const publish: StepFunction<Step.publish, GitHubOptions> = async (
   // Append assets to the release
   const releaseAssets = await findUniqueReleaseAssets(context, assets);
 
-  debug(name)("release assets: %o", releaseAssets);
+  debug(namespace)("release assets: %o", releaseAssets);
 
   await Promise.all(
     releaseAssets.map(
@@ -157,7 +158,7 @@ export const publish: StepFunction<Step.publish, GitHubOptions> = async (
   // If we want to create a draft we don't need to update the release again
   if (draftRelease) {
     logger.log({
-      prefix: `[${pkg.name}]`,
+      prefix: `[${pkg.uniqueName}]`,
       message: `Created GitHub draft release: ${draftUrl}`,
     });
 
@@ -185,13 +186,13 @@ export const publish: StepFunction<Step.publish, GitHubOptions> = async (
   );
 
   logger.log({
-    prefix: `[${pkg.name}]`,
+    prefix: `[${pkg.uniqueName}]`,
     message: `Published GitHub release: ${url}`,
   });
 
   if (discussionCategoryName) {
     logger.log({
-      prefix: `[${pkg.name}]`,
+      prefix: `[${pkg.uniqueName}]`,
       message: `Created GitHub release discussion: ${discussion_url}`,
     });
   }

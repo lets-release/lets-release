@@ -20,7 +20,9 @@ const context = {
   branch: { type: BranchType.main },
   nextRelease: { tag: "v1.0.0", notes: "Release notes" },
   logger: { log, warn },
-  package: { name: "pkg" },
+  package: {
+    uniqueName: "npm/pkg",
+  },
 } as unknown as AddChannelsContext;
 
 vi.mocked(LetsReleaseOctokit).mockReturnValue(octokit);
@@ -56,7 +58,7 @@ describe("addChannels", () => {
     const result = await addChannels(context, {});
 
     expect(warn).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "Skip as it is not the main package",
     });
     expect(result).toBeUndefined();
@@ -93,7 +95,7 @@ describe("addChannels", () => {
       },
     );
     expect(log).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "Updated GitHub release: https://github.com/release",
     });
     expect(result).toEqual({
@@ -145,11 +147,11 @@ describe("addChannels", () => {
       },
     );
     expect(log).toHaveBeenNthCalledWith(1, {
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "There is no release for tag v1.0.0, creating a new one",
     });
     expect(log).toHaveBeenNthCalledWith(2, {
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "Published GitHub release: https://github.com/new-release",
     });
     expect(result).toEqual({

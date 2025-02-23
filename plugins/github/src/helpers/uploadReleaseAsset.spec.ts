@@ -15,7 +15,9 @@ const error = vi.fn();
 const context = {
   cwd: "/test",
   logger: { log, error },
-  package: { name: "pkg" },
+  package: {
+    uniqueName: "npm/pkg",
+  },
 } as unknown as PublishContext;
 const url = "https://api.github.com/repos/owner/repo/releases/assets";
 const data = Buffer.from("file content");
@@ -48,7 +50,7 @@ describe("uploadReleaseAsset", () => {
       },
     });
     expect(log).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: `Published file ${downloadUrl}`,
     });
   });
@@ -70,7 +72,7 @@ describe("uploadReleaseAsset", () => {
       },
     });
     expect(log).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: `Published file ${downloadUrl}`,
     });
   });
@@ -94,7 +96,7 @@ describe("uploadReleaseAsset", () => {
       },
     });
     expect(log).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: `Published file ${downloadUrl}`,
     });
   });
@@ -108,7 +110,7 @@ describe("uploadReleaseAsset", () => {
     });
 
     expect(error).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "The asset file.txt is not a file, and will be ignored.",
     });
   });
@@ -122,7 +124,7 @@ describe("uploadReleaseAsset", () => {
     });
 
     expect(error).toHaveBeenCalledWith({
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: "The asset file.txt cannot be read, and will be ignored.",
     });
   });

@@ -29,6 +29,7 @@ vi.mock("src/helpers/getAssociatedMergeRequests");
 vi.mock("src/schemas/GitLabOptions");
 
 const context = {
+  package: { uniqueName: "npm/pkg" },
   commits: [{ hash: "123", message: "fix: some bug" }],
   nextRelease: { tag: "v1.0.0", notes: "Release notes" },
   releases: [{ tag: "v1.0.0", artifacts: [{ name: GITLAB_ARTIFACT_NAME }] }],
