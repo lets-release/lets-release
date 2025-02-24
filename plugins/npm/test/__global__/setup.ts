@@ -24,7 +24,7 @@ export default async function setup(project: TestProject) {
   }
 
   project.onTestsRerun(async () => {
-    console.log("[@lets-release/npm]: Restarting Verdaccio...");
+    console.log("[@lets-release/npm]: Restarting Verdaccio");
     await stopVerdaccio();
     await startVerdaccio();
   });
@@ -38,24 +38,24 @@ export default async function setup(project: TestProject) {
     await $`corepack enable`;
   }
 
-  console.log("[@lets-release/npm]: Installing pnpm@8...");
+  console.log("[@lets-release/npm]: Installing pnpm@8");
   await $`corepack install -g pnpm@8`;
-  console.log("[@lets-release/npm]: Installing pnpm@latest...");
+  console.log("[@lets-release/npm]: Installing pnpm@latest");
   await $`corepack install -g pnpm@latest`;
-  console.log("[@lets-release/npm]: Installing yarn@3...");
+  console.log("[@lets-release/npm]: Installing yarn@3");
   await $`corepack install -g yarn@3`;
-  console.log("[@lets-release/npm]: Installing yarn@latest...");
+  console.log("[@lets-release/npm]: Installing yarn@latest");
   await $`corepack install -g yarn@latest`;
-  console.log("[@lets-release/npm]: Installing npm@7...");
+  console.log("[@lets-release/npm]: Installing npm@7");
   await $`corepack install -g npm@7`;
-  console.log("[@lets-release/npm]: Installing npm@latest...");
+  console.log("[@lets-release/npm]: Installing npm@latest");
   await $`corepack install -g npm@latest`;
 
-  console.log("[@lets-release/npm]: Starting Verdaccio...");
+  console.log("[@lets-release/npm]: Starting Verdaccio");
   await startVerdaccio();
 
   return async () => {
-    console.log("[@lets-release/npm]: Stopping Verdaccio...");
+    console.log("[@lets-release/npm]: Stopping Verdaccio");
     await stopVerdaccio();
   };
 }
