@@ -1,7 +1,10 @@
 import path from "node:path";
 
 import { CalVerOptions } from "@lets-release/calver";
-import { BaseContext, VersioningScheme } from "@lets-release/config";
+import {
+  VerifyConditionsContext,
+  VersioningScheme,
+} from "@lets-release/config";
 import { SemVerOptions } from "@lets-release/semver";
 
 import { getCommits } from "src/utils/branch/getCommits";
@@ -26,46 +29,49 @@ describe("getCommits", () => {
     await addFiles(cwd);
     await commit(cwd, "Add file b/file");
 
+    const packages = [
+      {
+        main: true,
+        path: cwd,
+        type: "npm",
+        name: "main",
+        uniqueName: "main",
+        pluginName: "npm",
+        versioning: await SemVerOptions.parseAsync({
+          scheme: VersioningScheme.SemVer,
+        }),
+      },
+      {
+        path: path.resolve(cwd, "a"),
+        type: "npm",
+        name: "a",
+        uniqueName: "a",
+        pluginName: "npm",
+        versioning: await SemVerOptions.parseAsync({
+          scheme: VersioningScheme.SemVer,
+        }),
+      },
+      {
+        path: path.resolve(cwd, "b"),
+        type: "npm",
+        name: "b",
+        uniqueName: "b",
+        pluginName: "npm",
+        versioning: await CalVerOptions.parseAsync({
+          scheme: VersioningScheme.CalVer,
+          format: "YY.MINOR.MICRO",
+        }),
+      },
+    ];
+
     await expect(
       getCommits(
         {
           repositoryRoot: cwd,
           options: {},
-        } as BaseContext,
-        [
-          {
-            main: true,
-            path: cwd,
-            type: "npm",
-            name: "main",
-            uniqueName: "main",
-            pluginName: "npm",
-            versioning: await SemVerOptions.parseAsync({
-              scheme: VersioningScheme.SemVer,
-            }),
-          },
-          {
-            path: path.resolve(cwd, "a"),
-            type: "npm",
-            name: "a",
-            uniqueName: "a",
-            pluginName: "npm",
-            versioning: await SemVerOptions.parseAsync({
-              scheme: VersioningScheme.SemVer,
-            }),
-          },
-          {
-            path: path.resolve(cwd, "b"),
-            type: "npm",
-            name: "b",
-            uniqueName: "b",
-            pluginName: "npm",
-            versioning: await CalVerOptions.parseAsync({
-              scheme: VersioningScheme.CalVer,
-              format: "YY.MINOR.MICRO",
-            }),
-          },
-        ],
+          packages,
+        } as VerifyConditionsContext,
+        packages,
       ),
     ).resolves.toEqual({
       main: [
@@ -100,25 +106,28 @@ describe("getCommits", () => {
     await addFiles(cwd);
     await commit(cwd, "Add file file3");
 
+    const packages = [
+      {
+        main: true,
+        path: cwd,
+        type: "npm",
+        name: "main",
+        uniqueName: "main",
+        pluginName: "npm",
+        versioning: await SemVerOptions.parseAsync({
+          scheme: VersioningScheme.SemVer,
+        }),
+      },
+    ];
+
     await expect(
       getCommits(
         {
           repositoryRoot: cwd,
           options: {},
-        } as BaseContext,
-        [
-          {
-            main: true,
-            path: cwd,
-            type: "npm",
-            name: "main",
-            uniqueName: "main",
-            pluginName: "npm",
-            versioning: await SemVerOptions.parseAsync({
-              scheme: VersioningScheme.SemVer,
-            }),
-          },
-        ],
+          packages,
+        } as VerifyConditionsContext,
+        packages,
         hash,
       ),
     ).resolves.toEqual({
@@ -144,25 +153,28 @@ describe("getCommits", () => {
     await addFiles(cwd);
     await commit(cwd, "Add file file3");
 
+    const packages = [
+      {
+        main: true,
+        path: cwd,
+        type: "npm",
+        name: "main",
+        uniqueName: "main",
+        pluginName: "npm",
+        versioning: await SemVerOptions.parseAsync({
+          scheme: VersioningScheme.SemVer,
+        }),
+      },
+    ];
+
     await expect(
       getCommits(
         {
           repositoryRoot: cwd,
           options: {},
-        } as BaseContext,
-        [
-          {
-            main: true,
-            path: cwd,
-            type: "npm",
-            name: "main",
-            uniqueName: "main",
-            pluginName: "npm",
-            versioning: await SemVerOptions.parseAsync({
-              scheme: VersioningScheme.SemVer,
-            }),
-          },
-        ],
+          packages,
+        } as VerifyConditionsContext,
+        packages,
         from,
         to,
       ),

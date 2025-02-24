@@ -1,7 +1,10 @@
 import { writeFile } from "node:fs/promises";
 import path from "node:path";
 
-import { BaseContext, VersioningScheme } from "@lets-release/config";
+import {
+  VerifyConditionsContext,
+  VersioningScheme,
+} from "@lets-release/config";
 import { SemVerOptions } from "@lets-release/semver";
 
 import { getCommits } from "src/utils/branch/getCommits";
@@ -26,21 +29,23 @@ describe("addFiles & commit", () => {
 
     await commit("Test commit", { cwd });
 
+    const packages = [
+      {
+        main: true,
+        path: cwd,
+        type: "npm",
+        name: "main",
+        uniqueName: "main",
+        pluginName: "npm",
+        versioning: await SemVerOptions.parseAsync({
+          scheme: VersioningScheme.SemVer,
+        }),
+      },
+    ];
+
     const commits = await getCommits(
-      { repositoryRoot: cwd, options: {} } as BaseContext,
-      [
-        {
-          main: true,
-          path: cwd,
-          type: "npm",
-          name: "main",
-          uniqueName: "main",
-          pluginName: "npm",
-          versioning: await SemVerOptions.parseAsync({
-            scheme: VersioningScheme.SemVer,
-          }),
-        },
-      ],
+      { repositoryRoot: cwd, options: {}, packages } as VerifyConditionsContext,
+      packages,
     );
 
     expect(commits.main).toHaveLength(1);

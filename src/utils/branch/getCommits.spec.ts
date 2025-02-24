@@ -1,7 +1,7 @@
 import {
-  BaseContext,
   Commit,
   Package,
+  VerifyConditionsContext,
   VersioningScheme,
 } from "@lets-release/config";
 import { NormalizedSemVerPrereleaseOptions } from "@lets-release/semver";
@@ -13,11 +13,6 @@ import { getLogs } from "src/utils/git/getLogs";
 vi.mock("src/utils/git/getCommittedFiles");
 vi.mock("src/utils/git/getLogs");
 
-const context = {
-  env: process.env,
-  repositoryRoot: "/path/to/repo",
-  options: {},
-} as BaseContext;
 const prerelease: NormalizedSemVerPrereleaseOptions = {
   initialNumber: 1,
   ignoreZeroNumber: true,
@@ -50,6 +45,27 @@ const packages: Package[] = [
     },
   },
 ];
+const allPackages: Package[] = [
+  ...packages,
+  {
+    path: "/path/to/repo/c",
+    type: "npm",
+    name: "c",
+    uniqueName: "c",
+    pluginName: "plugin",
+    versioning: {
+      scheme: VersioningScheme.SemVer,
+      initialVersion: "1.0.0",
+      prerelease,
+    },
+  },
+];
+const context = {
+  env: process.env,
+  repositoryRoot: "/path/to/repo",
+  options: {},
+  packages,
+} as VerifyConditionsContext;
 
 vi.mocked(getLogs).mockResolvedValue([
   { hash: "a" },
@@ -72,7 +88,7 @@ vi.mocked(getCommittedFiles).mockImplementation(async (hash) => {
 
 describe("getCommits", () => {
   it("should retrieve all commits if no `from` is provided", async () => {
-    await expect(getCommits(context, packages)).resolves.toEqual({
+    await expect(getCommits(context, allPackages)).resolves.toEqual({
       a: [
         {
           hash: "a",
@@ -87,7 +103,7 @@ describe("getCommits", () => {
   });
 
   it("should retrieve commits from the provided `from` commit", async () => {
-    await expect(getCommits(context, packages, "from")).resolves.toEqual({
+    await expect(getCommits(context, allPackages, "from")).resolves.toEqual({
       a: [
         {
           hash: "a",
@@ -109,8 +125,8 @@ describe("getCommits", () => {
           options: {
             sharedWorkspaceFiles: ["file"],
           },
-        } as unknown as BaseContext,
-        packages,
+        } as unknown as VerifyConditionsContext,
+        allPackages,
         "from",
       ),
     ).resolves.toEqual({

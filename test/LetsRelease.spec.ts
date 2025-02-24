@@ -4,7 +4,6 @@ import { WritableStreamBuffer } from "stream-buffers";
 import { ZodError } from "zod";
 
 import {
-  BaseContext,
   BranchType,
   Context,
   Options,
@@ -12,6 +11,7 @@ import {
   ReleaseType,
   Step,
   StepFunction,
+  VerifyConditionsContext,
 } from "@lets-release/config";
 
 import { SECRET_REPLACEMENT } from "src/constants/SECRET_REPLACEMENT";
@@ -410,16 +410,21 @@ describe("LetsRelease", () => {
       {},
     );
 
+    const pkgs = [
+      {
+        path: cwd,
+        type: "npm",
+        name: "main",
+        uniqueName: "main",
+      },
+    ] as Package[];
     const commits = await getCommits(
-      { repositoryRoot: cwd, options: {} } as BaseContext,
-      [
-        {
-          path: cwd,
-          type: "npm",
-          name: "main",
-          uniqueName: "main",
-        },
-      ] as Package[],
+      {
+        repositoryRoot: cwd,
+        options: {},
+        packages: pkgs,
+      } as VerifyConditionsContext,
+      packages,
     );
     const baseAddChannelsContext = {
       ...verifyConditionsContext,
@@ -2245,16 +2250,17 @@ describe("LetsRelease", () => {
       } as unknown as Context),
     ).resolves.toEqual([]);
 
+    const packages = [
+      {
+        path: cwd,
+        type: "npm",
+        name: "main",
+        uniqueName: "main",
+      },
+    ] as Package[];
     const commits = await getCommits(
-      { repositoryRoot: cwd, options: {} } as BaseContext,
-      [
-        {
-          path: cwd,
-          type: "npm",
-          name: "main",
-          uniqueName: "main",
-        },
-      ] as Package[],
+      { repositoryRoot: cwd, options: {}, packages } as VerifyConditionsContext,
+      packages,
     );
 
     expect(analyzeCommits).toHaveBeenCalledTimes(1);

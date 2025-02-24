@@ -1,7 +1,10 @@
 import path from "node:path";
 
 import { CalVerOptions } from "@lets-release/calver";
-import { BaseContext, VersioningScheme } from "@lets-release/config";
+import {
+  VerifyConditionsContext,
+  VersioningScheme,
+} from "@lets-release/config";
 import { SemVerOptions } from "@lets-release/semver";
 
 import { getCommits } from "src/utils/branch/getCommits";
@@ -33,46 +36,49 @@ describe("pushBranch", () => {
 
     const repositoryRoot = await cloneRepo(url, "main");
 
+    const packages = [
+      {
+        main: true,
+        path: repositoryRoot,
+        type: "npm",
+        name: "main",
+        uniqueName: "main",
+        pluginName: "npm",
+        versioning: await SemVerOptions.parseAsync({
+          scheme: VersioningScheme.SemVer,
+        }),
+      },
+      {
+        path: path.resolve(repositoryRoot, "a"),
+        type: "npm",
+        name: "a",
+        uniqueName: "a",
+        pluginName: "npm",
+        versioning: await SemVerOptions.parseAsync({
+          scheme: VersioningScheme.SemVer,
+        }),
+      },
+      {
+        path: path.resolve(repositoryRoot, "b"),
+        type: "npm",
+        name: "b",
+        uniqueName: "b",
+        pluginName: "npm",
+        versioning: await CalVerOptions.parseAsync({
+          scheme: VersioningScheme.CalVer,
+          format: "YY.MINOR.MICRO",
+        }),
+      },
+    ];
+
     await expect(
       getCommits(
         {
           repositoryRoot,
           options: {},
-        } as BaseContext,
-        [
-          {
-            main: true,
-            path: repositoryRoot,
-            type: "npm",
-            name: "main",
-            uniqueName: "main",
-            pluginName: "npm",
-            versioning: await SemVerOptions.parseAsync({
-              scheme: VersioningScheme.SemVer,
-            }),
-          },
-          {
-            path: path.resolve(repositoryRoot, "a"),
-            type: "npm",
-            name: "a",
-            uniqueName: "a",
-            pluginName: "npm",
-            versioning: await SemVerOptions.parseAsync({
-              scheme: VersioningScheme.SemVer,
-            }),
-          },
-          {
-            path: path.resolve(repositoryRoot, "b"),
-            type: "npm",
-            name: "b",
-            uniqueName: "b",
-            pluginName: "npm",
-            versioning: await CalVerOptions.parseAsync({
-              scheme: VersioningScheme.CalVer,
-              format: "YY.MINOR.MICRO",
-            }),
-          },
-        ],
+          packages,
+        } as VerifyConditionsContext,
+        packages,
       ),
     ).resolves.toEqual({
       main: [

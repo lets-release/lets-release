@@ -378,6 +378,7 @@ export class LetsRelease {
             async (index, stepPipelines, packages) =>
               await this.handleMergedReleases(
                 repoAuthUrl,
+                flattenPackages,
                 index,
                 stepPipelines,
                 {
@@ -396,7 +397,7 @@ export class LetsRelease {
       packages,
       (current, prev) => ({ ...prev, ...current }),
       async (index, stepPipelines, packages) =>
-        await this.makeReleases(index, stepPipelines, {
+        await this.makeReleases(flattenPackages, index, stepPipelines, {
           ...context,
           packageOptions: context.options.packages[index],
           packages,
@@ -682,6 +683,7 @@ export class LetsRelease {
 
   private async handleMergedReleases(
     repoAuthUrl: string,
+    allPackages: Package[],
     index: number,
     stepPipelines: StepPipelines,
     context: PartialNormalizedStepContext<Step.verifyConditions>,
@@ -730,7 +732,7 @@ export class LetsRelease {
 
         const commits = await getCommits(
           context,
-          packages,
+          allPackages,
           lastRelease?.hash,
           nextRelease.hash,
         );
@@ -837,6 +839,7 @@ export class LetsRelease {
   }
 
   private async makeReleases(
+    allPackages: Package[],
     index: number,
     stepPipelines: StepPipelines,
     context: PartialNormalizedStepContext<Step.verifyConditions>,
@@ -884,7 +887,11 @@ export class LetsRelease {
               hash: await getTagHash(last.tag, { cwd: repositoryRoot, env }),
             }
           : undefined;
-        const commits = await getCommits(context, packages, lastRelease?.hash);
+        const commits = await getCommits(
+          context,
+          allPackages,
+          lastRelease?.hash,
+        );
         const normalizedContext: NormalizedStepContext<Step.analyzeCommits> =
           this.normalizeContext<Step.analyzeCommits>(
             {

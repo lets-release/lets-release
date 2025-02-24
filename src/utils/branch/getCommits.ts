@@ -3,7 +3,7 @@ import path from "node:path";
 import debug from "debug";
 import { uniq } from "lodash-es";
 
-import { BaseContext, Commit, Package } from "@lets-release/config";
+import { Commit, Package, VerifyConditionsContext } from "@lets-release/config";
 
 import { name } from "src/program";
 import { getMatchFiles } from "src/utils/getMatchFiles";
@@ -16,8 +16,16 @@ const namespace = `${name}:utils.branch.getCommits`;
  * Retrieve the list of commits on the current branch since the commit sha associated with the last release, or all the commits of the current branch if there is no last released version.
  */
 export async function getCommits(
-  { env, repositoryRoot, options: { sharedWorkspaceFiles = [] } }: BaseContext,
-  packages: Package[],
+  {
+    env,
+    repositoryRoot,
+    options: { sharedWorkspaceFiles = [] },
+    packages,
+  }: Pick<
+    VerifyConditionsContext,
+    "env" | "repositoryRoot" | "options" | "packages"
+  >,
+  allPackages: Package[],
   from?: string,
   to = "HEAD",
 ): Promise<Partial<Record<string, Commit[]>>> {
@@ -42,7 +50,7 @@ export async function getCommits(
     ),
   );
 
-  const pkgPaths = new Set(packages.map(({ path }) => path));
+  const pkgPaths = new Set(allPackages.map(({ path }) => path));
 
   return Object.fromEntries(
     packages.map((pkg) => [
