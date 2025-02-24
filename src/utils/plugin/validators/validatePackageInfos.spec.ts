@@ -36,6 +36,7 @@ describe("validatePackageInfos", () => {
       validatePackageInfos({ repositoryRoot } as FindPackagesContext, "test", [
         {
           path: "/root/a",
+          type: "npm",
           name: "a",
         },
       ]),
@@ -47,6 +48,7 @@ describe("validatePackageInfos", () => {
       validatePackageInfos({ repositoryRoot } as FindPackagesContext, "test", [
         {
           path: "a",
+          type: "npm",
           name: "a",
         },
       ]),
@@ -60,6 +62,7 @@ describe("validatePackageInfos", () => {
       validatePackageInfos({ repositoryRoot } as FindPackagesContext, "test", [
         {
           path: "/root/a",
+          type: "npm",
           name: "a",
         },
       ]),
@@ -77,6 +80,7 @@ describe("validatePackageInfos", () => {
       validatePackageInfos({ repositoryRoot } as FindPackagesContext, "test", [
         {
           path: "/root/a/package.json",
+          type: "npm",
           name: "a",
         },
       ]),
@@ -88,6 +92,7 @@ describe("validatePackageInfos", () => {
       validatePackageInfos({ repositoryRoot } as FindPackagesContext, "test", [
         {
           path: "/test/a",
+          type: "npm",
           name: "a",
         },
       ]),

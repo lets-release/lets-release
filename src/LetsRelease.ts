@@ -260,12 +260,12 @@ export class LetsRelease {
     const {
       env,
       stderr,
-      options: { dryRun, releaseCommit },
+      options: { dryRun, refSeparator, releaseCommit, mainPackage },
       logger,
       repositoryRoot,
     } = baseContext;
 
-    const packages = await this.runGroupWorkflows(
+    const rawPkgs = await this.runGroupWorkflows(
       { stderr, logger },
       stepPipelinesList,
       async (index, stepPipelines) =>
@@ -280,10 +280,29 @@ export class LetsRelease {
           ),
         )) ?? [],
     );
+    const flattenRawPkgs = rawPkgs.flat();
+    const packages = rawPkgs.map((list) =>
+      list.map<Package>(({ type, name, ...rest }) => {
+        const uniqueName =
+          flattenRawPkgs.filter((pkg) => pkg.name === name).length > 1
+            ? `${type}${refSeparator}${name}`
+            : name;
 
+        return {
+          ...rest,
+          ...((mainPackage && uniqueName === mainPackage) ||
+          flattenRawPkgs.length === 1
+            ? { main: true }
+            : {}),
+          type,
+          name,
+          uniqueName,
+        };
+      }),
+    );
     const flattenPackages = packages.flat();
     const duplicates = flattenPackages
-      .map(({ name }) => name)
+      .map(({ uniqueName }) => uniqueName)
       .toSorted()
       .filter(
         (_, idx, array) =>
@@ -292,10 +311,6 @@ export class LetsRelease {
 
     if (duplicates.length > 0) {
       throw new DuplicatePackagesError(duplicates);
-    }
-
-    if (flattenPackages.length === 1) {
-      flattenPackages[0].main = true;
     }
 
     const branches = await getBranches(
@@ -333,17 +348,19 @@ export class LetsRelease {
       branch: currentBranch,
     };
 
-    await this.runGroupWorkflows(
+    await this.runRecursiveWorkflows(
       { stderr, logger },
       stepPipelinesList,
-      async (index, stepPipelines) =>
+      packages,
+      (current) => current,
+      async (index, stepPipelines, packages) =>
         await stepPipelines.verifyConditions?.(
           stepPipelines,
           this.normalizeContext<Step.verifyConditions>(
             {
               ...context,
               packageOptions: context.options.packages[index],
-              packages: packages[index],
+              packages,
             },
             index,
           ),
@@ -353,10 +370,12 @@ export class LetsRelease {
     const mergedReleases =
       currentBranch.type === BranchType.prerelease
         ? []
-        : await this.runGroupWorkflows(
+        : await this.runRecursiveWorkflows<HistoricalRelease[]>(
             { stderr, logger },
             stepPipelinesList,
-            async (index, stepPipelines) =>
+            packages,
+            (current, prev) => [...(prev ?? []), ...current],
+            async (index, stepPipelines, packages) =>
               await this.handleMergedReleases(
                 repoAuthUrl,
                 index,
@@ -364,19 +383,23 @@ export class LetsRelease {
                 {
                   ...context,
                   packageOptions: context.options.packages[index],
-                  packages: packages[index],
+                  packages,
                 },
               ),
           );
 
-    const releasingContexts = await this.runGroupWorkflows(
+    const releasingContexts = await this.runRecursiveWorkflows<
+      Record<string, ReleasingContext>
+    >(
       { stderr, logger },
       stepPipelinesList,
-      async (index, stepPipelines) =>
+      packages,
+      (current, prev) => ({ ...prev, ...current }),
+      async (index, stepPipelines, packages) =>
         await this.makeReleases(index, stepPipelines, {
           ...context,
           packageOptions: context.options.packages[index],
-          packages: packages[index],
+          packages,
         }),
     );
 
@@ -426,10 +449,12 @@ export class LetsRelease {
 
     const hash = await getHeadHash({ cwd: repositoryRoot, env });
 
-    const madeReleases = await this.runGroupWorkflows(
+    const madeReleases = await this.runRecursiveWorkflows<HistoricalRelease[]>(
       { stderr, logger },
       stepPipelinesList,
-      async (index, stepPipelines) =>
+      packages,
+      (current, prev) => [...(prev ?? []), ...current],
+      async (index, stepPipelines, packages) =>
         await this.publishReleases(
           repoAuthUrl,
           index,
@@ -437,7 +462,7 @@ export class LetsRelease {
           {
             ...context,
             packageOptions: context.options.packages[index],
-            packages: packages[index],
+            packages,
           },
           Object.fromEntries(
             Object.entries(releasingContexts[index]).map(([key, value]) => [
@@ -455,6 +480,66 @@ export class LetsRelease {
     );
 
     return [...mergedReleases.flat(), ...madeReleases.flat()];
+  }
+
+  private async runRecursiveWorkflows<T>(
+    { stderr, logger }: Pick<BaseContext, "stderr" | "logger">,
+    stepPipelinesList: StepPipelines[],
+    packages: Package[][],
+    resultHandler: (current: T, prev?: T) => T,
+    workflow: (
+      index: number,
+      stepPipelines: StepPipelines,
+      packages: Package[],
+    ) => Promise<T>,
+  ): Promise<T[]> {
+    const result: T[] = [];
+    const errors: unknown[] = [];
+    const handledPackages = new Set<string>([]);
+
+    while (true) {
+      const unhandledPackages: Package[][] = packages.map((list) =>
+        list.filter(({ type, name, dependencies }) => {
+          if (handledPackages.has(`${type}/${name}`)) {
+            return false;
+          }
+
+          return (
+            !dependencies?.length ||
+            !!dependencies.every(({ type, name }) =>
+              handledPackages.has(`${type}/${name}`),
+            )
+          );
+        }),
+      );
+
+      if (unhandledPackages.flat().length === 0) {
+        break;
+      }
+
+      for (const [index, stepPipelines] of stepPipelinesList.entries()) {
+        try {
+          result[index] = resultHandler(
+            await workflow(index, stepPipelines, unhandledPackages[index]),
+            result[index],
+          );
+        } catch (error) {
+          logErrors({ stderr, logger }, error);
+
+          errors.push(...extractErrors(error));
+        }
+
+        for (const { type, name } of unhandledPackages[index]) {
+          handledPackages.add(`${type}/${name}`);
+        }
+      }
+    }
+
+    if (errors.length > 0) {
+      throw new WorkflowsError(errors);
+    }
+
+    return result;
   }
 
   private async runGroupWorkflows<T>(
@@ -537,22 +622,24 @@ export class LetsRelease {
   private getPluginPackageContext = <T>(
     index: number,
     pluginName: string,
+    packageType: string,
     packageName: string,
   ): T | undefined => {
     return this.pluginPackageContexts[index]?.[
-      `${pluginName}-${packageName}`
+      `${pluginName}-${packageType}:${packageName}`
     ] as T | undefined;
   };
 
   private setPluginPackageContext = <T>(
     index: number,
     pluginName: string,
+    packageType: string,
     packageName: string,
     value: T,
   ) => {
     this.pluginPackageContexts[index] = {
       ...this.pluginPackageContexts[index],
-      [`${pluginName}-${packageName}`]: value,
+      [`${pluginName}-${packageType}:${packageName}`]: value,
     };
   };
 
@@ -566,14 +653,30 @@ export class LetsRelease {
         this.getPluginContext<T>(index, pluginName),
       setPluginContext: <T>(pluginName: string, value: T) =>
         this.setPluginContext<T>(index, pluginName, value),
-      getPluginPackageContext: <T>(pluginName: string, packageName: string) =>
-        this.getPluginPackageContext<T>(index, pluginName, packageName),
+      getPluginPackageContext: <T>(
+        pluginName: string,
+        packageType: string,
+        packageName: string,
+      ) =>
+        this.getPluginPackageContext<T>(
+          index,
+          pluginName,
+          packageType,
+          packageName,
+        ),
       setPluginPackageContext: <T>(
         pluginName: string,
+        packageType: string,
         packageName: string,
         value: T,
       ) =>
-        this.setPluginPackageContext<T>(index, pluginName, packageName, value),
+        this.setPluginPackageContext<T>(
+          index,
+          pluginName,
+          packageType,
+          packageName,
+          value,
+        ),
     } as NormalizedStepContext<T>;
   };
 
@@ -604,14 +707,14 @@ export class LetsRelease {
           branches,
           branch as Parameters<typeof getMergingContexts>[3],
         );
-        const mergingContext = mergingContexts[pkg.name];
+        const mergingContext = mergingContexts[pkg.uniqueName];
 
         if (!mergingContext) {
           return [];
         }
 
         const { lastRelease, currentRelease, nextRelease } = mergingContext;
-        const range = (branch as MaintenanceBranch)?.ranges?.[pkg.name];
+        const range = (branch as MaintenanceBranch)?.ranges?.[pkg.uniqueName];
 
         if (
           range?.mergeMin &&
@@ -636,7 +739,7 @@ export class LetsRelease {
           this.normalizeContext<Step.generateNotes>(
             {
               ...context,
-              commits: commits[pkg.name] ?? [],
+              commits: commits[pkg.uniqueName] ?? [],
               package: pkg,
               lastRelease,
               nextRelease,
@@ -682,16 +785,18 @@ export class LetsRelease {
           artifacts,
         );
 
-        branch.tags[pkg.name] = branch.tags[pkg.name]?.map((tag) => {
-          if (tag.tag !== nextRelease.tag) {
-            return tag;
-          }
+        branch.tags[pkg.uniqueName] = branch.tags[pkg.uniqueName]?.map(
+          (tag) => {
+            if (tag.tag !== nextRelease.tag) {
+              return tag;
+            }
 
-          return {
-            ...tag,
-            artifacts: mergedArtifacts,
-          };
-        });
+            return {
+              ...tag,
+              artifacts: mergedArtifacts,
+            };
+          },
+        );
 
         if (!dryRun) {
           await addNote(
@@ -759,16 +864,16 @@ export class LetsRelease {
       packages,
       async (pkg) => {
         const releases = getReleases(context, branch, [pkg]);
-        const last = releases[pkg.name]?.[0];
+        const last = releases[pkg.uniqueName]?.[0];
 
         if (last) {
           logger.log({
-            prefix: `[${pkg.name}]`,
+            prefix: `[${pkg.uniqueName}]`,
             message: `Found git tag ${last.tag} associated with version ${last.version} on branch ${branch.name}`,
           });
         } else {
           logger.log({
-            prefix: `[${pkg.name}]`,
+            prefix: `[${pkg.uniqueName}]`,
             message: `No git tag version found on branch ${branch.name}`,
           });
         }
@@ -784,7 +889,7 @@ export class LetsRelease {
           this.normalizeContext<Step.analyzeCommits>(
             {
               ...context,
-              commits: commits[pkg.name] ?? [],
+              commits: commits[pkg.uniqueName] ?? [],
               package: pkg,
               lastRelease,
             },
@@ -798,7 +903,7 @@ export class LetsRelease {
 
         if (!type) {
           logger.log({
-            prefix: `[${pkg.name}]`,
+            prefix: `[${pkg.uniqueName}]`,
             message:
               "There are no relevant changes, so no new version is released",
           });
@@ -815,7 +920,7 @@ export class LetsRelease {
         const versionTag = template(tagFormat)({ version });
         const tag = pkg.main
           ? versionTag
-          : `${pkg.name}${refSeparator}${versionTag}`;
+          : `${pkg.uniqueName}${refSeparator}${versionTag}`;
         const nextRelease: NormalizedNextRelease = {
           tag,
           hash,
@@ -847,10 +952,10 @@ export class LetsRelease {
 
         return [
           [
-            pkg.name,
+            pkg.uniqueName,
             {
               lastRelease,
-              commits: commits[pkg.name] ?? [],
+              commits: commits[pkg.uniqueName] ?? [],
               nextRelease: {
                 ...nextRelease,
                 notes,
@@ -884,7 +989,7 @@ export class LetsRelease {
       { stderr, logger },
       packages,
       async (pkg) => {
-        const releasingContext = releasingContexts[pkg.name];
+        const releasingContext = releasingContexts[pkg.uniqueName];
 
         if (!releasingContext) {
           return [];
@@ -894,7 +999,7 @@ export class LetsRelease {
 
         if (dryRun) {
           logger.warn({
-            prefix: `[${pkg.name}]`,
+            prefix: `[${pkg.uniqueName}]`,
             message: `Skip ${nextRelease.tag} tag creation in dry-run mode`,
           });
         } else {
@@ -908,7 +1013,7 @@ export class LetsRelease {
           });
 
           logger.success({
-            prefix: `[${pkg.name}]`,
+            prefix: `[${pkg.uniqueName}]`,
             message: `Created tag ${nextRelease.tag}`,
           });
         }
@@ -972,13 +1077,13 @@ export class LetsRelease {
         });
 
         logger.success({
-          prefix: `[${pkg.name}]`,
+          prefix: `[${pkg.uniqueName}]`,
           message: `Published release ${nextRelease.version} on ${JSON.stringify(nextRelease.channels)} channels`,
         });
 
         if (dryRun && nextRelease.notes) {
           logger.log({
-            prefix: `[${pkg.name}]`,
+            prefix: `[${pkg.uniqueName}]`,
             message: `Release note for version ${nextRelease.version}:`,
           });
 

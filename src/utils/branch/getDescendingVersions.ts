@@ -10,7 +10,7 @@ export function getDescendingVersions(
   branch: Pick<MatchBranchWithTags, "tags">,
   { withPrerelease }: { withPrerelease?: boolean } = {},
 ) {
-  const tags = branch.tags[pkg.name];
+  const tags = branch.tags[pkg.uniqueName];
 
   if (!tags) {
     return [];

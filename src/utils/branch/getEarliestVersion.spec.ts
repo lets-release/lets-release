@@ -9,6 +9,7 @@ describe("getEarliestVersion", () => {
       getEarliestVersion(
         {
           name: "a",
+          uniqueName: "npm/a",
           versioning: {
             scheme: "SemVer",
             prerelease: {
@@ -21,7 +22,7 @@ describe("getEarliestVersion", () => {
         } as Package,
         {
           tags: {
-            a: [
+            "npm/a": [
               {
                 version: "2.6.8",
               },

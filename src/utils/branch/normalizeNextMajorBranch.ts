@@ -24,6 +24,7 @@ export function normalizeNextMajorBranch(
     branch: nextMajor,
     lowerSemVers,
     getLowerBound: (pkg) =>
-      nextBranch?.ranges[pkg.name]?.max ?? main.ranges[pkg.name]?.max,
+      nextBranch?.ranges[pkg.uniqueName]?.max ??
+      main.ranges[pkg.uniqueName]?.max,
   });
 }

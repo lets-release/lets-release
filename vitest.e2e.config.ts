@@ -8,6 +8,7 @@ export default mergeConfig(
     test: {
       name: "e2e",
       testTimeout: 240_000,
+      teardownTimeout: 30_000,
       globalSetup: "./test/__global__/setup.ts",
       include: ["test/**/*.spec.ts"],
     },

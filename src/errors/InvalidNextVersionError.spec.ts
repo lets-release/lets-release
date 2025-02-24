@@ -11,7 +11,7 @@ describe("InvalidNextVersionError", () => {
   it("should be defined", () => {
     const error1 = new InvalidNextVersionError(
       {
-        name: "package",
+        uniqueName: "npm/pkg",
       } as Package,
       {
         min: "1.0.0",
@@ -43,7 +43,7 @@ describe("InvalidNextVersionError", () => {
     );
     const error2 = new InvalidNextVersionError(
       {
-        name: "package",
+        uniqueName: "npm/pkg",
       } as Package,
       {
         min: "1.0.0",
@@ -65,7 +65,7 @@ describe("InvalidNextVersionError", () => {
     );
     const error3 = new InvalidNextVersionError(
       {
-        name: "package",
+        uniqueName: "npm/pkg",
       } as Package,
       {
         min: "1.0.0",
@@ -94,27 +94,27 @@ describe("InvalidNextVersionError", () => {
     );
 
     expect(error1.message).toEqual(
-      expect.stringContaining("The release `3.0.0` of package `package`"),
+      expect.stringContaining("The release `3.0.0` of package `npm/pkg`"),
     );
     expect(error1.details).toEqual(
       expect.stringContaining(
-        "Based on the releases of package `package` published",
+        "Based on the releases of package `npm/pkg` published",
       ),
     );
     expect(error2.message).toEqual(
-      expect.stringContaining("The release `3.0.0` of package `package`"),
+      expect.stringContaining("The release `3.0.0` of package `npm/pkg`"),
     );
     expect(error2.details).toEqual(
       expect.stringContaining(
-        "Based on the releases of package `package` published",
+        "Based on the releases of package `npm/pkg` published",
       ),
     );
     expect(error3.message).toEqual(
-      expect.stringContaining("The release `3.0.0` of package `package`"),
+      expect.stringContaining("The release `3.0.0` of package `npm/pkg`"),
     );
     expect(error3.details).toEqual(
       expect.stringContaining(
-        "Based on the releases of package `package` published",
+        "Based on the releases of package `npm/pkg` published",
       ),
     );
   });

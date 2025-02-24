@@ -10,7 +10,7 @@ describe("InvalidMaintenanceMergeError", () => {
   it("should be defined", () => {
     const error = new InvalidMaintenanceMergeError(
       {
-        name: "package",
+        uniqueName: "npm/pkg",
       } as Package,
       {
         mergeMin: "1.0.0",
@@ -25,7 +25,7 @@ describe("InvalidMaintenanceMergeError", () => {
     );
 
     expect(error.message).toEqual(
-      expect.stringContaining("The release `3.0.0` of package `package`"),
+      expect.stringContaining("The release `3.0.0` of package `npm/pkg`"),
     );
     expect(error.details).toEqual(
       expect.stringContaining(

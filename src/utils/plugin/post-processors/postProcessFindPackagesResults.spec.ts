@@ -17,6 +17,6 @@ describe("postProcessFindPackagesResults", () => {
           undefined,
         ] as NormalizedStepResult<Step.findPackages>[],
       ),
-    ).toEqual([{ name: "main", main: true }, { name: "test" }]);
+    ).toEqual([{ name: "main" }, { name: "test" }]);
   });
 });

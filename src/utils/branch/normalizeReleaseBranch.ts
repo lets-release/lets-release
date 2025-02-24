@@ -49,13 +49,13 @@ export function normalizeReleaseBranch<
   }
 
   const latestSemVers = Object.fromEntries(
-    packages.map(({ name, versioning }) => [
-      name,
+    packages.map(({ uniqueName, versioning }) => [
+      uniqueName,
       versioning.scheme === VersioningScheme.SemVer
         ? getLatestSemVer(
             [
-              ...(branch.tags[name]?.map(({ version }) => version) ?? []),
-              ...(lowerSemVers?.[name] ? [lowerSemVers[name]] : []),
+              ...(branch.tags[uniqueName]?.map(({ version }) => version) ?? []),
+              ...(lowerSemVers?.[uniqueName] ? [lowerSemVers[uniqueName]] : []),
             ],
             versioning.prerelease,
           )
@@ -70,10 +70,10 @@ export function normalizeReleaseBranch<
       ranges: Object.fromEntries(
         packages.map((pkg) => {
           if (pkg.versioning.scheme === VersioningScheme.CalVer) {
-            return [pkg.name, undefined];
+            return [pkg.uniqueName, undefined];
           }
 
-          const latestSemVer = latestSemVers[pkg.name];
+          const latestSemVer = latestSemVers[pkg.uniqueName];
           const lowerBound =
             getLowerBound?.(pkg) ??
             (type === BranchType.main
@@ -103,10 +103,10 @@ export function normalizeReleaseBranch<
             compareSemVers(min, firstNextSemVer, pkg.versioning.prerelease) >= 0
           ) {
             debug(`${name}:utils.branch.normalizeReleaseBranch`)(
-              `Invalid range for ${pkg.name} on branch ${branch.name}`,
+              `Invalid range for ${pkg.uniqueName} on branch ${branch.name}`,
             );
 
-            return [pkg.name, undefined];
+            return [pkg.uniqueName, undefined];
           }
 
           const upperBound = getUpperBound?.(min);
@@ -119,7 +119,7 @@ export function normalizeReleaseBranch<
               : (firstNextSemVer ?? upperBound);
 
           return [
-            pkg.name,
+            pkg.uniqueName,
             {
               min,
               max,

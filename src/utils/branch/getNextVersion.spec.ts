@@ -31,10 +31,10 @@ const branches = {
     name: "main",
     type: BranchType.main,
     ranges: {
-      semver: {
+      "npm/semver": {
         min: "2.0.0",
       },
-      calver: {
+      "npm/calver": {
         min: "2.0.0",
       },
     },
@@ -43,10 +43,10 @@ const branches = {
   maintenance: [
     {
       ranges: {
-        semver: {
+        "npm/semver": {
           min: "1.1.0",
         },
-        calver: {
+        "npm/calver": {
           min: "1.1.0",
         },
       },
@@ -75,6 +75,7 @@ describe("getNextVersion", () => {
     };
     const pkg = {
       name: "semver",
+      uniqueName: "npm/semver",
       versioning,
     };
     const prereleaseBranchCtx = {
@@ -412,6 +413,7 @@ describe("getNextVersion", () => {
     };
     const pkg = {
       name: "calver",
+      uniqueName: "npm/calver",
       versioning,
     };
     const prereleaseBranchCtx = {
@@ -482,7 +484,7 @@ describe("getNextVersion", () => {
               name: "next",
               type: BranchType.next,
               ranges: {
-                calver: {
+                "npm/calver": {
                   min: "1.1.0",
                 },
               },
@@ -504,7 +506,7 @@ describe("getNextVersion", () => {
               name: "next-major",
               type: BranchType.nextMajor,
               ranges: {
-                calver: {
+                "npm/calver": {
                   min: "2.0.0",
                 },
               },

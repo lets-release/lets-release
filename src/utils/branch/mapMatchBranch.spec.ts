@@ -10,16 +10,16 @@ vi.mock("src/utils/git/getBranchTags");
 vi.mock("src/utils/git/getNote");
 
 const tags = [
-  "main/v3.0.0",
+  "npm/main/v3.0.0",
   "v1.0.0",
   "v2.0.0",
-  "package/v2022.3.3",
-  "package/v2022.1.0",
-  "package/v2022.2.0",
+  "npm/pkg/v2022.3.3",
+  "npm/pkg/v2022.1.0",
+  "npm/pkg/v2022.2.0",
   "unknown/v1.2.3",
-  "main/v",
-  "main/vTag",
-  "package/vTag",
+  "npm/main/v",
+  "npm/main/vTag",
+  "npm/pkg/vTag",
 ];
 
 vi.mocked(getBranchTags).mockResolvedValue(tags);
@@ -46,6 +46,7 @@ describe("mapMatchBranch", () => {
           {
             main: true,
             name: "main",
+            uniqueName: "npm/main",
             versioning: {
               scheme: VersioningScheme.SemVer,
               initialVersion: "1.0.0",
@@ -53,7 +54,8 @@ describe("mapMatchBranch", () => {
             },
           },
           {
-            name: "package",
+            name: "pkg",
+            uniqueName: "npm/pkg",
             versioning: {
               scheme: VersioningScheme.CalVer,
               format: "YYYY.MINOR.MICRO",
@@ -66,42 +68,42 @@ describe("mapMatchBranch", () => {
     ).resolves.toEqual({
       name: "main",
       tags: {
-        main: [
+        "npm/main": [
           {
-            package: "main",
-            tag: "main/v3.0.0",
+            package: "npm/main",
+            tag: "npm/main/v3.0.0",
             version: "3.0.0",
             artifacts: [],
           },
           {
-            package: "main",
+            package: "npm/main",
             tag: "v2.0.0",
             version: "2.0.0",
             artifacts: [],
           },
           {
-            package: "main",
+            package: "npm/main",
             tag: "v1.0.0",
             version: "1.0.0",
             artifacts: [],
           },
         ],
-        package: [
+        "npm/pkg": [
           {
-            package: "package",
-            tag: "package/v2022.3.3",
+            package: "npm/pkg",
+            tag: "npm/pkg/v2022.3.3",
             version: "2022.3.3",
             artifacts: [],
           },
           {
-            package: "package",
-            tag: "package/v2022.2.0",
+            package: "npm/pkg",
+            tag: "npm/pkg/v2022.2.0",
             version: "2022.2.0",
             artifacts: [],
           },
           {
-            package: "package",
-            tag: "package/v2022.1.0",
+            package: "npm/pkg",
+            tag: "npm/pkg/v2022.1.0",
             version: "2022.1.0",
             artifacts: [],
           },

@@ -35,7 +35,7 @@ export async function getBranches(
       name,
       ...parseBranchName(
         name,
-        packages.map(({ name }) => name),
+        packages.map(({ uniqueName }) => uniqueName),
       ),
     })),
   );

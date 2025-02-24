@@ -35,8 +35,10 @@ const prerelease: NormalizedSemVerPrereleaseOptions = {
 };
 const packages: Package[] = [
   {
-    name: "a",
     path: "/path/to/repo/a",
+    type: "npm",
+    name: "a",
+    uniqueName: "npm/a",
     pluginName: "plugin",
     versioning: {
       scheme: VersioningScheme.SemVer,
@@ -45,8 +47,10 @@ const packages: Package[] = [
     },
   },
   {
-    name: "b",
     path: "/path/to/repo/b",
+    type: "npm",
+    name: "b",
+    uniqueName: "npm/b",
     pluginName: "plugin",
     versioning: {
       scheme: VersioningScheme.SemVer,
@@ -55,8 +59,10 @@ const packages: Package[] = [
     },
   },
   {
-    name: "c",
     path: "/path/to/repo/c",
+    type: "npm",
+    name: "c",
+    uniqueName: "npm/c",
     pluginName: "plugin",
     versioning: {
       scheme: VersioningScheme.SemVer,
@@ -65,8 +71,10 @@ const packages: Package[] = [
     },
   },
   {
-    name: "d",
     path: "/path/to/repo/d",
+    type: "npm",
+    name: "d",
+    uniqueName: "npm/d",
     pluginName: "plugin",
     versioning: {
       scheme: VersioningScheme.CalVer,
@@ -80,13 +88,13 @@ const main: MainBranch = {
   name: "main",
   channels: { default: [null] },
   ranges: {
-    a: { min: "1.9.0", max: "1.10.0" },
-    b: { min: "1.9.0", max: "1.10.0" },
-    c: { min: "1.0.0" },
-    d: { min: "2022.0.0" },
+    "npm/a": { min: "1.9.0", max: "1.10.0" },
+    "npm/b": { min: "1.9.0", max: "1.10.0" },
+    "npm/c": { min: "1.0.0" },
+    "npm/d": { min: "2022.0.0" },
   },
   tags: {
-    a: [
+    "npm/a": [
       {
         package: "a",
         tag: "v1.0.0",
@@ -120,7 +128,7 @@ const main: MainBranch = {
         artifacts: [{ pluginName: "npm", channels: ["unknown"] }] as Artifact[],
       },
     ],
-    b: [
+    "npm/b": [
       {
         package: "b",
         tag: "v1.10.3",
@@ -128,8 +136,8 @@ const main: MainBranch = {
         artifacts: [{ pluginName: "npm", channels: ["next"] }] as Artifact[],
       },
     ],
-    c: undefined,
-    d: [
+    "npm/c": undefined,
+    "npm/d": [
       {
         package: "d",
         tag: "v2022.0.0",
@@ -158,10 +166,15 @@ const maintenance: MaintenanceBranch = {
   name: "x.1.x",
   channels: { default: ["1.1.x"] },
   ranges: {
-    a: { min: "1.1.3", max: "1.2.0", mergeMin: "1.1.3", mergeMax: "1.2.0" },
-    b: undefined,
-    c: undefined,
-    d: {
+    "npm/a": {
+      min: "1.1.3",
+      max: "1.2.0",
+      mergeMin: "1.1.3",
+      mergeMax: "1.2.0",
+    },
+    "npm/b": undefined,
+    "npm/c": undefined,
+    "npm/d": {
       min: "2022.1.3",
       max: "2022.2.0",
       mergeMin: "2022.1.3",
@@ -169,7 +182,7 @@ const maintenance: MaintenanceBranch = {
     },
   },
   tags: {
-    a: [
+    "npm/a": [
       {
         package: "a",
         tag: "v1.1.2",
@@ -189,9 +202,9 @@ const maintenance: MaintenanceBranch = {
         artifacts: [{ pluginName: "npm", channels: ["1.3.x"] }] as Artifact[],
       },
     ],
-    b: undefined,
-    c: undefined,
-    d: [
+    "npm/b": undefined,
+    "npm/c": undefined,
+    "npm/d": [
       {
         package: "d",
         tag: "v2022.1.2",
@@ -220,7 +233,7 @@ const branches: Branches = {
     name: "next",
     channels: { default: ["next"] },
     ranges: {
-      a: { min: "1.10.0", max: "2.0.0" },
+      "npm/a": { min: "1.10.0", max: "2.0.0" },
     },
     tags: {},
   },
@@ -229,7 +242,7 @@ const branches: Branches = {
     name: "next",
     channels: { default: ["next-major"] },
     ranges: {
-      a: { min: "2.0.0" },
+      "npm/a": { min: "2.0.0" },
     },
     tags: {},
   },
@@ -247,10 +260,15 @@ const branches: Branches = {
       name: "x.2.x",
       channels: { default: ["1.2.x"] },
       ranges: {
-        a: { min: "1.2.3", max: "1.3.0", mergeMin: "1.2.3", mergeMax: "1.3.0" },
-        b: undefined,
-        c: undefined,
-        d: {
+        "npm/a": {
+          min: "1.2.3",
+          max: "1.3.0",
+          mergeMin: "1.2.3",
+          mergeMax: "1.3.0",
+        },
+        "npm/b": undefined,
+        "npm/c": undefined,
+        "npm/d": {
           min: "2022.2.3",
           max: "2022.3.0",
           mergeMin: "2022.2.3",
@@ -264,10 +282,15 @@ const branches: Branches = {
       name: "x.3.x",
       channels: { default: ["1.3.x"] },
       ranges: {
-        a: { min: "1.3.3", max: "1.4.0", mergeMin: "1.3.3", mergeMax: "1.4.0" },
-        b: undefined,
-        c: undefined,
-        d: {
+        "npm/a": {
+          min: "1.3.3",
+          max: "1.4.0",
+          mergeMin: "1.3.3",
+          mergeMax: "1.4.0",
+        },
+        "npm/b": undefined,
+        "npm/c": undefined,
+        "npm/d": {
           min: "2022.3.3",
           max: "2022.4.0",
           mergeMin: "2022.3.3",
@@ -297,7 +320,7 @@ describe("getMergingContexts", () => {
     await expect(
       getMergingContexts(context, packages, branches, maintenance),
     ).resolves.toEqual({
-      a: {
+      "npm/a": {
         lastRelease: undefined,
         currentRelease: {
           version: "1.3.3",
@@ -312,7 +335,7 @@ describe("getMergingContexts", () => {
           hash: "hash",
         },
       },
-      d: {
+      "npm/d": {
         lastRelease: undefined,
         currentRelease: {
           version: "2022.3.3",
@@ -342,16 +365,16 @@ describe("getMergingContexts", () => {
     } as VersionTag;
 
     vi.mocked(getReleases).mockReturnValue({
-      a: [aLastRelease],
-      b: [bLastRelease],
-      c: [],
-      d: [dLastRelease],
+      "npm/a": [aLastRelease],
+      "npm/b": [bLastRelease],
+      "npm/c": [],
+      "npm/d": [dLastRelease],
     });
 
     await expect(
       getMergingContexts(context, packages, branches, main),
     ).resolves.toEqual({
-      a: {
+      "npm/a": {
         lastRelease: { ...aLastRelease, hash },
         currentRelease: {
           version: "2.0.3",
@@ -366,7 +389,7 @@ describe("getMergingContexts", () => {
           hash: "hash",
         },
       },
-      d: {
+      "npm/d": {
         lastRelease: { ...dLastRelease, hash },
         currentRelease: {
           version: "2022.10.3",

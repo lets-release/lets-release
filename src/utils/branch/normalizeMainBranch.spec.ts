@@ -17,8 +17,10 @@ const prerelease: NormalizedSemVerPrereleaseOptions = {
 };
 const pkgs: Package[] = [
   {
-    name: "a",
     path: "/path/to/a",
+    type: "npm",
+    name: "a",
+    uniqueName: "a",
     pluginName: "npm",
     versioning: {
       scheme: VersioningScheme.SemVer,
@@ -27,8 +29,10 @@ const pkgs: Package[] = [
     },
   },
   {
-    name: "b",
     path: "/path/to/b",
+    type: "npm",
+    name: "b",
+    uniqueName: "b",
     pluginName: "npm",
     versioning: {
       scheme: VersioningScheme.SemVer,
@@ -37,8 +41,10 @@ const pkgs: Package[] = [
     },
   },
   {
-    name: "c",
     path: "/path/to/c",
+    type: "npm",
+    name: "c",
+    uniqueName: "c",
     pluginName: "npm",
     versioning: {
       scheme: VersioningScheme.CalVer,

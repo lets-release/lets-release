@@ -23,7 +23,7 @@ const pluginError = new NoPluginStepSpecsError(Step.analyzeCommits);
 const gitError = new NoGitRepoError("cwd");
 
 class TestError extends Error {
-  pkg = { name: "pkg" };
+  pkg = { uniqueName: "npm/pkg" };
 }
 
 describe("logErrors", () => {
@@ -95,7 +95,7 @@ describe("logErrors", () => {
 
     expect(logger.error).toHaveBeenCalledTimes(1);
     expect(logger.error).toHaveBeenNthCalledWith(1, {
-      prefix: "[pkg]",
+      prefix: "[npm/pkg]",
       message: [
         expect.stringContaining("An error occurred while running"),
         error,

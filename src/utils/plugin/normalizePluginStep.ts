@@ -70,7 +70,7 @@ export async function normalizePluginStep<T extends Step = Step>(
       nextRelease,
     } = normalizedContext as unknown as NormalizedStepContext<Step.addChannels> &
       NormalizedStepContext<Step.success>;
-    const prefix = pkg ? `[${pkg.name}]` : undefined;
+    const prefix = pkg ? `[${pkg.uniqueName}]` : undefined;
 
     try {
       const context = {
@@ -101,22 +101,29 @@ export async function normalizePluginStep<T extends Step = Step>(
           normalizedContext.setPluginContext<T>(pluginName, value),
         getPluginPackageContext: pkg
           ? <T>() =>
-              normalizedContext.getPluginPackageContext<T>(pluginName, pkg.name)
-          : <T>(packageName: string) =>
               normalizedContext.getPluginPackageContext<T>(
                 pluginName,
+                pkg.type,
+                pkg.name,
+              )
+          : <T>(packageType: string, packageName: string) =>
+              normalizedContext.getPluginPackageContext<T>(
+                pluginName,
+                packageType,
                 packageName,
               ),
         setPluginPackageContext: pkg
           ? <T>(value: T) =>
               normalizedContext.setPluginPackageContext(
                 pluginName,
+                pkg.type,
                 pkg.name,
                 value,
               )
-          : <T>(packageName: string, value: T) =>
+          : <T>(packageType: string, packageName: string, value: T) =>
               normalizedContext.setPluginPackageContext(
                 pluginName,
+                packageType,
                 packageName,
                 value,
               ),

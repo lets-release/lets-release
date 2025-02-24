@@ -88,7 +88,9 @@ const files = ["/path/to/pkg/a", "/path/to/pkg/b"];
 const packages = [
   {
     path: repositoryRoot,
+    type: "npm",
     name: "pkg",
+    uniqueName: "pkg",
   },
 ];
 const notes = "notes";
@@ -332,15 +334,44 @@ describe("LetsRelease", () => {
     await expect(letsRelease.run()).resolves.toBeUndefined();
   });
 
+  it("should throw WorkflowsError if failed to run group workflows", async () => {
+    const findPackages = vi.fn().mockResolvedValue([
+      {
+        path: "/path/to/pkg1",
+        type: "npm",
+        name: "pkg1",
+        uniqueName: "pkg1",
+      },
+      {
+        path: "/path/to/pkg2",
+        type: "npm",
+        name: "pkg2",
+        uniqueName: "pkg2",
+      },
+    ]);
+
+    vi.mocked(getStepPipelinesList).mockResolvedValue([
+      { findPackages },
+      { findPackages: vi.fn().mockRejectedValue(new Error("unknown")) },
+      {},
+    ]);
+
+    await expect(letsRelease.run()).rejects.toThrow(WorkflowsError);
+  });
+
   it("should throw DuplicatePackagesError if duplicate packages are found", async () => {
     const findPackages = vi.fn().mockResolvedValue([
       {
         path: "/path/to/pkg1",
+        type: "npm",
         name: "pkg1",
+        uniqueName: "pkg1",
       },
       {
         path: "/path/to/pkg2",
+        type: "npm",
         name: "pkg2",
+        uniqueName: "pkg2",
       },
     ]);
 
@@ -367,7 +398,15 @@ describe("LetsRelease", () => {
     const findPackages = vi.fn().mockResolvedValue([
       {
         path: "/path/to/pkg1",
+        type: "npm",
         name: "pkg1",
+        uniqueName: "pkg1",
+        dependencies: [
+          {
+            type: "npm",
+            name: "pkg",
+          },
+        ],
       },
       ...packages,
     ]);
@@ -423,6 +462,21 @@ describe("LetsRelease", () => {
     vi.mocked(verifyMaintenanceMergeRange).mockReturnValue(false);
 
     await expect(letsRelease.run()).rejects.toThrow(WorkflowsError);
+    expect(getMergingContexts).toHaveBeenCalledTimes(2);
+    expect(getMergingContexts).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({}),
+      expect.arrayContaining([expect.objectContaining({ name: "pkg" })]),
+      expect.objectContaining({}),
+      expect.objectContaining({}),
+    );
+    expect(getMergingContexts).toHaveBeenNthCalledWith(
+      2,
+      expect.objectContaining({}),
+      expect.arrayContaining([expect.objectContaining({ name: "pkg1" })]),
+      expect.objectContaining({}),
+      expect.objectContaining({}),
+    );
   });
 
   it("should throw error if failed to run addChannels step", async () => {
@@ -644,16 +698,21 @@ describe("LetsRelease", () => {
     const findPackages = vi.fn().mockResolvedValue([
       {
         path: "/path/to/pkg1",
+        type: "npm",
         name: "pkg1",
+        uniqueName: "pkg1",
       },
       {
         path: "/path/to/pkg2",
+        type: "npm",
         name: "pkg2",
+        uniqueName: "pkg2",
       },
       {
         path: "/path/to/pkg3",
+        type: "npm",
         name: "pkg3",
-        main: true,
+        uniqueName: "pkg3",
       },
     ]);
     const publish = vi.fn().mockRejectedValue(new Error("Failed to publish"));
@@ -699,16 +758,21 @@ describe("LetsRelease", () => {
     const findPackages = vi.fn().mockResolvedValue([
       {
         path: "/path/to/pkg1",
+        type: "npm",
         name: "pkg1",
+        uniqueName: "pkg1",
       },
       {
         path: "/path/to/pkg2",
+        type: "npm",
         name: "pkg2",
+        uniqueName: "pkg2",
       },
       {
         path: "/path/to/pkg3",
+        type: "npm",
         name: "pkg3",
-        main: true,
+        uniqueName: "pkg3",
       },
     ]);
     const publish = vi.fn().mockRejectedValue(new Error("Failed to publish"));
@@ -762,19 +826,36 @@ describe("LetsRelease", () => {
     const findPackages = vi.fn().mockResolvedValue([
       {
         path: "/path/to/pkg1",
+        type: "npm",
         name: "pkg1",
+        uniqueName: "pkg1",
       },
       {
         path: "/path/to/pkg2",
+        type: "npm",
         name: "pkg2",
+        uniqueName: "pkg2",
       },
       {
         path: "/path/to/pkg3",
+        type: "npm",
         name: "pkg3",
-        main: true,
+        uniqueName: "pkg3",
       },
     ]);
 
+    vi.mocked(loadConfig)
+      .mockReset()
+      .mockResolvedValue({
+        tagFormat: "v${version}",
+        refSeparator: "/",
+        mainPackage: "pkg3",
+        packages: [
+          {
+            paths: ["/path/to"],
+          },
+        ],
+      } as NormalizedOptions);
     vi.mocked(getBranches).mockResolvedValue({
       main: mainBranch,
       next: nextBranch,
@@ -823,15 +904,21 @@ describe("LetsRelease", () => {
     const findPackages = vi.fn().mockResolvedValue([
       {
         path: "/path/to/pkg1",
+        type: "npm",
         name: "pkg1",
+        uniqueName: "pkg1",
       },
       {
         path: "/path/to/pkg2",
+        type: "npm",
         name: "pkg2",
+        uniqueName: "pkg2",
       },
       {
         path: "/path/to/pkg3",
+        type: "npm",
         name: "pkg3",
+        uniqueName: "pkg3",
       },
     ]);
 

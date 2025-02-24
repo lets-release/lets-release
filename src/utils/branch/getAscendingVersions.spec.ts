@@ -12,6 +12,7 @@ const prerelease: NormalizedSemVerPrereleaseOptions = {
 };
 const pkgA = {
   name: "a",
+  uniqueName: "npm/a",
   versioning: {
     scheme: "SemVer",
     prerelease,
@@ -19,6 +20,7 @@ const pkgA = {
 } as Package;
 const pkgB = {
   name: "b",
+  uniqueName: "npm/b",
   versioning: {
     scheme: "CalVer",
     format: "YYYY.MICRO",
@@ -48,7 +50,7 @@ describe("getAscendingVersions", () => {
 
     const versions = getAscendingVersions(pkgA, {
       tags: {
-        a: [
+        "npm/a": [
           {
             version: "1.0.0-alpha",
           },
@@ -77,7 +79,7 @@ describe("getAscendingVersions", () => {
 
     const versions = getAscendingVersions(pkgB, {
       tags: {
-        b: [
+        "npm/b": [
           {
             version: "2024.1-alpha",
           },
@@ -111,7 +113,7 @@ describe("getAscendingVersions", () => {
       pkgB,
       {
         tags: {
-          b: [v3, v2, v1, v0],
+          "npm/b": [v3, v2, v1, v0],
         },
       } as unknown as MatchBranchWithTags,
       { withPrerelease: true },

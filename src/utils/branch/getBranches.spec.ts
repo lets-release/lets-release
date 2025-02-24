@@ -31,8 +31,10 @@ const repositoryUrl = "https://github.com/lets-release/lets-release.git";
 const ciBranch = "main";
 const packages: Package[] = [
   {
-    name: "package",
     path: "/path/to/repo",
+    type: "npm",
+    name: "package",
+    uniqueName: "package",
     pluginName: "plugin",
     versioning: {
       scheme: VersioningScheme.SemVer,

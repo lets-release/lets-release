@@ -42,22 +42,25 @@ export function normalizeMaintenanceBranches(
     ranges: Object.fromEntries<
       ParsedCalVerXRange | ParsedSemVerXRange | undefined
     >(
-      packages.map(({ name, versioning }) => {
-        if (!ranges[name]) {
-          return [name, undefined];
+      packages.map(({ uniqueName, versioning }) => {
+        if (!ranges[uniqueName]) {
+          return [uniqueName, undefined];
         }
 
         if (versioning.scheme === VersioningScheme.CalVer) {
-          return [name, parseCalVerXRange(versioning.format, ranges[name])];
+          return [
+            uniqueName,
+            parseCalVerXRange(versioning.format, ranges[uniqueName]),
+          ];
         }
 
-        return [name, parseSemVerXRange(ranges[name])];
+        return [uniqueName, parseSemVerXRange(ranges[uniqueName])];
       }),
     ),
   }));
   const packageBranches = Object.fromEntries(
     packages.map((pkg) => [
-      pkg.name,
+      pkg.uniqueName,
       mappedBranches
         .filter(
           (
@@ -65,28 +68,28 @@ export function normalizeMaintenanceBranches(
           ): branch is Omit<MatchMaintenanceBranch, "ranges"> &
             Pick<BaseBranch, "tags"> & {
               ranges: Record<string, ParsedCalVerXRange | ParsedSemVerXRange>;
-            } => !!branch.ranges?.[pkg.name],
+            } => !!branch.ranges?.[pkg.uniqueName],
         )
         .sort((a, b) => {
           if (pkg.versioning.scheme === VersioningScheme.CalVer) {
             return compareCalVers(
               pkg.versioning.format,
-              a.ranges[pkg.name].max,
-              b.ranges[pkg.name].max,
+              a.ranges[pkg.uniqueName].max,
+              b.ranges[pkg.uniqueName].max,
               pkg.versioning.prerelease,
             );
           }
 
           return compareSemVers(
-            a.ranges[pkg.name].max,
-            b.ranges[pkg.name].max,
+            a.ranges[pkg.uniqueName].max,
+            b.ranges[pkg.uniqueName].max,
             pkg.versioning.prerelease,
           );
         })
         .reduce(
           (branches, { ranges, ...rest }) => {
-            const range = ranges[pkg.name];
-            const lowerRange = branches.at(-1)?.ranges[pkg.name];
+            const range = ranges[pkg.uniqueName];
+            const lowerRange = branches.at(-1)?.ranges[pkg.uniqueName];
 
             if (
               lowerRange &&
@@ -94,7 +97,7 @@ export function normalizeMaintenanceBranches(
               lowerRange.max === range.max
             ) {
               debug(namespace)(
-                `Conflict maintenance range for ${pkg.name} on ${rest.name} and ${branches.at(-1)?.name}`,
+                `Conflict maintenance range for ${pkg.uniqueName} on ${rest.name} and ${branches.at(-1)?.name}`,
               );
 
               return branches.slice(0, -1);
@@ -117,25 +120,26 @@ export function normalizeMaintenanceBranches(
     tags,
     ranges: Object.fromEntries(
       packages.map((pkg) => {
-        if (!ranges[pkg.name]) {
-          return [pkg.name, undefined];
+        if (!ranges[pkg.uniqueName]) {
+          return [pkg.uniqueName, undefined];
         }
 
-        const branches = packageBranches[pkg.name];
+        const branches = packageBranches[pkg.uniqueName];
 
         if (branches.length === 0) {
-          return [pkg.name, undefined];
+          return [pkg.uniqueName, undefined];
         }
 
         const index = branches.findIndex((branch) => branch.name === name);
 
         if (index === -1) {
-          return [pkg.name, undefined];
+          return [pkg.uniqueName, undefined];
         }
 
-        const range = branches[index]?.ranges[pkg.name];
-        const lowerRange = branches[index - 1]?.ranges?.[pkg.name];
-        const versions = tags[pkg.name]?.map(({ version }) => version) ?? [];
+        const range = branches[index]?.ranges[pkg.uniqueName];
+        const lowerRange = branches[index - 1]?.ranges?.[pkg.uniqueName];
+        const versions =
+          tags[pkg.uniqueName]?.map(({ version }) => version) ?? [];
 
         // Find the lower bound based on Maintenance branches
         const mergeMin =
@@ -196,14 +200,14 @@ export function normalizeMaintenanceBranches(
             ) >= 0
           ) {
             debug(namespace)(
-              `Invalid maintenance range for ${pkg.name} on branch ${name}`,
+              `Invalid maintenance range for ${pkg.uniqueName} on branch ${name}`,
             );
 
-            return [pkg.name, undefined];
+            return [pkg.uniqueName, undefined];
           }
 
           return [
-            pkg.name,
+            pkg.uniqueName,
             {
               min,
               max,
@@ -240,14 +244,14 @@ export function normalizeMaintenanceBranches(
             ) >= 0
           ) {
             debug(namespace)(
-              `Invalid maintenance range for ${pkg.name} on branch ${name}`,
+              `Invalid maintenance range for ${pkg.uniqueName} on branch ${name}`,
             );
 
-            return [pkg.name, undefined];
+            return [pkg.uniqueName, undefined];
           }
 
           return [
-            pkg.name,
+            pkg.uniqueName,
             {
               min,
               max,

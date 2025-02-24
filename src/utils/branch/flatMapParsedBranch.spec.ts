@@ -5,12 +5,14 @@ import { flatMapParsedBranch } from "src/utils/branch/flatMapParsedBranch";
 const packages = [
   {
     name: "a",
+    uniqueName: "npm/a",
     versioning: {
       scheme: "SemVer",
     },
   },
   {
     name: "b",
+    uniqueName: "npm/b",
     versioning: {
       scheme: "CalVer",
       format: "YYYY.MINOR.MICRO",
@@ -179,19 +181,19 @@ describe("flatMapParsedBranch", () => {
           name: "+([0-9])?(.{+([0-9]),x}).x",
         } as unknown as BranchObject<BranchType.maintenance>,
         {
-          name: "a/1.x.x",
-          package: "a",
+          name: "npm/a/1.x.x",
+          package: "npm/a",
           range: "1.x.x",
         },
       ),
     ).toEqual([
       {
         type: BranchType.maintenance,
-        name: "a/1.x.x",
-        channels: { default: ["a/1.x.x"] },
+        name: "npm/a/1.x.x",
+        channels: { default: ["npm/a/1.x.x"] },
         prereleases: undefined,
         ranges: {
-          a: "1.x.x",
+          "npm/a": "1.x.x",
         },
       },
     ]);
@@ -204,6 +206,7 @@ describe("flatMapParsedBranch", () => {
           {
             main: true,
             name: "b",
+            uniqueName: "npm/b",
             versioning: {
               scheme: "CalVer",
               format: "YYYY.MINOR.MICRO",
@@ -227,7 +230,7 @@ describe("flatMapParsedBranch", () => {
         channels: { default: ["maintenance"] },
         prereleases: undefined,
         ranges: {
-          b: "2023.x.x",
+          "npm/b": "2023.x.x",
         },
       },
     ]);

@@ -36,7 +36,7 @@ export async function getMergingContexts(
   const { env, repositoryRoot } = context;
 
   const tags = packages.flatMap<[Package, VersionTag]>((pkg) => {
-    const range = branch.ranges[pkg.name];
+    const range = branch.ranges[pkg.uniqueName];
 
     if (!range) {
       return [];
@@ -48,7 +48,7 @@ export async function getMergingContexts(
       [BranchType.nextMajor]: [],
       [BranchType.maintenance]: [
         ...maintenance.filter(({ ranges }) => {
-          const maintenanceRange = ranges?.[pkg.name];
+          const maintenanceRange = ranges?.[pkg.uniqueName];
 
           if (!maintenanceRange) {
             return false;
@@ -78,7 +78,7 @@ export async function getMergingContexts(
     const [last] = sortPackageVersions(
       pkg,
       uniqBy(
-        branch.tags[pkg.name]?.filter(({ version, artifacts }) =>
+        branch.tags[pkg.uniqueName]?.filter(({ version, artifacts }) =>
           artifacts.some(({ pluginName, channels }) => {
             const pluginChannels = getPluginChannels(branch, pluginName);
 
@@ -133,9 +133,9 @@ export async function getMergingContexts(
   const entries = await Promise.all(
     tags.flatMap(async ([pkg, { version, tag, artifacts }]) => {
       const releases = getReleases(context, branch, [pkg], {
-        [pkg.name]: version,
+        [pkg.uniqueName]: version,
       });
-      const last = releases[pkg.name]?.[0];
+      const last = releases[pkg.uniqueName]?.[0];
 
       if (
         last &&
@@ -165,7 +165,7 @@ export async function getMergingContexts(
 
       return [
         [
-          pkg.name,
+          pkg.uniqueName,
           {
             lastRelease,
             currentRelease: {

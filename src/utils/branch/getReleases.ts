@@ -31,16 +31,16 @@ export function getReleases(
 ): Record<string, VersionTag[] | undefined> {
   return Object.fromEntries(
     packages.map((pkg) => [
-      pkg.name,
+      pkg.uniqueName,
       sortPackageVersions(
         pkg,
-        branch.tags[pkg.name]?.filter(({ version, artifacts }) =>
+        branch.tags[pkg.uniqueName]?.filter(({ version, artifacts }) =>
           filterTag(
             { options },
             branch,
             pkg,
             { version, artifacts },
-            before?.[pkg.name],
+            before?.[pkg.uniqueName],
           ),
         ) ?? [],
         "desc",

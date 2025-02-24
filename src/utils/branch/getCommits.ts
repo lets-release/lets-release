@@ -46,7 +46,7 @@ export async function getCommits(
 
   return Object.fromEntries(
     packages.map((pkg) => [
-      pkg.name,
+      pkg.uniqueName,
       commits.filter((_, index) => {
         const sharedFiles = new Set(
           uniq(

@@ -30,7 +30,7 @@ export function normalizeNextBranch(
             lowerBranches: [main, next],
           })
         : undefined,
-    getLowerBound: (pkg) => main.ranges[pkg.name]?.max,
+    getLowerBound: (pkg) => main.ranges[pkg.uniqueName]?.max,
     getUpperBound: (latest) =>
       nextMajor ? increaseSemVer("major", latest) : undefined,
   });

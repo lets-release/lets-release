@@ -31,8 +31,10 @@ describe("addFiles & commit", () => {
       [
         {
           main: true,
-          name: "main",
           path: cwd,
+          type: "npm",
+          name: "main",
+          uniqueName: "main",
           pluginName: "npm",
           versioning: await SemVerOptions.parseAsync({
             scheme: VersioningScheme.SemVer,

@@ -10,13 +10,13 @@ import { getRange } from "src/utils/branch/getRange";
 
 export class InvalidNextVersionError extends LetsReleaseError {
   get message() {
-    return `The release \`${this.version}\` of package \`${this.pkg.name}\` on branch \`${this.branch.name}\` cannot be published as it is out of range.`;
+    return `The release \`${this.version}\` of package \`${this.pkg.uniqueName}\` on branch \`${this.branch.name}\` cannot be published as it is out of range.`;
   }
 
   get details() {
     const branches = this.validBranches?.map(({ name }) => `\`${name}\``);
 
-    return `Based on the releases of package \`${this.pkg.name}\` published, only versions within the range \`${getRange(this.range.min, this.range.max)}\` can be published from branch \`${this.branch.name}\`.
+    return `Based on the releases of package \`${this.pkg.uniqueName}\` published, only versions within the range \`${getRange(this.range.min, this.range.max)}\` can be published from branch \`${this.branch.name}\`.
 
 The following commit${this.commits.length > 1 ? "s are" : " is"} responsible for the invalid release:
 ${this.commits.map(({ commit: { short }, subject }) => `- ${subject} (${short})`).join("\n")}

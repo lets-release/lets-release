@@ -28,7 +28,7 @@ export async function logErrors(
   });
 
   for (const e of errors) {
-    const prefix = e.pkg ? `[${e.pkg.name}]` : undefined;
+    const prefix = e.pkg ? `[${e.pkg.uniqueName}]` : undefined;
 
     if (e instanceof LetsReleaseError) {
       logger.error({

@@ -64,11 +64,12 @@ export function flatMapParsedBranch<T extends BranchType>(
     ];
   }
 
-  const branchPkgName = pkgName ?? packages.find(({ main }) => main)?.name;
+  const branchPkgName =
+    pkgName ?? packages.find(({ main }) => main)?.uniqueName;
   const rangeEntries = Object.entries(
     ranges ?? (branchPkgName && range ? { [branchPkgName]: range } : {}),
   ).filter(([pkgName, range]) => {
-    const pkg = packages.find(({ name }) => name === pkgName);
+    const pkg = packages.find(({ uniqueName }) => uniqueName === pkgName);
 
     if (!pkg || !range) {
       return false;

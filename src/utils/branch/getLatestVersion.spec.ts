@@ -9,6 +9,7 @@ describe("getLatestVersion", () => {
       getLatestVersion(
         {
           name: "a",
+          uniqueName: "npm/a",
           versioning: {
             scheme: "SemVer",
             prerelease: {
@@ -21,7 +22,7 @@ describe("getLatestVersion", () => {
         } as Package,
         {
           tags: {
-            a: [
+            "npm/a": [
               {
                 version: "2.6.8",
               },

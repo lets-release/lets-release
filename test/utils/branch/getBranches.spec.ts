@@ -58,8 +58,10 @@ describe("getBranches", () => {
         [
           {
             main: true,
-            name: "main",
             path: cwd,
+            type: "npm",
+            name: "main",
+            uniqueName: "main",
             pluginName: "npm",
             versioning: await SemVerOptions.parseAsync({
               scheme: VersioningScheme.SemVer,
@@ -142,8 +144,10 @@ describe("getBranches", () => {
         [
           {
             main: true,
-            name: "main",
             path: cwd,
+            type: "npm",
+            name: "main",
+            uniqueName: "main",
             pluginName: "npm",
             versioning: await SemVerOptions.parseAsync({
               scheme: VersioningScheme.SemVer,
@@ -274,8 +278,10 @@ describe("getBranches", () => {
         [
           {
             main: true,
-            name: "main",
             path: cwd,
+            type: "npm",
+            name: "main",
+            uniqueName: "main",
             pluginName: "npm",
             versioning: await SemVerOptions.parseAsync({
               scheme: VersioningScheme.SemVer,
@@ -436,24 +442,30 @@ describe("getBranches", () => {
         [
           {
             main: true,
-            name: "main",
             path: cwd,
+            type: "npm",
+            name: "main",
+            uniqueName: "main",
             pluginName: "npm",
             versioning: await SemVerOptions.parseAsync({
               scheme: VersioningScheme.SemVer,
             }),
           },
           {
-            name: "a",
             path: path.resolve(cwd, "a"),
+            type: "npm",
+            name: "a",
+            uniqueName: "a",
             pluginName: "npm",
             versioning: await SemVerOptions.parseAsync({
               scheme: VersioningScheme.SemVer,
             }),
           },
           {
-            name: "b",
             path: path.resolve(cwd, "b"),
+            type: "npm",
+            name: "b",
+            uniqueName: "b",
             pluginName: "npm",
             versioning: await CalVerOptions.parseAsync({
               scheme: VersioningScheme.CalVer,

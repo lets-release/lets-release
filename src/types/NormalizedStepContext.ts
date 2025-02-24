@@ -10,10 +10,12 @@ interface NormalizedContextHelpers {
   setPluginContext: <T>(pluginName: string, pluginContext: T) => void;
   getPluginPackageContext: <T>(
     pluginName: string,
+    packageType: string,
     packageName: string,
   ) => T | undefined;
   setPluginPackageContext: <T>(
     pluginName: string,
+    packageType: string,
     packageName: string,
     pluginPackageContext: T,
   ) => void;

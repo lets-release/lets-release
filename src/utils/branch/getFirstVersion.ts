@@ -24,7 +24,7 @@ export function getFirstVersion(
     pkg,
     union(
       ...(lowerBranches?.map(
-        ({ tags }) => tags[pkg.name]?.map(({ version }) => version) ?? [],
+        ({ tags }) => tags[pkg.uniqueName]?.map(({ version }) => version) ?? [],
       ) ?? []),
     ),
     "desc",

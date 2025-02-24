@@ -60,18 +60,18 @@ export async function getNextVersion(
   type: ReleaseType,
   hash: string,
 ) {
-  const { name, versioning } = pkg;
+  const { uniqueName, versioning } = pkg;
 
   // Skip if the branch is not a prerelease branch,
   // and the version range is undefined,
   // and the versioning scheme is SemVer.
   if (
     branch.type !== BranchType.prerelease &&
-    !branch.ranges[name] &&
+    !branch.ranges[uniqueName] &&
     versioning.scheme === VersioningScheme.SemVer
   ) {
     debug(namespace)(
-      `Skip semver package ${name} because there is no version range`,
+      `Skip semver package ${uniqueName} because there is no version range`,
     );
 
     return;
@@ -82,11 +82,11 @@ export async function getNextVersion(
   // and the versioning scheme is CalVer.
   if (
     branch.type === BranchType.maintenance &&
-    !branch.ranges[name] &&
+    !branch.ranges[uniqueName] &&
     versioning.scheme === VersioningScheme.CalVer
   ) {
     debug(namespace)(
-      `Skip calver package ${name} because there is no version range`,
+      `Skip calver package ${uniqueName} because there is no version range`,
     );
 
     return;
@@ -98,7 +98,9 @@ export async function getNextVersion(
     [BranchType.next, BranchType.nextMajor].includes(branch.type) &&
     versioning.scheme === VersioningScheme.CalVer
   ) {
-    debug(namespace)(`Skip calver package ${name} for ${branch.type} branch`);
+    debug(namespace)(
+      `Skip calver package ${uniqueName} for ${branch.type} branch`,
+    );
 
     return;
   }
@@ -155,7 +157,7 @@ export async function getNextVersion(
       }
 
       if (branch.type !== BranchType.prerelease) {
-        const range = branch.ranges[name];
+        const range = branch.ranges[uniqueName];
 
         if (
           version &&
@@ -174,22 +176,22 @@ export async function getNextVersion(
                 ) as ReleaseBranch[])
               : branches.maintenance?.filter(
                   ({ ranges }) =>
-                    ranges[name] &&
-                    compareSemVers(version!, ranges[name].min) > 0,
+                    ranges[uniqueName] &&
+                    compareSemVers(version!, ranges[uniqueName].min) > 0,
                 ),
           );
         }
       }
 
       logger.log({
-        prefix: `[${pkg.name}]`,
+        prefix: `[${uniqueName}]`,
         message: `The next release version is ${version}`,
       });
     } else {
       const initialVersion =
         branch.type === BranchType.prerelease
-          ? branches.main?.ranges[name]?.min
-          : branch.ranges[name]?.min;
+          ? branches.main?.ranges[uniqueName]?.min
+          : branch.ranges[uniqueName]?.min;
 
       if (initialVersion) {
         version =
@@ -206,12 +208,12 @@ export async function getNextVersion(
             : initialVersion;
 
         logger.log({
-          prefix: `[${pkg.name}]`,
+          prefix: `[${uniqueName}]`,
           message: `There is no previous release, the next release version is ${version}`,
         });
       } else {
         debug(namespace)(
-          `Skip package ${name} because there is no initial version`,
+          `Skip package ${uniqueName} because there is no initial version`,
         );
       }
     }
@@ -280,7 +282,7 @@ export async function getNextVersion(
       }
 
       if (branch.type !== BranchType.prerelease) {
-        const range = branch.ranges[name];
+        const range = branch.ranges[uniqueName];
 
         if (
           version &&
@@ -304,11 +306,11 @@ export async function getNextVersion(
                 ) as ReleaseBranch[])
               : branches.maintenance?.filter(
                   ({ ranges }) =>
-                    ranges[name] &&
+                    ranges[uniqueName] &&
                     compareCalVers(
                       versioning.format,
                       version!,
-                      ranges[name].min,
+                      ranges[uniqueName].min,
                     ) > 0,
                 ),
           );
@@ -316,14 +318,14 @@ export async function getNextVersion(
       }
 
       logger.log({
-        prefix: `[${pkg.name}]`,
+        prefix: `[${uniqueName}]`,
         message: `The next release version is ${version}`,
       });
     } else {
       const initialVersion =
         branch.type === BranchType.prerelease
-          ? branches.main?.ranges[name]?.min
-          : branch.ranges[name]?.min;
+          ? branches.main?.ranges[uniqueName]?.min
+          : branch.ranges[uniqueName]?.min;
 
       if (initialVersion) {
         version =
@@ -341,12 +343,12 @@ export async function getNextVersion(
             : initialVersion;
 
         logger.log({
-          prefix: `[${pkg.name}]`,
+          prefix: `[${uniqueName}]`,
           message: `There is no previous release, the next release version is ${version}`,
         });
       } else {
         debug(namespace)(
-          `Skip package ${name} because there is no initial version`,
+          `Skip package ${uniqueName} because there is no initial version`,
         );
       }
     }

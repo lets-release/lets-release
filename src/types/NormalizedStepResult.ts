@@ -1,7 +1,7 @@
 import { Artifact, Package, ReleaseType, Step } from "@lets-release/config";
 
 export type NormalizedStepResult<T extends Step = Step> = {
-  [Step.findPackages]: Package[] | undefined;
+  [Step.findPackages]: Omit<Package, "uniqueName">[] | undefined;
   [Step.verifyConditions]: unknown;
   [Step.analyzeCommits]: ReleaseType | undefined;
   [Step.verifyRelease]: unknown;

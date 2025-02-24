@@ -100,7 +100,9 @@ async function testAddChannels(
   const env: Record<string, unknown> = {};
 
   const notes = "Release notes";
-  const findPackages = vi.fn().mockResolvedValue([{ path: cwd, name: "main" }]);
+  const findPackages = vi
+    .fn()
+    .mockResolvedValue([{ path: cwd, type: "npm", name: "main" }]);
   const verifyConditions = vi.fn();
   const verifyRelease = vi.fn();
   const generateNotes = vi.fn().mockResolvedValue(notes);
@@ -195,7 +197,7 @@ describe("LetsRelease", () => {
     const notes3 = "Release notes 3";
     const findPackages = vi
       .fn<StepFunction<Step.findPackages>>()
-      .mockResolvedValue([{ path: cwd, name: "main" }]);
+      .mockResolvedValue([{ path: cwd, type: "npm", name: "main" }]);
     const verifyConditions1 = vi.fn<StepFunction<Step.verifyConditions>>();
     const verifyConditions2 = vi.fn<StepFunction<Step.verifyConditions>>();
     const analyzeCommits = vi
@@ -341,7 +343,9 @@ describe("LetsRelease", () => {
       {},
     );
 
-    const packages = [expect.objectContaining({ path: cwd, name: "main" })];
+    const packages = [
+      expect.objectContaining({ path: cwd, type: "npm", name: "main" }),
+    ];
     const mainBranch = {
       name: "main",
       channels: { default: [null] },
@@ -408,7 +412,14 @@ describe("LetsRelease", () => {
 
     const commits = await getCommits(
       { repositoryRoot: cwd, options: {} } as BaseContext,
-      [{ name: "main", path: cwd }] as Package[],
+      [
+        {
+          path: cwd,
+          type: "npm",
+          name: "main",
+          uniqueName: "main",
+        },
+      ] as Package[],
     );
     const baseAddChannelsContext = {
       ...verifyConditionsContext,
@@ -666,7 +677,7 @@ describe("LetsRelease", () => {
     const notes = "Release notes";
     const findPackages = vi
       .fn<StepFunction<Step.findPackages>>()
-      .mockResolvedValue([{ path: cwd, name: "main" }]);
+      .mockResolvedValue([{ path: cwd, type: "npm", name: "main" }]);
     const verifyConditions = vi.fn<StepFunction<Step.verifyConditions>>();
     const analyzeCommits = vi
       .fn<StepFunction<Step.analyzeCommits>>()
@@ -755,7 +766,7 @@ describe("LetsRelease", () => {
     const notes = "Release notes";
     const findPackages = vi
       .fn<StepFunction<Step.findPackages>>()
-      .mockResolvedValue([{ path: cwd, name: "main" }]);
+      .mockResolvedValue([{ path: cwd, type: "npm", name: "main" }]);
     const verifyConditions = vi.fn<StepFunction<Step.verifyConditions>>();
     const analyzeCommits = vi
       .fn<StepFunction<Step.analyzeCommits>>()
@@ -923,7 +934,7 @@ describe("LetsRelease", () => {
 
     const findPackages = vi
       .fn<StepFunction<Step.findPackages>>()
-      .mockResolvedValue([{ path: cwd, name: "main" }]);
+      .mockResolvedValue([{ path: cwd, type: "npm", name: "main" }]);
     const verifyConditions = vi.fn<StepFunction<Step.verifyConditions>>();
     const verifyRelease = vi.fn<StepFunction<Step.verifyRelease>>();
     const release1 = { name: "Release 1", url: "https://release1.com" };
@@ -1001,7 +1012,7 @@ describe("LetsRelease", () => {
 
     const findPackages = vi
       .fn<StepFunction<Step.findPackages>>()
-      .mockResolvedValue([{ path: cwd, name: "main" }]);
+      .mockResolvedValue([{ path: cwd, type: "npm", name: "main" }]);
     const verifyConditions = vi.fn<StepFunction<Step.verifyConditions>>();
     const verifyRelease = vi.fn<StepFunction<Step.verifyRelease>>();
     const generateNotes = vi
@@ -1130,7 +1141,7 @@ describe("LetsRelease", () => {
 
     const findPackages = vi
       .fn<StepFunction<Step.findPackages>>()
-      .mockResolvedValue([{ path: cwd, name: "main" }]);
+      .mockResolvedValue([{ path: cwd, type: "npm", name: "main" }]);
     const verifyConditions = vi.fn<StepFunction<Step.verifyConditions>>();
     const verifyRelease = vi.fn<StepFunction<Step.verifyRelease>>();
     const generateNotes = vi
@@ -1209,7 +1220,7 @@ describe("LetsRelease", () => {
     const notes = "Release notes";
     const findPackages = vi
       .fn()
-      .mockResolvedValue([{ path: cwd, name: "main" }]);
+      .mockResolvedValue([{ path: cwd, type: "npm", name: "main" }]);
     const verifyConditions1 = vi.fn();
     const verifyConditions2 = vi.fn();
     const verifyRelease = vi.fn();
@@ -1320,7 +1331,7 @@ describe("LetsRelease", () => {
 
     const findPackages = vi
       .fn()
-      .mockResolvedValue([{ path: cwd, name: "main" }]);
+      .mockResolvedValue([{ path: cwd, type: "npm", name: "main" }]);
     const verifyConditions = vi.fn();
     const analyzeCommits = vi.fn().mockResolvedValue(ReleaseType.minor);
     const verifyRelease = vi.fn();
@@ -1402,7 +1413,7 @@ describe("LetsRelease", () => {
     const notes = "Release notes";
     const findPackages = vi
       .fn()
-      .mockResolvedValue([{ path: cwd, name: "main" }]);
+      .mockResolvedValue([{ path: cwd, type: "npm", name: "main" }]);
     const verifyConditions = vi.fn();
     const analyzeCommits = vi.fn().mockResolvedValue(ReleaseType.major);
     const verifyRelease = vi.fn();
@@ -1473,7 +1484,7 @@ describe("LetsRelease", () => {
     const notes = "Release notes";
     const findPackages = vi
       .fn()
-      .mockResolvedValue([{ path: cwd, name: "main" }]);
+      .mockResolvedValue([{ path: cwd, type: "npm", name: "main" }]);
     const analyzeCommits = vi.fn().mockResolvedValue(ReleaseType.major);
     const generateNotes = vi.fn().mockResolvedValue(notes);
 
@@ -1523,7 +1534,7 @@ describe("LetsRelease", () => {
     const notes = "Release notes";
     const findPackages = vi
       .fn()
-      .mockResolvedValue([{ path: cwd, name: "main" }]);
+      .mockResolvedValue([{ path: cwd, type: "npm", name: "main" }]);
     const verifyConditions = vi.fn();
     const analyzeCommits = vi.fn().mockResolvedValue(ReleaseType.major);
     const verifyRelease = vi.fn();
@@ -1608,7 +1619,7 @@ describe("LetsRelease", () => {
     const notes = "Release notes 2";
     const findPackages = vi
       .fn()
-      .mockResolvedValue([{ path: cwd, name: "main" }]);
+      .mockResolvedValue([{ path: cwd, type: "npm", name: "main" }]);
     const verifyConditions = vi.fn();
     const analyzeCommits = vi.fn().mockResolvedValue(ReleaseType.minor);
     const verifyRelease = vi.fn();
@@ -1714,7 +1725,7 @@ describe("LetsRelease", () => {
 
     const findPackages = vi
       .fn()
-      .mockResolvedValue([{ path: cwd, name: "main" }]);
+      .mockResolvedValue([{ path: cwd, type: "npm", name: "main" }]);
 
     const options = {
       packages: [
@@ -1782,7 +1793,7 @@ describe("LetsRelease", () => {
 
     const findPackages = vi
       .fn()
-      .mockResolvedValue([{ path: cwd, name: "main" }]);
+      .mockResolvedValue([{ path: cwd, type: "npm", name: "main" }]);
     const verifyConditions = vi.fn();
     const verifyRelease = vi.fn();
     const addChannels = vi.fn();
@@ -1860,7 +1871,7 @@ describe("LetsRelease", () => {
 
     const findPackages = vi
       .fn()
-      .mockResolvedValue([{ path: cwd, name: "main" }]);
+      .mockResolvedValue([{ path: cwd, type: "npm", name: "main" }]);
     const verifyConditions = vi.fn();
     const verifyRelease = vi.fn();
     const addChannels = vi.fn();
@@ -1961,7 +1972,7 @@ describe("LetsRelease", () => {
     const notes = "Release notes";
     const findPackages = vi
       .fn()
-      .mockResolvedValue([{ path: cwd, name: "main" }]);
+      .mockResolvedValue([{ path: cwd, type: "npm", name: "main" }]);
     const verifyConditions = vi.fn();
     const analyzeCommits = vi.fn();
     const verifyRelease = vi.fn();
@@ -2033,7 +2044,7 @@ describe("LetsRelease", () => {
 
     const findPackages = vi
       .fn()
-      .mockResolvedValue([{ path: cwd, name: "main" }]);
+      .mockResolvedValue([{ path: cwd, type: "npm", name: "main" }]);
 
     const options = {
       packages: [
@@ -2073,7 +2084,7 @@ describe("LetsRelease", () => {
 
     const findPackages = vi
       .fn()
-      .mockResolvedValue([{ path: cwd, name: "main" }]);
+      .mockResolvedValue([{ path: cwd, type: "npm", name: "main" }]);
 
     const options = {
       packages: [
@@ -2113,7 +2124,7 @@ describe("LetsRelease", () => {
 
     const findPackages = vi
       .fn()
-      .mockResolvedValue([{ path: cwd, name: "main" }]);
+      .mockResolvedValue([{ path: cwd, type: "npm", name: "main" }]);
     const verifyConditions = vi.fn();
     const analyzeCommits = vi.fn();
     const verifyRelease = vi.fn();
@@ -2193,7 +2204,7 @@ describe("LetsRelease", () => {
 
     const findPackages = vi
       .fn()
-      .mockResolvedValue([{ path: cwd, name: "main" }]);
+      .mockResolvedValue([{ path: cwd, type: "npm", name: "main" }]);
     const verifyConditions = vi.fn();
     const analyzeCommits = vi.fn();
     const verifyRelease = vi.fn();
@@ -2236,7 +2247,14 @@ describe("LetsRelease", () => {
 
     const commits = await getCommits(
       { repositoryRoot: cwd, options: {} } as BaseContext,
-      [{ name: "main", path: cwd }] as Package[],
+      [
+        {
+          path: cwd,
+          type: "npm",
+          name: "main",
+          uniqueName: "main",
+        },
+      ] as Package[],
     );
 
     expect(analyzeCommits).toHaveBeenCalledTimes(1);
@@ -2266,7 +2284,7 @@ describe("LetsRelease", () => {
     const failError = new Error("Fail error");
     const findPackages = vi
       .fn()
-      .mockResolvedValue([{ path: cwd, name: "main" }]);
+      .mockResolvedValue([{ path: cwd, type: "npm", name: "main" }]);
     const verifyConditions = vi.fn();
     const analyzeCommits = vi.fn().mockResolvedValue(ReleaseType.minor);
     const verifyRelease = vi.fn();
@@ -2332,7 +2350,7 @@ describe("LetsRelease", () => {
 
     const findPackages = vi
       .fn()
-      .mockResolvedValue([{ path: cwd, name: "main" }]);
+      .mockResolvedValue([{ path: cwd, type: "npm", name: "main" }]);
     const verifyConditions = vi.fn();
     const analyzeCommits = vi.fn().mockResolvedValue(ReleaseType.minor);
     const verifyRelease = vi.fn();
@@ -2388,7 +2406,7 @@ describe("LetsRelease", () => {
 
     const findPackages = vi
       .fn()
-      .mockResolvedValue([{ path: cwd, name: "main" }]);
+      .mockResolvedValue([{ path: cwd, type: "npm", name: "main" }]);
     const verifyConditions = vi.fn();
     const analyzeCommits = vi.fn().mockResolvedValue("string");
     const success = vi.fn();
@@ -2440,7 +2458,7 @@ describe("LetsRelease", () => {
 
     const findPackages = vi
       .fn()
-      .mockResolvedValue([{ path: cwd, name: "main" }]);
+      .mockResolvedValue([{ path: cwd, type: "npm", name: "main" }]);
     const verifyConditions = vi.fn();
     const analyzeCommits = vi.fn().mockResolvedValue(ReleaseType.minor);
     const publish = vi
@@ -2508,7 +2526,7 @@ describe("LetsRelease", () => {
 
     const findPackages = vi
       .fn()
-      .mockResolvedValue([{ path: cwd, name: "main" }]);
+      .mockResolvedValue([{ path: cwd, type: "npm", name: "main" }]);
     const verifyConditions = vi.fn();
     const analyzeCommits = vi.fn().mockResolvedValue(ReleaseType.minor);
     const generateNotes = vi
@@ -2598,7 +2616,7 @@ describe("LetsRelease", () => {
     const notes = "Release notes";
     const findPackages = vi
       .fn()
-      .mockResolvedValue([{ path: shallowCwd, name: "main" }]);
+      .mockResolvedValue([{ path: shallowCwd, type: "npm", name: "main" }]);
     const verifyConditions = vi.fn();
     const analyzeCommits = vi.fn().mockResolvedValue(ReleaseType.major);
     const generateNotes = vi.fn().mockResolvedValue(notes);

@@ -42,24 +42,30 @@ describe("pushBranch", () => {
         [
           {
             main: true,
-            name: "main",
             path: repositoryRoot,
+            type: "npm",
+            name: "main",
+            uniqueName: "main",
             pluginName: "npm",
             versioning: await SemVerOptions.parseAsync({
               scheme: VersioningScheme.SemVer,
             }),
           },
           {
-            name: "a",
             path: path.resolve(repositoryRoot, "a"),
+            type: "npm",
+            name: "a",
+            uniqueName: "a",
             pluginName: "npm",
             versioning: await SemVerOptions.parseAsync({
               scheme: VersioningScheme.SemVer,
             }),
           },
           {
-            name: "b",
             path: path.resolve(repositoryRoot, "b"),
+            type: "npm",
+            name: "b",
+            uniqueName: "b",
             pluginName: "npm",
             versioning: await CalVerOptions.parseAsync({
               scheme: VersioningScheme.CalVer,
