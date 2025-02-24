@@ -23,6 +23,9 @@ export default mergeConfig(
           "src/enums/*.ts",
           "src/types/*.ts",
         ],
+        thresholds: {
+          100: true,
+        },
       },
     },
   }),

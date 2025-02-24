@@ -24,7 +24,7 @@
   },
   "scripts": {
     "test": "vitest --config ./vitest.unit.config.ts",
-    "test:cov": "vitest --config ./vitest.unit.config.ts --coverage.enabled --coverage.thresholds.100",
+    "test:cov": "vitest --config ./vitest.unit.config.ts --coverage.enabled",
     "type-check": "rimraf ./dist && tsc --build",
     "build": "rimraf ./dist && tspc --build tsconfig.build.json"
   },
