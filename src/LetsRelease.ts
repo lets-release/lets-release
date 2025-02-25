@@ -731,7 +731,10 @@ export class LetsRelease {
         }
 
         const commits = await getCommits(
-          context,
+          {
+            ...context,
+            packages: [pkg],
+          },
           allPackages,
           lastRelease?.hash,
           nextRelease.hash,
@@ -888,7 +891,10 @@ export class LetsRelease {
             }
           : undefined;
         const commits = await getCommits(
-          context,
+          {
+            ...context,
+            packages: [pkg],
+          },
           allPackages,
           lastRelease?.hash,
         );
