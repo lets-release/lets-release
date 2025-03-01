@@ -1,10 +1,12 @@
 import { $ } from "execa";
+import stripAnsi from "strip-ansi";
 
 import { AddChannelsContext } from "@lets-release/config";
 
 import { exec } from "src/helpers/exec";
 
 vi.mock("execa");
+vi.mock("strip-ansi");
 
 const log = vi.fn();
 const logger = { log };
@@ -17,6 +19,7 @@ const addChannelsCmd = "echo 'Hello World'";
 const fn = vi.fn();
 
 vi.mocked($).mockReturnValue(fn as never);
+vi.mocked(stripAnsi).mockImplementation((value) => value);
 
 class ExtendedPromise extends Promise<unknown> {
   stdout = {

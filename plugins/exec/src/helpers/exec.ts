@@ -2,6 +2,7 @@ import path from "node:path";
 
 import { $ } from "execa";
 import { template } from "lodash-es";
+import stripAnsi from "strip-ansi";
 
 import { Step, StepContext } from "@lets-release/config";
 
@@ -34,5 +35,5 @@ export async function exec<T extends Step>(
 
   const output = await result;
 
-  return output.stdout.trim();
+  return stripAnsi(output.stdout).trim();
 }
