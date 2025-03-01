@@ -1,4 +1,5 @@
 import { $ } from "execa";
+import stripAnsi from "strip-ansi";
 
 import { VerifyReleaseContext } from "@lets-release/config";
 
@@ -6,6 +7,7 @@ import { getDistTagVersion } from "src/helpers/getDistTagVersion";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
 
 vi.mock("execa");
+vi.mock("strip-ansi");
 
 const cwd = "cwd";
 const registry = "https://test.org";
@@ -18,6 +20,9 @@ const context = {
 describe("getDistTagVersion", () => {
   beforeEach(() => {
     vi.mocked($).mockReset();
+    vi.mocked(stripAnsi)
+      .mockReset()
+      .mockImplementation((value) => value);
   });
 
   it("should get the version of the dist tag with pnpm", async () => {
@@ -29,7 +34,7 @@ describe("getDistTagVersion", () => {
       },
     } as NpmPackageContext;
     const exec = vi.fn().mockResolvedValue({
-      stdout: ["latest: 1.0.0", "next: 1.1.0", "next-major: 2.0.0"],
+      stdout: ["latest: 1.0.0", "next: 1.1.0", "", "next-major: 2.0.0"],
     });
 
     vi.mocked($).mockReturnValue(exec as never);
@@ -59,6 +64,8 @@ describe("getDistTagVersion", () => {
     const exec = vi.fn().mockResolvedValue({
       stdout: [
         '{"descriptor":"package@latest","locator":"package@1.0.0"}',
+        "invalid json",
+        "",
         '{"descriptor":"package@next","locator":"package@1.1.0"}',
         '{"descriptor":"package@next-major","locator":"package@2.0.0"}',
       ],
@@ -89,7 +96,7 @@ describe("getDistTagVersion", () => {
       },
     } as NpmPackageContext;
     const exec = vi.fn().mockResolvedValue({
-      stdout: ["latest: 1.0.0", "next: 1.1.0", "next-major: 2.0.0"],
+      stdout: ["latest: 1.0.0", "next: 1.1.0", "", "next-major: 2.0.0"],
     });
 
     vi.mocked($).mockReturnValue(exec as never);

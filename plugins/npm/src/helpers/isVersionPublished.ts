@@ -1,4 +1,5 @@
 import { $, ResultPromise } from "execa";
+import stripAnsi from "strip-ansi";
 
 import { VerifyReleaseContext } from "@lets-release/config";
 
@@ -13,7 +14,7 @@ const isPublished = async (
   const { exitCode, stdout } = await promise;
 
   // Yarn will fall back to latest version if the version is not found
-  return exitCode === 0 && !stdout.includes("falling back");
+  return exitCode === 0 && !stripAnsi(stdout).includes("falling back");
 };
 
 export async function isVersionPublished(

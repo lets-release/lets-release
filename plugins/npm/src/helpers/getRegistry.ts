@@ -1,4 +1,5 @@
 import { $, ResultPromise } from "execa";
+import stripAnsi from "strip-ansi";
 
 import { FindPackagesContext, PackageInfo } from "@lets-release/config";
 
@@ -10,7 +11,7 @@ const getConfig = async (
 ): Promise<string> => {
   const { stdout } = await promise;
 
-  const value = stdout.trim();
+  const value = stripAnsi(stdout).trim();
 
   if (value === "undefined" || value === "null") {
     return "";
@@ -38,15 +39,7 @@ export async function getRegistry(
 
   const options = {
     cwd: pm.root,
-    env: {
-      ...env,
-      npm_config_color: "0",
-      NPM_CONFIG_COLOR: "0",
-      npm_config_no_color: "1",
-      NPM_CONFIG_NO_COLOR: "1",
-      force_color: "0",
-      FORCE_COLOR: "0",
-    },
+    env,
     preferLocal: true,
     reject: false,
   };

@@ -1,4 +1,5 @@
 import { $ } from "execa";
+import stripAnsi from "strip-ansi";
 
 import { PrepareContext } from "@lets-release/config";
 
@@ -12,6 +13,7 @@ vi.mock("fs-extra", () => ({
   default: { move },
 }));
 vi.mock("execa");
+vi.mock("strip-ansi");
 
 const cwd = "/path/cwd";
 const log = vi.fn();
@@ -38,6 +40,9 @@ describe("preparePackage", () => {
     vi.mocked($)
       .mockReset()
       .mockReturnValue((() => promise) as never);
+    vi.mocked(stripAnsi)
+      .mockReset()
+      .mockImplementation((value) => value);
   });
 
   it("should prepare package without tarballDir", async () => {
@@ -105,6 +110,8 @@ describe("preparePackage", () => {
         stdout: [
           `{"base":"/root/a"}`,
           `{"location":"README.md"}`,
+          "invalid json",
+          "",
           `{"output":"/root/a/${tgz}"}`,
         ],
       });

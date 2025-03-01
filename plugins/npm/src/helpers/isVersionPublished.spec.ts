@@ -1,4 +1,5 @@
 import { $ } from "execa";
+import stripAnsi from "strip-ansi";
 
 import { VerifyReleaseContext } from "@lets-release/config";
 
@@ -7,10 +8,12 @@ import { isVersionPublished } from "src/helpers/isVersionPublished";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
 
 vi.mock("execa");
+vi.mock("strip-ansi");
 
 const exec = vi.fn();
 
 vi.mocked($).mockReturnValue(exec as never);
+vi.mocked(stripAnsi).mockImplementation((value) => value);
 
 const cwd = "cwd";
 const registry = DEFAULT_NPM_REGISTRY;

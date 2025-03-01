@@ -1,6 +1,7 @@
 import { $ } from "execa";
 import findVersions from "find-versions";
 import { lt } from "semver";
+import stripAnsi from "strip-ansi";
 
 import { AnalyzeCommitsContext } from "@lets-release/config";
 
@@ -33,7 +34,7 @@ export async function verifyNpmPackageManagerVersion(
     );
   });
 
-  const version = findVersions(stdout, { loose: true })[0];
+  const version = findVersions(stripAnsi(stdout), { loose: true })[0];
 
   if (lt(version, minRequiredVersion)) {
     throw new UnsupportedNpmPackageManagerVersionError(

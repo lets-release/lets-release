@@ -1,10 +1,12 @@
 import { $ } from "execa";
+import stripAnsi from "strip-ansi";
 
 import { DEFAULT_NPM_REGISTRY } from "src/constants/DEFAULT_NPM_REGISTRY";
 import { getRegistry } from "src/helpers/getRegistry";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
 
 vi.mock("execa");
+vi.mock("strip-ansi");
 
 const root = "/root";
 const path = "/root/path";
@@ -14,6 +16,7 @@ const name = `${scope}/name`;
 const exec = vi.fn();
 
 vi.mocked($).mockReturnValue(exec as never);
+vi.mocked(stripAnsi).mockImplementation((value) => value);
 
 describe("getRegistry", () => {
   beforeEach(() => {

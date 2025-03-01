@@ -1,4 +1,5 @@
 import { $, ResultPromise } from "execa";
+import stripAnsi from "strip-ansi";
 
 import { VerifyReleaseContext } from "@lets-release/config";
 
@@ -24,16 +25,34 @@ export async function getDistTagVersion(
     // Yarn outputs JSON
     if (json) {
       return stdout
-        .filter((line) => !!line.trim())
-        .map((line) => JSON.parse(line.trim()))
+        .flatMap((line) => {
+          const trimmed = stripAnsi(line).trim();
+
+          if (!trimmed) {
+            return [];
+          }
+
+          try {
+            return [JSON.parse(trimmed)];
+          } catch {
+            return [];
+          }
+        })
         .find(({ descriptor }) => descriptor === `${name}@${distTag}`)
         ?.locator.split("@")
         .at(-1);
     }
 
     return stdout
-      .filter((line) => !!line.trim())
-      .map((line) => line.split(":").map((part) => part.trim()))
+      .flatMap((line) => {
+        const trimmed = stripAnsi(line).trim();
+
+        if (!trimmed) {
+          return [];
+        }
+
+        return [trimmed.split(":").map((part) => part.trim())];
+      })
       .find(([tag]) => tag === distTag)?.[1];
   };
 

@@ -3,6 +3,7 @@ import path from "node:path";
 
 import { $, ResultPromise } from "execa";
 import fsExtra from "fs-extra";
+import stripAnsi from "strip-ansi";
 
 import { PrepareContext } from "@lets-release/config";
 
@@ -114,22 +115,35 @@ export async function preparePackage(
 
     switch (pm.name) {
       case "pnpm": {
-        tgz = result.stdout.find((line) => line.includes(".tgz"))!.trim();
+        tgz = stripAnsi(
+          result.stdout.find((line) => line.includes(".tgz"))!,
+        ).trim();
         break;
       }
 
       case "yarn": {
         tgz = result.stdout
-          .filter((line) => !!line)
-          .map((line) => JSON.parse(line))
-          .find(({ output }) => !!output)!
-          .output.split("/")
-          .at(-1)!;
+          .flatMap((line) => {
+            const trimmed = stripAnsi(line).trim();
+
+            if (!trimmed) {
+              return [];
+            }
+
+            try {
+              return [JSON.parse(trimmed)];
+            } catch {
+              return [];
+            }
+          })
+          .find(({ output }) => !!output)!.output;
         break;
       }
 
       default: {
-        tgz = result.stdout.find((line) => line.includes(".tgz"))!.trim();
+        tgz = stripAnsi(
+          result.stdout.find((line) => line.includes(".tgz"))!,
+        ).trim();
         break;
       }
     }

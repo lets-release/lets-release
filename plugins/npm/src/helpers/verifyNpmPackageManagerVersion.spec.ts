@@ -1,5 +1,6 @@
 import { $ } from "execa";
 import findVersions from "find-versions";
+import stripAnsi from "strip-ansi";
 
 import { NoNpmPackageManagerBinaryError } from "src/errors/NoNpmPackageManagerBinaryError";
 import { UnsupportedNpmPackageManagerVersionError } from "src/errors/UnsupportedNpmPackageManagerVersionError";
@@ -8,6 +9,7 @@ import { NpmPackageContext } from "src/types/NpmPackageContext";
 import { verifyNpmPackageManagerVersion } from "./verifyNpmPackageManagerVersion";
 
 vi.mock("execa");
+vi.mock("strip-ansi");
 vi.mock("find-versions");
 
 const context = {
@@ -20,6 +22,9 @@ const pkg = {
 describe("verifyNpmPackageManagerVersion", () => {
   beforeEach(() => {
     vi.mocked($).mockReset();
+    vi.mocked(stripAnsi)
+      .mockReset()
+      .mockImplementation((value) => value);
     vi.mocked(findVersions).mockReset();
   });
 
