@@ -1,6 +1,6 @@
 import { $, ResultPromise } from "execa";
 
-import { FindPackagesContext } from "@lets-release/config";
+import { FindPackagesContext, PackageInfo } from "@lets-release/config";
 
 import { DEFAULT_NPM_REGISTRY } from "src/constants/DEFAULT_NPM_REGISTRY";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
@@ -12,7 +12,7 @@ const getConfig = async (
 
   const value = stdout.trim();
 
-  if (value === "undefined") {
+  if (value === "undefined" || value === "null") {
     return "";
   }
 
@@ -20,7 +20,12 @@ const getConfig = async (
 };
 
 export async function getRegistry(
-  { env }: Pick<FindPackagesContext, "env">,
+  {
+    env,
+    package: { path: pkgRoot },
+  }: Pick<FindPackagesContext, "env"> & {
+    package: Pick<PackageInfo, "path">;
+  },
   {
     pm,
     pkg: { publishConfig: { registry } = { registry: undefined } },
@@ -49,8 +54,22 @@ export async function getRegistry(
     case "pnpm": {
       return (
         (scope
-          ? await getConfig($(options)`pnpm config get ${`${scope}:registry`}`)
+          ? (await getConfig(
+              $({
+                ...options,
+                cwd: pkgRoot,
+              })`pnpm config get ${`${scope}:registry`}`,
+            )) ||
+            (await getConfig(
+              $(options)`pnpm config get ${`${scope}:registry`}`,
+            ))
           : undefined) ||
+        (await getConfig(
+          $({
+            ...options,
+            cwd: pkgRoot,
+          })`pnpm config get registry`,
+        )) ||
         (await getConfig($(options)`pnpm config get registry`)) ||
         DEFAULT_NPM_REGISTRY
       );
@@ -59,12 +78,18 @@ export async function getRegistry(
     case "yarn": {
       return (
         (scope
-          ? await getConfig(
+          ? (await getConfig(
+              $(
+                options,
+              )`yarn config get ${`npmScopes["${scope.replace(/^@/, "")}"].npmPublishRegistry`}`,
+            )) ||
+            (await getConfig(
               $(
                 options,
               )`yarn config get ${`npmScopes["${scope.replace(/^@/, "")}"].npmRegistryServer`}`,
-            )
+            ))
           : undefined) ||
+        (await getConfig($(options)`yarn config get npmPublishRegistry`)) ||
         (await getConfig($(options)`yarn config get npmRegistryServer`)) ||
         DEFAULT_NPM_REGISTRY
       );
