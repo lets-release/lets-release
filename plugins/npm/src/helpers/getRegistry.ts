@@ -38,7 +38,15 @@ export async function getRegistry(
 
   const options = {
     cwd: pm.root,
-    env,
+    env: {
+      ...env,
+      npm_config_color: "0",
+      NPM_CONFIG_COLOR: "0",
+      npm_config_no_color: "1",
+      NPM_CONFIG_NO_COLOR: "1",
+      force_color: "0",
+      FORCE_COLOR: "0",
+    },
     preferLocal: true,
     reject: false,
   };
