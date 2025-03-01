@@ -1,3 +1,3 @@
 # @lets-release/versioning
 
-Internal versioning utils.
+Internal versioning utilities.

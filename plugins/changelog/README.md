@@ -1,11 +1,11 @@
 # @lets-release/changelog
 
-**[lets-release][]** plugin to create or update a changelog file.
+**[lets-release][]** plugin for creating or updating a changelog file.
 
-| Step               | Description                                                                                                                      |
-|--------------------|----------------------------------------------------------------------------------------------------------------------------------|
-| `verifyConditions` | Verify the `changelogFile` and `changelogTitle` options configuration.                                                           |
-| `prepare`          | Create or update a changelog file in the local project directory with the changelog content created in the `generateNotes` step. |
+| Step               | Description                                                                                                                       |
+|--------------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| `verifyConditions` | Verify the `changelogFile` and `changelogTitle` options configuration.                                                            |
+| `prepare`          | Create or update a changelog file in the local project directory using the changelog content created in the `generateNotes` step. |
 
 ## Usage
 

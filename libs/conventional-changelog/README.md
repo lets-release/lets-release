@@ -1,5 +1,5 @@
 # @lets-release/conventional-changelog
 
-Utils for [conventional-changelog][] relative plugins.
+Utilities for plugins related to [conventional-changelog][].
 
 [conventional-changelog]: https://github.com/conventional-changelog/conventional-changelog

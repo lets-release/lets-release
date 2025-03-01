@@ -1,6 +1,6 @@
 # @lets-release/github
 
-**[lets-release][]** plugin plugin to publish a [GitHub release][] and comment on released Pull Requests/Issues.
+**[lets-release][]** plugin for publishing a [GitHub release][] and commenting on released Pull Requests/Issues.
 
 | Step               | Description                                                                                         |
 |--------------------|-----------------------------------------------------------------------------------------------------|
@@ -31,7 +31,7 @@ The plugin can be configured in the **[lets-release][]** configuration file:
 }
 ```
 
-With this example [GitHub releases][GitHub Release] will be published with the file `dist/asset.min.css` and `dist/asset.min.js`.
+In this example, [GitHub releases][GitHub Release] will be published with the files `dist/asset.min.css` and `dist/asset.min.js`.
 
 ## Configuration
 
@@ -48,7 +48,7 @@ When creating the token, the **minimum required scopes** are:
 - [`public_repo`][] for a public repository
 
 _Note on GitHub Actions:_ You can use the default token which is provided in the secret _GITHUB_TOKEN_.
-However, releases done with this token will NOT trigger release events to start other workflows.
+However, releases published with this token will NOT trigger release events to start other workflows.
 If you have actions that trigger on newly created releases,
 please use a generated token for that and store it in your repository's secrets (any other name than _GITHUB_TOKEN_ is fine).
 
@@ -73,7 +73,7 @@ When using the _GITHUB_TOKEN_, the **minimum required permissions** are:
 | `token`                     | The GitHub token.                                                                                                                                                    | `GH_TOKEN` or `GITHUB_TOKEN` environment variable. |
 | `url`                       | The GitHub server endpoint.                                                                                                                                          | `GITHUB_SERVER_URL` environment variable.          |
 | `apiUrl`                    | The GitHub API endpoint.                                                                                                                                             | `GITHUB_API_URL` environment variable.             |
-| `proxy`                     | The proxy to use to access the GitHub API. Set to `false` to disable usage of proxy. Can be `false`, a proxy URL or an [undici][] `ProxyAgent` options.              | `http_proxy` or `HTTP_PROXY` environment variable. |
+| `proxy`                     | The proxy to use to access the GitHub API. Set to `false` to disable the use of proxy. Can be `false`, a proxy URL or an [undici][] `ProxyAgent` options.            | `http_proxy` or `HTTP_PROXY` environment variable. |
 | `assets`                    | An array of files to upload to the release. See [assets][].                                                                                                          | -                                                  |
 | `positionOfOtherArtifacts`  | The position to add other artifact links to the GitHub Release. Can be `"bottom"` or `"top"`. Default to not add any links.                                          | -                                                  |
 | `mainPackageOnly`           | Create releases for the main package only                                                                                                                            | `false`                                            |
@@ -88,7 +88,7 @@ When using the _GITHUB_TOKEN_, the **minimum required permissions** are:
 
 #### assets
 
-Can be a [glob][] or an `Array` of [globs][glob] or an `Object`s with the following properties:
+An asset can be a [glob][] or an `Array` of [globs][glob] or an `Object` with the following properties:
 
 | Property | Description                                                    | Default                              |
 |----------|----------------------------------------------------------------|--------------------------------------|
@@ -130,7 +130,7 @@ plus the `build/MyLibrary.zip` file and label it `MyLibrary` in the GitHub relea
 
 #### commentOnSuccess
 
-A `boolean` or a function returns a `boolean` or `Promise<boolean>` to determine whether to comment to issues and pull requests on success. The following variables are available:
+A `boolean` or a function that returns a `boolean` or `Promise<boolean>` to determine whether to comment to issues and pull requests on success. The following variables are available:
 
 | Parameter     | Description                                                                                                                                     |
 |---------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -156,7 +156,7 @@ The message for the issue comments is generated with [Lodash template][]. The fo
 
 ##### successComment example
 
-The `successComment` `This ${issue.pull_request ? 'pull request' : 'issue'} is included in version ${nextRelease.version}` will generate the comment:
+The `successComment` `This ${issue.pull_request ? 'pull request' : 'issue'} is included in version ${nextRelease.version}` will generate the following comment:
 
 > This pull request is included in version 1.0.0
 
@@ -175,7 +175,7 @@ Each label name is generated with [Lodash template][]. The following variables a
 
 ##### successLabels example
 
-The `successLabels` ``['released<%= nextRelease.channel ? ` on @\${nextRelease.channel}` : "" %> from <%= branch.name %>']`` will generate the label:
+The `successLabels` ``['released<%= nextRelease.channel ? ` on @\${nextRelease.channel}` : "" %> from <%= branch.name %>']`` will generate the following label:
 
 > released on @next from branch next
 

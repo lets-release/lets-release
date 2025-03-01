@@ -1,6 +1,6 @@
 # @lets-release/gitlab
 
-**[lets-release][]** plugin to publish a [GitLab release][].
+**[lets-release][]** plugin for publishing a [GitLab release][].
 
 | Step               | Description                                                                                          |
 |--------------------|------------------------------------------------------------------------------------------------------|
@@ -35,21 +35,21 @@ The plugin can be configured in the **[lets-release][]** configuration file:
 }
 ```
 
-With this example [GitLab releases][Gitlab release] will be published to the `https://custom.gitlab.com` instance.
+In this example, [GitLab releases][GitLab release] will be published to the `https://custom.gitlab.com` instance.
 
 ## Configuration
 
 ### GitLab authentication
 
-The GitLab authentication configuration is **required** and can be set via [environment variables][].
+The GitLab authentication configuration is **required** and can be set using [environment variables][].
 
-There are three kinds of token, see [@gitbeaker/rest][] for details.
-The personal token can be set via the `GL_TOKEN` or `GITLAB_TOKEN` environment variable.
+There are three kinds of tokens, see [@gitbeaker/rest][] for details.
+The personal token can be set using the `GL_TOKEN` or `GITLAB_TOKEN` environment variable.
 
 The token must have the `api` scope.
-If you are using token as the [remote Git repository authentication][] it must also have the `write_repository` scope.
+If you are using the token for [remote Git repository authentication][], it must also have the `write_repository` scope.
 
-**Note**: When running with `dryRun` only `read_repository` scope is required.
+**Note**: When running with `dryRun`, only the `read_repository` scope is required.
 
 ### Environment variables
 
@@ -62,43 +62,43 @@ If you are using token as the [remote Git repository authentication][] it must a
 
 ### Options
 
-| Option                     | Description                                                                                                                                                          | Default                                            |
-|----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------|
-| `token`                    | The GitLab personal token.                                                                                                                                           | `GH_TOKEN` or `GITHUB_TOKEN` environment variable. |
-| `oauthToken`               | The GitLab OAuth token.                                                                                                                                              | -                                                  |
-| `jobToken`                 | The GitLab CI job token.                                                                                                                                             | `CI_JOB_TOKEN` environment variable.               |
-| `url`                      | The GitLab endpoint.                                                                                                                                                 | `CI_SERVER_URL` environment variable.              |
-| `apiUrl`                   | The GitLab API URL.                                                                                                                                                  | `CI_API_V4_URL` environment variable.              |
-| `assets`                   | An array of files to upload to the release. See [assets][].                                                                                                          | -                                                  |
-| `positionOfOtherArtifacts` | The position to add other artifact links to the GitLab Release. Can be `"bottom"` or `"top"`. Default to not add any links.                                          | -                                                  |
-| `mainPackageOnly`          | Create releases for the main package only                                                                                                                            | `false`                                            |
-| `releaseNameTemplate`      | A [Lodash template][] to customize the gitlab release's name                                                                                                         | `${nextRelease.tag}`                               |
-| `releaseBodyTemplate`      | A [Lodash template][] to customize the gitlab release's body                                                                                                         | `${nextRelease.notes}`                             |
-| `commentOnSuccess`         | Use this as condition, when to comment on issues or pull requests. See [commentOnSuccess][]                                                                          | `true`                                             |
-| `successComment`           | The comment to add to each issue and pull request resolved by the release. Set to `false` to disable commenting on issues and pull requests. See [successComment][]. | generate by [getSuccessComment][] function         |
-| `successLabels`            | The [labels][] to add to each issue and pull request resolved by the release. See [successLabels][].                                                                 | -                                                  |
-| `milestones`               | An array of milestone titles to associate to the release. See [GitLab Release API][].                                                                                | -                                                  |
+| Option                     | Description                                                                                                                                                               | Default                                    |
+|----------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------|
+| `token`                    | The GitLab personal token.                                                                                                                                                | `GH_TOKEN` or `GITHUB_TOKEN`               |
+| `oauthToken`               | The GitLab OAuth token.                                                                                                                                                   | -                                          |
+| `jobToken`                 | The GitLab CI job token.                                                                                                                                                  | `CI_JOB_TOKEN`                             |
+| `url`                      | The GitLab server URL.                                                                                                                                                    | `CI_SERVER_URL`                            |
+| `apiUrl`                   | The GitLab API URL.                                                                                                                                                       | `CI_API_V4_URL`                            |
+| `assets`                   | An array of files to be uploaded to the release. See [assets][].                                                                                                          | -                                          |
+| `positionOfOtherArtifacts` | The position to add other artifact links to the GitLab Release. Can be `"bottom"` or `"top"`. Default to not add any links.                                               | -                                          |
+| `mainPackageOnly`          | Create releases only for the main package                                                                                                                                 | `false`                                    |
+| `releaseNameTemplate`      | A [Lodash template][] to customize the gitlab release's name                                                                                                              | `${nextRelease.tag}`                       |
+| `releaseBodyTemplate`      | A [Lodash template][] to customize the gitlab release's body                                                                                                              | `${nextRelease.notes}`                     |
+| `commentOnSuccess`         | Use this as a condition for when to comment on issues or pull requests. See [commentOnSuccess][]                                                                          | `true`                                     |
+| `successComment`           | The comment to be added to each issue and pull request resolved by the release. Set to `false` to disable commenting on issues and pull requests. See [successComment][]. | generate by [getSuccessComment][] function |
+| `successLabels`            | The [labels][] to be added to each issue and pull request resolved by the release. See [successLabels][].                                                                 | -                                          |
+| `milestones`               | An array of milestone titles to be associated to the release. See [GitLab Release API][].                                                                                 | -                                          |
 
 #### assets
 
-Can be a [glob][] or an `Array` of [globs][glob] or an `Object`s with the following properties:
+Can be a [glob][], an `Array` of [globs][glob], or an `Object` with the following properties:
 
-| Property   | Description                                                                                                                                                                               | Default                              |
-|------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
-| `path`     | **Required**, unless `url` is set. A [glob][] to identify the files to upload.                                                                                                            | -                                    |
-| `url`      | Alternative to setting `path` this provides the ability to add links to releases, e.g. URLs to container images.                                                                          | -                                    |
-| `label`    | Short description of the file displayed on the GitLab release. Ignored if `path` matches more than one file.                                                                              | File name extracted from the `path`. |
-| `type`     | Asset type displayed on the GitLab release. Can be `runbook`, `package`, `image` and `other` (see official documents on [release assets][]).                                              | `other`                              |
-| `filepath` | A filepath for creating a permalink pointing to the asset (requires GitLab 12.9+, see official documents on [permanent links][]). Ignored if `path` matches more than one file.           | -                                    |
-| `target`   | Controls where the file is uploaded to. Can be set to `project_upload` for storing the file as [project upload][] or `generic_package` for storing the file as [generic package][].       | `project_upload`                     |
-| `status`   | This is only applied, if `target` is set to `generic_package`. The generic package status. Can be `default` and `hidden` (see official documents on [generic packages][generic package]). | `default`                            |
+| Property   | Description                                                                                                                                                                             | Default                              |
+|------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
+| `path`     | **Required**, unless `url` is set. A [glob][] to identify the files to be uploaded.                                                                                                     | -                                    |
+| `url`      | As an alternative to setting `path`, this provides the ability to add links to releases, e.g., URLs to container images.                                                                | -                                    |
+| `label`    | A short description of the file displayed on the GitLab release. Ignored if `path` matches more than one file.                                                                          | File name extracted from the `path`. |
+| `type`     | The asset type displayed on the GitLab release. Can be `runbook`, `package`, `image` and `other` (see official documents on [release assets][]).                                        | `other`                              |
+| `filepath` | A file path for creating a permalink pointing to the asset (requires GitLab 12.9+, see official documents on [permanent links][]). Ignored if `path` matches more than one file.        | -                                    |
+| `target`   | Controls where the file is uploaded to. Can be set to `project_upload` for storing the file as [project upload][] or `generic_package` for storing the file as [generic package][].     | `project_upload`                     |
+| `status`   | This is only applied if `target` is set to `generic_package`. The generic package status. Can be `default` or `hidden` (see official documents on [generic packages][generic package]). | `default`                            |
 
 Each entry in the `assets` `Array` is globed individually.
 A [glob][] can be a `String` (`"dist/**/*.js"` or `"dist/mylib.js"`) or an `Array` of `String`s that will be globed together (`["dist/**", "!**/*.css"]`).
 
-If a directory is configured, all the files under this directory and its children will be included.
+If a directory is configured, all the files under this directory and its subdirectories will be included.
 
-The `label` for each asset are generated with [Lodash template][]. The following variables are available:
+The `label` for each asset is generated with [Lodash template][]. The following variables are available:
 
 | Parameter     | Description                                |
 |---------------|--------------------------------------------|
@@ -107,23 +107,23 @@ The `label` for each asset are generated with [Lodash template][]. The following
 | `nextRelease` | The release being done.                    |
 | `commits`     | `Array` of commit `Object`s.               |
 
-**Note**: If a file has a match in `assets` it will be included even if it also has a match in `.gitignore`.
+**Note**: If a file matches an entry in `assets`, it will be included even if it also has a match in `.gitignore`.
 
 ##### assets examples
 
-`'dist/*.js'`: include all the `js` files in the `dist` directory, but not in its sub-directories.
+`'dist/*.js'`: includes all the `js` files in the `dist` directory, but not in its subdirectories.
 
-`[['dist', '!**/*.css']]`: include all the files in the `dist` directory and its sub-directories excluding the `css` files.
+`[['dist', '!**/*.css']]`: includes all the files in the `dist` directory and its subdirectories excluding the `css` files.
 
-`[{path: 'dist/MyLibrary.js', label: 'MyLibrary JS distribution'}, {path: 'dist/MyLibrary.css', label: 'MyLibrary CSS distribution'}]`: include the `dist/MyLibrary.js` and `dist/MyLibrary.css` files,
-and label them `MyLibrary JS distribution` and `MyLibrary CSS distribution` in the GitLab release.
+`[{path: 'dist/MyLibrary.js', label: 'MyLibrary JS distribution'}, {path: 'dist/MyLibrary.css', label: 'MyLibrary CSS distribution'}]`: includes the `dist/MyLibrary.js` and `dist/MyLibrary.css` files,
+and labels them `MyLibrary JS distribution` and `MyLibrary CSS distribution` in the GitLab release.
 
-`[['dist/**/*.{js,css}', '!**/*.min.*'], {path: 'build/MyLibrary.zip', label: 'MyLibrary'}]`: include all the `js` and `css` files in the `dist` directory and its sub-directories excluding the minified version,
-plus the `build/MyLibrary.zip` file and label it `MyLibrary` in the GitLab release.
+`[['dist/**/*.{js,css}', '!**/*.min.*'], {path: 'build/MyLibrary.zip', label: 'MyLibrary'}]`: includes all the `js` and `css` files in the `dist` directory and its subdirectories excluding the minified version,
+plus the `build/MyLibrary.zip` file and labels it `MyLibrary` in the GitLab release.
 
 #### commentOnSuccess
 
-A `boolean` or a function returns a `boolean` or `Promise<boolean>` to determine whether to comment to issues and merge requests on success. The following variables are available:
+A `boolean` or a function that returns a `boolean` or `Promise<boolean>` to determine whether to comment on issues and merge requests on success. The following variables are available:
 
 | Parameter     | Description                                                                                                              |
 |---------------|--------------------------------------------------------------------------------------------------------------------------|
@@ -162,7 +162,7 @@ Each label name is generated with [Lodash template][]. The following variables a
 
 ## Compatibility
 
-The latest version of this plugin is compatible with all currently-supported versions of GitLab,
+The latest version of this plugin is compatible with all currently supported versions of GitLab,
 [which is the current major version and previous two major versions][].
 This plugin is not guaranteed to work with unsupported versions of GitLab.
 

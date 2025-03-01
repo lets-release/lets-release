@@ -13,8 +13,8 @@ import { AssetObject } from "src/schemas/AssetObject";
  * | `name`   | The name of the downloadable file on the GitHub release.       | File name extracted from the `path`. |
  * | `label`  | Short description of the file displayed on the GitHub release. | -                                    |
  *
- * Each entry in the `assets` `Array` is globbed individually. A [glob][] can be a `String`
- * (`"dist/**\/*.js"` or `"dist/mylib.js"`) or an `Array` of `String`s that will be globbed together
+ * Each entry in the `assets` `Array` is globed individually. A [glob][] can be a `String`
+ * (`"dist/**\/*.js"` or `"dist/mylib.js"`) or an `Array` of `String`s that will be globed together
  * (`["dist/**", "!**\/*.css"]`).
  *
  * If a directory is configured, all the files under this directory and its children will be included.

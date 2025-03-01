@@ -1,6 +1,6 @@
 # @lets-release/release-notes-generator
 
-**[lets-release][]** plugin to generate changelog content with [conventional-changelog][]
+**[lets-release][]** plugin for generating changelog content with [conventional-changelog][]
 
 | Step            | Description                                                                                          |
 |-----------------|------------------------------------------------------------------------------------------------------|
@@ -38,10 +38,10 @@ The plugin can be configured in the **[lets-release][]** configuration file:
 }
 ```
 
-With this example:
+In this example:
 
-- the commits that contain `BREAKING CHANGE`, `BREAKING CHANGES` or `BREAKING` in their body will be considered breaking changes (by default the [angular preset][angular] checks only for `BREAKING CHANGE` and `BREAKING CHANGES`)
-- the commits will be sorted in the changelog by `subject` then `scope` (by default the [angular preset][angular] sort the commits in the changelog by `scope` then `subject`)
+- Commits that contain `BREAKING CHANGE`, `BREAKING CHANGES`, or `BREAKING` in their body will be considered breaking changes (by default, the [angular preset][angular] checks only for `BREAKING CHANGE` and `BREAKING CHANGES`)
+- Commits will be sorted in the changelog by `subject` then `scope` (by default, the [angular preset][angular] sort the commits in the changelog by `scope` then `subject`)
 
 ## Configuration
 
@@ -60,7 +60,7 @@ With this example:
 | `commit`         | Keyword used to generate commit links (formatted as `<host>/<owner>/<repository>/<commit>/<commit_sha>`). See [conventional-changelog-writer][].                                                                                                                         | `commits` for Bitbucket repositories, `commit` otherwise   |
 | `issue`          | Keyword used to generate issue links (formatted as `<host>/<owner>/<repository>/<issue>/<issue_number>`). See [conventional-changelog-writer][].                                                                                                                         | `issue` for Bitbucket repositories, `issues` otherwise     |
 
-**Notes**: in order to use a `preset` it must be installed (for example to use the [eslint preset][eslint] you must install it with `npm install conventional-changelog-eslint -D`)
+**Note**: In order to use a `preset`, it must be installed (for example, to use the [eslint preset][eslint] you must install it with `npm install conventional-changelog-eslint -D`)
 
 **Note**: `config` will be overwritten by the values of `preset`. You should use either `preset` or `config`, but not both.
 

@@ -17,8 +17,8 @@ import { GitLabAssetObject } from "src/schemas/GitLabAssetObject";
  * | `target`   | Controls where the file is uploaded to. Can be set to `project_upload` for storing the file as [project upload][] or `generic_package` for storing the file as [generic package][].                             | `project_upload`                     |
  * | `status`   | This is only applied, if `target` is set to `generic_package`. The generic package status. Can be `default` and `hidden` (see official documents on [generic packages][generic package]).                       | `default`                            |
  *
- * Each entry in the `assets` `Array` is globbed individually. A [glob][]
- * can be a `String` (`"dist/**\/*.js"` or `"dist/mylib.js"`) or an `Array` of `String`s that will be globbed together
+ * Each entry in the `assets` `Array` is globed individually. A [glob][]
+ * can be a `String` (`"dist/**\/*.js"` or `"dist/mylib.js"`) or an `Array` of `String`s that will be globed together
  * (`["dist/**", "!**\/*.css"]`).
  *
  * If a directory is configured, all the files under this directory and its children will be included.
