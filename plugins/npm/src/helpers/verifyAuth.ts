@@ -1,12 +1,15 @@
 import { $, ResultPromise } from "execa";
 
-import { VerifyConditionsContext } from "@lets-release/config";
+import { AnalyzeCommitsContext } from "@lets-release/config";
 
 import { NeedAuthError } from "src/errors/NeedAuthError";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
 
 export async function verifyAuth(
-  { env }: Pick<VerifyConditionsContext, "env">,
+  {
+    env,
+    package: { path: pkgRoot },
+  }: Pick<AnalyzeCommitsContext, "env" | "package">,
   { pm, scope, registry }: NpmPackageContext,
 ) {
   const options = {
@@ -18,14 +21,25 @@ export async function verifyAuth(
   const verify = async (promise: ResultPromise<typeof options>) => {
     try {
       await promise;
-    } catch {
-      throw new AggregateError([new NeedAuthError(registry)], "AggregateError");
+    } catch (error) {
+      throw new AggregateError(
+        [new NeedAuthError(registry), error],
+        "AggregateError",
+      );
     }
   };
 
   switch (pm?.name) {
     case "pnpm": {
-      await verify($(options)`pnpm whoami --registry ${registry}`);
+      await verify(
+        $({
+          ...options,
+          cwd: pkgRoot,
+        })`pnpm whoami --registry ${registry}`,
+      ).catch(
+        async () =>
+          await verify($(options)`pnpm whoami --registry ${registry}`),
+      );
       break;
     }
 
@@ -33,7 +47,7 @@ export async function verifyAuth(
       await verify(
         $(
           options,
-        )`yarn npm whoami ${scope ? ["--scope", scope.replace(/^@/, "")] : []}`,
+        )`yarn npm whoami --publish ${scope ? ["--scope", scope.replace(/^@/, "")] : []}`,
       );
       break;
     }

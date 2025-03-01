@@ -1,8 +1,6 @@
-import { WritableStream } from "node:stream/web";
-
 import { $ } from "execa";
 
-import { VerifyConditionsContext } from "@lets-release/config";
+import { AnalyzeCommitsContext } from "@lets-release/config";
 
 import { verifyAuth } from "src/helpers/verifyAuth";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
@@ -11,9 +9,10 @@ vi.mock("execa");
 vi.mock("src/helpers/getRegistry");
 
 const context = {
-  stdout: new WritableStream(),
-  stderr: new WritableStream(),
-} as unknown as VerifyConditionsContext;
+  env: {},
+  package: { path: "/root/pkg" },
+} as unknown as AnalyzeCommitsContext;
+const scope = "@scope";
 const registry = "https://test.org";
 
 describe("verifyAuth", () => {
@@ -28,7 +27,7 @@ describe("verifyAuth", () => {
 
     await expect(
       verifyAuth(context, {
-        pm: { name: "npm", version: "*", root: "./" },
+        pm: { name: "npm", version: "*", root: "/root" },
         registry,
       } as NpmPackageContext),
     ).rejects.toThrow(AggregateError);
@@ -46,14 +45,21 @@ describe("verifyAuth", () => {
     const promise = new ExtendedPromise((resolve) => {
       resolve(true);
     });
-    vi.mocked($).mockReturnValue((() => promise) as never);
+    vi.mocked($)
+      .mockReturnValueOnce(
+        (() =>
+          new ExtendedPromise((resolve, reject) => {
+            reject(new Error("unknown"));
+          })) as never,
+      )
+      .mockReturnValue((() => promise) as never);
 
     await expect(
       verifyAuth(context, {
         pm: {
           name: "pnpm",
           version: "9.0.0",
-          root: "./",
+          root: "/root",
         },
         registry,
       } as NpmPackageContext),
@@ -79,7 +85,7 @@ describe("verifyAuth", () => {
         pm: {
           name: "yarn",
           version: "4.0.0",
-          root: "./",
+          root: "/root",
         },
         registry,
       } as NpmPackageContext),
@@ -105,9 +111,9 @@ describe("verifyAuth", () => {
         pm: {
           name: "yarn",
           version: "4.0.0",
-          root: "./",
+          root: "/root",
         },
-        scope: "@scope",
+        scope,
         registry,
       } as NpmPackageContext),
     ).resolves.toBe(undefined);
@@ -132,7 +138,7 @@ describe("verifyAuth", () => {
         pm: {
           name: "npm",
           version: "4.0.0",
-          root: "./",
+          root: "/root",
         },
         registry,
       } as NpmPackageContext),

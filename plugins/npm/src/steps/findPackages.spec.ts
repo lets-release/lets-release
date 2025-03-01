@@ -5,7 +5,7 @@ import { globSync } from "tinyglobby";
 import { FindPackagesContext, PackageInfo } from "@lets-release/config";
 
 import { NPM_PACKAGE_TYPE } from "src/constants/NPM_PACKAGE_TYPE";
-import { NoPackageError } from "src/errors/NoPackageError";
+import { NoNpmPackageError } from "src/errors/NoNpmPackageError";
 import { getNpmPackageContext } from "src/helpers/getNpmPackageContext";
 import { findPackages } from "src/steps/findPackages";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
@@ -44,7 +44,7 @@ vi.mocked(globSync).mockReturnValue(folders);
 vi.mocked(getNpmPackageContext).mockImplementation(
   async ({
     package: { path: pkgRoot },
-  }: Pick<FindPackagesContext, "env" | "repositoryRoot"> & {
+  }: Pick<FindPackagesContext, "env"> & {
     package: Pick<PackageInfo, "path">;
   }) => {
     if (pkgRoot === path.resolve(repositoryRoot, "a")) {
@@ -59,7 +59,7 @@ vi.mocked(getNpmPackageContext).mockImplementation(
       return;
     }
 
-    throw new AggregateError([new NoPackageError()], "AggregateError");
+    throw new AggregateError([new NoNpmPackageError()], "AggregateError");
   },
 );
 
