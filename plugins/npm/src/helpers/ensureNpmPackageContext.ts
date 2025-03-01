@@ -3,6 +3,7 @@ import { AnalyzeCommitsContext } from "@lets-release/config";
 import { UnsupportedNpmPackageManagerError } from "src/errors/UnsupportedNpmPackageManagerError";
 import { getNpmPackageContext } from "src/helpers/getNpmPackageContext";
 import { verifyAuth } from "src/helpers/verifyAuth";
+import { verifyNpmPackageManagerVersion } from "src/helpers/verifyNpmPackageManagerVersion";
 import { NpmOptions } from "src/schemas/NpmOptions";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
 
@@ -33,6 +34,7 @@ export async function ensureNpmPackageContext(
 
   // Verify the npm authentication only if `skipPublishing` is not `true` and `pkg.private` is not `true`
   if (!pkgContext.verified && !skipPublishing && !pkgContext.pkg.private) {
+    await verifyNpmPackageManagerVersion(context, pkgContext);
     await verifyAuth(context, pkgContext);
   }
 

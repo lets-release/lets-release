@@ -7,6 +7,7 @@ import { NpmPackageContext } from "src/types/NpmPackageContext";
 
 vi.mock("src/helpers/getNpmPackageContext");
 vi.mock("src/helpers/verifyAuth");
+vi.mock("src/helpers/verifyNpmPackageManagerVersion");
 
 const env = {};
 const repositoryRoot = "/root";
