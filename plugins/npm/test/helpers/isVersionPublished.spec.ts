@@ -77,7 +77,7 @@ describe("isVersionPublished", () => {
     await publish(ctx, {});
   });
 
-  describe("pnpm", () => {
+  describe.each(["8", "latest"])("pnpm %s", (version) => {
     let cwd: string;
 
     beforeAll(async () => {
@@ -94,7 +94,7 @@ describe("isVersionPublished", () => {
         cwd,
         preferLocal: true,
       };
-      await $(options)`corepack use pnpm@latest`;
+      await $(options)`corepack use ${`pnpm@${version}`}`;
       await $(options)`pnpm install`;
     });
 
@@ -123,7 +123,7 @@ describe("isVersionPublished", () => {
     });
   });
 
-  describe("yarn", () => {
+  describe.each(["3", "latest"])("yarn %s", (version) => {
     let cwd: string;
 
     beforeAll(async () => {
@@ -135,7 +135,7 @@ describe("isVersionPublished", () => {
         cwd,
         preferLocal: true,
       };
-      await $(options)`corepack use yarn@latest`;
+      await $(options)`corepack use ${`yarn@${version}`}`;
       await $(options)`yarn install`;
       await $(
         options,
@@ -169,7 +169,7 @@ describe("isVersionPublished", () => {
     });
   });
 
-  describe("npm", () => {
+  describe.each(["8", "latest"])("npm %s", (version) => {
     let cwd: string;
 
     beforeAll(async () => {
@@ -186,6 +186,7 @@ describe("isVersionPublished", () => {
         cwd,
         preferLocal: true,
       };
+      await $(options)`corepack use ${`npm@${version}`}`;
       await $(options)`npm install`;
     });
 

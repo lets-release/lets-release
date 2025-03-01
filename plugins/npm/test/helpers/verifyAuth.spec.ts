@@ -6,7 +6,7 @@ import { outputJson } from "fs-extra";
 import { temporaryDirectory } from "tempy";
 import { inject } from "vitest";
 
-import { VerifyConditionsContext } from "@lets-release/config";
+import { AnalyzeCommitsContext } from "@lets-release/config";
 
 import { verifyAuth } from "src/helpers/verifyAuth";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
@@ -21,86 +21,96 @@ const pkg = {
 };
 
 describe("verifyAuth", () => {
-  it("should verify auth with pnpm", async () => {
-    const cwd = temporaryDirectory();
+  it.each(["8", "latest"])(
+    "should verify auth with pnpm %s",
+    async (version) => {
+      const cwd = temporaryDirectory();
 
-    await writeFile(
-      path.resolve(cwd, ".npmrc"),
-      `//${registry.replace(/^https?:\/\//, "")}/:_authToken=${npmToken}`,
-    );
+      await writeFile(
+        path.resolve(cwd, ".npmrc"),
+        `//${registry.replace(/^https?:\/\//, "")}/:_authToken=${npmToken}`,
+      );
 
-    await outputJson(path.resolve(cwd, "package.json"), pkg);
+      await outputJson(path.resolve(cwd, "package.json"), pkg);
 
-    const options = {
-      cwd,
-      preferLocal: true,
-    };
-    await $(options)`corepack use pnpm@latest`;
-    await $(options)`pnpm install`;
+      const options = {
+        cwd,
+        preferLocal: true,
+      };
+      await $(options)`corepack use ${`pnpm@${version}`}`;
+      await $(options)`pnpm install`;
 
-    await expect(
-      verifyAuth(
-        {} as VerifyConditionsContext,
-        {
-          pm: { name: "pnpm", root: cwd },
-          registry,
-        } as NpmPackageContext,
-      ),
-    ).resolves.toBeUndefined();
-  });
+      await expect(
+        verifyAuth(
+          { package: { path: cwd } } as AnalyzeCommitsContext,
+          {
+            pm: { name: "pnpm", root: cwd },
+            registry,
+          } as NpmPackageContext,
+        ),
+      ).resolves.toBeUndefined();
+    },
+  );
 
-  it("should verify auth with yarn", async () => {
-    const cwd = temporaryDirectory();
+  it.each(["3", "latest"])(
+    "should verify auth with yarn %s",
+    async (version) => {
+      const cwd = temporaryDirectory();
 
-    await outputJson(path.resolve(cwd, "package.json"), pkg);
+      await outputJson(path.resolve(cwd, "package.json"), pkg);
 
-    const options = {
-      cwd,
-      preferLocal: true,
-    };
-    await $(options)`corepack use yarn@latest`;
-    await $(options)`yarn install`;
-    await $(
-      options,
-    )`yarn config set unsafeHttpWhitelist --json ${`["${registryHost}"]`}`;
-    await $(options)`yarn config set npmRegistryServer ${registry}`;
-    await $(options)`yarn config set npmAuthToken ${npmToken ?? ""}`;
+      const options = {
+        cwd,
+        preferLocal: true,
+      };
+      await $(options)`corepack use ${`yarn@${version}`}`;
+      await $(options)`yarn install`;
+      await $(
+        options,
+      )`yarn config set unsafeHttpWhitelist --json ${`["${registryHost}"]`}`;
+      await $(options)`yarn config set npmRegistryServer ${registry}`;
+      await $(options)`yarn config set npmAuthToken ${npmToken ?? ""}`;
 
-    await expect(
-      verifyAuth(
-        {} as VerifyConditionsContext,
-        {
-          pm: { name: "yarn", root: cwd },
-          registry,
-        } as NpmPackageContext,
-      ),
-    ).resolves.toBeUndefined();
-  });
+      await expect(
+        verifyAuth(
+          { package: { path: cwd } } as AnalyzeCommitsContext,
+          {
+            pm: { name: "yarn", root: cwd },
+            registry,
+          } as NpmPackageContext,
+        ),
+      ).resolves.toBeUndefined();
+    },
+  );
 
-  it("should verify auth with npm", async () => {
-    const cwd = temporaryDirectory();
+  it.each(["8", "latest"])(
+    "should verify auth with npm %s",
+    async (version) => {
+      const cwd = temporaryDirectory();
 
-    await writeFile(
-      path.resolve(cwd, ".npmrc"),
-      `//${registry.replace(/^https?:\/\//, "")}/:_authToken=${npmToken}`,
-    );
+      await writeFile(
+        path.resolve(cwd, ".npmrc"),
+        `//${registry.replace(/^https?:\/\//, "")}/:_authToken=${npmToken}`,
+      );
 
-    await outputJson(path.resolve(cwd, "package.json"), pkg);
+      await outputJson(path.resolve(cwd, "package.json"), pkg);
 
-    const options = {
-      cwd,
-      preferLocal: true,
-    };
-    await $(options)`npm install`;
+      const options = {
+        cwd,
+        preferLocal: true,
+      };
+      await $(options)`corepack use ${`npm@${version}`}`;
+      await $(options)`npm install`;
 
-    await expect(
-      verifyAuth(
-        {} as VerifyConditionsContext,
-        {
-          pm: { name: "npm", root: cwd },
-          registry,
-        } as NpmPackageContext,
-      ),
-    ).resolves.toBeUndefined();
-  });
+      await expect(
+        verifyAuth(
+          { package: { path: cwd } } as AnalyzeCommitsContext,
+          {
+            pm: { name: "npm", root: cwd },
+            registry,
+          } as NpmPackageContext,
+        ),
+      ).resolves.toBeUndefined();
+    },
+  );
 });

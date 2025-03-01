@@ -63,6 +63,7 @@ describe("verifyConditions", () => {
       private: true,
     };
     await outputJson(path.resolve(cwd, "package.json"), pkg);
+    await $({ cwd })`corepack use npm@latest`;
     await $({ cwd })`npm install`;
 
     let pkgContext: NpmPackageContext;
@@ -105,6 +106,7 @@ describe("verifyConditions", () => {
       publishConfig: { registry },
     };
     await outputJson(path.resolve(cwd, "package.json"), pkg);
+    await $({ cwd })`corepack use npm@latest`;
     await $({ cwd })`npm install`;
 
     let pkgContext: NpmPackageContext;
@@ -139,205 +141,220 @@ describe("verifyConditions", () => {
     ).rejects.toThrow(AggregateError);
   });
 
-  it("should verify auth with pnpm", async () => {
-    const cwd = temporaryDirectory();
+  it.each(["8", "latest"])(
+    "should verify auth with pnpm %s",
+    async (version) => {
+      const cwd = temporaryDirectory();
 
-    await writeFile(
-      path.resolve(cwd, ".npmrc"),
-      `//${registry.replace(/^https?:\/\//, "")}/:_authToken=${npmToken}`,
-    );
+      await writeFile(
+        path.resolve(cwd, ".npmrc"),
+        `//${registry.replace(/^https?:\/\//, "")}/:_authToken=${npmToken}`,
+      );
 
-    const packages = [
-      {
-        name: "verify-conditions-pnpm",
-        version: "0.0.0-dev",
-        publishConfig: { registry },
-        path: cwd,
-      },
-      {
-        name: "@verify-conditions-pnpm/a",
-        version: "0.0.0-dev",
-        publishConfig: { registry },
-        path: path.resolve(cwd, "packages/a"),
-      },
-      {
-        name: "@verify-conditions-pnpm/b",
-        version: "0.0.0-dev",
-        publishConfig: { registry },
-        path: path.resolve(cwd, "packages/b"),
-      },
-    ];
-
-    for (const { path: pkgRoot, ...pkg } of packages) {
-      await outputJson(path.resolve(pkgRoot, "package.json"), pkg);
-    }
-
-    const options = {
-      cwd,
-      preferLocal: true,
-    };
-    await $(options)`corepack use pnpm@latest`;
-    await $(options)`pnpm install`;
-
-    let pkgContext: NpmPackageContext;
-
-    const getPluginPackageContext = () => pkgContext;
-    const setPluginPackageContext = (
-      type: string,
-      name: string,
-      context: NpmPackageContext,
-    ) => {
-      pkgContext = context;
-    };
-
-    await expect(
-      verifyConditions(
+      const packages = [
         {
-          ...context,
-          getPluginPackageContext,
-          setPluginPackageContext,
-          cwd,
-          env: process.env,
-          repositoryRoot: cwd,
-          packages,
-        } as unknown as VerifyConditionsContext,
-        {},
-      ),
-    ).resolves.toBeUndefined();
-  });
-
-  it("should verify auth with yarn", async () => {
-    const cwd = temporaryDirectory();
-
-    const packages = [
-      {
-        name: "verify-conditions-yarn",
-        version: "0.0.0-dev",
-        publishConfig: { registry },
-        workspaces: ["packages/*"],
-        path: cwd,
-      },
-      {
-        name: "@verify-conditions-yarn/a",
-        version: "0.0.0-dev",
-        publishConfig: { registry },
-        path: path.resolve(cwd, "packages/a"),
-      },
-      {
-        name: "@verify-conditions-yarn/b",
-        version: "0.0.0-dev",
-        publishConfig: { registry },
-        path: path.resolve(cwd, "packages/b"),
-      },
-    ];
-
-    for (const { path: pkgRoot, ...pkg } of packages) {
-      await outputJson(path.resolve(pkgRoot, "package.json"), pkg);
-    }
-
-    const options = {
-      cwd,
-      preferLocal: true,
-    };
-    await $(options)`corepack use yarn@latest`;
-    await $(options)`yarn install`;
-    await $(
-      options,
-    )`yarn config set unsafeHttpWhitelist --json ${`["${registryHost}"]`}`;
-    await $(options)`yarn config set npmRegistryServer ${registry}`;
-    await $(options)`yarn config set npmAuthToken ${npmToken ?? ""}`;
-
-    let pkgContext: NpmPackageContext;
-
-    const getPluginPackageContext = () => pkgContext;
-    const setPluginPackageContext = (
-      type: string,
-      name: string,
-      context: NpmPackageContext,
-    ) => {
-      pkgContext = context;
-    };
-
-    await expect(
-      verifyConditions(
+          name: `verify-conditions-pnpm-${version}`,
+          version: "0.0.0-dev",
+          publishConfig: { registry },
+          path: cwd,
+        },
         {
-          ...context,
-          getPluginPackageContext,
-          setPluginPackageContext,
-          cwd,
-          env: process.env,
-          repositoryRoot: cwd,
-          packages,
-        } as unknown as VerifyConditionsContext,
-        {},
-      ),
-    ).resolves.toBeUndefined();
-  });
-
-  it("should verify auth with npm", async () => {
-    const cwd = temporaryDirectory();
-
-    await writeFile(
-      path.resolve(cwd, ".npmrc"),
-      `//${registry.replace(/^https?:\/\//, "")}/:_authToken=${npmToken}`,
-    );
-
-    const packages = [
-      {
-        name: "verify-conditions-npm",
-        version: "0.0.0-dev",
-        publishConfig: { registry },
-        workspaces: ["packages/*"],
-        path: cwd,
-      },
-      {
-        name: "@verify-conditions-npm/a",
-        version: "0.0.0-dev",
-        publishConfig: { registry },
-        path: path.resolve(cwd, "packages/a"),
-      },
-      {
-        name: "@verify-conditions-npm/b",
-        version: "0.0.0-dev",
-        publishConfig: { registry },
-        path: path.resolve(cwd, "packages/b"),
-      },
-    ];
-
-    for (const { path: pkgRoot, ...pkg } of packages) {
-      await outputJson(path.resolve(pkgRoot, "package.json"), pkg);
-    }
-
-    const options = {
-      cwd,
-      preferLocal: true,
-    };
-    await $(options)`npm install`;
-
-    let pkgContext: NpmPackageContext;
-
-    const getPluginPackageContext = () => pkgContext;
-    const setPluginPackageContext = (
-      type: string,
-      name: string,
-      context: NpmPackageContext,
-    ) => {
-      pkgContext = context;
-    };
-
-    await expect(
-      verifyConditions(
+          name: `@verify-conditions-pnpm-${version}/a`,
+          version: "0.0.0-dev",
+          publishConfig: { registry },
+          path: path.resolve(cwd, "packages/a"),
+        },
         {
-          ...context,
-          getPluginPackageContext,
-          setPluginPackageContext,
-          cwd,
-          env: process.env,
-          repositoryRoot: cwd,
-          packages,
-        } as unknown as VerifyConditionsContext,
-        {},
-      ),
-    ).resolves.toBeUndefined();
-  });
+          name: `@verify-conditions-pnpm-${version}/b`,
+          version: "0.0.0-dev",
+          publishConfig: { registry },
+          path: path.resolve(cwd, "packages/b"),
+        },
+      ];
+
+      for (const { path: pkgRoot, ...pkg } of packages) {
+        await outputJson(path.resolve(pkgRoot, "package.json"), pkg);
+      }
+
+      const options = {
+        cwd,
+        preferLocal: true,
+      };
+      await $(options)`corepack use ${`pnpm@${version}`}`;
+      await $(options)`pnpm install`;
+
+      let pkgContext: NpmPackageContext;
+
+      const getPluginPackageContext = () => pkgContext;
+      const setPluginPackageContext = (
+        type: string,
+        name: string,
+        context: NpmPackageContext,
+      ) => {
+        pkgContext = context;
+      };
+
+      await expect(
+        verifyConditions(
+          {
+            ...context,
+            getPluginPackageContext,
+            setPluginPackageContext,
+            cwd,
+            env: process.env,
+            repositoryRoot: cwd,
+            packages,
+          } as unknown as VerifyConditionsContext,
+          {},
+        ),
+      ).resolves.toBeUndefined();
+    },
+  );
+
+  it.each(["3", "latest"])(
+    "should verify auth with yarn %s",
+    async (version) => {
+      const cwd = temporaryDirectory();
+
+      const packages = [
+        {
+          name: `verify-conditions-yarn-${version}`,
+          version: "0.0.0-dev",
+          publishConfig: { registry },
+          workspaces: ["packages/*"],
+          path: cwd,
+        },
+        {
+          name: `@verify-conditions-yarn-${version}/a`,
+          version: "0.0.0-dev",
+          publishConfig: { registry },
+          path: path.resolve(cwd, "packages/a"),
+        },
+        {
+          name: `@verify-conditions-yarn-${version}/b`,
+          version: "0.0.0-dev",
+          publishConfig: { registry },
+          path: path.resolve(cwd, "packages/b"),
+        },
+      ];
+
+      for (const { path: pkgRoot, ...pkg } of packages) {
+        await outputJson(path.resolve(pkgRoot, "package.json"), pkg);
+      }
+
+      const options = {
+        cwd,
+        preferLocal: true,
+      };
+      await $(options)`corepack use ${`yarn@${version}`}`;
+
+      if (version === "3") {
+        await $(options)`yarn plugin import version`;
+      }
+
+      await $(options)`yarn install`;
+      await $(
+        options,
+      )`yarn config set unsafeHttpWhitelist --json ${`["${registryHost}"]`}`;
+      await $(options)`yarn config set npmRegistryServer ${registry}`;
+      await $(options)`yarn config set npmAuthToken ${npmToken ?? ""}`;
+
+      let pkgContext: NpmPackageContext;
+
+      const getPluginPackageContext = () => pkgContext;
+      const setPluginPackageContext = (
+        type: string,
+        name: string,
+        context: NpmPackageContext,
+      ) => {
+        pkgContext = context;
+      };
+
+      await expect(
+        verifyConditions(
+          {
+            ...context,
+            getPluginPackageContext,
+            setPluginPackageContext,
+            cwd,
+            env: process.env,
+            repositoryRoot: cwd,
+            packages,
+          } as unknown as VerifyConditionsContext,
+          {},
+        ),
+      ).resolves.toBeUndefined();
+    },
+  );
+
+  it.each(["8", "latest"])(
+    "should verify auth with npm %s",
+    async (version) => {
+      const cwd = temporaryDirectory();
+
+      await writeFile(
+        path.resolve(cwd, ".npmrc"),
+        `//${registry.replace(/^https?:\/\//, "")}/:_authToken=${npmToken}`,
+      );
+
+      const packages = [
+        {
+          name: `verify-conditions-npm-${version}`,
+          version: "0.0.0-dev",
+          publishConfig: { registry },
+          workspaces: ["packages/*"],
+          path: cwd,
+        },
+        {
+          name: `@verify-conditions-npm-${version}/a`,
+          version: "0.0.0-dev",
+          publishConfig: { registry },
+          path: path.resolve(cwd, "packages/a"),
+        },
+        {
+          name: `@verify-conditions-npm-${version}/b`,
+          version: "0.0.0-dev",
+          publishConfig: { registry },
+          path: path.resolve(cwd, "packages/b"),
+        },
+      ];
+
+      for (const { path: pkgRoot, ...pkg } of packages) {
+        await outputJson(path.resolve(pkgRoot, "package.json"), pkg);
+      }
+
+      const options = {
+        cwd,
+        preferLocal: true,
+      };
+      await $(options)`corepack use ${`npm@${version}`}`;
+      await $(options)`npm install`;
+
+      let pkgContext: NpmPackageContext;
+
+      const getPluginPackageContext = () => pkgContext;
+      const setPluginPackageContext = (
+        type: string,
+        name: string,
+        context: NpmPackageContext,
+      ) => {
+        pkgContext = context;
+      };
+
+      await expect(
+        verifyConditions(
+          {
+            ...context,
+            getPluginPackageContext,
+            setPluginPackageContext,
+            cwd,
+            env: process.env,
+            repositoryRoot: cwd,
+            packages,
+          } as unknown as VerifyConditionsContext,
+          {},
+        ),
+      ).resolves.toBeUndefined();
+    },
+  );
 });

@@ -59,6 +59,7 @@ describe("getDistTagVersion", () => {
       cwd,
       preferLocal: true,
     };
+    await $(options)`corepack use npm@latest`;
     await $(options)`npm install`;
 
     for (const { version, channels } of [
@@ -90,134 +91,149 @@ describe("getDistTagVersion", () => {
     }
   });
 
-  it("should return the version of the dist-tag with pnpm", async () => {
-    const cwd = temporaryDirectory();
+  it.each(["8", "latest"])(
+    "should return the version of the dist-tag with pnpm %s",
+    async (version) => {
+      const cwd = temporaryDirectory();
 
-    await writeFile(
-      path.resolve(cwd, ".npmrc"),
-      `//${registry.replace(/^https?:\/\//, "")}/:_authToken=${npmToken}`,
-    );
+      await writeFile(
+        path.resolve(cwd, ".npmrc"),
+        `//${registry.replace(/^https?:\/\//, "")}/:_authToken=${npmToken}`,
+      );
 
-    const pkg = {
-      name: "get-dist-tag-version-pnpm",
-      version: "0.0.0-dev",
-      publishConfig: { registry },
-      path: cwd,
-    };
+      const pkg = {
+        name: `get-dist-tag-version-pnpm-${version}`,
+        version: "0.0.0-dev",
+        publishConfig: { registry },
+        path: cwd,
+      };
 
-    await outputJson(path.resolve(pkg.path, "package.json"), pkg);
+      await outputJson(path.resolve(pkg.path, "package.json"), pkg);
 
-    const options = {
-      cwd,
-      preferLocal: true,
-    };
-    await $(options)`corepack use pnpm@latest`;
-    await $(options)`pnpm install`;
+      const options = {
+        cwd,
+        preferLocal: true,
+      };
+      await $(options)`corepack use ${`pnpm@${version}`}`;
+      await $(options)`pnpm install`;
 
-    await expect(
-      getDistTagVersion(
-        {
-          package: { name: "get-dist-tag-version" },
-        } as unknown as VerifyReleaseContext,
-        pkgContext,
-        "latest",
-      ),
-    ).resolves.toBe("1.0.0");
-    await expect(
-      getDistTagVersion(
-        {
-          package: { name: "get-dist-tag-version" },
-        } as unknown as VerifyReleaseContext,
-        pkgContext,
-        "next",
-      ),
-    ).resolves.toBe("2.0.0");
-  });
+      await expect(
+        getDistTagVersion(
+          {
+            package: { name: "get-dist-tag-version" },
+          } as unknown as VerifyReleaseContext,
+          pkgContext,
+          "latest",
+        ),
+      ).resolves.toBe("1.0.0");
+      await expect(
+        getDistTagVersion(
+          {
+            package: { name: "get-dist-tag-version" },
+          } as unknown as VerifyReleaseContext,
+          pkgContext,
+          "next",
+        ),
+      ).resolves.toBe("2.0.0");
+    },
+  );
 
-  it("should return the version of the dist-tag with yarn", async () => {
-    const cwd = temporaryDirectory();
+  it.each(["3", "latest"])(
+    "should return the version of the dist-tag with yarn %s",
+    async (version) => {
+      const cwd = temporaryDirectory();
 
-    const pkg = {
-      name: "get-dist-tag-version-yarn",
-      version: "0.0.0-dev",
-      publishConfig: { registry },
-      path: cwd,
-    };
+      const pkg = {
+        name: `get-dist-tag-version-yarn-${version}`,
+        version: "0.0.0-dev",
+        publishConfig: { registry },
+        path: cwd,
+      };
 
-    await outputJson(path.resolve(pkg.path, "package.json"), pkg);
+      await outputJson(path.resolve(pkg.path, "package.json"), pkg);
 
-    const options = {
-      cwd,
-      preferLocal: true,
-    };
-    await $(options)`corepack use yarn@latest`;
-    await $(options)`yarn install`;
-    await $(
-      options,
-    )`yarn config set unsafeHttpWhitelist --json ${`["${registryHost}"]`}`;
-    await $(options)`yarn config set npmRegistryServer ${registry}`;
-    await $(options)`yarn config set npmAuthToken ${npmToken ?? ""}`;
+      const options = {
+        cwd,
+        preferLocal: true,
+      };
+      await $(options)`corepack use ${`yarn@${version}`}`;
 
-    await expect(
-      getDistTagVersion(
-        {
-          package: { name: "get-dist-tag-version" },
-        } as unknown as VerifyReleaseContext,
-        pkgContext,
-        "latest",
-      ),
-    ).resolves.toBe("1.0.0");
-    await expect(
-      getDistTagVersion(
-        {
-          package: { name: "get-dist-tag-version" },
-        } as unknown as VerifyReleaseContext,
-        pkgContext,
-        "next",
-      ),
-    ).resolves.toBe("2.0.0");
-  });
+      if (version === "3") {
+        await $(options)`yarn plugin import version`;
+      }
 
-  it("should return the version of the dist-tag with npm", async () => {
-    const cwd = temporaryDirectory();
+      await $(options)`yarn install`;
+      await $(
+        options,
+      )`yarn config set unsafeHttpWhitelist --json ${`["${registryHost}"]`}`;
+      await $(options)`yarn config set npmRegistryServer ${registry}`;
+      await $(options)`yarn config set npmAuthToken ${npmToken ?? ""}`;
 
-    await writeFile(
-      path.resolve(cwd, ".npmrc"),
-      `//${registry.replace(/^https?:\/\//, "")}/:_authToken=${npmToken}`,
-    );
+      await expect(
+        getDistTagVersion(
+          {
+            package: { name: "get-dist-tag-version" },
+          } as unknown as VerifyReleaseContext,
+          pkgContext,
+          "latest",
+        ),
+      ).resolves.toBe("1.0.0");
+      await expect(
+        getDistTagVersion(
+          {
+            package: { name: "get-dist-tag-version" },
+          } as unknown as VerifyReleaseContext,
+          pkgContext,
+          "next",
+        ),
+      ).resolves.toBe("2.0.0");
+    },
+  );
 
-    const pkg = {
-      name: "get-dist-tag-version-npm",
-      version: "0.0.0-dev",
-      publishConfig: { registry },
-      path: cwd,
-    };
+  it.each(["8", "latest"])(
+    "should return the version of the dist-tag with npm %s",
+    async (version) => {
+      const cwd = temporaryDirectory();
 
-    await outputJson(path.resolve(pkg.path, "package.json"), pkg);
+      await writeFile(
+        path.resolve(cwd, ".npmrc"),
+        `//${registry.replace(/^https?:\/\//, "")}/:_authToken=${npmToken}`,
+      );
 
-    const options = {
-      cwd,
-      preferLocal: true,
-    };
-    await $(options)`npm install`;
+      const pkg = {
+        name: `get-dist-tag-version-npm-${version}`,
+        version: "0.0.0-dev",
+        publishConfig: { registry },
+        path: cwd,
+      };
 
-    await expect(
-      getDistTagVersion(
-        {
-          package: { name: "get-dist-tag-version" },
-        } as unknown as VerifyReleaseContext,
-        pkgContext,
-        "latest",
-      ),
-    ).resolves.toBe("1.0.0");
-    await expect(
-      getDistTagVersion(
-        {
-          package: { name: "get-dist-tag-version" },
-        } as unknown as VerifyReleaseContext,
-        pkgContext,
-        "next",
-      ),
-    ).resolves.toBe("2.0.0");
-  });
+      await outputJson(path.resolve(pkg.path, "package.json"), pkg);
+
+      const options = {
+        cwd,
+        preferLocal: true,
+      };
+      await $(options)`corepack use ${`npm@${version}`}`;
+      await $(options)`npm install`;
+
+      await expect(
+        getDistTagVersion(
+          {
+            package: { name: "get-dist-tag-version" },
+          } as unknown as VerifyReleaseContext,
+          pkgContext,
+          "latest",
+        ),
+      ).resolves.toBe("1.0.0");
+      await expect(
+        getDistTagVersion(
+          {
+            package: { name: "get-dist-tag-version" },
+          } as unknown as VerifyReleaseContext,
+          pkgContext,
+          "next",
+        ),
+      ).resolves.toBe("2.0.0");
+    },
+  );
 });

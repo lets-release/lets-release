@@ -33,9 +33,9 @@ export default async function setup(project: TestProject) {
     // https://github.com/nodejs/corepack/issues/71
     const corepackDir = path.resolve(homedir(), ".corepack");
     await mkdir(corepackDir, { recursive: true });
-    await $`corepack enable --install-directory ${corepackDir}`;
+    await $`corepack enable npm pnpm yarn --install-directory ${corepackDir}`;
   } else {
-    await $`corepack enable`;
+    await $`corepack enable npm pnpm yarn`;
   }
 
   console.log("[@lets-release/npm]: Installing pnpm@8");
@@ -46,8 +46,8 @@ export default async function setup(project: TestProject) {
   await $`corepack install -g yarn@3`;
   console.log("[@lets-release/npm]: Installing yarn@latest");
   await $`corepack install -g yarn@latest`;
-  console.log("[@lets-release/npm]: Installing npm@7");
-  await $`corepack install -g npm@7`;
+  console.log("[@lets-release/npm]: Installing npm@8");
+  await $`corepack install -g npm@8`;
   console.log("[@lets-release/npm]: Installing npm@latest");
   await $`corepack install -g npm@latest`;
 

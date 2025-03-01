@@ -33,7 +33,7 @@ const context = {
 };
 
 describe("preparePackage", () => {
-  describe("pnpm", () => {
+  describe.each(["8", "latest"])("pnpm %s", (version) => {
     let cwd: string;
     let ctx: PrepareContext;
     let pkgContext: NpmPackageContext;
@@ -57,7 +57,7 @@ describe("preparePackage", () => {
         cwd,
         preferLocal: true,
       };
-      await $(options)`corepack use pnpm@latest`;
+      await $(options)`corepack use ${`pnpm@${version}`}`;
       await $(options)`pnpm install`;
 
       ctx = {
@@ -105,7 +105,7 @@ describe("preparePackage", () => {
     });
   });
 
-  describe("yarn", () => {
+  describe.each(["3", "latest"])("yarn %s", (version) => {
     let cwd: string;
     let ctx: PrepareContext;
     let pkgContext: NpmPackageContext;
@@ -124,7 +124,12 @@ describe("preparePackage", () => {
         cwd,
         preferLocal: true,
       };
-      await $(options)`corepack use yarn@latest`;
+      await $(options)`corepack use ${`yarn@${version}`}`;
+
+      if (version === "3") {
+        await $(options)`yarn plugin import version`;
+      }
+
       await $(options)`yarn install`;
       await $(
         options,
@@ -177,7 +182,7 @@ describe("preparePackage", () => {
     });
   });
 
-  describe("npm", () => {
+  describe.each(["8", "latest"])("npm %s", (version) => {
     let cwd: string;
     let ctx: PrepareContext;
     let pkgContext: NpmPackageContext;
@@ -201,6 +206,7 @@ describe("preparePackage", () => {
         cwd,
         preferLocal: true,
       };
+      await $(options)`corepack use ${`npm@${version}`}`;
       await $(options)`npm install`;
 
       ctx = {

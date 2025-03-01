@@ -37,7 +37,7 @@ const context = {
 };
 
 describe("addChannel", () => {
-  describe("npm", () => {
+  describe("npm latest", () => {
     let pkgContext: NpmPackageContext;
 
     const getPluginPackageContext = () => pkgContext;
@@ -61,6 +61,7 @@ describe("addChannel", () => {
         cwd,
         preferLocal: true,
       };
+      await $(options)`corepack use npm@latest`;
       await $(options)`npm install`;
 
       const ctx = {
@@ -154,7 +155,7 @@ describe("addChannel", () => {
     });
   });
 
-  it("should add channel with pnpm", async () => {
+  it("should add channel with npm 8", async () => {
     const cwd = temporaryDirectory();
 
     await writeFile(
@@ -163,7 +164,7 @@ describe("addChannel", () => {
     );
 
     const pkg = {
-      name: "add-channel-helper-pnpm",
+      name: `add-channel-helper-npm-8`,
       version: "2.0.0",
       publishConfig: { registry },
       path: cwd,
@@ -175,8 +176,8 @@ describe("addChannel", () => {
       cwd,
       preferLocal: true,
     };
-    await $(options)`corepack use pnpm@latest`;
-    await $(options)`pnpm install`;
+    await $(options)`corepack use npm@8`;
+    await $(options)`npm install`;
 
     let pkgContext: NpmPackageContext;
 
@@ -220,69 +221,146 @@ describe("addChannel", () => {
     ).resolves.toBe("2.0.0");
   });
 
-  it("should add channel with yarn", async () => {
-    const cwd = temporaryDirectory();
+  it.each(["8", "latest"])(
+    "should add channel with pnpm %s",
+    async (version) => {
+      const cwd = temporaryDirectory();
 
-    const pkg = {
-      name: "add-channel-helper-yarn",
-      version: "2.0.0",
-      publishConfig: { registry },
-      path: cwd,
-    };
+      await writeFile(
+        path.resolve(cwd, ".npmrc"),
+        `//${registry.replace(/^https?:\/\//, "")}/:_authToken=${npmToken}`,
+      );
 
-    await outputJson(path.resolve(pkg.path, "package.json"), pkg);
+      const pkg = {
+        name: `add-channel-helper-pnpm-${version}`,
+        version: "2.0.0",
+        publishConfig: { registry },
+        path: cwd,
+      };
 
-    const options = {
-      cwd,
-      preferLocal: true,
-    };
-    await $(options)`corepack use yarn@latest`;
-    await $(options)`yarn install`;
-    await $(
-      options,
-    )`yarn config set unsafeHttpWhitelist --json ${`["${registryHost}"]`}`;
-    await $(options)`yarn config set npmRegistryServer ${registry}`;
-    await $(options)`yarn config set npmAuthToken ${npmToken ?? ""}`;
+      await outputJson(path.resolve(pkg.path, "package.json"), pkg);
 
-    let pkgContext: NpmPackageContext;
+      const options = {
+        cwd,
+        preferLocal: true,
+      };
+      await $(options)`corepack use ${`pnpm@${version}`}`;
+      await $(options)`pnpm install`;
 
-    const getPluginPackageContext = () => pkgContext;
-    const setPluginPackageContext = (context: NpmPackageContext) => {
-      pkgContext = context;
-    };
+      let pkgContext: NpmPackageContext;
 
-    const ctx = {
-      ...context,
-      getPluginPackageContext,
-      setPluginPackageContext,
-      cwd,
-      env: process.env,
-      repositoryRoot: cwd,
-      options: {},
-      package: pkg,
-      nextRelease: {
-        version: pkg.version,
-        channels: [null],
-      },
-    } as unknown as PublishContext;
-    await prepare(ctx, {});
-    await publish(ctx, {});
-    await addChannel(
-      {
+      const getPluginPackageContext = () => pkgContext;
+      const setPluginPackageContext = (context: NpmPackageContext) => {
+        pkgContext = context;
+      };
+
+      const ctx = {
         ...context,
+        getPluginPackageContext,
+        setPluginPackageContext,
+        cwd,
+        env: process.env,
+        repositoryRoot: cwd,
+        options: {},
         package: pkg,
-        nextRelease: { version: "2.0.0" },
-      } as unknown as VerifyReleaseContext,
-      pkgContext!,
-      "next",
-    );
-
-    await expect(
-      getDistTagVersion(
-        { ...context, package: pkg } as unknown as VerifyReleaseContext,
+        nextRelease: {
+          version: pkg.version,
+          channels: [null],
+        },
+      } as unknown as PublishContext;
+      await prepare(ctx, {});
+      await publish(ctx, {});
+      await addChannel(
+        {
+          ...context,
+          package: pkg,
+          nextRelease: { version: "2.0.0" },
+        } as unknown as VerifyReleaseContext,
         pkgContext!,
         "next",
-      ),
-    ).resolves.toBe("2.0.0");
-  });
+      );
+
+      await expect(
+        getDistTagVersion(
+          { context, package: pkg } as unknown as VerifyReleaseContext,
+          pkgContext!,
+          "next",
+        ),
+      ).resolves.toBe("2.0.0");
+    },
+  );
+
+  it.each(["3", "latest"])(
+    "should add channel with yarn %s",
+    async (version) => {
+      const cwd = temporaryDirectory();
+
+      const pkg = {
+        name: `add-channel-helper-yarn-${version}`,
+        version: "2.0.0",
+        publishConfig: { registry },
+        path: cwd,
+      };
+
+      await outputJson(path.resolve(pkg.path, "package.json"), pkg);
+
+      const options = {
+        cwd,
+        preferLocal: true,
+      };
+      await $(options)`corepack use ${`yarn@${version}`}`;
+
+      if (version === "3") {
+        await $(options)`yarn plugin import version`;
+      }
+
+      await $(options)`yarn install`;
+      await $(
+        options,
+      )`yarn config set unsafeHttpWhitelist --json ${`["${registryHost}"]`}`;
+      await $(options)`yarn config set npmRegistryServer ${registry}`;
+      await $(options)`yarn config set npmAuthToken ${npmToken ?? ""}`;
+
+      let pkgContext: NpmPackageContext;
+
+      const getPluginPackageContext = () => pkgContext;
+      const setPluginPackageContext = (context: NpmPackageContext) => {
+        pkgContext = context;
+      };
+
+      const ctx = {
+        ...context,
+        getPluginPackageContext,
+        setPluginPackageContext,
+        cwd,
+        env: process.env,
+        repositoryRoot: cwd,
+        options: {},
+        package: pkg,
+        nextRelease: {
+          version: pkg.version,
+          channels: [null],
+        },
+      } as unknown as PublishContext;
+      await prepare(ctx, {});
+      await publish(ctx, {});
+      await addChannel(
+        {
+          ...context,
+          package: pkg,
+          nextRelease: { version: "2.0.0" },
+        } as unknown as VerifyReleaseContext,
+        pkgContext!,
+        "next",
+      );
+
+      await expect(
+        getDistTagVersion(
+          { ...context, package: pkg } as unknown as VerifyReleaseContext,
+          pkgContext!,
+          "next",
+        ),
+      ).resolves.toBe("2.0.0");
+    },
+  );
 });
