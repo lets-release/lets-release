@@ -1,4 +1,4 @@
-import { $ } from "execa";
+import { $, Options } from "execa";
 import findVersions from "find-versions";
 import { lt } from "semver";
 
@@ -7,8 +7,13 @@ import { UnsupportedGitVersionError } from "src/errors/UnsupportedGitVersionErro
 
 const minRequiredVersion = "2.7.1";
 
-export async function verifyGitVersion() {
-  const { stdout } = await $`git --version`.catch((error) => {
+export async function verifyGitVersion(
+  options: Partial<Omit<Options, "lines">> = {},
+) {
+  const { stdout } = await $<{ lines: false }>({
+    ...options,
+    lines: false,
+  })`git --version`.catch((error) => {
     throw new AggregateError(
       [new NoGitBinaryError(`>=${minRequiredVersion}`), error],
       "AggregateError",

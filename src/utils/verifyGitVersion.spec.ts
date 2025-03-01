@@ -5,19 +5,23 @@ import { verifyGitVersion } from "src/utils/verifyGitVersion";
 
 vi.mock("execa");
 
+const fn = vi.fn();
+
+vi.mocked($).mockReturnValue(fn as never);
+
 describe("verifyGitVersion", () => {
   beforeEach(() => {
-    vi.mocked($).mockReset();
+    fn.mockReset();
   });
 
   it("should throw error if git binary not found", async () => {
-    vi.mocked($).mockRejectedValue(new Error("Command not found"));
+    fn.mockRejectedValue(new Error("Command not found"));
 
     await expect(verifyGitVersion()).rejects.toThrowError(AggregateError);
   });
 
   it("should throw error if git binary not found", async () => {
-    vi.mocked($).mockResolvedValue({
+    fn.mockResolvedValue({
       stdout: "git version 2.7.0",
     } as never);
 

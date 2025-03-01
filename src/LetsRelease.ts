@@ -146,7 +146,7 @@ export class LetsRelease {
 
     try {
       verifyEngines();
-      await verifyGitVersion();
+      await verifyGitVersion({ cwd, env: extendedEnv });
 
       if (!(await isGitRepo({ cwd, env: extendedEnv }))) {
         throw new NoGitRepoError(cwd);
