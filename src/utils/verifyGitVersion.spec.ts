@@ -1,13 +1,16 @@
 import { $ } from "execa";
+import stripAnsi from "strip-ansi";
 
 import { UnsupportedGitVersionError } from "src/errors/UnsupportedGitVersionError";
 import { verifyGitVersion } from "src/utils/verifyGitVersion";
 
 vi.mock("execa");
+vi.mock("strip-ansi");
 
 const fn = vi.fn();
 
 vi.mocked($).mockReturnValue(fn as never);
+vi.mocked(stripAnsi).mockImplementation((value) => value);
 
 describe("verifyGitVersion", () => {
   beforeEach(() => {

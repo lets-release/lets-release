@@ -1,4 +1,5 @@
 import { $, Options } from "execa";
+import stripAnsi from "strip-ansi";
 
 /**
  * Get all the repository branches.
@@ -18,7 +19,15 @@ export async function getRemoteBranches(
     lines: true,
   })`git ls-remote --heads ${repositoryUrl}`;
 
-  return stdout
-    .map((branch) => /^.+refs\/heads\/(?<branch>.+)$/.exec(branch)?.[1]?.trim())
-    .filter((branch) => !!branch) as string[];
+  return stdout.flatMap((branch) => {
+    const trimmed = /^.+refs\/heads\/(?<branch>.+)$/.exec(
+      stripAnsi(branch).trim(),
+    )?.[1];
+
+    if (trimmed) {
+      return [trimmed];
+    }
+
+    return [];
+  });
 }

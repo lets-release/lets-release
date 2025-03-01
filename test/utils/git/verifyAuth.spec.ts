@@ -9,7 +9,7 @@ import { writeFile } from "test/__helpers__/writeFile";
 
 describe("verifyAuth", () => {
   it("should throw an error if not authorized to push", async () => {
-    const url = "https://github.com/github/gitignore";
+    const url = "https://user:password@github.com/github/gitignore";
     const cwd = await cloneRepo(url, "main", 1);
 
     await writeFile(cwd, ["test.txt"]);

@@ -1,4 +1,5 @@
 import { $, Options } from "execa";
+import stripAnsi from "strip-ansi";
 
 export async function getHeadName(
   options: Partial<Omit<Options, "lines" | "reject">> = {},
@@ -9,5 +10,5 @@ export async function getHeadName(
     reject: false,
   })`git rev-parse --abbrev-ref HEAD`;
 
-  return stdout.trim();
+  return stripAnsi(stdout).trim();
 }

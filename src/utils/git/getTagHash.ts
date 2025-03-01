@@ -1,4 +1,5 @@
 import { $, Options } from "execa";
+import stripAnsi from "strip-ansi";
 
 /**
  * Get the commit sha for a given tag.
@@ -17,5 +18,5 @@ export async function getTagHash(
     lines: false,
   })`git rev-list -1 ${tag}`;
 
-  return stdout.trim();
+  return stripAnsi(stdout).trim();
 }

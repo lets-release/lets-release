@@ -1,4 +1,5 @@
 import { $, Options } from "execa";
+import stripAnsi from "strip-ansi";
 
 import { getHeadHash } from "src/utils/git/getHeadHash";
 
@@ -22,5 +23,5 @@ export async function isBranchUpToDate(
     lines: false,
   })`git ls-remote --heads ${repositoryUrl} ${branch}`;
 
-  return head === /^(?<ref>\w+)?/.exec(stdout.trim())?.[1];
+  return head === /^(?<ref>\w+)?/.exec(stripAnsi(stdout).trim())?.[1];
 }

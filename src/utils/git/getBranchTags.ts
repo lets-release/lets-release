@@ -1,4 +1,5 @@
 import { $, Options } from "execa";
+import stripAnsi from "strip-ansi";
 
 /**
  * Get all the tags for a given branch.
@@ -18,5 +19,13 @@ export async function getBranchTags(
     lines: true,
   })`git tag --merged ${branch}`;
 
-  return stdout.map((tag) => tag.trim()).filter((tag) => !!tag);
+  return stdout.flatMap((tag) => {
+    const trimmed = stripAnsi(tag).trim();
+
+    if (trimmed) {
+      return trimmed;
+    }
+
+    return [];
+  });
 }

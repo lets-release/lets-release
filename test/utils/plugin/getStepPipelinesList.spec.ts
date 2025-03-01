@@ -68,9 +68,13 @@ describe("getStepPipelinesList", () => {
 
     expect(stepPipelinesList).toEqual([
       Object.fromEntries(
-        Object.values(Step)
-          .filter((step) => ![Step.verifyRelease, Step.fail].includes(step))
-          .map((step) => [step, expect.any(Function)]),
+        Object.values(Step).flatMap((step) => {
+          if ([Step.verifyRelease, Step.fail].includes(step)) {
+            return [];
+          }
+
+          return [[step, expect.any(Function)]];
+        }),
       ),
     ]);
   });

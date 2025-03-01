@@ -1,4 +1,5 @@
 import { $ } from "execa";
+import stripAnsi from "strip-ansi";
 
 export async function getStagedFiles(cwd: string) {
   const { stdout } = await $<{ cwd: string; lines: true }>({
@@ -6,7 +7,13 @@ export async function getStagedFiles(cwd: string) {
     lines: true,
   })`git status --porcelain`;
 
-  return stdout
-    .filter((status) => status.trim().startsWith("A "))
-    .map((status) => /^A\s+(?<file>.+)$/.exec(status)?.[1]) as string[];
+  return stdout.flatMap((line) => {
+    const trimmed = stripAnsi(line).trim();
+
+    if (trimmed.startsWith("A ")) {
+      return [/^A\s+(?<file>.+)$/.exec(trimmed)?.[1]];
+    }
+
+    return [];
+  }) as string[];
 }

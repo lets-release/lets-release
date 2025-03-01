@@ -1,12 +1,15 @@
 import { $ } from "execa";
+import stripAnsi from "strip-ansi";
 
 import { getBranchTags } from "src/utils/git/getBranchTags";
 
 vi.mock("execa");
+vi.mock("strip-ansi");
 
 const exec = vi.fn();
 
 vi.mocked($).mockReturnValue(exec as never);
+vi.mocked(stripAnsi).mockImplementation((value) => value);
 
 describe("getBranchTags", () => {
   it("should get branch tags", async () => {

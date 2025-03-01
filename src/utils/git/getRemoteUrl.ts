@@ -1,5 +1,6 @@
 import debug from "debug";
 import { $, Options } from "execa";
+import stripAnsi from "strip-ansi";
 
 import { name } from "src/program";
 
@@ -20,7 +21,7 @@ export async function getRemoteUrl(
       lines: false,
     })`git config --get ${`remote.${remote}.url`}`;
 
-    return stdout.trim();
+    return stripAnsi(stdout).trim();
   } catch (error) {
     debug(`${name}:utils.git.getRemoteUrl`)(error);
   }

@@ -1,8 +1,10 @@
 import { $ } from "execa";
+import stripAnsi from "strip-ansi";
 
 import { getRemoteBranches } from "src/utils/git/getRemoteBranches";
 
 vi.mock("execa");
+vi.mock("strip-ansi");
 
 const stdout = [
   " ",
@@ -20,6 +22,7 @@ const stdout = [
 const exec = vi.fn().mockResolvedValue({ stdout });
 
 vi.mocked($).mockReturnValue(exec as never);
+vi.mocked(stripAnsi).mockImplementation((value) => value);
 
 describe("getRemoteBranches", () => {
   it("should get modified files", async () => {

@@ -1,12 +1,15 @@
 import { $ } from "execa";
+import stripAnsi from "strip-ansi";
 
 import { getRemoteUrl } from "src/utils/git/getRemoteUrl";
 
 vi.mock("execa");
+vi.mock("strip-ansi");
 
 const exec = vi.fn();
 
 vi.mocked($).mockReturnValue(exec as never);
+vi.mocked(stripAnsi).mockImplementation((value) => value);
 
 describe("getRemoteUrl", () => {
   beforeEach(() => {

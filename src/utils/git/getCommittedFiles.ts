@@ -1,4 +1,5 @@
 import { $, Options } from "execa";
+import stripAnsi from "strip-ansi";
 
 export async function getCommittedFiles(
   commit: string,
@@ -12,7 +13,17 @@ export async function getCommittedFiles(
   return (
     stdout
       // The prefix and suffix '"' are appended to the Korean path
-      .map((line) => line.trim().replace(/^"/, "").replace(/"$/, ""))
-      .filter((line) => !!line)
+      .flatMap((line) => {
+        const trimmed = stripAnsi(line)
+          .trim()
+          .replace(/^"/, "")
+          .replace(/"$/, "");
+
+        if (trimmed) {
+          return [trimmed];
+        }
+
+        return [];
+      })
   );
 }

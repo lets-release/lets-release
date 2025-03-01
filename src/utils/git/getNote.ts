@@ -1,6 +1,7 @@
 import debug from "debug";
 import { $, ExecaError, Options } from "execa";
 import { merge } from "lodash-es";
+import stripAnsi from "strip-ansi";
 
 import { name } from "src/program";
 import { TagNote } from "src/types/TagNote";
@@ -36,8 +37,8 @@ export async function getNote(
     })`git notes --ref ${`${name}-${ref}`} show ${ref}`.catch(handleError);
 
     return merge(
-      JSON.parse(stdoutA.trim()),
-      JSON.parse(stdoutB.trim()),
+      JSON.parse(stripAnsi(stdoutA).trim()),
+      JSON.parse(stripAnsi(stdoutB).trim()),
     ) as TagNote;
   } catch (error: unknown) {
     debug(`${name}:utils.git.getNote`)(error);

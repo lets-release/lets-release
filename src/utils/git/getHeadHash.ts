@@ -1,4 +1,5 @@
 import { $, Options } from "execa";
+import stripAnsi from "strip-ansi";
 
 /**
  * Get the HEAD sha.
@@ -15,5 +16,5 @@ export async function getHeadHash(
     lines: false,
   })`git rev-parse HEAD`;
 
-  return stdout.trim();
+  return stripAnsi(stdout).trim();
 }

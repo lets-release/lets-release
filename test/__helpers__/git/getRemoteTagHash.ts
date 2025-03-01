@@ -1,4 +1,5 @@
 import { $ } from "execa";
+import stripAnsi from "strip-ansi";
 
 export async function getRemoteTagHash(cwd: string, url: string, tag: string) {
   const { stdout } = await $({
@@ -6,5 +7,13 @@ export async function getRemoteTagHash(cwd: string, url: string, tag: string) {
     lines: true,
   })`git ls-remote --tags ${url} ${tag}`;
 
-  return stdout.filter(Boolean).map((tag) => /^(?<tag>\S+)/.exec(tag)?.[1])[0];
+  return stdout.flatMap((tag) => {
+    const trimmed = /^(?<tag>\S+)/.exec(stripAnsi(tag).trim())?.[1];
+
+    if (trimmed) {
+      return [trimmed];
+    }
+
+    return [];
+  })[0];
 }

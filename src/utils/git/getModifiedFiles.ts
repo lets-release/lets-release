@@ -1,4 +1,5 @@
 import { $, Options } from "execa";
+import stripAnsi from "strip-ansi";
 
 /**
  * Retrieve the list of files modified on the local repository.
@@ -15,5 +16,13 @@ export async function getModifiedFiles(
     lines: true,
   })`git ls-files -m -o`;
 
-  return stdout.map((file) => file.trim()).filter(Boolean);
+  return stdout.flatMap((file) => {
+    const trimmed = stripAnsi(file).trim();
+
+    if (trimmed) {
+      return [trimmed];
+    }
+
+    return [];
+  });
 }
