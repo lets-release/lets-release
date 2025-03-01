@@ -14,27 +14,25 @@ export function parseCommits(
 ) {
   return [
     ...filterRevertedCommitsSync<ParsedCommit>(
-      commits
-        .filter(({ hash, message }: Commit) => {
-          if (!message.trim()) {
-            debug(`${name}:${pkg.uniqueName}`)(
-              `Skip commit ${hash} with empty message`,
-            );
+      commits.flatMap(({ hash, message, ...rest }: Commit) => {
+        if (!message.trim()) {
+          debug(`${name}:${pkg.uniqueName}`)(
+            `Skip commit ${hash} with empty message`,
+          );
 
-            return false;
-          }
+          return [];
+        }
 
-          return true;
-        })
-        .map<ParsedCommit>(
-          ({ message, ...commitProps }: Commit) =>
-            ({
-              rawMsg: message,
-              message,
-              ...commitProps,
-              ...new CommitParser(parserOptions).parse(message),
-            }) as ParsedCommit,
-        ),
+        return [
+          {
+            hash,
+            rawMsg: message,
+            message,
+            ...rest,
+            ...new CommitParser(parserOptions).parse(message),
+          },
+        ] as ParsedCommit[];
+      }),
     ),
   ];
 }
