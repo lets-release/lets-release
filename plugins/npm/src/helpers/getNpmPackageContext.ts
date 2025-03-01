@@ -1,8 +1,6 @@
-import path from "node:path";
-
-import { findUp } from "find-up-simple";
 // eslint-disable-next-line import-x/default
 import preferredPM from "preferred-pm";
+import { resolveWorkspaceRoot } from "resolve-workspace-root";
 
 import { FindPackagesContext, PackageInfo } from "@lets-release/config";
 
@@ -12,12 +10,11 @@ import { NpmPackageContext } from "src/types/NpmPackageContext";
 import { NpmPackageManager } from "src/types/NpmPackageManager";
 
 export async function getNpmPackageContext(
-  context: Pick<FindPackagesContext, "env" | "repositoryRoot"> & {
+  context: Pick<FindPackagesContext, "env"> & {
     package: Pick<PackageInfo, "path">;
   },
 ): Promise<NpmPackageContext | undefined> {
   const {
-    repositoryRoot,
     package: { path: pkgRoot },
   } = context;
 
@@ -30,22 +27,10 @@ export async function getNpmPackageContext(
     return undefined;
   }
 
-  const findRcFile = async () => {
-    const options = { cwd: pkgRoot, stopAt: path.dirname(repositoryRoot) };
-
-    if (packageManager.name === "yarn") {
-      return (
-        (await findUp(".yarnrc.yml", options)) ??
-        (await findUp(".yarnrc", options))
-      );
-    }
-
-    return await findUp(".npmrc", options);
-  };
-
-  const rcFile = await findRcFile();
-  const root = rcFile ? path.dirname(rcFile) : pkgRoot;
-  const pm = { ...packageManager, root } as NpmPackageManager;
+  const pm = {
+    ...packageManager,
+    root: resolveWorkspaceRoot(pkgRoot) ?? pkgRoot,
+  } as NpmPackageManager;
   const pkg = await getPackage(pkgRoot);
   const [pkgScope] = pkg.name.split("/");
   const scope = pkgScope.startsWith("@") ? pkgScope : undefined;
