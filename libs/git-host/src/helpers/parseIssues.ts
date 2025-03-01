@@ -13,12 +13,13 @@ export function parseIssues(
   return uniq(
     messages.flatMap((message?: string) =>
       message
-        ? parser(message)
-            .actions.close.filter(
-              (action) =>
-                isNil(action.slug) || action.slug === `${owner}/${repo}`,
-            )
-            .map((action) => Number.parseInt(action.issue, 10))
+        ? parser(message).actions.close.flatMap((action) => {
+            if (isNil(action.slug) || action.slug === `${owner}/${repo}`) {
+              return [Number.parseInt(action.issue, 10)];
+            }
+
+            return [];
+          })
         : [],
     ),
   );
