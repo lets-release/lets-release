@@ -30,8 +30,8 @@ export async function uploadReleaseAsset(
     Pick<GitLabAssetObject, "filepath">)[]
 > {
   const {
-    cwd,
     logger,
+    repositoryRoot,
     package: pkg,
     nextRelease: { version },
   } = context;
@@ -41,7 +41,7 @@ export async function uploadReleaseAsset(
     const filePath = isString(asset) ? asset : asset.path!;
 
     try {
-      const file = path.resolve(cwd, filePath);
+      const file = path.resolve(repositoryRoot, filePath);
       const stats = await stat(file);
 
       if (!stats.isFile()) {

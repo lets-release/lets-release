@@ -25,6 +25,7 @@ const context = {
     log,
     error,
   },
+  repositoryRoot: "/mock/path",
   package: {
     uniqueName: "npm/pkg",
   },
