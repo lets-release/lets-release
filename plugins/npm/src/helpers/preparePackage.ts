@@ -33,6 +33,7 @@ export async function preparePackage(
 
   const options = {
     env,
+    lines: true as const,
     preferLocal: true as const,
   };
 
@@ -79,10 +80,9 @@ export async function preparePackage(
 
     switch (pm.name) {
       case "pnpm": {
-        // FIXME: https://github.com/pnpm/pnpm/issues/4351
         promise = $({
           ...options,
-          cwd: pkgRoot,
+          cwd: pkgRoot, // FIXME: https://github.com/pnpm/pnpm/issues/4351
         })`pnpm pack ${pkgRoot} --pack-destination ${pkgRoot}`;
         break;
       }
@@ -96,10 +96,11 @@ export async function preparePackage(
       }
 
       default: {
+        // npm 8 returns wrong filename with "/" in json output
         promise = $({
           ...options,
           cwd: pm.root,
-        })`npm pack ${pkgRoot} --pack-destination ${pkgRoot} --json`;
+        })`npm pack ${pkgRoot} --pack-destination ${pkgRoot}`;
         break;
       }
     }
@@ -113,17 +114,12 @@ export async function preparePackage(
 
     switch (pm.name) {
       case "pnpm": {
-        tgz = result.stdout
-          .trim()
-          .split("\n")
-          .find((line) => line.includes(".tgz"))!
-          .trim();
+        tgz = result.stdout.find((line) => line.includes(".tgz"))!.trim();
         break;
       }
 
       case "yarn": {
         tgz = result.stdout
-          .split("\n")
           .filter((line) => !!line)
           .map((line) => JSON.parse(line))
           .find(({ output }) => !!output)!
@@ -133,7 +129,7 @@ export async function preparePackage(
       }
 
       default: {
-        tgz = JSON.parse(result.stdout.trim())[0].filename;
+        tgz = result.stdout.find((line) => line.includes(".tgz"))!.trim();
         break;
       }
     }

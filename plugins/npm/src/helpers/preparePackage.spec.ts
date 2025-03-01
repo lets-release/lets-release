@@ -28,7 +28,7 @@ class ExtendedPromise extends Promise<unknown> {
   };
 }
 const promise = new ExtendedPromise((resolve) => {
-  resolve({ stdout: "" });
+  resolve({ stdout: [""] });
 });
 
 describe("preparePackage", () => {
@@ -64,7 +64,9 @@ describe("preparePackage", () => {
 
   it("should prepare package with pnpm", async () => {
     const promise = new ExtendedPromise((resolve) => {
-      resolve({ stdout: tgz });
+      resolve({
+        stdout: [tgz],
+      });
     });
     vi.mocked($).mockReturnValue((() => promise) as never);
 
@@ -100,10 +102,11 @@ describe("preparePackage", () => {
   it("should prepare package with yarn", async () => {
     const promise = new ExtendedPromise((resolve) => {
       resolve({
-        stdout: `{"base":"/root/a"}
-{"location":"README.md"}
-{"output":"/root/a/${tgz}"}
-`,
+        stdout: [
+          `{"base":"/root/a"}`,
+          `{"location":"README.md"}`,
+          `{"output":"/root/a/${tgz}"}`,
+        ],
       });
     });
     vi.mocked($)
@@ -141,20 +144,7 @@ describe("preparePackage", () => {
   it("should prepare package with npm", async () => {
     const promise = new ExtendedPromise((resolve) => {
       resolve({
-        stdout: `[
-  {
-    "id": "test@2.0.0",
-    "name": "test",
-    "version": "2.0.0",
-    "filename": "${tgz}",
-    "files": [
-      "README.md"
-    ],
-    "entryCount": 11,
-    "bundled": []
-  }
-]
-`,
+        stdout: [tgz],
       });
     });
     vi.mocked($)
