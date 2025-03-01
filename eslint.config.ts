@@ -1,6 +1,7 @@
 import eslintJs from "@eslint/js";
 import tsParser from "@typescript-eslint/parser";
 import { TSESLint } from "@typescript-eslint/utils";
+import { createTypeScriptImportResolver } from "eslint-import-resolver-typescript";
 import importXPlugin from "eslint-plugin-import-x";
 import prettierPluginRecommended from "eslint-plugin-prettier/recommended";
 import unicornPlugin from "eslint-plugin-unicorn";
@@ -38,16 +39,17 @@ const eslintConfig: TSESLint.FlatConfig.ConfigArray = config(
       "import-x/parsers": {
         "@typescript-eslint/parser": [".ts"],
       },
-      "import-x/resolver": {
-        typescript: {
+      "import-x/resolver-next": [
+        createTypeScriptImportResolver({
+          alwaysTryTypes: true,
           project: [
             "tsconfig.json",
             "tsconfig.eslint.json",
             "libs/*/tsconfig.json",
             "plugins/*/tsconfig.json",
           ],
-        },
-      },
+        }),
+      ],
       "import-x/internal-regex": "^(src/|test/|lets-release/?|@lets-release/*)",
     },
     rules: {
