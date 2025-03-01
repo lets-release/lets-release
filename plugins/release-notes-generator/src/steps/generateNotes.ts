@@ -155,8 +155,9 @@ export const generateNotes: StepFunction<
       linkCompare: !!currentTag && !!previousTag,
       commit,
       issue,
-      packageData: ((await readPackageUp({ normalize: false, cwd })) || {})
-        .packageJson,
+      packageData: (
+        (await readPackageUp({ normalize: false, cwd: pkg.path })) || {}
+      ).packageJson,
     },
     {
       host: hostConfig,

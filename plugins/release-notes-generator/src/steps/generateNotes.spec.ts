@@ -77,6 +77,10 @@ describe("generateNotes", () => {
 
   it("should set conventional-changelog-writer context", async () => {
     const cwd = temporaryDirectory();
+    const pkg = {
+      path: cwd,
+      uniqueName: "npm/pkg",
+    };
     const commits = [
       { hash: "111", message: "fix(scope1): First fix" },
       { hash: "222", message: "feat(scope2): Second feature" },
@@ -114,6 +118,10 @@ describe("generateNotes", () => {
 
   it("should set conventional-changelog-writer context with package.json", async () => {
     const cwd = temporaryDirectory();
+    const pkg = {
+      path: cwd,
+      uniqueName: "npm/pkg",
+    };
     const commits = [
       { hash: "111", message: "fix(scope1): First fix" },
       { hash: "222", message: "feat(scope2): Second feature" },
