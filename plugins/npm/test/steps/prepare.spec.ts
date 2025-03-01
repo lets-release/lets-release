@@ -16,6 +16,7 @@ import { NpmPackageContext } from "src/types/NpmPackageContext";
 const registry = inject("registry");
 const registryHost = inject("registryHost");
 const npmToken = inject("npmToken");
+const yarn3VersionPlugin = inject("yarn3VersionPlugin");
 const stdout = new WritableStreamBuffer();
 const stderr = new WritableStreamBuffer();
 const log = vi.fn();
@@ -157,7 +158,7 @@ describe("prepare", () => {
       await $(options)`corepack use ${`yarn@${version}`}`;
 
       if (version === "3") {
-        await $(options)`yarn plugin import version`;
+        await $(options)`yarn plugin import ${yarn3VersionPlugin}`;
       }
 
       await $(options)`yarn install`;
