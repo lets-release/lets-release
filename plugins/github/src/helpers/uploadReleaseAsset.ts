@@ -17,11 +17,11 @@ export async function uploadReleaseAsset(
   url: string,
   asset: ReleaseAsset<ReleaseAssetObject>,
 ) {
-  const { cwd, logger, package: pkg } = context;
+  const { logger, repositoryRoot, package: pkg } = context;
   const filePath = isString(asset) ? asset : asset.path;
 
   try {
-    const file = path.resolve(cwd, filePath);
+    const file = path.resolve(repositoryRoot, filePath);
     const stats = await stat(file);
 
     if (!stats.isFile()) {

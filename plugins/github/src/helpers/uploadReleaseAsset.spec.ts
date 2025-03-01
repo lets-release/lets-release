@@ -15,6 +15,7 @@ const error = vi.fn();
 const context = {
   cwd: "/test",
   logger: { log, error },
+  repositoryRoot: "/test",
   package: {
     uniqueName: "npm/pkg",
   },
