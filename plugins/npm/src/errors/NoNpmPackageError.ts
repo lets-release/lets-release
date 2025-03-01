@@ -1,6 +1,6 @@
 import { LetsReleaseError } from "@lets-release/config";
 
-export class NoPackageError extends LetsReleaseError {
+export class NoNpmPackageError extends LetsReleaseError {
   message = "Missing `package.json` file";
   details = `A [package.json file][] at the root of your project is required to release on npm.
 

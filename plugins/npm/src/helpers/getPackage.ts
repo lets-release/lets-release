@@ -1,7 +1,7 @@
 import { readPackage } from "read-pkg";
 
-import { NoPackageError } from "src/errors/NoPackageError";
-import { NoPackageNameError } from "src/errors/NoPackageNameError";
+import { NoNpmPackageError } from "src/errors/NoNpmPackageError";
+import { NoNpmPackageNameError } from "src/errors/NoNpmPackageNameError";
 
 export async function getPackage(pkgRoot: string) {
   try {
@@ -10,15 +10,15 @@ export async function getPackage(pkgRoot: string) {
     });
 
     if (!pkg.name) {
-      throw new NoPackageNameError();
+      throw new NoNpmPackageNameError();
     }
 
     return pkg;
   } catch (error: unknown) {
     if ((error as NodeJS.ErrnoException).code === "ENOENT") {
-      throw new AggregateError([new NoPackageError()], "AggregateError");
+      throw new NoNpmPackageError();
     }
 
-    throw new AggregateError([error], "AggregateError");
+    throw error;
   }
 }
