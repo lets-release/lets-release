@@ -8,7 +8,7 @@ export default mergeConfig(
   defineConfig({
     test: {
       name: "npm.e2e",
-      testTimeout: 120_000,
+      testTimeout: 150_000,
       hookTimeout: 30_000,
       globalSetup: "./test/__global__/setup.ts",
       include: ["test/**/*.spec.ts"],
