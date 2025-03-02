@@ -52,36 +52,33 @@ describe("verifyAuth", () => {
     },
   );
 
-  it.each(["3", "latest"])(
-    "should verify auth with yarn %s",
-    async (version) => {
-      const cwd = temporaryDirectory();
+  it.each(["latest"])("should verify auth with yarn %s", async (version) => {
+    const cwd = temporaryDirectory();
 
-      await outputJson(path.resolve(cwd, "package.json"), pkg);
+    await outputJson(path.resolve(cwd, "package.json"), pkg);
 
-      const options = {
-        cwd,
-        preferLocal: true,
-      };
-      await $(options)`corepack use ${`yarn@${version}`}`;
-      await $(options)`yarn install`;
-      await $(
-        options,
-      )`yarn config set unsafeHttpWhitelist --json ${`["${registryHost}"]`}`;
-      await $(options)`yarn config set npmRegistryServer ${registry}`;
-      await $(options)`yarn config set npmAuthToken ${npmToken ?? ""}`;
+    const options = {
+      cwd,
+      preferLocal: true,
+    };
+    await $(options)`corepack use ${`yarn@${version}`}`;
+    await $(options)`yarn install`;
+    await $(
+      options,
+    )`yarn config set unsafeHttpWhitelist --json ${`["${registryHost}"]`}`;
+    await $(options)`yarn config set npmRegistryServer ${registry}`;
+    await $(options)`yarn config set npmAuthToken ${npmToken ?? ""}`;
 
-      await expect(
-        verifyAuth(
-          { package: { path: cwd } } as AnalyzeCommitsContext,
-          {
-            pm: { name: "yarn", root: cwd },
-            registry,
-          } as NpmPackageContext,
-        ),
-      ).resolves.toBeUndefined();
-    },
-  );
+    await expect(
+      verifyAuth(
+        { package: { path: cwd } } as AnalyzeCommitsContext,
+        {
+          pm: { name: "yarn", root: cwd },
+          registry,
+        } as NpmPackageContext,
+      ),
+    ).resolves.toBeUndefined();
+  });
 
   it.each(["8", "latest"])(
     "should verify auth with npm %s",

@@ -182,7 +182,7 @@ registry = ${registry}`,
     });
   });
 
-  describe.each(["3", "latest"])("yarn %s", (version) => {
+  describe.each(["latest"])("yarn %s", (version) => {
     let cwd = "";
 
     beforeAll(async () => {

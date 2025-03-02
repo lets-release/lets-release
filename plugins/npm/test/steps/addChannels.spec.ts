@@ -18,7 +18,6 @@ import { NpmPackageContext } from "src/types/NpmPackageContext";
 const registry = inject("registry");
 const registryHost = inject("registryHost");
 const npmToken = inject("npmToken");
-const yarn3VersionPlugin = inject("yarn3VersionPlugin");
 const stdout = new WritableStreamBuffer();
 const stderr = new WritableStreamBuffer();
 const log = vi.fn();
@@ -277,119 +276,111 @@ describe("addChannels", () => {
     },
   );
 
-  it.each(["3", "latest"])(
-    "should add channels with yarn %s",
-    async (version) => {
-      const cwd = temporaryDirectory();
+  it.each(["latest"])("should add channels with yarn %s", async (version) => {
+    const cwd = temporaryDirectory();
 
-      const packages = [
-        {
-          name: `add-channels-yarn-${version}`,
-          version: "0.0.0-dev",
-          publishConfig: { registry },
-          workspaces: ["packages/*"],
-          path: cwd,
-        },
-        {
-          name: `@add-channels-yarn-${version}/a`,
-          version: "0.0.0-dev",
-          publishConfig: { registry },
-          path: path.resolve(cwd, "packages/a"),
-        },
-        {
-          name: `@add-channels-yarn-${version}/b`,
-          version: "0.0.0-dev",
-          publishConfig: { registry },
-          path: path.resolve(cwd, "packages/b"),
-        },
-      ];
+    const packages = [
+      {
+        name: `add-channels-yarn-${version}`,
+        version: "0.0.0-dev",
+        publishConfig: { registry },
+        workspaces: ["packages/*"],
+        path: cwd,
+      },
+      {
+        name: `@add-channels-yarn-${version}/a`,
+        version: "0.0.0-dev",
+        publishConfig: { registry },
+        path: path.resolve(cwd, "packages/a"),
+      },
+      {
+        name: `@add-channels-yarn-${version}/b`,
+        version: "0.0.0-dev",
+        publishConfig: { registry },
+        path: path.resolve(cwd, "packages/b"),
+      },
+    ];
 
-      for (const { path: pkgRoot, ...pkg } of packages) {
-        await outputJson(path.resolve(pkgRoot, "package.json"), pkg);
-      }
+    for (const { path: pkgRoot, ...pkg } of packages) {
+      await outputJson(path.resolve(pkgRoot, "package.json"), pkg);
+    }
 
-      const options = {
+    const options = {
+      cwd,
+      preferLocal: true,
+    };
+    await $(options)`corepack use ${`yarn@${version}`}`;
+    await $(options)`yarn install`;
+    await $(
+      options,
+    )`yarn config set unsafeHttpWhitelist --json ${`["${registryHost}"]`}`;
+    await $(options)`yarn config set npmRegistryServer ${registry}`;
+    await $(
+      options,
+    )`yarn config set ${`npmScopes["add-channels-yarn-${version}"].npmRegistryServer`} ${registry}`;
+    await $(options)`yarn config set npmAuthToken ${npmToken ?? ""}`;
+
+    for (const { path: pkgRoot, ...pkg } of packages) {
+      let pkgContext: NpmPackageContext;
+
+      const getPluginPackageContext = () => pkgContext;
+      const setPluginPackageContext = (context: NpmPackageContext) => {
+        pkgContext = context;
+      };
+
+      await publish(
+        {
+          ...context,
+          getPluginPackageContext,
+          setPluginPackageContext,
+          cwd,
+          env: process.env,
+          repositoryRoot: cwd,
+          options: {},
+          package: { ...pkg, path: pkgRoot },
+          nextRelease: { channels: [null], version: "1.0.0" },
+        } as unknown as PublishContext,
+        {},
+      );
+
+      const result = await addChannels(
+        {
+          ...context,
+          getPluginPackageContext,
+          setPluginPackageContext,
+          cwd,
+          env: process.env,
+          repositoryRoot: cwd,
+          options: {},
+          package: { ...pkg, path: pkgRoot },
+          nextRelease: {
+            channels: ["next", "release-1.x"],
+            version: "1.0.0",
+          },
+        } as unknown as AddChannelsContext,
+        {},
+      );
+
+      expect(result).toEqual({
+        name: NPM_ARTIFACT_NAME,
+        url: undefined,
+      });
+
+      const { stdout: output } = await $({
         cwd,
         preferLocal: true,
-      };
-      await $(options)`corepack use ${`yarn@${version}`}`;
+      })`yarn npm info ${pkg.name} --fields dist-tags --json`;
 
-      if (version === "3") {
-        await $(options)`yarn plugin import ${yarn3VersionPlugin}`;
-      }
-
-      await $(options)`yarn install`;
-      await $(
-        options,
-      )`yarn config set unsafeHttpWhitelist --json ${`["${registryHost}"]`}`;
-      await $(options)`yarn config set npmRegistryServer ${registry}`;
-      await $(
-        options,
-      )`yarn config set ${`npmScopes["add-channels-yarn-${version}"].npmRegistryServer`} ${registry}`;
-      await $(options)`yarn config set npmAuthToken ${npmToken ?? ""}`;
-
-      for (const { path: pkgRoot, ...pkg } of packages) {
-        let pkgContext: NpmPackageContext;
-
-        const getPluginPackageContext = () => pkgContext;
-        const setPluginPackageContext = (context: NpmPackageContext) => {
-          pkgContext = context;
-        };
-
-        await publish(
-          {
-            ...context,
-            getPluginPackageContext,
-            setPluginPackageContext,
-            cwd,
-            env: process.env,
-            repositoryRoot: cwd,
-            options: {},
-            package: { ...pkg, path: pkgRoot },
-            nextRelease: { channels: [null], version: "1.0.0" },
-          } as unknown as PublishContext,
-          {},
-        );
-
-        const result = await addChannels(
-          {
-            ...context,
-            getPluginPackageContext,
-            setPluginPackageContext,
-            cwd,
-            env: process.env,
-            repositoryRoot: cwd,
-            options: {},
-            package: { ...pkg, path: pkgRoot },
-            nextRelease: {
-              channels: ["next", "release-1.x"],
-              version: "1.0.0",
-            },
-          } as unknown as AddChannelsContext,
-          {},
-        );
-
-        expect(result).toEqual({
-          name: NPM_ARTIFACT_NAME,
-          url: undefined,
-        });
-
-        const { stdout: output } = await $({
-          cwd,
-          preferLocal: true,
-        })`yarn npm info ${pkg.name} --fields dist-tags --json`;
-
-        expect(JSON.parse(output.trim())).toEqual(
-          expect.objectContaining({
-            "dist-tags": expect.objectContaining({
-              next: "1.0.0",
-              "release-1.x": "1.0.0",
-            }),
+      expect(JSON.parse(output.trim())).toEqual(
+        expect.objectContaining({
+          "dist-tags": expect.objectContaining({
+            next: "1.0.0",
+            "release-1.x": "1.0.0",
           }),
-        );
-      }
-    },
-  );
+        }),
+      );
+    }
+  });
 
   it.each(["8", "latest"])(
     "should add channels with npm %s",

@@ -123,7 +123,7 @@ describe("isVersionPublished", () => {
     });
   });
 
-  describe.each(["3", "latest"])("yarn %s", (version) => {
+  describe.each(["latest"])("yarn %s", (version) => {
     let cwd: string;
 
     beforeAll(async () => {

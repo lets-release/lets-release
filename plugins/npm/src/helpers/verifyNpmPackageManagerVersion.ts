@@ -11,7 +11,7 @@ import { NpmPackageContext } from "src/types/NpmPackageContext";
 
 const minRequiredVersions = {
   pnpm: "8.0.0",
-  yarn: "3.0.0",
+  yarn: "4.0.0",
   npm: "8.5.0",
 };
 

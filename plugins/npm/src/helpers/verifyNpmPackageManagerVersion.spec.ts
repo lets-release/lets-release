@@ -59,7 +59,7 @@ describe("verifyNpmPackageManagerVersion", () => {
       } as unknown as NpmPackageContext),
     ).rejects.toThrow(UnsupportedNpmPackageManagerVersionError);
 
-    vi.mocked(findVersions).mockReturnValueOnce(["2.0.0"]);
+    vi.mocked(findVersions).mockReturnValueOnce(["3.0.0"]);
     await expect(
       verifyNpmPackageManagerVersion(context, {
         pm: { name: "yarn" },
@@ -91,7 +91,7 @@ describe("verifyNpmPackageManagerVersion", () => {
       } as unknown as NpmPackageContext),
     ).resolves.toBeUndefined();
 
-    vi.mocked(findVersions).mockReturnValueOnce(["3.0.0"]);
+    vi.mocked(findVersions).mockReturnValueOnce(["4.0.0"]);
     await expect(
       verifyNpmPackageManagerVersion(context, {
         pm: { name: "yarn" },

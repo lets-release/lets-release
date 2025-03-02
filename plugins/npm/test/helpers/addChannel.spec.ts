@@ -18,7 +18,6 @@ import { NpmPackageContext } from "src/types/NpmPackageContext";
 const registry = inject("registry");
 const registryHost = inject("registryHost");
 const npmToken = inject("npmToken");
-const yarn3VersionPlugin = inject("yarn3VersionPlugin");
 const stdout = new WritableStreamBuffer();
 const stderr = new WritableStreamBuffer();
 const log = vi.fn();
@@ -291,77 +290,69 @@ describe("addChannel", () => {
     },
   );
 
-  it.each(["3", "latest"])(
-    "should add channel with yarn %s",
-    async (version) => {
-      const cwd = temporaryDirectory();
+  it.each(["latest"])("should add channel with yarn %s", async (version) => {
+    const cwd = temporaryDirectory();
 
-      const pkg = {
-        name: `add-channel-helper-yarn-${version}`,
-        version: "2.0.0",
-        publishConfig: { registry },
-        path: cwd,
-      };
+    const pkg = {
+      name: `add-channel-helper-yarn-${version}`,
+      version: "2.0.0",
+      publishConfig: { registry },
+      path: cwd,
+    };
 
-      await outputJson(path.resolve(pkg.path, "package.json"), pkg);
+    await outputJson(path.resolve(pkg.path, "package.json"), pkg);
 
-      const options = {
-        cwd,
-        preferLocal: true,
-      };
-      await $(options)`corepack use ${`yarn@${version}`}`;
+    const options = {
+      cwd,
+      preferLocal: true,
+    };
+    await $(options)`corepack use ${`yarn@${version}`}`;
+    await $(options)`yarn install`;
+    await $(
+      options,
+    )`yarn config set unsafeHttpWhitelist --json ${`["${registryHost}"]`}`;
+    await $(options)`yarn config set npmRegistryServer ${registry}`;
+    await $(options)`yarn config set npmAuthToken ${npmToken ?? ""}`;
 
-      if (version === "3") {
-        await $(options)`yarn plugin import ${yarn3VersionPlugin}`;
-      }
+    let pkgContext: NpmPackageContext;
 
-      await $(options)`yarn install`;
-      await $(
-        options,
-      )`yarn config set unsafeHttpWhitelist --json ${`["${registryHost}"]`}`;
-      await $(options)`yarn config set npmRegistryServer ${registry}`;
-      await $(options)`yarn config set npmAuthToken ${npmToken ?? ""}`;
+    const getPluginPackageContext = () => pkgContext;
+    const setPluginPackageContext = (context: NpmPackageContext) => {
+      pkgContext = context;
+    };
 
-      let pkgContext: NpmPackageContext;
-
-      const getPluginPackageContext = () => pkgContext;
-      const setPluginPackageContext = (context: NpmPackageContext) => {
-        pkgContext = context;
-      };
-
-      const ctx = {
+    const ctx = {
+      ...context,
+      getPluginPackageContext,
+      setPluginPackageContext,
+      cwd,
+      env: process.env,
+      repositoryRoot: cwd,
+      options: {},
+      package: pkg,
+      nextRelease: {
+        version: pkg.version,
+        channels: [null],
+      },
+    } as unknown as PublishContext;
+    await prepare(ctx, {});
+    await publish(ctx, {});
+    await addChannel(
+      {
         ...context,
-        getPluginPackageContext,
-        setPluginPackageContext,
-        cwd,
-        env: process.env,
-        repositoryRoot: cwd,
-        options: {},
         package: pkg,
-        nextRelease: {
-          version: pkg.version,
-          channels: [null],
-        },
-      } as unknown as PublishContext;
-      await prepare(ctx, {});
-      await publish(ctx, {});
-      await addChannel(
-        {
-          ...context,
-          package: pkg,
-          nextRelease: { version: "2.0.0" },
-        } as unknown as VerifyReleaseContext,
+        nextRelease: { version: "2.0.0" },
+      } as unknown as VerifyReleaseContext,
+      pkgContext!,
+      "next",
+    );
+
+    await expect(
+      getDistTagVersion(
+        { ...context, package: pkg } as unknown as VerifyReleaseContext,
         pkgContext!,
         "next",
-      );
-
-      await expect(
-        getDistTagVersion(
-          { ...context, package: pkg } as unknown as VerifyReleaseContext,
-          pkgContext!,
-          "next",
-        ),
-      ).resolves.toBe("2.0.0");
-    },
-  );
+      ),
+    ).resolves.toBe("2.0.0");
+  });
 });
