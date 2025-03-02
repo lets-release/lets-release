@@ -1,3 +1,7 @@
+import path from "node:path";
+
+import { temporaryDirectory } from "tempy";
+
 import {
   Commit,
   Package,
@@ -19,9 +23,10 @@ const prerelease: NormalizedSemVerPrereleaseOptions = {
   prefix: "-",
   suffix: ".",
 };
+const root = temporaryDirectory();
 const packages: Package[] = [
   {
-    path: "/path/to/repo/a",
+    path: path.resolve(root, "a"),
     type: "npm",
     name: "a",
     uniqueName: "a",
@@ -33,7 +38,7 @@ const packages: Package[] = [
     },
   },
   {
-    path: "/path/to/repo/b",
+    path: path.resolve(root, "b"),
     type: "npm",
     name: "b",
     uniqueName: "b",
@@ -48,7 +53,7 @@ const packages: Package[] = [
 const allPackages: Package[] = [
   ...packages,
   {
-    path: "/path/to/repo/c",
+    path: path.resolve(root, "c"),
     type: "npm",
     name: "c",
     uniqueName: "c",
@@ -62,7 +67,7 @@ const allPackages: Package[] = [
 ];
 const context = {
   env: process.env,
-  repositoryRoot: "/path/to/repo",
+  repositoryRoot: root,
   options: {},
   packages,
 } as VerifyConditionsContext;
@@ -75,10 +80,10 @@ vi.mocked(getLogs).mockResolvedValue([
 vi.mocked(getCommittedFiles).mockImplementation(async (hash) => {
   switch (hash) {
     case "a": {
-      return ["file", "a/dir/file", "a/file"];
+      return ["file", path.join("a", "dir", "file"), path.join("a", "file")];
     }
     case "b": {
-      return ["file", "b/dir/file", "b/file"];
+      return ["file", path.join("b", "dir", "file"), path.join("b", "file")];
     }
     default: {
       return [];
