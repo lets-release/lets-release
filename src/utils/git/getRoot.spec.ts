@@ -1,13 +1,17 @@
+import path from "node:path";
+
 import { $ } from "execa";
 import stripAnsi from "strip-ansi";
 
 import { getRoot } from "src/utils/git/getRoot";
 
+vi.mock("node:path");
 vi.mock("execa");
 vi.mock("strip-ansi");
 
 const exec = vi.fn();
 
+vi.mocked(path.normalize).mockImplementation((value) => value);
 vi.mocked($).mockReturnValue(exec as never);
 vi.mocked(stripAnsi).mockImplementation((value) => value);
 

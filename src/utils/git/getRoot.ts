@@ -1,3 +1,5 @@
+import path from "node:path";
+
 import debug from "debug";
 import { $, Options } from "execa";
 import stripAnsi from "strip-ansi";
@@ -17,7 +19,7 @@ export async function getRoot(options: Partial<Omit<Options, "lines">> = {}) {
       lines: false,
     })`git rev-parse --show-toplevel`;
 
-    return stripAnsi(stdout).trim();
+    return path.normalize(stripAnsi(stdout).trim());
   } catch (error) {
     debug(`${name}:utils.git.getRoot`)(error);
 
