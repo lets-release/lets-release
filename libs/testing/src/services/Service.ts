@@ -23,7 +23,7 @@ export class Service {
     try {
       const container = this.docker.getContainer(this.name);
 
-      await container?.remove({ force: true });
+      await container?.remove({ force: true, v: true });
     } catch {
       // Container does not exist
     }
@@ -39,6 +39,6 @@ export class Service {
 
   async stop() {
     await this.container?.stop();
-    await this.container?.remove();
+    await this.container?.remove({ force: true, v: true });
   }
 }
