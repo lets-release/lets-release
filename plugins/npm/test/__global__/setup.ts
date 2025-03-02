@@ -42,8 +42,6 @@ export default async function setup(project: TestProject) {
   await $`corepack install -g pnpm@8`;
   console.log("[@lets-release/npm]: Installing pnpm@latest");
   await $`corepack install -g pnpm@latest`;
-  console.log("[@lets-release/npm]: Installing yarn@3");
-  await $`corepack install -g yarn@3`;
   console.log("[@lets-release/npm]: Installing yarn@latest");
   await $`corepack install -g yarn@latest`;
   console.log("[@lets-release/npm]: Installing npm@8");
