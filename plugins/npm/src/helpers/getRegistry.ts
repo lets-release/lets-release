@@ -29,7 +29,7 @@ export async function getRegistry(
   },
   {
     pm,
-    pkg: { publishConfig: { registry } = { registry: undefined } },
+    pkg: { publishConfig: { registry } = {} },
     scope,
   }: Pick<NpmPackageContext, "pm" | "pkg" | "scope">,
 ): Promise<string> {

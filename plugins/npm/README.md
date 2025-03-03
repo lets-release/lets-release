@@ -1,6 +1,6 @@
 # @lets-release/npm
 
-**[lets-release][]** plugin to publish a [npm][] package.
+**[lets-release][]** plugin for publishing [npm][] packages.
 
 | Step               | Description                                                               |
 |--------------------|---------------------------------------------------------------------------|
@@ -26,13 +26,13 @@ The plugin can be configured in the **[lets-release][]** configuration file:
 
 If you are publishing to the official registry and your pipeline is on a [provider that is supported by npm for provenance][], npm can be configured to [publish with provenance][].
 
-Since lets-release wraps the npm publish command, configuring provenance is not directly exposed.
+Since lets-release wraps the npm publish command, configuring provenance is not directly supported.
 Instead, provenance can be configured through [other configuration options exposed by npm][].
-Provenance applies specifically to publishing, so we recommend configuring it under `publishConfig` within the `package.json`.
+Provenance applies specifically to publishing, so we recommend configuring it under `publishConfig` in the `package.json`.
 
 #### Provenance on GitHub Actions
 
-For package provenance to be signed on GitHub Actions CI, the following permission is required
+For package provenance to be signed on GitHub Actions CI, the following permission needs
 to be enabled on the job:
 
 ```yaml
@@ -55,18 +55,18 @@ permissions:
 
 | Options          | Description                                                                                                        | Default                                                                         |
 |------------------|--------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
-| `skipPublishing` | Whether to publish the `npm` package to the registry. If `true`, the `package.json` version will still be updated. | `true` if the `package.json` [private][] property is `true`, `false` otherwise. |
+| `skipPublishing` | Whether to publish the `npm` package to the registry. If `true`, the `package.json` version will still be updated. | `true` if the `package.json` [private][] property is `true`; `false` otherwise. |
 | `tarballDir`     | Directory path in which to write the package tarball. If not set the tarball will not be kept on the file system.  | -                                                                               |
 
 ### Package manager
 
 The plugin uses [`preferred-pm`][preferred-pm] to detect your package manager,
 and [`resolve-workspace-root`][resolve-workspace-root] to determine workspace root.
-Supported package managers are npm, pnpm, and yarn.
+The Supported package managers are npm, pnpm, and yarn.
 
 ### Publish configuration
 
-The [`registry`][registry] can be configured under `publishConfig` in the `package.json`:
+The [`registry`][registry] can be configured under `publishConfig` in `package.json`:
 
 ```json
 {
@@ -80,10 +80,11 @@ The [`registry`][registry] can be configured under `publishConfig` in the `packa
 **Notes**:
 
 - The presence of `registry` under `publishConfig` in the `package.json` will take precedence over the configuration in package manager config files
+- The auth token can be set in package manager config files (`.npmrc` for npm and pnpm, `.yarnrc.yml` for yarn). Do not save the actual token in config files and commit it to the repo. Use environment variables or temporarily alter config files in the CI system
 
 ### Examples
 
-The `skipPublishing` and `tarballDir` options can be used to skip the publishing to the `npm` registry and instead,
+The `skipPublishing` and `tarballDir` options can be used to skip publishing to the `npm` registry and instead
 release the package tarball with another plugin. For example, with the [@lets-release/github][] plugin:
 
 ```json
