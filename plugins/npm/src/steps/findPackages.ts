@@ -82,12 +82,14 @@ export const findPackages: StepFunction<Step.findPackages, NpmOptions> = async (
     name,
     dependencies: pkgs.filter((pkg) => {
       const {
-        pkg: { dependencies, devDependencies },
+        pkg: { dependencies, devDependencies, optionalDependencies },
       } = getPluginPackageContext<NpmPackageContext>(type, name)!;
 
-      return Object.keys({ ...dependencies, ...devDependencies }).includes(
-        pkg.name,
-      );
+      return Object.keys({
+        ...dependencies,
+        ...devDependencies,
+        ...optionalDependencies,
+      }).includes(pkg.name);
     }),
   }));
 };
