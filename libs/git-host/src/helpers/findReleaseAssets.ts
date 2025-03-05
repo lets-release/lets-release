@@ -50,7 +50,7 @@ export async function findReleaseAssets<
     cwd: repositoryRoot,
     expandDirectories: false,
     dot: true,
-    onlyFiles: false,
+    onlyFiles: true,
   });
 
   if (!isArray(asset) && !isString(asset)) {
