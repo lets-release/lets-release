@@ -62,7 +62,7 @@ permissions:
 
 The plugin uses [`preferred-pm`][preferred-pm] to detect your package manager,
 and [`resolve-workspace-root`][resolve-workspace-root] to determine workspace root.
-The Supported package managers are npm, pnpm, and yarn.
+The Supported package managers are [npm][npm cli], [pnpm][], and [yarn][].
 
 ### Publish configuration
 
@@ -113,6 +113,9 @@ release the package tarball with another plugin. For example, with the [@lets-re
 [@lets-release/github]: ../github
 
 [npm]: https://www.npmjs.com
+[npm cli]: https://docs.npmjs.com/cli
+[pnpm]: https://pnpm.io/
+[yarn]: https://yarnpkg.com/
 [create]: https://docs.npmjs.com/cli/pack
 [Add a release to dist-tags]: https://docs.npmjs.com/cli/dist-tag
 [Publish the npm package]: https://docs.npmjs.com/cli/publish
