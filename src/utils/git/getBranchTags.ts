@@ -12,7 +12,7 @@ import stripAnsi from "strip-ansi";
  */
 export async function getBranchTags(
   branch: string,
-  options: Partial<Omit<Options, "lines">> = {},
+  options: Partial<Options> = {},
 ) {
   const { stdout } = await $<{ lines: true }>({
     ...options,

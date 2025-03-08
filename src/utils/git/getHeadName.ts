@@ -1,9 +1,7 @@
 import { $, Options } from "execa";
 import stripAnsi from "strip-ansi";
 
-export async function getHeadName(
-  options: Partial<Omit<Options, "lines" | "reject">> = {},
-) {
+export async function getHeadName(options: Partial<Options> = {}) {
   const { stdout } = await $<{ lines: false; reject: false }>({
     ...options,
     lines: false,

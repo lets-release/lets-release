@@ -12,7 +12,7 @@ import { name } from "src/program";
  * @param options execa options
  * @returns string
  */
-export async function getRoot(options: Partial<Omit<Options, "lines">> = {}) {
+export async function getRoot(options: Partial<Options> = {}) {
   try {
     const { stdout } = await $<{ lines: false }>({
       ...options,

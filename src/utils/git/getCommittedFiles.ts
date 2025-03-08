@@ -3,7 +3,7 @@ import stripAnsi from "strip-ansi";
 
 export async function getCommittedFiles(
   commit: string,
-  options: Partial<Omit<Options, "lines">> = {},
+  options: Partial<Options> = {},
 ) {
   const { stdout } = await $<{ lines: true }>({
     ...options,

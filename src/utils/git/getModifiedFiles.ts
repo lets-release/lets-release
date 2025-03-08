@@ -8,9 +8,7 @@ import stripAnsi from "strip-ansi";
  *
  * @return Array of modified files path.
  */
-export async function getModifiedFiles(
-  options: Partial<Omit<Options, "lines">> = {},
-) {
+export async function getModifiedFiles(options: Partial<Options> = {}) {
   const { stdout } = await $<{ lines: true }>({
     ...options,
     lines: true,

@@ -8,9 +8,7 @@ import { UnsupportedGitVersionError } from "src/errors/UnsupportedGitVersionErro
 
 const minRequiredVersion = "2.7.1";
 
-export async function verifyGitVersion(
-  options: Partial<Omit<Options, "lines">> = {},
-) {
+export async function verifyGitVersion(options: Partial<Options> = {}) {
   const { stdout } = await $<{ lines: false }>({
     ...options,
     lines: false,

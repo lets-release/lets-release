@@ -13,7 +13,7 @@ import { name } from "src/program";
  */
 export async function getRemoteUrl(
   remote = "origin",
-  options: Partial<Omit<Options, "lines">> = {},
+  options: Partial<Options> = {},
 ) {
   try {
     const { stdout } = await $<{ lines: false }>({
