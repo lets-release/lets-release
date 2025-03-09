@@ -12,6 +12,9 @@ export default mergeConfig(
       hookTimeout: 30_000,
       globalSetup: "./test/__global__/setup.ts",
       include: ["test/**/*.spec.ts"],
+      env: {
+        COREPACK_ENABLE_STRICT: "0",
+      },
     },
   }),
 );

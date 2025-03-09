@@ -8,6 +8,8 @@ import { inject } from "vitest";
 
 import { AnalyzeCommitsContext } from "@lets-release/config";
 
+import { MIN_REQUIRED_PM_VERSIONS } from "src/constants/MIN_REQUIRED_PM_VERSIONS";
+import { NpmPackageManagerName } from "src/enums/NpmPackageManagerName";
 import { verifyAuth } from "src/helpers/verifyAuth";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
 
@@ -21,7 +23,7 @@ const pkg = {
 };
 
 describe("verifyAuth", () => {
-  it.each(["8", "latest"])(
+  it.each([MIN_REQUIRED_PM_VERSIONS[NpmPackageManagerName.pnpm], "latest"])(
     "should verify auth with pnpm %s",
     async (version) => {
       const cwd = temporaryDirectory();
@@ -52,35 +54,38 @@ describe("verifyAuth", () => {
     },
   );
 
-  it.each(["latest"])("should verify auth with yarn %s", async (version) => {
-    const cwd = temporaryDirectory();
+  it.each([MIN_REQUIRED_PM_VERSIONS[NpmPackageManagerName.yarn], "latest"])(
+    "should verify auth with yarn %s",
+    async (version) => {
+      const cwd = temporaryDirectory();
 
-    await outputJson(path.resolve(cwd, "package.json"), pkg);
+      await outputJson(path.resolve(cwd, "package.json"), pkg);
 
-    const options = {
-      cwd,
-      preferLocal: true,
-    };
-    await $(options)`corepack use ${`yarn@${version}`}`;
-    await $(options)`yarn install`;
-    await $(
-      options,
-    )`yarn config set unsafeHttpWhitelist --json ${`["${registryHost}"]`}`;
-    await $(options)`yarn config set npmRegistryServer ${registry}`;
-    await $(options)`yarn config set npmAuthToken ${npmToken ?? ""}`;
+      const options = {
+        cwd,
+        preferLocal: true,
+      };
+      await $(options)`corepack use ${`yarn@${version}`}`;
+      await $(options)`yarn install`;
+      await $(
+        options,
+      )`yarn config set unsafeHttpWhitelist --json ${`["${registryHost}"]`}`;
+      await $(options)`yarn config set npmRegistryServer ${registry}`;
+      await $(options)`yarn config set npmAuthToken ${npmToken ?? ""}`;
 
-    await expect(
-      verifyAuth(
-        { package: { path: cwd } } as AnalyzeCommitsContext,
-        {
-          pm: { name: "yarn", root: cwd },
-          registry,
-        } as NpmPackageContext,
-      ),
-    ).resolves.toBeUndefined();
-  });
+      await expect(
+        verifyAuth(
+          { package: { path: cwd } } as AnalyzeCommitsContext,
+          {
+            pm: { name: "yarn", root: cwd },
+            registry,
+          } as NpmPackageContext,
+        ),
+      ).resolves.toBeUndefined();
+    },
+  );
 
-  it.each(["8", "latest"])(
+  it.each([MIN_REQUIRED_PM_VERSIONS[NpmPackageManagerName.npm], "latest"])(
     "should verify auth with npm %s",
     async (version) => {
       const cwd = temporaryDirectory();

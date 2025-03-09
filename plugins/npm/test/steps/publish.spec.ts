@@ -10,7 +10,9 @@ import { inject } from "vitest";
 
 import { PublishContext } from "@lets-release/config";
 
+import { MIN_REQUIRED_PM_VERSIONS } from "src/constants/MIN_REQUIRED_PM_VERSIONS";
 import { NPM_ARTIFACT_NAME } from "src/constants/NPM_ARTIFACT_NAME";
+import { NpmPackageManagerName } from "src/enums/NpmPackageManagerName";
 import { publish } from "src/steps/publish";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
 
@@ -225,7 +227,7 @@ describe("publish", () => {
     expect(warn).toHaveBeenCalled();
   });
 
-  it.each(["8", "latest"])(
+  it.each([MIN_REQUIRED_PM_VERSIONS[NpmPackageManagerName.pnpm], "latest"])(
     "should publish the package with pnpm %s",
     async (version) => {
       const cwd = temporaryDirectory();
@@ -337,7 +339,7 @@ describe("publish", () => {
     },
   );
 
-  it.each(["latest"])(
+  it.each([MIN_REQUIRED_PM_VERSIONS[NpmPackageManagerName.yarn], "latest"])(
     "should publish the package with yarn %s",
     async (version) => {
       const cwd = temporaryDirectory();
@@ -446,7 +448,7 @@ describe("publish", () => {
     },
   );
 
-  it.each(["8", "latest"])(
+  it.each([MIN_REQUIRED_PM_VERSIONS[NpmPackageManagerName.npm], "latest"])(
     "should publish the package with npm %s",
     async (version) => {
       const cwd = temporaryDirectory();

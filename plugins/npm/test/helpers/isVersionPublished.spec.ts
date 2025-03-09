@@ -9,6 +9,8 @@ import { inject } from "vitest";
 
 import { PublishContext, VerifyReleaseContext } from "@lets-release/config";
 
+import { MIN_REQUIRED_PM_VERSIONS } from "src/constants/MIN_REQUIRED_PM_VERSIONS";
+import { NpmPackageManagerName } from "src/enums/NpmPackageManagerName";
 import { isVersionPublished } from "src/helpers/isVersionPublished";
 import { prepare } from "src/steps/prepare";
 import { publish } from "src/steps/publish";
@@ -77,7 +79,10 @@ describe("isVersionPublished", () => {
     await publish(ctx, {});
   });
 
-  describe.each(["8", "latest"])("pnpm %s", (version) => {
+  describe.each([
+    MIN_REQUIRED_PM_VERSIONS[NpmPackageManagerName.pnpm],
+    "latest",
+  ])("pnpm %s", (version) => {
     let cwd: string;
 
     beforeAll(async () => {
@@ -123,7 +128,10 @@ describe("isVersionPublished", () => {
     });
   });
 
-  describe.each(["latest"])("yarn %s", (version) => {
+  describe.each([
+    MIN_REQUIRED_PM_VERSIONS[NpmPackageManagerName.yarn],
+    "latest",
+  ])("yarn %s", (version) => {
     let cwd: string;
 
     beforeAll(async () => {
@@ -169,7 +177,10 @@ describe("isVersionPublished", () => {
     });
   });
 
-  describe.each(["8", "latest"])("npm %s", (version) => {
+  describe.each([
+    MIN_REQUIRED_PM_VERSIONS[NpmPackageManagerName.npm],
+    "latest",
+  ])("npm %s", (version) => {
     let cwd: string;
 
     beforeAll(async () => {
