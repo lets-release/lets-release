@@ -9,6 +9,8 @@ import { inject } from "vitest";
 
 import { VerifyConditionsContext } from "@lets-release/config";
 
+import { MIN_REQUIRED_PM_VERSIONS } from "src/constants/MIN_REQUIRED_PM_VERSIONS";
+import { NpmPackageManagerName } from "src/enums/NpmPackageManagerName";
 import { verifyConditions } from "src/steps/verifyConditions";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
 
@@ -141,7 +143,7 @@ describe("verifyConditions", () => {
     ).rejects.toThrow(AggregateError);
   });
 
-  it.each(["8", "latest"])(
+  it.each([MIN_REQUIRED_PM_VERSIONS[NpmPackageManagerName.pnpm], "latest"])(
     "should verify auth with pnpm %s",
     async (version) => {
       const cwd = temporaryDirectory();
@@ -211,75 +213,78 @@ describe("verifyConditions", () => {
     },
   );
 
-  it.each(["latest"])("should verify auth with yarn %s", async (version) => {
-    const cwd = temporaryDirectory();
+  it.each([MIN_REQUIRED_PM_VERSIONS[NpmPackageManagerName.yarn], "latest"])(
+    "should verify auth with yarn %s",
+    async (version) => {
+      const cwd = temporaryDirectory();
 
-    const packages = [
-      {
-        name: `verify-conditions-yarn-${version}`,
-        version: "0.0.0-dev",
-        publishConfig: { registry },
-        workspaces: ["packages/*"],
-        path: cwd,
-      },
-      {
-        name: `@verify-conditions-yarn-${version}/a`,
-        version: "0.0.0-dev",
-        publishConfig: { registry },
-        path: path.resolve(cwd, "packages/a"),
-      },
-      {
-        name: `@verify-conditions-yarn-${version}/b`,
-        version: "0.0.0-dev",
-        publishConfig: { registry },
-        path: path.resolve(cwd, "packages/b"),
-      },
-    ];
-
-    for (const { path: pkgRoot, ...pkg } of packages) {
-      await outputJson(path.resolve(pkgRoot, "package.json"), pkg);
-    }
-
-    const options = {
-      cwd,
-      preferLocal: true,
-    };
-    await $(options)`corepack use ${`yarn@${version}`}`;
-    await $(options)`yarn install`;
-    await $(
-      options,
-    )`yarn config set unsafeHttpWhitelist --json ${`["${registryHost}"]`}`;
-    await $(options)`yarn config set npmRegistryServer ${registry}`;
-    await $(options)`yarn config set npmAuthToken ${npmToken ?? ""}`;
-
-    let pkgContext: NpmPackageContext;
-
-    const getPluginPackageContext = () => pkgContext;
-    const setPluginPackageContext = (
-      type: string,
-      name: string,
-      context: NpmPackageContext,
-    ) => {
-      pkgContext = context;
-    };
-
-    await expect(
-      verifyConditions(
+      const packages = [
         {
-          ...context,
-          getPluginPackageContext,
-          setPluginPackageContext,
-          cwd,
-          env: process.env,
-          repositoryRoot: cwd,
-          packages,
-        } as unknown as VerifyConditionsContext,
-        {},
-      ),
-    ).resolves.toBeUndefined();
-  });
+          name: `verify-conditions-yarn-${version}`,
+          version: "0.0.0-dev",
+          publishConfig: { registry },
+          workspaces: ["packages/*"],
+          path: cwd,
+        },
+        {
+          name: `@verify-conditions-yarn-${version}/a`,
+          version: "0.0.0-dev",
+          publishConfig: { registry },
+          path: path.resolve(cwd, "packages/a"),
+        },
+        {
+          name: `@verify-conditions-yarn-${version}/b`,
+          version: "0.0.0-dev",
+          publishConfig: { registry },
+          path: path.resolve(cwd, "packages/b"),
+        },
+      ];
 
-  it.each(["8", "latest"])(
+      for (const { path: pkgRoot, ...pkg } of packages) {
+        await outputJson(path.resolve(pkgRoot, "package.json"), pkg);
+      }
+
+      const options = {
+        cwd,
+        preferLocal: true,
+      };
+      await $(options)`corepack use ${`yarn@${version}`}`;
+      await $(options)`yarn install`;
+      await $(
+        options,
+      )`yarn config set unsafeHttpWhitelist --json ${`["${registryHost}"]`}`;
+      await $(options)`yarn config set npmRegistryServer ${registry}`;
+      await $(options)`yarn config set npmAuthToken ${npmToken ?? ""}`;
+
+      let pkgContext: NpmPackageContext;
+
+      const getPluginPackageContext = () => pkgContext;
+      const setPluginPackageContext = (
+        type: string,
+        name: string,
+        context: NpmPackageContext,
+      ) => {
+        pkgContext = context;
+      };
+
+      await expect(
+        verifyConditions(
+          {
+            ...context,
+            getPluginPackageContext,
+            setPluginPackageContext,
+            cwd,
+            env: process.env,
+            repositoryRoot: cwd,
+            packages,
+          } as unknown as VerifyConditionsContext,
+          {},
+        ),
+      ).resolves.toBeUndefined();
+    },
+  );
+
+  it.each([MIN_REQUIRED_PM_VERSIONS[NpmPackageManagerName.npm], "latest"])(
     "should verify auth with npm %s",
     async (version) => {
       const cwd = temporaryDirectory();

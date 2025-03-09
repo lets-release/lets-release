@@ -9,6 +9,8 @@ import { inject } from "vitest";
 
 import { PublishContext, VerifyReleaseContext } from "@lets-release/config";
 
+import { MIN_REQUIRED_PM_VERSIONS } from "src/constants/MIN_REQUIRED_PM_VERSIONS";
+import { NpmPackageManagerName } from "src/enums/NpmPackageManagerName";
 import { getDistTagVersion } from "src/helpers/getDistTagVersion";
 import { prepare } from "src/steps/prepare";
 import { publish } from "src/steps/publish";
@@ -91,7 +93,7 @@ describe("getDistTagVersion", () => {
     }
   });
 
-  it.each(["8", "latest"])(
+  it.each([MIN_REQUIRED_PM_VERSIONS[NpmPackageManagerName.pnpm], "latest"])(
     "should return the version of the dist-tag with pnpm %s",
     async (version) => {
       const cwd = temporaryDirectory();
@@ -138,7 +140,7 @@ describe("getDistTagVersion", () => {
     },
   );
 
-  it.each(["latest"])(
+  it.each([MIN_REQUIRED_PM_VERSIONS[NpmPackageManagerName.yarn], "latest"])(
     "should return the version of the dist-tag with yarn %s",
     async (version) => {
       const cwd = temporaryDirectory();
@@ -185,7 +187,7 @@ describe("getDistTagVersion", () => {
     },
   );
 
-  it.each(["8", "latest"])(
+  it.each([MIN_REQUIRED_PM_VERSIONS[NpmPackageManagerName.npm], "latest"])(
     "should return the version of the dist-tag with npm %s",
     async (version) => {
       const cwd = temporaryDirectory();
