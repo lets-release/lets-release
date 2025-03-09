@@ -1,7 +1,8 @@
-import { platform } from "node:os";
+import { mkdir } from "node:fs/promises";
+import { homedir, platform } from "node:os";
+import path from "node:path";
 
 import { $ } from "execa";
-import { temporaryDirectory } from "tempy";
 import { TestProject } from "vitest/node";
 
 import { Verdaccio } from "@lets-release/testing";
@@ -33,7 +34,8 @@ export default async function setup(project: TestProject) {
 
   if (platform() === "win32") {
     // https://github.com/nodejs/corepack/issues/71
-    const corepackDir = temporaryDirectory();
+    const corepackDir = path.resolve(homedir(), ".corepack");
+    await mkdir(corepackDir, { recursive: true });
     await $`corepack enable ${Object.values(NpmPackageManagerName)} --install-directory ${corepackDir}`;
   } else {
     await $`corepack enable ${Object.values(NpmPackageManagerName)}`;
