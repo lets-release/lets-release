@@ -2,12 +2,12 @@ import path from "node:path";
 import { setTimeout } from "node:timers/promises";
 import { fileURLToPath } from "node:url";
 
-import { got } from "got";
 import pRetry from "p-retry";
+import { fetch } from "undici";
 
 import { Service } from "src/services/Service";
 
-const IMAGE = "verdaccio/verdaccio:5";
+const IMAGE = "verdaccio/verdaccio:latest";
 const SERVER_HOST = "localhost";
 const NPM_USERNAME = "npm_username";
 const NPM_PASSWORD = "npm_password";
@@ -46,36 +46,44 @@ export class Verdaccio extends Service {
 
     try {
       // Wait for the registry to be ready
-      await pRetry(async () => await got(this.url, { cache: false }), {
+      await pRetry(async () => await fetch(this.url, { cache: "no-cache" }), {
         retries: 7,
         minTimeout: 1000,
         factor: 2,
       });
     } catch {
-      throw new Error(`Couldn't start npm-docker-couchdb after 2 min`);
+      throw new Error(`Couldn't start verdaccio after 2 min`);
     }
 
     // Create user
-    await got(`${this.url}/-/user/org.couchdb.user:${NPM_USERNAME}`, {
+    await fetch(`${this.url}/-/user/org.couchdb.user:${NPM_USERNAME}`, {
       method: "PUT",
-      json: {
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
         _id: `org.couchdb.user:${NPM_USERNAME}`,
         name: NPM_USERNAME,
         roles: [],
         type: "user",
         password: NPM_PASSWORD,
         email: NPM_EMAIL,
-      },
+      }),
     });
 
     // Create token for user
-    const { token } = await got(`${this.url}/-/npm/v1/tokens`, {
-      username: NPM_USERNAME,
-      password: NPM_PASSWORD,
+    const response = await fetch(`${this.url}/-/npm/v1/tokens`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      json: { password: NPM_PASSWORD, readonly: false, cidr_whitelist: [] },
-    }).json<{ token: string }>();
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Basic ${Buffer.from(`${NPM_USERNAME}:${NPM_PASSWORD}`).toString("base64")}`,
+      },
+      body: JSON.stringify({
+        password: NPM_PASSWORD,
+        readonly: false,
+        cidr_whitelist: [],
+      }),
+    });
+
+    const { token } = (await response.json()) as { token: string };
 
     this.npmToken = token;
   }

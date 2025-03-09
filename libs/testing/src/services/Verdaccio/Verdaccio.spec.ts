@@ -1,14 +1,14 @@
 import { setTimeout } from "node:timers/promises";
 
-import { CancelableRequest, got } from "got";
 import pRetry from "p-retry";
+import { fetch } from "undici";
 
 import { Service } from "src/services/Service";
 import { Verdaccio } from "src/services/Verdaccio/Verdaccio";
 
 vi.mock("timers/promises");
 vi.mock("p-retry");
-vi.mock("got");
+vi.mock("undici");
 
 const verdaccio = new Verdaccio("verdaccio");
 const superStart = vi
@@ -16,7 +16,7 @@ const superStart = vi
   .mockResolvedValue(undefined);
 
 const token = "fake-token";
-const req = {
+const res = {
   json: vi.fn().mockResolvedValue({ token }),
 };
 
@@ -26,20 +26,20 @@ describe("verdaccio", () => {
     vi.mocked(pRetry)
       .mockReset()
       .mockImplementation(async (fn) => await fn(1));
-    vi.mocked(got)
+    vi.mocked(fetch)
       .mockReset()
-      .mockReturnValue(req as unknown as CancelableRequest);
+      .mockResolvedValue(res as unknown as Response);
     superStart.mockClear();
-    req.json.mockClear();
+    res.json.mockClear();
   });
 
   it("should start container", async () => {
     await expect(verdaccio.start()).resolves.toBeUndefined();
     expect(setTimeout).toHaveBeenCalledWith(4000);
     expect(pRetry).toHaveBeenCalledOnce();
-    expect(got).toHaveBeenCalledTimes(3);
+    expect(fetch).toHaveBeenCalledTimes(3);
     expect(superStart).toHaveBeenCalledOnce();
-    expect(req.json).toHaveBeenCalledOnce();
+    expect(res.json).toHaveBeenCalledOnce();
     expect(verdaccio.npmToken).toBe(token);
   });
 
@@ -47,7 +47,7 @@ describe("verdaccio", () => {
     vi.mocked(pRetry).mockReset().mockRejectedValue(new Error("timeout"));
 
     await expect(verdaccio.start()).rejects.toThrowError(
-      "Couldn't start npm-docker-couchdb after 2 min",
+      "Couldn't start verdaccio after 2 min",
     );
     expect(setTimeout).toHaveBeenCalledWith(4000);
     expect(pRetry).toHaveBeenCalledOnce();
