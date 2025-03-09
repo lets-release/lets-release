@@ -52,16 +52,37 @@ export default async function setup(project: TestProject) {
 
   if (platform() === "win32") {
     console.log(`[@lets-release/pypi]: Installing uv@${minUvVersion}`);
-    await $`powershell -ExecutionPolicy ByPass -c { $env:UV_UNMANAGED_INSTALL = "${minUvDir}"; irm ${`https://astral.sh/uv/${minUvVersion}/install.ps1`} | iex }`;
+    await $`irm ${`https://astral.sh/uv/${minUvVersion}/install.ps1`}`.pipe({
+      env: {
+        UV_UNMANAGED_INSTALL: minUvDir,
+      },
+    })`iex`;
 
     console.log("[@lets-release/pypi]: Installing uv@latest");
-    await $`powershell -ExecutionPolicy ByPass -c { $env:UV_UNMANAGED_INSTALL = "${maxUvDir}"; irm https://astral.sh/uv/install.ps1 | iex }`;
+    await $`irm https://astral.sh/uv/install.ps1`.pipe({
+      env: {
+        UV_UNMANAGED_INSTALL: maxUvDir,
+      },
+    })`iex`;
 
     console.log(`[@lets-release/pypi]: Installing poetry@${minPoetryVersion}`);
-    await $`powershell -ExecutionPolicy ByPass -c { $env:POETRY_HOME = "${minPoetryDir}"; $env:POETRY_VERSION = "${minPoetryVersion}"; (iwr -Uri https://install.python-poetry.org -UseBasicParsing).Content | py - }`;
+    await $`(iwr -Uri https://install.python-poetry.org -UseBasicParsing).Content`.pipe(
+      {
+        env: {
+          POETRY_HOME: minPoetryDir,
+          POETRY_VERSION: minPoetryVersion,
+        },
+      },
+    )`py -`;
 
     console.log("[@lets-release/pypi]: Installing poetry@latest");
-    await $`powershell -ExecutionPolicy ByPass -c { $env:POETRY_HOME = "${maxPoetryDir}"; (iwr -Uri https://install.python-poetry.org -UseBasicParsing).Content | py - }`;
+    await $`(iwr -Uri https://install.python-poetry.org -UseBasicParsing).Content`.pipe(
+      {
+        env: {
+          POETRY_HOME: maxPoetryDir,
+        },
+      },
+    )`py -`;
   } else {
     console.log(`[@lets-release/pypi]: Installing uv@${minUvVersion}`);
     await $`curl -LsSf ${`https://astral.sh/uv/${minUvVersion}/install.sh`}`
