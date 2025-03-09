@@ -1,6 +1,6 @@
 import { Verdaccio } from "src/services/Verdaccio/Verdaccio";
 
-describe("verdaccio", () => {
+describe("Verdaccio", () => {
   it("should start verdaccio container", async () => {
     const verdaccio = new Verdaccio("verdaccio-e2e", 6888);
 

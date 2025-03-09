@@ -1,7 +1,7 @@
 import { createRepo } from "src/helpers/createRepo";
 import { GitBox } from "src/services/GitBox/GitBox";
 
-describe("gitBox", () => {
+describe("GitBox", () => {
   it("should start gitBox container and create repo", async () => {
     const gitBox = new GitBox("git-box-e2e", 8888);
 

@@ -28,7 +28,7 @@ const superStart = vi
     gitBox.container = container as unknown as Container;
   });
 
-describe("gitBox", () => {
+describe("GitBox", () => {
   beforeEach(() => {
     exec.start.mockClear();
     container.exec.mockClear();
