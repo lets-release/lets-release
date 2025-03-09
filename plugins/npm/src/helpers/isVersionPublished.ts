@@ -3,6 +3,7 @@ import stripAnsi from "strip-ansi";
 
 import { VerifyReleaseContext } from "@lets-release/config";
 
+import { NpmPackageManagerName } from "src/enums/NpmPackageManagerName";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
 
 const isPublished = async (
@@ -29,16 +30,17 @@ export async function isVersionPublished(
   };
 
   switch (pm.name) {
-    case "pnpm": {
+    case NpmPackageManagerName.pnpm: {
       return isPublished(
         $(options)`pnpm view ${`${name}@${version}`} --registry ${registry}`,
       );
     }
 
-    case "yarn": {
+    case NpmPackageManagerName.yarn: {
       return isPublished($(options)`yarn npm info ${`${name}@${version}`}`);
     }
 
+    // npm
     default: {
       return isPublished(
         $(options)`npm view ${`${name}@${version}`} --registry ${registry}`,

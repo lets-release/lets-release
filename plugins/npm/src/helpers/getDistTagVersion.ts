@@ -3,6 +3,7 @@ import stripAnsi from "strip-ansi";
 
 import { VerifyReleaseContext } from "@lets-release/config";
 
+import { NpmPackageManagerName } from "src/enums/NpmPackageManagerName";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
 
 export async function getDistTagVersion(
@@ -57,18 +58,19 @@ export async function getDistTagVersion(
   };
 
   switch (pm.name) {
-    case "pnpm": {
+    case NpmPackageManagerName.pnpm: {
       return await getVersion(
         $(options)`pnpm dist-tag ls ${name} --registry ${registry}`,
       );
     }
 
-    case "yarn": {
+    case NpmPackageManagerName.yarn: {
       return await getVersion($(options)`yarn npm tag list ${name} --json`, {
         json: true,
       });
     }
 
+    // npm
     default: {
       return await getVersion(
         $(options)`npm dist-tag ls ${name} --registry ${registry}`,

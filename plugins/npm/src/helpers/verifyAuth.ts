@@ -2,6 +2,7 @@ import { $, ResultPromise } from "execa";
 
 import { AnalyzeCommitsContext } from "@lets-release/config";
 
+import { NpmPackageManagerName } from "src/enums/NpmPackageManagerName";
 import { NeedAuthError } from "src/errors/NeedAuthError";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
 
@@ -30,7 +31,7 @@ export async function verifyAuth(
   };
 
   switch (pm?.name) {
-    case "pnpm": {
+    case NpmPackageManagerName.pnpm: {
       await verify(
         $({
           ...options,
@@ -43,7 +44,7 @@ export async function verifyAuth(
       break;
     }
 
-    case "yarn": {
+    case NpmPackageManagerName.yarn: {
       await verify(
         $(
           options,
@@ -52,6 +53,7 @@ export async function verifyAuth(
       break;
     }
 
+    // npm
     default: {
       await verify($(options)`npm whoami --registry ${registry}`);
       break;

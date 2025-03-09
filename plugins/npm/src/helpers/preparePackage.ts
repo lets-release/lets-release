@@ -7,6 +7,7 @@ import stripAnsi from "strip-ansi";
 
 import { PrepareContext } from "@lets-release/config";
 
+import { NpmPackageManagerName } from "src/enums/NpmPackageManagerName";
 import { NpmOptions } from "src/schemas/NpmOptions";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
 
@@ -41,7 +42,7 @@ export async function preparePackage(
   let versionPromise: ResultPromise<typeof options>;
 
   switch (pm.name) {
-    case "pnpm": {
+    case NpmPackageManagerName.pnpm: {
       versionPromise = $({
         ...options,
         cwd: pkgRoot,
@@ -49,7 +50,7 @@ export async function preparePackage(
       break;
     }
 
-    case "yarn": {
+    case NpmPackageManagerName.yarn: {
       versionPromise = $({
         ...options,
         cwd: pkgRoot,
@@ -57,6 +58,7 @@ export async function preparePackage(
       break;
     }
 
+    // npm
     default: {
       versionPromise = $({
         ...options,
@@ -80,7 +82,7 @@ export async function preparePackage(
     let promise: ResultPromise<typeof options>;
 
     switch (pm.name) {
-      case "pnpm": {
+      case NpmPackageManagerName.pnpm: {
         promise = $({
           ...options,
           cwd: pkgRoot, // FIXME: https://github.com/pnpm/pnpm/issues/4351
@@ -88,7 +90,7 @@ export async function preparePackage(
         break;
       }
 
-      case "yarn": {
+      case NpmPackageManagerName.yarn: {
         promise = $({
           ...options,
           cwd: pm.root,
@@ -96,6 +98,7 @@ export async function preparePackage(
         break;
       }
 
+      // npm
       default: {
         // npm 8 returns wrong filename with "/" in json output
         promise = $({
@@ -114,14 +117,14 @@ export async function preparePackage(
     let tgz: string;
 
     switch (pm.name) {
-      case "pnpm": {
+      case NpmPackageManagerName.pnpm: {
         tgz = stripAnsi(
           result.stdout.find((line) => line.includes(".tgz"))!,
         ).trim();
         break;
       }
 
-      case "yarn": {
+      case NpmPackageManagerName.yarn: {
         tgz = result.stdout
           .flatMap((line) => {
             const trimmed = stripAnsi(line).trim();
@@ -140,6 +143,7 @@ export async function preparePackage(
         break;
       }
 
+      // npm
       default: {
         tgz = stripAnsi(
           result.stdout.find((line) => line.includes(".tgz"))!,

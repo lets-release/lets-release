@@ -3,6 +3,7 @@ import { gt } from "semver";
 
 import { VerifyReleaseContext } from "@lets-release/config";
 
+import { NpmPackageManagerName } from "src/enums/NpmPackageManagerName";
 import { getDistTagVersion } from "src/helpers/getDistTagVersion";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
 
@@ -41,7 +42,7 @@ export async function addChannel(
     };
 
     switch (pm.name) {
-      case "pnpm": {
+      case NpmPackageManagerName.pnpm: {
         await addDistTag(
           $(
             options,
@@ -50,13 +51,14 @@ export async function addChannel(
         break;
       }
 
-      case "yarn": {
+      case NpmPackageManagerName.yarn: {
         await addDistTag(
           $(options)`yarn npm tag add ${`${name}@${version}`} ${distTag}`,
         );
         break;
       }
 
+      // npm
       default: {
         await addDistTag(
           $(

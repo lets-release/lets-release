@@ -2,6 +2,7 @@ import { $, ResultPromise } from "execa";
 
 import { Step, StepFunction } from "@lets-release/config";
 
+import { NpmPackageManagerName } from "src/enums/NpmPackageManagerName";
 import { addChannel } from "src/helpers/addChannel";
 import { channelsToDistTags } from "src/helpers/channelsToDistTags";
 import { ensureNpmPackageContext } from "src/helpers/ensureNpmPackageContext";
@@ -59,18 +60,19 @@ export const publish: StepFunction<Step.publish, NpmOptions> = async (
       let result: ResultPromise<typeof execaOptions>;
 
       switch (pm.name) {
-        case "pnpm": {
+        case NpmPackageManagerName.pnpm: {
           result = $(execaOptions)`pnpm publish ${pkgRoot} --tag ${tag}`;
           break;
         }
 
-        case "yarn": {
+        case NpmPackageManagerName.yarn: {
           result = $(
             execaOptions,
           )`yarn workspace ${name} npm publish --tag ${tag}`;
           break;
         }
 
+        // npm
         default: {
           result = $(
             execaOptions,

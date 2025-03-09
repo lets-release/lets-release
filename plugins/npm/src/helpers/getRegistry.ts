@@ -4,6 +4,7 @@ import stripAnsi from "strip-ansi";
 import { FindPackagesContext, PackageInfo } from "@lets-release/config";
 
 import { DEFAULT_NPM_REGISTRY } from "src/constants/DEFAULT_NPM_REGISTRY";
+import { NpmPackageManagerName } from "src/enums/NpmPackageManagerName";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
 
 const getConfig = async (
@@ -52,7 +53,7 @@ export async function getRegistry(
   // - Default Configs
 
   switch (pm.name) {
-    case "pnpm": {
+    case NpmPackageManagerName.pnpm: {
       return (
         (scope
           ? (await getConfig(
@@ -76,7 +77,7 @@ export async function getRegistry(
       );
     }
 
-    case "yarn": {
+    case NpmPackageManagerName.yarn: {
       return (
         (scope
           ? (await getConfig(

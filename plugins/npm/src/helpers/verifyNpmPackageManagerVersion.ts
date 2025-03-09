@@ -5,21 +5,16 @@ import stripAnsi from "strip-ansi";
 
 import { AnalyzeCommitsContext } from "@lets-release/config";
 
+import { MIN_REQUIRED_PM_VERSIONS } from "src/constants/MIN_REQUIRED_PM_VERSIONS";
 import { NoNpmPackageManagerBinaryError } from "src/errors/NoNpmPackageManagerBinaryError";
 import { UnsupportedNpmPackageManagerVersionError } from "src/errors/UnsupportedNpmPackageManagerVersionError";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
-
-const minRequiredVersions = {
-  pnpm: "8.0.0",
-  yarn: "4.0.0",
-  npm: "8.5.0",
-};
 
 export async function verifyNpmPackageManagerVersion(
   { env }: Pick<AnalyzeCommitsContext, "env">,
   { pm, pkg }: NpmPackageContext,
 ) {
-  const minRequiredVersion = minRequiredVersions[pm.name];
+  const minRequiredVersion = MIN_REQUIRED_PM_VERSIONS[pm.name];
   const { stdout } = await $({
     cwd: pm.root,
     env,

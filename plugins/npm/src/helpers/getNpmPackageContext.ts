@@ -4,6 +4,7 @@ import resolveWorkspaceRootPkg from "resolve-workspace-root";
 
 import { FindPackagesContext, PackageInfo } from "@lets-release/config";
 
+import { NpmPackageManagerName } from "src/enums/NpmPackageManagerName";
 import { getPackage } from "src/helpers/getPackage";
 import { getRegistry } from "src/helpers/getRegistry";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
@@ -25,7 +26,9 @@ export async function getNpmPackageContext(
 
   if (
     !packageManager ||
-    !["npm", "pnpm", "yarn"].includes(packageManager.name)
+    !Object.values(NpmPackageManagerName).includes(
+      packageManager.name as NpmPackageManagerName,
+    )
   ) {
     return undefined;
   }

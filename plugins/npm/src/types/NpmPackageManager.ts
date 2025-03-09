@@ -1,11 +1,13 @@
+import { NpmPackageManagerName } from "src/enums/NpmPackageManagerName";
+
 export interface NpmPackageManager {
   /**
    * The name of the package manager.
    *
-   * @type {"npm" | "pnpm" | "yarn"}
+   * @type {NpmPackageManagerName}
    * @memberof NpmPackageManager
    */
-  name: "npm" | "pnpm" | "yarn";
+  name: NpmPackageManagerName;
 
   /**
    * The version of the package manager.
