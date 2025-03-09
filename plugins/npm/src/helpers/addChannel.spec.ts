@@ -2,6 +2,7 @@ import { $ } from "execa";
 
 import { VerifyReleaseContext } from "@lets-release/config";
 
+import { NpmPackageManagerName } from "src/enums/NpmPackageManagerName";
 import { addChannel } from "src/helpers/addChannel";
 import { getDistTagVersion } from "src/helpers/getDistTagVersion";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
@@ -135,7 +136,7 @@ describe("addChannel", () => {
         } as unknown as VerifyReleaseContext,
         {
           ...pkgContext,
-          pm: { ...pkgContext.pm, name: "pnpm" },
+          pm: { ...pkgContext.pm, name: NpmPackageManagerName.pnpm },
         },
         "latest",
       ),
@@ -156,7 +157,7 @@ describe("addChannel", () => {
         } as unknown as VerifyReleaseContext,
         {
           ...pkgContext,
-          pm: { ...pkgContext.pm, name: "yarn" },
+          pm: { ...pkgContext.pm, name: NpmPackageManagerName.yarn },
         },
         "latest",
       ),
