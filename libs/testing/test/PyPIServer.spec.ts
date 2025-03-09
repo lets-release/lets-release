@@ -2,7 +2,7 @@ import { PyPIServer } from "src/services/PyPIServer/PyPIServer";
 
 describe("PyPIServer", () => {
   it("should start pypiserver container", async () => {
-    const pypiServer = new PyPIServer("pypiserver-e2e", 6888);
+    const pypiServer = new PyPIServer("pypiserver-e2e", 7888);
 
     onTestFailed(async () => {
       await pypiServer.stop();
