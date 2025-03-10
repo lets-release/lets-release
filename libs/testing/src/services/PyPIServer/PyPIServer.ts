@@ -42,6 +42,7 @@ export class PyPIServer extends Service {
         ],
       },
       ExposedPorts: { [`8080/tcp`]: {} },
+      Cmd: ["run", "-P", ".htpasswd", "packages"],
     });
 
     await setTimeout(4000);
