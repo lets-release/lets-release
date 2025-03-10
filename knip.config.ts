@@ -12,6 +12,7 @@ const config: KnipConfig = {
       ignore: ["test/__fixtures__/**"],
       ignoreDependencies: [
         "@aliser/ts-transformer-append-js-extension",
+        "ncp",
         "prettier-eslint",
         "typescript-transform-paths",
       ],
