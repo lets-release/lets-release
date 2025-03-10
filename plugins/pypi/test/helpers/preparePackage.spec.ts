@@ -1,5 +1,6 @@
 import { existsSync } from "node:fs";
 import { mkdir, writeFile } from "node:fs/promises";
+import { platform } from "node:os";
 import path from "node:path";
 
 import { $ } from "execa";
@@ -30,11 +31,12 @@ describe("preparePackage", () => {
     async (version) => {
       const POETRY_HOME = path.resolve(binDir, "poetry", version);
       const POETRY_BIN_DIR = path.resolve(POETRY_HOME, "bin");
+      const PATH = `${POETRY_BIN_DIR}${platform() === "win32" ? ";" : ":"}${process.env.PATH}`;
       const env = {
         ...process.env,
         POETRY_HOME,
-        PATH: `${POETRY_BIN_DIR}:${process.env.PATH}`,
-        Path: `${POETRY_BIN_DIR};${process.env.Path}`,
+        PATH,
+        Path: PATH,
       };
       const cwd = temporaryDirectory();
       const pkgContext = {
@@ -94,10 +96,11 @@ describe("preparePackage", () => {
     "should prepare package using uv %s",
     async (version) => {
       const UV_BIN_HOME = path.resolve(binDir, "uv", version);
+      const PATH = `${UV_BIN_HOME}${platform() === "win32" ? ";" : ":"}${process.env.PATH}`;
       const env = {
         ...process.env,
-        PATH: `${UV_BIN_HOME}:${process.env.PATH}`,
-        Path: `${UV_BIN_HOME};${process.env.Path}`,
+        PATH,
+        Path: PATH,
       };
       const cwd = temporaryDirectory();
       const pkgContext = {

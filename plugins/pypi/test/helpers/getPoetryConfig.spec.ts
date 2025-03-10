@@ -1,3 +1,4 @@
+import { platform } from "node:os";
 import path from "node:path";
 
 import { $ } from "execa";
@@ -17,11 +18,12 @@ describe("getPoetryConfig", () => {
   ])("poetry %s", (version) => {
     const POETRY_HOME = path.resolve(binDir, "poetry", version);
     const POETRY_BIN_DIR = path.resolve(POETRY_HOME, "bin");
+    const PATH = `${POETRY_BIN_DIR}${platform() === "win32" ? ";" : ":"}${process.env.PATH}`;
     const env = {
       ...process.env,
       POETRY_HOME,
-      PATH: `${POETRY_BIN_DIR}:${process.env.PATH}`,
-      Path: `${POETRY_BIN_DIR};${process.env.Path}`,
+      PATH,
+      Path: PATH,
     };
 
     it("should get poetry config", async () => {
