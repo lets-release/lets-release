@@ -111,8 +111,6 @@ export default async function setup(project: TestProject) {
   console.log("[@lets-release/pypi]: Starting PyPIServer");
   await startPyPIServer();
 
-  console.log(binDir);
-
   return async () => {
     console.log("[@lets-release/pypi]: Stopping PyPIServer");
     await stopPyPIServer();
