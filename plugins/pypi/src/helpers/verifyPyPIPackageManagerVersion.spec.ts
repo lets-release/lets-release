@@ -61,7 +61,7 @@ describe("verifyPyPIPackageManagerVersion", () => {
   });
 
   it("should pass if version is greater than or equal to required", async () => {
-    exec.mockResolvedValueOnce({ stdout: "poetry version 1.0.0" });
+    exec.mockResolvedValueOnce({ stdout: "poetry version 2.0.0" });
 
     await expect(
       verifyPyPIPackageManagerVersion(context, {
@@ -70,7 +70,7 @@ describe("verifyPyPIPackageManagerVersion", () => {
       } as PyPIPackageContext),
     ).resolves.toBeUndefined();
 
-    exec.mockResolvedValueOnce({ stdout: "uv version 0.1.0" });
+    exec.mockResolvedValueOnce({ stdout: "uv version 0.5.0" });
 
     await expect(
       verifyPyPIPackageManagerVersion(context, {
