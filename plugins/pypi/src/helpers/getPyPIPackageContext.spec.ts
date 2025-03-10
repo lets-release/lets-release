@@ -1,3 +1,4 @@
+import { PyPIPackageManagerName } from "src/enums/PyPIPackageManagerName";
 import { getPackage } from "src/helpers/getPackage";
 import { getPyPIPackageContext } from "src/helpers/getPyPIPackageContext";
 import { getPyPIPackageManager } from "src/helpers/getPyPIPackageManager";
@@ -14,7 +15,11 @@ const context = {
     path: "/path/to/package",
   },
 };
-const pm = { name: "uv" as const, version: "1.0.0", root: "/root" };
+const pm = {
+  name: PyPIPackageManagerName.uv as const,
+  version: "1.0.0",
+  root: "/root",
+};
 const pkg = { project: { name: "mock-pkg", version: "1.0.0" } };
 const registry = {
   name: "test",

@@ -1,8 +1,8 @@
 import { UnsupportedPyPIPackageManagerVersionError } from "src/errors/UnsupportedPyPIPackageManagerVersionError";
-import { PyProjectToml } from "src/types/NormalizedPyProjectToml";
+import { NormalizedPyProjectToml } from "src/types/NormalizedPyProjectToml";
 import { PyPIPackageManager } from "src/types/PyPIPackageManager";
 
-const pkg = { project: { name: "pkg" } } as PyProjectToml;
+const pkg = { project: { name: "pkg" } } as NormalizedPyProjectToml;
 const pm = { name: "uv" } as PyPIPackageManager;
 const requiredVersion = ">=0.2.0";
 const currentVersion = "0.1.8";

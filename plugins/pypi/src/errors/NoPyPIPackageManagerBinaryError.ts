@@ -1,6 +1,6 @@
 import { LetsReleaseError } from "@lets-release/config";
 
-import { PyProjectToml } from "src/types/NormalizedPyProjectToml";
+import { NormalizedPyProjectToml } from "src/types/NormalizedPyProjectToml";
 import { PyPIPackageManager } from "src/types/PyPIPackageManager";
 
 export class NoPyPIPackageManagerBinaryError extends LetsReleaseError {
@@ -13,7 +13,7 @@ export class NoPyPIPackageManagerBinaryError extends LetsReleaseError {
   }
 
   constructor(
-    private pkg: PyProjectToml,
+    private pkg: NormalizedPyProjectToml,
     private pm: PyPIPackageManager,
     private versionRequirement: string,
   ) {
