@@ -27,7 +27,10 @@
     "test:cov": "vitest --config ./vitest.unit.config.ts --coverage.enabled",
     "test:e2e": "vitest --config ./vitest.e2e.config.ts",
     "type-check": "rimraf ./dist && tsc --build",
-    "build": "rimraf ./dist && tspc --build tsconfig.build.json"
+    "copy-pypi-server-config": "ncp ./src/services/PyPIServer/.htpasswd ./dist/services/PyPIServer/.htpasswd",
+    "copy-verdaccio-config": "ncp ./src/services/Verdaccio/config.yaml ./dist/services/Verdaccio/config.yaml",
+    "build": "rimraf ./dist && tspc --build tsconfig.build.json",
+    "postbuild": "pnpm run copy-pypi-server-config && pnpm run copy-verdaccio-config"
   },
   "dependencies": {
     "dockerode": "^4.0.4",
