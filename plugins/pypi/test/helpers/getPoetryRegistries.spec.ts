@@ -12,8 +12,8 @@ const binDir = inject("binDir");
 
 describe("getPoetryRegistries", () => {
   it.each([MIN_REQUIRED_PM_VERSIONS[PyPIPackageManagerName.poetry], "latest"])(
-    "poetry %s",
-    (version) => {
+    "should get registries using poetry %s",
+    async (version) => {
       const POETRY_HOME = path.resolve(binDir, "poetry", version);
       const POETRY_BIN_DIR = path.resolve(POETRY_HOME, "bin");
       const env = {
@@ -23,41 +23,39 @@ describe("getPoetryRegistries", () => {
         Path: `${POETRY_BIN_DIR};${process.env.Path}`,
       };
 
-      it("should get poetry registries", async () => {
-        const cwd = temporaryDirectory();
-        await $({
-          cwd,
-          env,
-          reject: false,
-        })`poetry init -n`;
-        await $({
-          cwd,
-          env,
-        })`poetry config repositories.a https://test.com --local`;
-        await $({
-          cwd,
-          env,
-        })`poetry config repositories.b https://test.com --local`;
-        await $({
-          cwd,
-          env,
-        })`poetry config repositories.c.d https://test.com --local`;
+      const cwd = temporaryDirectory();
+      await $({
+        cwd,
+        env,
+        reject: false,
+      })`poetry init -n`;
+      await $({
+        cwd,
+        env,
+      })`poetry config repositories.a https://test.com --local`;
+      await $({
+        cwd,
+        env,
+      })`poetry config repositories.b https://test.com --local`;
+      await $({
+        cwd,
+        env,
+      })`poetry config repositories.c.d https://test.com --local`;
 
-        await expect(getPoetryRegistries({ cwd, env })).resolves.toEqual([
-          {
-            name: "a",
-            publishUrl: "https://test.com",
-          },
-          {
-            name: "b",
-            publishUrl: "https://test.com",
-          },
-          {
-            name: "c.d",
-            publishUrl: "https://test.com",
-          },
-        ]);
-      });
+      await expect(getPoetryRegistries({ cwd, env })).resolves.toEqual([
+        {
+          name: "a",
+          publishUrl: "https://test.com",
+        },
+        {
+          name: "b",
+          publishUrl: "https://test.com",
+        },
+        {
+          name: "c.d",
+          publishUrl: "https://test.com",
+        },
+      ]);
     },
   );
 });
