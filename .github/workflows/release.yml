@@ -35,7 +35,7 @@ jobs:
       - run: pnpm install
       - run: pnpm run knip
       - run: pnpm run lint
-      - run: pnpm --recursive run type-check
+      - run: pnpm --recursive --workspace-concurrency=1 run type-check
 
   test:
     strategy:
@@ -64,12 +64,12 @@ jobs:
           cache: pnpm
       - run: corepack enable
       - run: pnpm install
-      - run: pnpm --recursive run test:cov run
+      - run: pnpm --recursive --workspace-concurrency=1 run test:cov run
       - uses: docker/login-action@v3
         with:
           username: letsrelease
           password: ${{ secrets.LETS_RELEASE_DOCKER_TOKEN }}
-      - run: pnpm --recursive run test:e2e run
+      - run: pnpm --recursive --workspace-concurrency=1 run test:e2e run
 
   release:
     permissions:
@@ -94,7 +94,7 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.LETS_RELEASE_NPM_TOKEN }}
       - run: pnpm install
-      - run: pnpm --recursive run build
+      - run: pnpm --recursive --workspace-concurrency=1 run build
       - run: pnpm vite-node src/cli.ts
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
