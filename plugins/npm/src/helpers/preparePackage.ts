@@ -1,8 +1,7 @@
-import { mkdir } from "node:fs/promises";
+import { mkdir, rename } from "node:fs/promises";
 import path from "node:path";
 
 import { $, ResultPromise } from "execa";
-import fsExtra from "fs-extra";
 import stripAnsi from "strip-ansi";
 
 import { PrepareContext } from "@lets-release/config";
@@ -10,9 +9,6 @@ import { PrepareContext } from "@lets-release/config";
 import { NpmPackageManagerName } from "src/enums/NpmPackageManagerName";
 import { NpmOptions } from "src/schemas/NpmOptions";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
-
-// eslint-disable-next-line import-x/no-named-as-default-member
-const { move } = fsExtra;
 
 export async function preparePackage(
   {
@@ -160,12 +156,9 @@ export async function preparePackage(
       const filename = path.basename(tgz);
 
       await mkdir(tarballPath, { recursive: true });
-      await move(
+      await rename(
         path.resolve(pkgRoot, filename),
         path.resolve(tarballPath, filename),
-        {
-          overwrite: true,
-        },
       );
     }
   }

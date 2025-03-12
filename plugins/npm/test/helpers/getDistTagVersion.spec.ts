@@ -2,7 +2,6 @@ import { writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { $ } from "execa";
-import { outputJson } from "fs-extra";
 import { WritableStreamBuffer } from "stream-buffers";
 import { temporaryDirectory } from "tempy";
 import { inject } from "vitest";
@@ -55,7 +54,10 @@ describe("getDistTagVersion", () => {
       `//${registry.replace(/^https?:\/\//, "")}/:_authToken=${npmToken}`,
     );
 
-    await outputJson(path.resolve(cwd, "package.json"), pkg);
+    await writeFile(
+      path.resolve(cwd, "package.json"),
+      JSON.stringify(pkg, null, 2),
+    );
 
     const options = {
       cwd,
@@ -110,7 +112,10 @@ describe("getDistTagVersion", () => {
         path: cwd,
       };
 
-      await outputJson(path.resolve(pkg.path, "package.json"), pkg);
+      await writeFile(
+        path.resolve(pkg.path, "package.json"),
+        JSON.stringify(pkg, null, 2),
+      );
 
       const options = {
         cwd,
@@ -152,7 +157,10 @@ describe("getDistTagVersion", () => {
         path: cwd,
       };
 
-      await outputJson(path.resolve(pkg.path, "package.json"), pkg);
+      await writeFile(
+        path.resolve(pkg.path, "package.json"),
+        JSON.stringify(pkg, null, 2),
+      );
 
       const options = {
         cwd,
@@ -204,7 +212,10 @@ describe("getDistTagVersion", () => {
         path: cwd,
       };
 
-      await outputJson(path.resolve(pkg.path, "package.json"), pkg);
+      await writeFile(
+        path.resolve(pkg.path, "package.json"),
+        JSON.stringify(pkg, null, 2),
+      );
 
       const options = {
         cwd,

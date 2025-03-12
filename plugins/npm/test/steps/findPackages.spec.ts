@@ -1,8 +1,7 @@
-import { mkdir } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { $ } from "execa";
-import { outputJson } from "fs-extra";
 import { temporaryDirectory } from "tempy";
 
 import { FindPackagesContext } from "@lets-release/config";
@@ -25,15 +24,28 @@ const pkgB = {
 describe("findPackages", () => {
   beforeAll(async () => {
     await mkdir(path.resolve(cwd, "packages", "a"), { recursive: true });
-    await outputJson(path.resolve(cwd, "packages", "a", "package.json"), pkgA);
+    await writeFile(
+      path.resolve(cwd, "packages", "a", "package.json"),
+      JSON.stringify(pkgA, null, 2),
+    );
     await $({ cwd: path.resolve(cwd, "packages", "a") })`npm install`;
     await mkdir(path.resolve(cwd, "packages", "b"), { recursive: true });
-    await outputJson(path.resolve(cwd, "packages", "b", "package.json"), pkgB);
+    await writeFile(
+      path.resolve(cwd, "packages", "b", "package.json"),
+      JSON.stringify(pkgB, null, 2),
+    );
     await $({ cwd: path.resolve(cwd, "packages", "b") })`npm install`;
     await mkdir(path.resolve(cwd, "packages", "c"), { recursive: true });
-    await outputJson(path.resolve(cwd, "packages", "c", "package.json"), {
-      name: "find-packages-c",
-    });
+    await writeFile(
+      path.resolve(cwd, "packages", "c", "package.json"),
+      JSON.stringify(
+        {
+          name: "find-packages-c",
+        },
+        null,
+        2,
+      ),
+    );
     await mkdir(path.resolve(cwd, "packages", "d"), { recursive: true });
   });
 

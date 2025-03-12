@@ -5,14 +5,7 @@ import { PrepareContext } from "@lets-release/config";
 
 import { prepare } from "src/steps/prepare";
 
-const ensureFile = vi.hoisted(() => vi.fn());
-
 vi.mock("node:fs/promises");
-vi.mock("fs-extra", () => ({
-  default: {
-    ensureFile,
-  },
-}));
 
 const logger = { log: vi.fn() };
 const repositoryRoot = path.resolve("/path/to/workspace");
@@ -23,7 +16,6 @@ describe("prepare", () => {
   beforeEach(() => {
     vi.mocked(readFile).mockReset();
     vi.mocked(writeFile).mockClear();
-    ensureFile.mockClear();
   });
 
   it("should create changelog", async () => {
@@ -41,9 +33,6 @@ describe("prepare", () => {
       options,
     );
 
-    expect(ensureFile).toHaveBeenCalledWith(
-      path.resolve(repositoryRoot, "CHANGELOG.md"),
-    );
     expect(readFile).toHaveBeenCalledWith(
       path.resolve(repositoryRoot, "CHANGELOG.md"),
     );
@@ -68,9 +57,6 @@ describe("prepare", () => {
       options,
     );
 
-    expect(ensureFile).toHaveBeenCalledWith(
-      path.resolve(repositoryRoot, "CHANGELOG.md"),
-    );
     expect(readFile).toHaveBeenCalledWith(
       path.resolve(repositoryRoot, "CHANGELOG.md"),
     );
@@ -102,9 +88,6 @@ describe("prepare", () => {
       },
     );
 
-    expect(ensureFile).toHaveBeenCalledWith(
-      path.resolve(repositoryRoot, "CHANGELOG.md"),
-    );
     expect(readFile).toHaveBeenCalledWith(
       path.resolve(repositoryRoot, "CHANGELOG.md"),
     );

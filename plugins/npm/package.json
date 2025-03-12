@@ -33,7 +33,6 @@
     "@lets-release/config": "workspace:^",
     "execa": "^9.5.2",
     "find-versions": "^6.0.0",
-    "fs-extra": "^11.3.0",
     "normalize-url": "^8.0.1",
     "preferred-pm": "^4.1.1",
     "read-pkg": "^9.0.1",
@@ -45,7 +44,6 @@
   },
   "devDependencies": {
     "@lets-release/testing": "workspace:^",
-    "@types/fs-extra": "^11.0.4",
     "@types/stream-buffers": "^3.0.7",
     "stream-buffers": "^3.0.3",
     "tempy": "^3.1.0"

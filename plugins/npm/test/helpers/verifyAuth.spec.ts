@@ -2,7 +2,6 @@ import { writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { $ } from "execa";
-import { outputJson } from "fs-extra";
 import { temporaryDirectory } from "tempy";
 import { inject } from "vitest";
 
@@ -33,7 +32,10 @@ describe("verifyAuth", () => {
         `//${registry.replace(/^https?:\/\//, "")}/:_authToken=${npmToken}`,
       );
 
-      await outputJson(path.resolve(cwd, "package.json"), pkg);
+      await writeFile(
+        path.resolve(cwd, "package.json"),
+        JSON.stringify(pkg, null, 2),
+      );
 
       const options = {
         cwd,
@@ -59,7 +61,10 @@ describe("verifyAuth", () => {
     async (version) => {
       const cwd = temporaryDirectory();
 
-      await outputJson(path.resolve(cwd, "package.json"), pkg);
+      await writeFile(
+        path.resolve(cwd, "package.json"),
+        JSON.stringify(pkg, null, 2),
+      );
 
       const options = {
         cwd,
@@ -95,7 +100,10 @@ describe("verifyAuth", () => {
         `//${registry.replace(/^https?:\/\//, "")}/:_authToken=${npmToken}`,
       );
 
-      await outputJson(path.resolve(cwd, "package.json"), pkg);
+      await writeFile(
+        path.resolve(cwd, "package.json"),
+        JSON.stringify(pkg, null, 2),
+      );
 
       const options = {
         cwd,

@@ -1,9 +1,9 @@
 /* eslint-disable unicorn/consistent-function-scoping */
-import { writeFile } from "node:fs/promises";
+import { existsSync } from "node:fs";
+import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { $ } from "execa";
-import { outputJson, pathExists, readJson } from "fs-extra";
 import { WritableStreamBuffer } from "stream-buffers";
 import { temporaryDirectory } from "tempy";
 import { inject } from "vitest";
@@ -67,7 +67,10 @@ describe("prepare", () => {
       ];
 
       for (const { path: pkgRoot, ...pkg } of packages) {
-        await outputJson(path.resolve(pkgRoot, "package.json"), pkg);
+        await writeFile(
+          path.resolve(pkgRoot, "package.json"),
+          JSON.stringify(pkg, null, 2),
+        );
       }
 
       const options = {
@@ -100,23 +103,23 @@ describe("prepare", () => {
           { tarballDir: "tarball" },
         );
 
-        await expect(
-          readJson(path.resolve(pkgRoot, "package.json")),
-        ).resolves.toEqual(
+        const buffer = await readFile(path.resolve(pkgRoot, "package.json"));
+
+        expect(JSON.parse(buffer.toString())).toEqual(
           expect.objectContaining({
             ...pkg,
             version: "1.0.0",
           }),
         );
 
-        await expect(
-          pathExists(
+        expect(
+          existsSync(
             path.resolve(
               pkgRoot,
               `tarball/${pkg.name.replaceAll("@", "").replaceAll("/", "-")}-1.0.0.tgz`,
             ),
           ),
-        ).resolves.toBeTruthy();
+        ).toBeTruthy();
       }
     },
   );
@@ -149,7 +152,10 @@ describe("prepare", () => {
       ];
 
       for (const { path: pkgRoot, ...pkg } of packages) {
-        await outputJson(path.resolve(pkgRoot, "package.json"), pkg);
+        await writeFile(
+          path.resolve(pkgRoot, "package.json"),
+          JSON.stringify(pkg, null, 2),
+        );
       }
 
       const options = {
@@ -190,23 +196,23 @@ describe("prepare", () => {
           { tarballDir: "tarball" },
         );
 
-        await expect(
-          readJson(path.resolve(pkgRoot, "package.json")),
-        ).resolves.toEqual(
+        const buffer = await readFile(path.resolve(pkgRoot, "package.json"));
+
+        expect(JSON.parse(buffer.toString())).toEqual(
           expect.objectContaining({
             ...pkg,
             version: "1.0.0",
           }),
         );
 
-        await expect(
-          pathExists(
+        expect(
+          existsSync(
             path.resolve(
               pkgRoot,
               `tarball/${pkg.name.replaceAll("/", "-")}-1.0.0.tgz`,
             ),
           ),
-        ).resolves.toBeTruthy();
+        ).toBeTruthy();
       }
     },
   );
@@ -244,7 +250,10 @@ describe("prepare", () => {
       ];
 
       for (const { path: pkgRoot, ...pkg } of packages) {
-        await outputJson(path.resolve(pkgRoot, "package.json"), pkg);
+        await writeFile(
+          path.resolve(pkgRoot, "package.json"),
+          JSON.stringify(pkg, null, 2),
+        );
       }
 
       const options = {
@@ -277,23 +286,23 @@ describe("prepare", () => {
           { tarballDir: "tarball" },
         );
 
-        await expect(
-          readJson(path.resolve(pkgRoot, "package.json")),
-        ).resolves.toEqual(
+        const buffer = await readFile(path.resolve(pkgRoot, "package.json"));
+
+        expect(JSON.parse(buffer.toString())).toEqual(
           expect.objectContaining({
             ...pkg,
             version: "1.0.0",
           }),
         );
 
-        await expect(
-          pathExists(
+        expect(
+          existsSync(
             path.resolve(
               pkgRoot,
               `tarball/${pkg.name.replaceAll("@", "").replaceAll("/", "-")}-1.0.0.tgz`,
             ),
           ),
-        ).resolves.toBeTruthy();
+        ).toBeTruthy();
       }
     },
   );

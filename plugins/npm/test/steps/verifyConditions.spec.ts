@@ -2,7 +2,6 @@ import { writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { $ } from "execa";
-import { outputJson } from "fs-extra";
 import { WritableStreamBuffer } from "stream-buffers";
 import { temporaryDirectory } from "tempy";
 import { inject } from "vitest";
@@ -35,7 +34,10 @@ describe("verifyConditions", () => {
       version: "1.0.0",
       publishConfig: { registry },
     };
-    await outputJson(path.resolve(cwd, "package.json"), pkg);
+    await writeFile(
+      path.resolve(cwd, "package.json"),
+      JSON.stringify(pkg, null, 2),
+    );
 
     await expect(
       verifyConditions(
@@ -64,7 +66,10 @@ describe("verifyConditions", () => {
       publishConfig: { registry },
       private: true,
     };
-    await outputJson(path.resolve(cwd, "package.json"), pkg);
+    await writeFile(
+      path.resolve(cwd, "package.json"),
+      JSON.stringify(pkg, null, 2),
+    );
     await $({ cwd })`corepack use npm@latest`;
     await $({ cwd })`npm install`;
 
@@ -107,7 +112,10 @@ describe("verifyConditions", () => {
       version: "1.0.0",
       publishConfig: { registry },
     };
-    await outputJson(path.resolve(cwd, "package.json"), pkg);
+    await writeFile(
+      path.resolve(cwd, "package.json"),
+      JSON.stringify(pkg, null, 2),
+    );
     await $({ cwd })`corepack use npm@latest`;
     await $({ cwd })`npm install`;
 
@@ -175,7 +183,10 @@ describe("verifyConditions", () => {
       ];
 
       for (const { path: pkgRoot, ...pkg } of packages) {
-        await outputJson(path.resolve(pkgRoot, "package.json"), pkg);
+        await writeFile(
+          path.resolve(pkgRoot, "package.json"),
+          JSON.stringify(pkg, null, 2),
+        );
       }
 
       const options = {
@@ -241,7 +252,10 @@ describe("verifyConditions", () => {
       ];
 
       for (const { path: pkgRoot, ...pkg } of packages) {
-        await outputJson(path.resolve(pkgRoot, "package.json"), pkg);
+        await writeFile(
+          path.resolve(pkgRoot, "package.json"),
+          JSON.stringify(pkg, null, 2),
+        );
       }
 
       const options = {
@@ -317,7 +331,10 @@ describe("verifyConditions", () => {
       ];
 
       for (const { path: pkgRoot, ...pkg } of packages) {
-        await outputJson(path.resolve(pkgRoot, "package.json"), pkg);
+        await writeFile(
+          path.resolve(pkgRoot, "package.json"),
+          JSON.stringify(pkg, null, 2),
+        );
       }
 
       const options = {

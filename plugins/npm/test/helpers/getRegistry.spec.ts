@@ -2,7 +2,6 @@ import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { $ } from "execa";
-import { outputJson } from "fs-extra";
 import { temporaryDirectory } from "tempy";
 
 import { MIN_REQUIRED_PM_VERSIONS } from "src/constants/MIN_REQUIRED_PM_VERSIONS";
@@ -35,7 +34,10 @@ describe("getRegistry", () => {
 registry = ${registry}`,
       );
 
-      await outputJson(path.resolve(cwd, "package.json"), pkg);
+      await writeFile(
+        path.resolve(cwd, "package.json"),
+        JSON.stringify(pkg, null, 2),
+      );
 
       const options = {
         cwd,
@@ -100,7 +102,10 @@ registry = ${registry}`,
         `${scope}:registry = ${scopeRegistry}
 registry = ${registry}`,
       );
-      await outputJson(path.resolve(cwd, "package.json"), pkg);
+      await writeFile(
+        path.resolve(cwd, "package.json"),
+        JSON.stringify(pkg, null, 2),
+      );
 
       const pkgRoot = path.resolve(cwd, "packages/a");
 
@@ -112,10 +117,17 @@ registry = ${registry}`,
         `${scope}:registry = ${scopeRegistry}
 registry = ${anotherRegistry}`,
       );
-      await outputJson(path.resolve(pkgRoot, "package.json"), {
-        name: "pkg",
-        version: "1.0.0",
-      });
+      await writeFile(
+        path.resolve(pkgRoot, "package.json"),
+        JSON.stringify(
+          {
+            name: "pkg",
+            version: "1.0.0",
+          },
+          null,
+          2,
+        ),
+      );
 
       const options = {
         cwd,
@@ -152,17 +164,27 @@ registry = ${anotherRegistry}`,
         `${scope}:registry = ${scopeRegistry}
 registry = ${registry}`,
       );
-      await outputJson(path.resolve(cwd, "package.json"), pkg);
+      await writeFile(
+        path.resolve(cwd, "package.json"),
+        JSON.stringify(pkg, null, 2),
+      );
 
       const pkgRoot = path.resolve(cwd, "packages/a");
 
       await mkdir(pkgRoot, {
         recursive: true,
       });
-      await outputJson(path.resolve(pkgRoot, "package.json"), {
-        name: "pkg",
-        version: "1.0.0",
-      });
+      await writeFile(
+        path.resolve(pkgRoot, "package.json"),
+        JSON.stringify(
+          {
+            name: "pkg",
+            version: "1.0.0",
+          },
+          null,
+          2,
+        ),
+      );
 
       const options = {
         cwd,
@@ -196,7 +218,10 @@ registry = ${registry}`,
     beforeAll(async () => {
       cwd = temporaryDirectory();
 
-      await outputJson(path.resolve(cwd, "package.json"), pkg);
+      await writeFile(
+        path.resolve(cwd, "package.json"),
+        JSON.stringify(pkg, null, 2),
+      );
 
       const options = {
         cwd,
@@ -258,7 +283,10 @@ registry = ${registry}`,
     it("should get default yarn registry", async () => {
       const cwd = temporaryDirectory();
 
-      await outputJson(path.resolve(cwd, "package.json"), pkg);
+      await writeFile(
+        path.resolve(cwd, "package.json"),
+        JSON.stringify(pkg, null, 2),
+      );
 
       const options = {
         cwd,
@@ -294,7 +322,10 @@ registry = ${registry}`,
 registry = ${registry}`,
       );
 
-      await outputJson(path.resolve(cwd, "package.json"), pkg);
+      await writeFile(
+        path.resolve(cwd, "package.json"),
+        JSON.stringify(pkg, null, 2),
+      );
 
       const options = {
         cwd,

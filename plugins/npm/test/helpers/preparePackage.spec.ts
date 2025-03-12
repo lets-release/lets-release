@@ -1,8 +1,8 @@
-import { writeFile } from "node:fs/promises";
+import { existsSync } from "node:fs";
+import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { $ } from "execa";
-import { outputJson, pathExists, readJson } from "fs-extra";
 import { WritableStreamBuffer } from "stream-buffers";
 import { temporaryDirectory } from "tempy";
 import { inject } from "vitest";
@@ -56,7 +56,10 @@ describe("preparePackage", () => {
         `//${registry.replace(/^https?:\/\//, "")}/:_authToken=${npmToken}`,
       );
 
-      await outputJson(path.resolve(cwd, "package.json"), pkg);
+      await writeFile(
+        path.resolve(cwd, "package.json"),
+        JSON.stringify(pkg, null, 2),
+      );
 
       const options = {
         cwd,
@@ -88,9 +91,9 @@ describe("preparePackage", () => {
     });
 
     it("should write the version to the package.json", async () => {
-      await expect(
-        readJson(path.resolve(cwd, "package.json")),
-      ).resolves.toEqual(
+      const buffer = await readFile(path.resolve(cwd, "package.json"));
+
+      expect(JSON.parse(buffer.toString())).toEqual(
         expect.objectContaining({
           ...pkg,
           version: "1.0.0",
@@ -99,14 +102,14 @@ describe("preparePackage", () => {
     });
 
     it("should pack the package", async () => {
-      await expect(
-        pathExists(
+      expect(
+        existsSync(
           path.resolve(
             cwd,
             `tarball/${pkg.name.replaceAll("@", "").replaceAll("/", "-")}-1.0.0.tgz`,
           ),
         ),
-      ).resolves.toBeTruthy();
+      ).toBeTruthy();
     });
   });
 
@@ -126,7 +129,10 @@ describe("preparePackage", () => {
     beforeAll(async () => {
       cwd = temporaryDirectory();
 
-      await outputJson(path.resolve(cwd, "package.json"), pkg);
+      await writeFile(
+        path.resolve(cwd, "package.json"),
+        JSON.stringify(pkg, null, 2),
+      );
 
       const options = {
         cwd,
@@ -163,9 +169,9 @@ describe("preparePackage", () => {
     });
 
     it("should write the version to the package.json", async () => {
-      await expect(
-        readJson(path.resolve(cwd, "package.json")),
-      ).resolves.toEqual(
+      const buffer = await readFile(path.resolve(cwd, "package.json"));
+
+      expect(JSON.parse(buffer.toString())).toEqual(
         expect.objectContaining({
           ...pkg,
           version: "1.0.0",
@@ -174,14 +180,14 @@ describe("preparePackage", () => {
     });
 
     it("should pack the package", async () => {
-      await expect(
-        pathExists(
+      expect(
+        existsSync(
           path.resolve(
             cwd,
             `tarball/${pkg.name.replaceAll("@", "").replaceAll("/", "-")}-1.0.0.tgz`,
           ),
         ),
-      ).resolves.toBeTruthy();
+      ).toBeTruthy();
     });
   });
 
@@ -206,7 +212,10 @@ describe("preparePackage", () => {
         `//${registry.replace(/^https?:\/\//, "")}/:_authToken=${npmToken}`,
       );
 
-      await outputJson(path.resolve(cwd, "package.json"), pkg);
+      await writeFile(
+        path.resolve(cwd, "package.json"),
+        JSON.stringify(pkg, null, 2),
+      );
 
       const options = {
         cwd,
@@ -238,9 +247,9 @@ describe("preparePackage", () => {
     });
 
     it("should write the version to the package.json", async () => {
-      await expect(
-        readJson(path.resolve(cwd, "package.json")),
-      ).resolves.toEqual(
+      const buffer = await readFile(path.resolve(cwd, "package.json"));
+
+      expect(JSON.parse(buffer.toString())).toEqual(
         expect.objectContaining({
           ...pkg,
           version: "1.0.0",
@@ -249,14 +258,14 @@ describe("preparePackage", () => {
     });
 
     it("should pack the package", async () => {
-      await expect(
-        pathExists(
+      expect(
+        existsSync(
           path.resolve(
             cwd,
             `tarball/${pkg.name.replaceAll("@", "").replaceAll("/", "-")}-1.0.0.tgz`,
           ),
         ),
-      ).resolves.toBeTruthy();
+      ).toBeTruthy();
     });
   });
 });
