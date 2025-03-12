@@ -1,6 +1,6 @@
 /* eslint-disable unicorn/consistent-function-scoping */
 import { existsSync } from "node:fs";
-import { readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { $ } from "execa";
@@ -280,6 +280,7 @@ describe("publish", () => {
       ];
 
       for (const { path: pkgRoot, ...pkg } of packages) {
+        await mkdir(pkgRoot, { recursive: true });
         await writeFile(
           path.resolve(pkgRoot, "package.json"),
           JSON.stringify(pkg, null, 2),
@@ -385,6 +386,7 @@ describe("publish", () => {
       ];
 
       for (const { path: pkgRoot, ...pkg } of packages) {
+        await mkdir(pkgRoot, { recursive: true });
         await writeFile(
           path.resolve(pkgRoot, "package.json"),
           JSON.stringify(pkg, null, 2),
@@ -502,6 +504,7 @@ describe("publish", () => {
       ];
 
       for (const { path: pkgRoot, ...pkg } of packages) {
+        await mkdir(pkgRoot, { recursive: true });
         await writeFile(
           path.resolve(pkgRoot, "package.json"),
           JSON.stringify(pkg, null, 2),

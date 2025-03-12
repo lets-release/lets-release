@@ -1,4 +1,4 @@
-import { writeFile } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { $ } from "execa";
@@ -183,6 +183,7 @@ describe("verifyConditions", () => {
       ];
 
       for (const { path: pkgRoot, ...pkg } of packages) {
+        await mkdir(pkgRoot, { recursive: true });
         await writeFile(
           path.resolve(pkgRoot, "package.json"),
           JSON.stringify(pkg, null, 2),
@@ -252,6 +253,7 @@ describe("verifyConditions", () => {
       ];
 
       for (const { path: pkgRoot, ...pkg } of packages) {
+        await mkdir(pkgRoot, { recursive: true });
         await writeFile(
           path.resolve(pkgRoot, "package.json"),
           JSON.stringify(pkg, null, 2),
@@ -331,6 +333,7 @@ describe("verifyConditions", () => {
       ];
 
       for (const { path: pkgRoot, ...pkg } of packages) {
+        await mkdir(pkgRoot, { recursive: true });
         await writeFile(
           path.resolve(pkgRoot, "package.json"),
           JSON.stringify(pkg, null, 2),
