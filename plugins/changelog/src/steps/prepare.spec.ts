@@ -6,6 +6,7 @@ import { PrepareContext } from "@lets-release/config";
 
 import { prepare } from "src/steps/prepare";
 
+vi.mock("node:fs");
 vi.mock("node:fs/promises");
 
 const logger = { log: vi.fn() };
@@ -35,9 +36,6 @@ describe("prepare", () => {
       options,
     );
 
-    expect(readFile).toHaveBeenCalledWith(
-      path.resolve(repositoryRoot, "CHANGELOG.md"),
-    );
     expect(writeFile).toHaveBeenCalledWith(
       path.resolve(repositoryRoot, "CHANGELOG.md"),
       "some notes\n",
@@ -45,6 +43,7 @@ describe("prepare", () => {
   });
 
   it("should update changelog", async () => {
+    vi.mocked(existsSync).mockReturnValue(true);
     vi.mocked(readFile).mockResolvedValue(Buffer.from("some content"));
 
     await prepare(
@@ -71,6 +70,7 @@ describe("prepare", () => {
   it("should update changelog with title", async () => {
     const changelogTitle = "# Changelog";
 
+    vi.mocked(existsSync).mockReturnValue(true);
     vi.mocked(readFile).mockResolvedValue(
       Buffer.from(`${changelogTitle}\nsome content`),
     );
