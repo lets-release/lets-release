@@ -99,7 +99,7 @@ describe("verifyNpmPackageManagerVersion", () => {
       } as unknown as NpmPackageContext),
     ).resolves.toBeUndefined();
 
-    vi.mocked(findVersions).mockReturnValueOnce(["8.5.0"]);
+    vi.mocked(findVersions).mockReturnValueOnce(["8.13.0"]);
     await expect(
       verifyNpmPackageManagerVersion(context, {
         pm: { name: "npm" },
