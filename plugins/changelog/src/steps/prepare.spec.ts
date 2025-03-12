@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
@@ -14,12 +15,13 @@ const options = { changelogFile: "CHANGELOG.md" };
 
 describe("prepare", () => {
   beforeEach(() => {
+    vi.mocked(existsSync).mockReset();
     vi.mocked(readFile).mockReset();
     vi.mocked(writeFile).mockClear();
   });
 
   it("should create changelog", async () => {
-    vi.mocked(readFile).mockResolvedValue(Buffer.from(""));
+    vi.mocked(existsSync).mockReturnValue(false);
 
     await prepare(
       {

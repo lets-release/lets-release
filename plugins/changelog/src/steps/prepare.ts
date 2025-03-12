@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
@@ -15,8 +16,10 @@ export const prepare: StepFunction<Step.prepare, ChangelogOptions> = async (
 
   if (notes) {
     await mkdir(path.dirname(changelogPath), { recursive: true });
-    const currentFileBuffer = await readFile(changelogPath);
-    const currentFile = currentFileBuffer.toString().trim();
+    const currentFileBuffer = existsSync(changelogPath)
+      ? await readFile(changelogPath)
+      : undefined;
+    const currentFile = currentFileBuffer?.toString().trim() ?? "";
 
     if (currentFile) {
       logger.log({
