@@ -1,10 +1,10 @@
+import { writeFile } from "node:fs/promises";
 import path from "node:path";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import conventionalChangelogEslint from "conventional-changelog-eslint";
 import { writeChangelogStream } from "conventional-changelog-writer";
-import { outputJson } from "fs-extra";
 import { escapeRegExp } from "lodash-es";
 import { temporaryDirectory } from "tempy";
 import { ZodError } from "zod";
@@ -127,7 +127,10 @@ describe("generateNotes", () => {
       { hash: "222", message: "feat(scope2): Second feature" },
     ];
     const packageData = { name: "package", version: "0.0.0" };
-    await outputJson(path.resolve(cwd, "package.json"), packageData);
+    await writeFile(
+      path.resolve(cwd, "package.json"),
+      JSON.stringify(packageData),
+    );
     await generateNotes(
       {
         cwd,

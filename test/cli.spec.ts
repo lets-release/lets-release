@@ -1,9 +1,8 @@
-import { copyFile, writeFile } from "node:fs/promises";
+import { copyFile, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { setTimeout } from "node:timers/promises";
 
 import { $, Options } from "execa";
-import { outputJson, readJson } from "fs-extra";
 import { inject } from "vitest";
 
 import { SECRET_REPLACEMENT } from "src/constants/SECRET_REPLACEMENT";
@@ -59,35 +58,42 @@ describe("cli", () => {
       path.resolve(cwd, ".npmrc"),
       `//${registry.replace(/^https?:\/\//, "")}/:_authToken=${npmToken}`,
     );
-    await outputJson(path.resolve(cwd, "package.json"), {
-      name: packageName,
-      version: "0.0.0-dev",
-      type: "module",
-      repository: { url },
-      publishConfig: { registry },
-      devDependencies: {
-        "conventional-changelog-conventionalcommits": "^8.0.0",
-        vite: "^6.0.7",
-        "vite-node": "^2.1.8",
-        "vite-tsconfig-paths": "^5.1.4",
-      },
-      release: {
-        packages: [
-          {
-            paths: ["./"],
-            versioning: { scheme: "SemVer" },
-            plugins: [
-              "@lets-release/commit-analyzer",
-              "@lets-release/release-notes-generator",
-              "@lets-release/npm",
-            ],
+    await writeFile(
+      path.resolve(cwd, "package.json"),
+      JSON.stringify(
+        {
+          name: packageName,
+          version: "0.0.0-dev",
+          type: "module",
+          repository: { url },
+          publishConfig: { registry },
+          devDependencies: {
+            "conventional-changelog-conventionalcommits": "^8.0.0",
+            vite: "^6.0.7",
+            "vite-node": "^2.1.8",
+            "vite-tsconfig-paths": "^5.1.4",
           },
-        ],
-        releaseCommit: {
-          assets: ["package.json", "package-lock.json"],
+          release: {
+            packages: [
+              {
+                paths: ["./"],
+                versioning: { scheme: "SemVer" },
+                plugins: [
+                  "@lets-release/commit-analyzer",
+                  "@lets-release/release-notes-generator",
+                  "@lets-release/npm",
+                ],
+              },
+            ],
+            releaseCommit: {
+              assets: ["package.json", "package-lock.json"],
+            },
+          },
         },
-      },
-    });
+        null,
+        2,
+      ),
+    );
 
     const options: Options = {
       cwd,
@@ -138,10 +144,9 @@ describe("cli", () => {
         `${mergedChannel === undefined ? "Publishing" : "Adding"} version ${version} to npm registry on dist-tag ${distTag}`,
       );
 
-      await expect(
-        readJson(path.resolve(cwd, "package.json")),
-        context,
-      ).resolves.toEqual(
+      const buffer = await readFile(path.resolve(cwd, "package.json"));
+
+      expect(JSON.parse(buffer.toString()), context).toEqual(
         expect.objectContaining({
           version,
         }),
@@ -237,36 +242,43 @@ describe("cli", () => {
       path.resolve(cwd, ".npmrc"),
       `//${registry.replace(/^https?:\/\//, "")}/:_authToken=${npmToken}`,
     );
-    await outputJson(path.resolve(cwd, "package.json"), {
-      name: packageName,
-      version: "0.0.0-dev",
-      type: "module",
-      repository: { url },
-      publishConfig: { registry },
-      devDependencies: {
-        "conventional-changelog-conventionalcommits": "^8.0.0",
-        vite: "^6.0.7",
-        "vite-node": "^2.1.8",
-        "vite-tsconfig-paths": "^5.1.4",
-      },
-      release: {
-        packages: [
-          {
-            paths: ["./"],
-            versioning: { scheme: "SemVer" },
-            plugins: [
-              "@lets-release/commit-analyzer",
-              "@lets-release/release-notes-generator",
-              "@lets-release/npm",
-              "non-existing-plugin",
-            ],
+    await writeFile(
+      path.resolve(cwd, "package.json"),
+      JSON.stringify(
+        {
+          name: packageName,
+          version: "0.0.0-dev",
+          type: "module",
+          repository: { url },
+          publishConfig: { registry },
+          devDependencies: {
+            "conventional-changelog-conventionalcommits": "^8.0.0",
+            vite: "^6.0.7",
+            "vite-node": "^2.1.8",
+            "vite-tsconfig-paths": "^5.1.4",
           },
-        ],
-        releaseCommit: {
-          assets: ["package.json", "package-lock.json"],
+          release: {
+            packages: [
+              {
+                paths: ["./"],
+                versioning: { scheme: "SemVer" },
+                plugins: [
+                  "@lets-release/commit-analyzer",
+                  "@lets-release/release-notes-generator",
+                  "@lets-release/npm",
+                  "non-existing-plugin",
+                ],
+              },
+            ],
+            releaseCommit: {
+              assets: ["package.json", "package-lock.json"],
+            },
+          },
         },
-      },
-    });
+        null,
+        2,
+      ),
+    );
 
     const options: Options = {
       cwd,
@@ -298,35 +310,42 @@ describe("cli", () => {
       path.resolve(cwd, ".npmrc"),
       `//${registry.replace(/^https?:\/\//, "")}/:_authToken=${npmToken}`,
     );
-    await outputJson(path.resolve(cwd, "package.json"), {
-      name: packageName,
-      version: "0.0.0-dev",
-      type: "module",
-      repository: { url },
-      publishConfig: { registry },
-      devDependencies: {
-        "conventional-changelog-conventionalcommits": "^8.0.0",
-        vite: "^6.0.7",
-        "vite-node": "^2.1.8",
-        "vite-tsconfig-paths": "^5.1.4",
-      },
-      release: {
-        packages: [
-          {
-            paths: ["./"],
-            versioning: { scheme: "SemVer" },
-            plugins: [
-              "@lets-release/commit-analyzer",
-              "@lets-release/release-notes-generator",
-              "@lets-release/npm",
-            ],
+    await writeFile(
+      path.resolve(cwd, "package.json"),
+      JSON.stringify(
+        {
+          name: packageName,
+          version: "0.0.0-dev",
+          type: "module",
+          repository: { url },
+          publishConfig: { registry },
+          devDependencies: {
+            "conventional-changelog-conventionalcommits": "^8.0.0",
+            vite: "^6.0.7",
+            "vite-node": "^2.1.8",
+            "vite-tsconfig-paths": "^5.1.4",
           },
-        ],
-        releaseCommit: {
-          assets: ["package.json", "package-lock.json"],
+          release: {
+            packages: [
+              {
+                paths: ["./"],
+                versioning: { scheme: "SemVer" },
+                plugins: [
+                  "@lets-release/commit-analyzer",
+                  "@lets-release/release-notes-generator",
+                  "@lets-release/npm",
+                ],
+              },
+            ],
+            releaseCommit: {
+              assets: ["package.json", "package-lock.json"],
+            },
+          },
         },
-      },
-    });
+        null,
+        2,
+      ),
+    );
 
     const options: Options = {
       cwd,
@@ -357,7 +376,9 @@ describe("cli", () => {
     expect(result.stdout).toContain(`Release note for version ${version}`);
     expect(result.stdout).toContain(`initial commit`);
 
-    await expect(readJson(path.resolve(cwd, "package.json"))).resolves.toEqual(
+    const buffer = await readFile(path.resolve(cwd, "package.json"));
+
+    expect(JSON.parse(buffer.toString())).toEqual(
       expect.objectContaining({
         version: "0.0.0-dev",
       }),
@@ -374,35 +395,42 @@ describe("cli", () => {
       path.resolve(cwd, ".npmrc"),
       `//${registry.replace(/^https?:\/\//, "")}/:_authToken=${npmToken}`,
     );
-    await outputJson(path.resolve(cwd, "package.json"), {
-      name: packageName,
-      version: "0.0.0-dev",
-      type: "module",
-      repository: { url },
-      publishConfig: { registry },
-      devDependencies: {
-        "conventional-changelog-conventionalcommits": "^8.0.0",
-        vite: "^6.0.7",
-        "vite-node": "^2.1.8",
-        "vite-tsconfig-paths": "^5.1.4",
-      },
-      release: {
-        packages: [
-          {
-            paths: ["./"],
-            versioning: { scheme: "SemVer" },
-            plugins: [
-              "@lets-release/commit-analyzer",
-              "@lets-release/release-notes-generator",
-              "@lets-release/npm",
-            ],
+    await writeFile(
+      path.resolve(cwd, "package.json"),
+      JSON.stringify(
+        {
+          name: packageName,
+          version: "0.0.0-dev",
+          type: "module",
+          repository: { url },
+          publishConfig: { registry },
+          devDependencies: {
+            "conventional-changelog-conventionalcommits": "^8.0.0",
+            vite: "^6.0.7",
+            "vite-node": "^2.1.8",
+            "vite-tsconfig-paths": "^5.1.4",
           },
-        ],
-        releaseCommit: {
-          assets: ["package.json", "package-lock.json"],
+          release: {
+            packages: [
+              {
+                paths: ["./"],
+                versioning: { scheme: "SemVer" },
+                plugins: [
+                  "@lets-release/commit-analyzer",
+                  "@lets-release/release-notes-generator",
+                  "@lets-release/npm",
+                ],
+              },
+            ],
+            releaseCommit: {
+              assets: ["package.json", "package-lock.json"],
+            },
+          },
         },
-      },
-    });
+        null,
+        2,
+      ),
+    );
 
     const options: Options = {
       cwd,
@@ -431,7 +459,9 @@ describe("cli", () => {
       `Publishing version ${version} to npm registry on dist-tag latest`,
     );
 
-    await expect(readJson(path.resolve(cwd, "package.json"))).resolves.toEqual(
+    const buffer = await readFile(path.resolve(cwd, "package.json"));
+
+    expect(JSON.parse(buffer.toString())).toEqual(
       expect.objectContaining({
         version,
       }),
@@ -483,36 +513,43 @@ describe("cli", () => {
       path.resolve(cwd, ".npmrc"),
       `//${registry.replace(/^https?:\/\//, "")}/:_authToken=${npmToken}`,
     );
-    await outputJson(path.resolve(cwd, "package.json"), {
-      name: packageName,
-      version: "0.0.0-dev",
-      type: "module",
-      repository: { url },
-      publishConfig: { registry },
-      devDependencies: {
-        "conventional-changelog-conventionalcommits": "^8.0.0",
-        vite: "^6.0.7",
-        "vite-node": "^2.1.8",
-        "vite-tsconfig-paths": "^5.1.4",
-      },
-      release: {
-        packages: [
-          {
-            paths: ["./"],
-            versioning: { scheme: "SemVer" },
-            plugins: [
-              "@lets-release/commit-analyzer",
-              "@lets-release/release-notes-generator",
-              "@lets-release/npm",
-            ],
-            verifyConditions: [pluginError],
+    await writeFile(
+      path.resolve(cwd, "package.json"),
+      JSON.stringify(
+        {
+          name: packageName,
+          version: "0.0.0-dev",
+          type: "module",
+          repository: { url },
+          publishConfig: { registry },
+          devDependencies: {
+            "conventional-changelog-conventionalcommits": "^8.0.0",
+            vite: "^6.0.7",
+            "vite-node": "^2.1.8",
+            "vite-tsconfig-paths": "^5.1.4",
           },
-        ],
-        releaseCommit: {
-          assets: ["package.json", "package-lock.json"],
+          release: {
+            packages: [
+              {
+                paths: ["./"],
+                versioning: { scheme: "SemVer" },
+                plugins: [
+                  "@lets-release/commit-analyzer",
+                  "@lets-release/release-notes-generator",
+                  "@lets-release/npm",
+                ],
+                verifyConditions: [pluginError],
+              },
+            ],
+            releaseCommit: {
+              assets: ["package.json", "package-lock.json"],
+            },
+          },
         },
-      },
-    });
+        null,
+        2,
+      ),
+    );
 
     const options: Options = {
       cwd,
@@ -545,34 +582,41 @@ describe("cli", () => {
       path.resolve(cwd, ".npmrc"),
       `//${registry.replace(/^https?:\/\//, "")}/:_authToken=${npmToken}`,
     );
-    await outputJson(path.resolve(cwd, "package.json"), {
-      name: packageName,
-      version: "0.0.0-dev",
-      type: "module",
-      publishConfig: { registry },
-      devDependencies: {
-        "conventional-changelog-conventionalcommits": "^8.0.0",
-        vite: "^6.0.7",
-        "vite-node": "^2.1.8",
-        "vite-tsconfig-paths": "^5.1.4",
-      },
-      release: {
-        packages: [
-          {
-            paths: ["./"],
-            versioning: { scheme: "SemVer" },
-            plugins: [
-              "@lets-release/commit-analyzer",
-              "@lets-release/release-notes-generator",
-              "@lets-release/npm",
-            ],
+    await writeFile(
+      path.resolve(cwd, "package.json"),
+      JSON.stringify(
+        {
+          name: packageName,
+          version: "0.0.0-dev",
+          type: "module",
+          publishConfig: { registry },
+          devDependencies: {
+            "conventional-changelog-conventionalcommits": "^8.0.0",
+            vite: "^6.0.7",
+            "vite-node": "^2.1.8",
+            "vite-tsconfig-paths": "^5.1.4",
           },
-        ],
-        releaseCommit: {
-          assets: ["package.json", "package-lock.json"],
+          release: {
+            packages: [
+              {
+                paths: ["./"],
+                versioning: { scheme: "SemVer" },
+                plugins: [
+                  "@lets-release/commit-analyzer",
+                  "@lets-release/release-notes-generator",
+                  "@lets-release/npm",
+                ],
+              },
+            ],
+            releaseCommit: {
+              assets: ["package.json", "package-lock.json"],
+            },
+          },
         },
-      },
-    });
+        null,
+        2,
+      ),
+    );
 
     const options: Options = {
       cwd,
@@ -609,36 +653,43 @@ describe("cli", () => {
       path.resolve(cwd, ".npmrc"),
       `//${registry.replace(/^https?:\/\//, "")}/:_authToken=${npmToken}`,
     );
-    await outputJson(path.resolve(cwd, "package.json"), {
-      name: packageName,
-      version: "0.0.0-dev",
-      type: "module",
-      repository: { url },
-      publishConfig: { registry },
-      devDependencies: {
-        "conventional-changelog-conventionalcommits": "^8.0.0",
-        vite: "^6.0.7",
-        "vite-node": "^2.1.8",
-        "vite-tsconfig-paths": "^5.1.4",
-      },
-      release: {
-        packages: [
-          {
-            paths: ["./"],
-            versioning: { scheme: "SemVer" },
-            plugins: [
-              "@lets-release/commit-analyzer",
-              "@lets-release/release-notes-generator",
-              "@lets-release/npm",
-            ],
-            verifyConditions: [pluginLogEnv],
+    await writeFile(
+      path.resolve(cwd, "package.json"),
+      JSON.stringify(
+        {
+          name: packageName,
+          version: "0.0.0-dev",
+          type: "module",
+          repository: { url },
+          publishConfig: { registry },
+          devDependencies: {
+            "conventional-changelog-conventionalcommits": "^8.0.0",
+            vite: "^6.0.7",
+            "vite-node": "^2.1.8",
+            "vite-tsconfig-paths": "^5.1.4",
           },
-        ],
-        releaseCommit: {
-          assets: ["package.json", "package-lock.json"],
+          release: {
+            packages: [
+              {
+                paths: ["./"],
+                versioning: { scheme: "SemVer" },
+                plugins: [
+                  "@lets-release/commit-analyzer",
+                  "@lets-release/release-notes-generator",
+                  "@lets-release/npm",
+                ],
+                verifyConditions: [pluginLogEnv],
+              },
+            ],
+            releaseCommit: {
+              assets: ["package.json", "package-lock.json"],
+            },
+          },
         },
-      },
-    });
+        null,
+        2,
+      ),
+    );
 
     const options: Options = {
       cwd,
