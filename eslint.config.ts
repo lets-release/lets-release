@@ -15,7 +15,7 @@ const eslintConfig: TSESLint.FlatConfig.ConfigArray = config(
   ...configs.stylistic,
   importXPlugin.flatConfigs.recommended,
   importXPlugin.flatConfigs.typescript,
-  unicornPlugin.configs["flat/recommended"],
+  unicornPlugin.configs.recommended,
   prettierPluginRecommended,
   // global ignores
   { ignores: ["**/coverage", "**/dist"] },
