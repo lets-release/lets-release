@@ -33,9 +33,9 @@
     "@lets-release/config": "workspace:^",
     "@lets-release/git-host": "workspace:^",
     "@octokit/core": "^6.1.4",
-    "@octokit/plugin-paginate-rest": "^11.4.3",
-    "@octokit/plugin-retry": "^7.1.4",
-    "@octokit/plugin-throttling": "^9.4.0",
+    "@octokit/plugin-paginate-rest": "^11.6.0",
+    "@octokit/plugin-retry": "^7.2.0",
+    "@octokit/plugin-throttling": "^9.6.0",
     "@octokit/request-error": "^6.1.7",
     "mime": "^4.0.6",
     "p-filter": "^4.1.0",
@@ -43,8 +43,8 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@octokit/types": "^13.8.0",
-    "undici": "^7.4.0"
+    "@octokit/types": "^13.10.0",
+    "undici": "^7.5.0"
   },
   "files": [
     "package.json",

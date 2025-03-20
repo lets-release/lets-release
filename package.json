@@ -80,13 +80,13 @@
     "@types/signale": "^1.4.7",
     "@types/stream-buffers": "^3.0.7",
     "@types/stream-to-array": "^2.3.3",
-    "@typescript-eslint/parser": "^8.26.0",
-    "@typescript-eslint/utils": "^8.26.0",
-    "@vitest/coverage-v8": "^3.0.8",
+    "@typescript-eslint/parser": "^8.27.0",
+    "@typescript-eslint/utils": "^8.27.0",
+    "@vitest/coverage-v8": "^3.0.9",
     "eslint": "^9.22.0",
     "eslint-config-prettier": "^10.1.1",
-    "eslint-import-resolver-typescript": "^3.8.3",
-    "eslint-plugin-import-x": "^4.6.1",
+    "eslint-import-resolver-typescript": "^3.9.1",
+    "eslint-plugin-import-x": "^4.9.1",
     "eslint-plugin-prettier": "^5.2.3",
     "eslint-plugin-unicorn": "^57.0.0",
     "eslint-plugin-unused-imports": "^4.1.4",
@@ -94,8 +94,8 @@
     "globals": "^16.0.0",
     "husky": "^9.1.7",
     "jiti": "^2.4.2",
-    "knip": "^5.45.0",
-    "lint-staged": "^15.4.3",
+    "knip": "^5.46.0",
+    "lint-staged": "^15.5.0",
     "ncp": "^2.0.0",
     "p-retry": "^6.2.1",
     "prettier": "^3.5.3",
@@ -105,12 +105,12 @@
     "tempy": "^3.1.0",
     "ts-patch": "^3.3.0",
     "typescript": "^5.8.2",
-    "typescript-eslint": "^8.26.0",
-    "typescript-transform-paths": "^3.5.3",
-    "vite": "^6.2.1",
-    "vite-node": "^3.0.8",
+    "typescript-eslint": "^8.27.0",
+    "typescript-transform-paths": "^3.5.5",
+    "vite": "^6.2.2",
+    "vite-node": "^3.0.9",
     "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^3.0.8"
+    "vitest": "^3.0.9"
   },
   "overrides": {
     "conventional-changelog-conventionalcommits": ">= 8.0.0"
@@ -169,5 +169,5 @@
       "ssh2"
     ]
   },
-  "packageManager": "pnpm@10.6.2+sha512.47870716bea1572b53df34ad8647b42962bc790ce2bf4562ba0f643237d7302a3d6a8ecef9e4bdfc01d23af1969aa90485d4cebb0b9638fa5ef1daef656f6c1b"
+  "packageManager": "pnpm@10.6.5+sha512.cdf928fca20832cd59ec53826492b7dc25dc524d4370b6b4adbf65803d32efaa6c1c88147c0ae4e8d579a6c9eec715757b50d4fa35eea179d868eada4ed043af"
 }

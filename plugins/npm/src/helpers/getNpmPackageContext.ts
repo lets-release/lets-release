@@ -1,4 +1,3 @@
-// eslint-disable-next-line import-x/default
 import preferredPM from "preferred-pm";
 import resolveWorkspaceRootPkg from "resolve-workspace-root";
 
