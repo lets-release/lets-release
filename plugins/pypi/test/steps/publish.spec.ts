@@ -108,6 +108,7 @@ describe("publish", () => {
 
     expect(
       normalizePyProjectToml(
+        { env },
         await readTomlFile(path.resolve(cwd, "pyproject.toml")),
       ),
     ).toEqual(
@@ -200,6 +201,7 @@ describe("publish", () => {
 
     expect(
       normalizePyProjectToml(
+        { env },
         await readTomlFile(path.resolve(cwd, "pyproject.toml")),
       ),
     ).toEqual(
@@ -310,7 +312,9 @@ describe("publish", () => {
         url: undefined,
       });
 
-      expect(normalizePyProjectToml(await readTomlFile(tomlFile))).toEqual(
+      expect(
+        normalizePyProjectToml({ env }, await readTomlFile(tomlFile)),
+      ).toEqual(
         expect.objectContaining({
           project: expect.objectContaining({
             ...pkg.project,
@@ -460,6 +464,7 @@ describe("publish", () => {
 
         expect(
           normalizePyProjectToml(
+            { env },
             await readTomlFile(
               path.resolve(pkg.project.path, "pyproject.toml"),
             ),

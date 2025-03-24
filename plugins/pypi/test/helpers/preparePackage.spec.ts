@@ -76,6 +76,7 @@ describe("preparePackage", () => {
       );
 
       const pyProjectToml = normalizePyProjectToml(
+        { env },
         await readTomlFile(path.resolve(cwd, "pyproject.toml")),
       );
       expect(pyProjectToml.project.version).toBe("3.0.0");
@@ -136,6 +137,7 @@ describe("preparePackage", () => {
       );
 
       const pyProjectToml = normalizePyProjectToml(
+        { env },
         await readTomlFile(path.resolve(cwd, "pyproject.toml")),
       );
       expect(pyProjectToml.project.version).toBe("3.0.0");

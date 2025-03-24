@@ -110,7 +110,9 @@ describe("prepare", () => {
         { distDir: "dist" },
       );
 
-      expect(normalizePyProjectToml(await readTomlFile(tomlFile))).toEqual(
+      expect(
+        normalizePyProjectToml({ env }, await readTomlFile(tomlFile)),
+      ).toEqual(
         expect.objectContaining({
           project: expect.objectContaining({
             ...pkg.project,
@@ -252,6 +254,7 @@ describe("prepare", () => {
 
         expect(
           normalizePyProjectToml(
+            { env },
             await readTomlFile(
               path.resolve(pkg.project.path, "pyproject.toml"),
             ),
