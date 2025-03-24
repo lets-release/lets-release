@@ -1,13 +1,19 @@
+import { template } from "lodash-es";
 import { TomlPrimitive } from "smol-toml";
+
+import { BaseContext } from "@lets-release/config";
 
 import { getMaybeValue } from "src/helpers/toml/getMaybeValue";
 import { isArray } from "src/helpers/toml/isArray";
 import { isString } from "src/helpers/toml/isString";
 import { normalizeRegistry } from "src/helpers/toml/normalizeRegistry";
 
-export function normalizeUv(raw: Record<string, TomlPrimitive>) {
+export function normalizeUv(
+  { env }: Pick<BaseContext, "env">,
+  raw: Record<string, TomlPrimitive>,
+) {
   const index = getMaybeValue(raw.index, isArray)?.flatMap((r) => {
-    const normalized = normalizeRegistry(r);
+    const normalized = normalizeRegistry({ env }, r);
 
     if (normalized) {
       return [normalized];
@@ -24,8 +30,8 @@ export function normalizeUv(raw: Record<string, TomlPrimitive>) {
 
   return {
     index,
-    checkUrl,
-    publishUrl,
+    checkUrl: checkUrl ? template(checkUrl)(env) : undefined,
+    publishUrl: publishUrl ? template(publishUrl)(env) : undefined,
     devDependencies,
   };
 }

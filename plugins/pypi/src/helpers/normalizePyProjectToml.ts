@@ -1,4 +1,7 @@
+import { template } from "lodash-es";
 import { TomlPrimitive } from "smol-toml";
+
+import { BaseContext } from "@lets-release/config";
 
 import { NoPyPIPackageNameError } from "src/errors/NoPyPIPackageNameError";
 import { getMaybeValue } from "src/helpers/toml/getMaybeValue";
@@ -11,6 +14,7 @@ import { normalizeUv } from "src/helpers/toml/normalizeUv";
 import { NormalizedPyProjectToml } from "src/types/NormalizedPyProjectToml";
 
 export function normalizePyProjectToml(
+  { env }: Pick<BaseContext, "env">,
   raw: Record<string, TomlPrimitive>,
 ): NormalizedPyProjectToml {
   const project = getMaybeValue(raw.project, isObject);
@@ -54,7 +58,7 @@ export function normalizePyProjectToml(
   const tool = getMaybeValue(raw.tool, isObject);
 
   const uvRaw = getMaybeValue(tool?.uv, isObject);
-  const uv = uvRaw ? normalizeUv(uvRaw) : undefined;
+  const uv = uvRaw ? normalizeUv({ env }, uvRaw) : undefined;
 
   const poetry = getMaybeValue(tool?.poetry, isObject);
   const poetryDependencies = getMaybeValue(poetry?.dependencies, isObject);
@@ -74,6 +78,7 @@ export function normalizePyProjectToml(
 
   const letsRelease = getMaybeValue(tool?.["lets-release"], isObject);
   const registry = normalizeRegistry(
+    { env },
     getMaybeValue(letsRelease?.registry, isObject),
   );
   const token = getMaybeValue(letsRelease?.token, isString);
@@ -97,9 +102,9 @@ export function normalizePyProjectToml(
       },
       letsRelease: {
         registry,
-        token,
-        username,
-        password,
+        token: token ? template(token)(env) : undefined,
+        username: username ? template(username)(env) : undefined,
+        password: password ? template(password)(env) : undefined,
       },
     },
   };

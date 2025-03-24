@@ -24,7 +24,7 @@ describe("getPackage", () => {
   });
 
   it("should return normalized pyproject.toml content", async () => {
-    const result = await getPackage(pkgRoot);
+    const result = await getPackage({ env: {} }, pkgRoot);
 
     expect(result).toEqual(pkg);
   });
@@ -32,13 +32,15 @@ describe("getPackage", () => {
   it("should throw NoPyPIPackageError if pyproject.toml does not exist", async () => {
     vi.mocked(readTomlFile).mockRejectedValue({ code: "ENOENT" });
 
-    await expect(getPackage(pkgRoot)).rejects.toThrow(NoPyPIPackageError);
+    await expect(getPackage({ env: {} }, pkgRoot)).rejects.toThrow(
+      NoPyPIPackageError,
+    );
   });
 
   it("should rethrow other errors", async () => {
     const error = new Error("Some other error");
     vi.mocked(readTomlFile).mockRejectedValue(error);
 
-    await expect(getPackage(pkgRoot)).rejects.toThrow(error);
+    await expect(getPackage({ env: {} }, pkgRoot)).rejects.toThrow(error);
   });
 });

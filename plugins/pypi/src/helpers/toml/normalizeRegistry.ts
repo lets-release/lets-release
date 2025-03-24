@@ -1,4 +1,7 @@
+import { template } from "lodash-es";
 import { TomlPrimitive } from "smol-toml";
+
+import { BaseContext } from "@lets-release/config";
 
 import { getMaybeValue } from "src/helpers/toml/getMaybeValue";
 import { isObject } from "src/helpers/toml/isObject";
@@ -6,6 +9,7 @@ import { isString } from "src/helpers/toml/isString";
 import { PyPIRegistry } from "src/types/PyPIRegistry";
 
 export function normalizeRegistry(
+  { env }: Pick<BaseContext, "env">,
   registry?: TomlPrimitive,
 ): PyPIRegistry | undefined {
   if (!registry || !isObject(registry)) {
@@ -22,7 +26,7 @@ export function normalizeRegistry(
 
   return {
     name,
-    url,
-    publishUrl,
+    url: url ? template(url)(env) : undefined,
+    publishUrl: template(publishUrl)(env),
   };
 }

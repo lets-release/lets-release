@@ -590,6 +590,9 @@ importers:
       form-data:
         specifier: ^4.0.2
         version: 4.0.2
+      lodash-es:
+        specifier: ^4.17.21
+        version: 4.17.21
       normalize-url:
         specifier: ^8.0.1
         version: 8.0.1

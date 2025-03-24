@@ -11,6 +11,7 @@ export async function getPyPIPackageContext(
   },
 ): Promise<PyPIPackageContext | undefined> {
   const {
+    env,
     package: { path: pkgRoot },
   } = context;
 
@@ -20,7 +21,7 @@ export async function getPyPIPackageContext(
     return undefined;
   }
 
-  const pkg = await getPackage(pkgRoot);
+  const pkg = await getPackage({ env }, pkgRoot);
   const pkgContext = {
     pm,
     pkg,

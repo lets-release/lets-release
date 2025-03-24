@@ -26,12 +26,14 @@ export async function getUvConfig(
   const workspaceUvToml = path.resolve(workspaceRoot, "uv.toml");
   const workspacePyProjectToml = path.resolve(workspaceRoot, "pyproject.toml");
   const projectLevelConfig = existsSync(workspaceUvToml)
-    ? normalizeUv(await readTomlFile(workspaceUvToml))
+    ? normalizeUv({ env }, await readTomlFile(workspaceUvToml))
     : workspaceRoot === pkgRoot
       ? uv
       : existsSync(workspacePyProjectToml)
-        ? normalizePyProjectToml(await readTomlFile(workspacePyProjectToml))
-            .tool?.uv
+        ? normalizePyProjectToml(
+            { env },
+            await readTomlFile(workspacePyProjectToml),
+          ).tool?.uv
         : undefined;
 
   const os = platform();
@@ -51,9 +53,9 @@ export async function getUvConfig(
     : undefined;
   const userLevelConfig =
     userUvToml && existsSync(userUvToml)
-      ? normalizeUv(await readTomlFile(userUvToml))
+      ? normalizeUv({ env }, await readTomlFile(userUvToml))
       : userUvTomlAlternative && existsSync(userUvTomlAlternative)
-        ? normalizeUv(await readTomlFile(userUvTomlAlternative))
+        ? normalizeUv({ env }, await readTomlFile(userUvTomlAlternative))
         : undefined;
 
   const systemConfigDir =
@@ -71,9 +73,9 @@ export async function getUvConfig(
     : undefined;
   const systemLevelConfig =
     systemUvToml && existsSync(systemUvToml)
-      ? normalizeUv(await readTomlFile(systemUvToml))
+      ? normalizeUv({ env }, await readTomlFile(systemUvToml))
       : systemUvTomlAlternative && existsSync(systemUvTomlAlternative)
-        ? normalizeUv(await readTomlFile(systemUvTomlAlternative))
+        ? normalizeUv({ env }, await readTomlFile(systemUvTomlAlternative))
         : undefined;
 
   return {
