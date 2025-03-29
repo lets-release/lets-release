@@ -35,10 +35,10 @@
   "dependencies": {
     "dockerode": "^4.0.4",
     "p-retry": "^6.2.1",
-    "undici": "^7.5.0"
+    "undici": "^7.6.0"
   },
   "devDependencies": {
-    "@types/dockerode": "^3.3.35"
+    "@types/dockerode": "^3.3.36"
   },
   "files": [
     "package.json",

@@ -75,8 +75,8 @@
     "@types/lodash-es": "^4.17.12",
     "@types/marked-terminal": "^6.1.1",
     "@types/micromatch": "^4.0.9",
-    "@types/node": "^22.13.13",
-    "@types/semver": "^7.5.8",
+    "@types/node": "^22.13.14",
+    "@types/semver": "^7.7.0",
     "@types/signale": "^1.4.7",
     "@types/stream-buffers": "^3.0.7",
     "@types/stream-to-array": "^2.3.3",
@@ -85,16 +85,16 @@
     "@vitest/coverage-v8": "^3.0.9",
     "eslint": "^9.23.0",
     "eslint-config-prettier": "^10.1.1",
-    "eslint-import-resolver-typescript": "^3.9.1",
-    "eslint-plugin-import-x": "^4.9.1",
-    "eslint-plugin-prettier": "^5.2.4",
+    "eslint-import-resolver-typescript": "^3.10.0",
+    "eslint-plugin-import-x": "^4.9.3",
+    "eslint-plugin-prettier": "^5.2.5",
     "eslint-plugin-unicorn": "^58.0.0",
     "eslint-plugin-unused-imports": "^4.1.4",
     "file-url": "^4.0.0",
     "globals": "^16.0.0",
     "husky": "^9.1.7",
     "jiti": "^2.4.2",
-    "knip": "^5.46.0",
+    "knip": "^5.46.3",
     "lint-staged": "^15.5.0",
     "ncp": "^2.0.0",
     "p-retry": "^6.2.1",
@@ -169,5 +169,5 @@
       "ssh2"
     ]
   },
-  "packageManager": "pnpm@10.6.5+sha512.cdf928fca20832cd59ec53826492b7dc25dc524d4370b6b4adbf65803d32efaa6c1c88147c0ae4e8d579a6c9eec715757b50d4fa35eea179d868eada4ed043af"
+  "packageManager": "pnpm@10.7.0+sha512.6b865ad4b62a1d9842b61d674a393903b871d9244954f652b8842c2b553c72176b278f64c463e52d40fff8aba385c235c8c9ecf5cc7de4fd78b8bb6d49633ab6"
 }
