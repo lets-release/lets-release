@@ -93,13 +93,9 @@ A plugin is a npm module that can implement one or more of the following steps:
 ### Official plugins
 
 - [@lets-release/commit-analyzer][]
-  - **Note**: this is already part of lets-release and does not have to be installed separately
 - [@lets-release/release-notes-generator][]
-  - **Note**: this is already part of lets-release and does not have to be installed separately
 - [@lets-release/npm][]
-  - **Note**: this is already part of lets-release and does not have to be installed separately
 - [@lets-release/github][]
-  - **Note**: this is already part of lets-release and does not have to be installed separately
 - [@lets-release/gitlab][]
 - [@lets-release/changelog][]
 - [@lets-release/exec][]
