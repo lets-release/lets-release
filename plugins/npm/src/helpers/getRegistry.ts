@@ -60,7 +60,12 @@ export async function getRegistry(
               $({
                 ...options,
                 cwd: pkgRoot,
-              })`pnpm config get ${`${scope}:registry`}`,
+              })`pnpm config --location=project get ${`${scope}:registry`}`,
+            )) ||
+            (await getConfig(
+              $(
+                options,
+              )`pnpm config --location=project get ${`${scope}:registry`}`,
             )) ||
             (await getConfig(
               $(options)`pnpm config get ${`${scope}:registry`}`,
@@ -70,7 +75,10 @@ export async function getRegistry(
           $({
             ...options,
             cwd: pkgRoot,
-          })`pnpm config get registry`,
+          })`pnpm config --location=project get registry`,
+        )) ||
+        (await getConfig(
+          $(options)`pnpm config --location=project get registry`,
         )) ||
         (await getConfig($(options)`pnpm config get registry`)) ||
         DEFAULT_NPM_REGISTRY

@@ -47,7 +47,7 @@ describe("getRegistry", () => {
         pkg: { name },
       } as NpmPackageContext),
     ).resolves.toBe(DEFAULT_NPM_REGISTRY);
-    expect(vi.mocked($)).toHaveBeenCalledTimes(2);
+    expect(vi.mocked($)).toHaveBeenCalledTimes(3);
   });
 
   it("should get scoped registry with pnpm", async () => {
@@ -58,7 +58,7 @@ describe("getRegistry", () => {
         scope: "@scope",
       } as NpmPackageContext),
     ).resolves.toBe(DEFAULT_NPM_REGISTRY);
-    expect(vi.mocked($)).toHaveBeenCalledTimes(4);
+    expect(vi.mocked($)).toHaveBeenCalledTimes(6);
   });
 
   it("should get registry with yarn", async () => {
