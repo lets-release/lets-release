@@ -33,12 +33,12 @@
     "postbuild": "pnpm run copy-pypi-server-config && pnpm run copy-verdaccio-config"
   },
   "dependencies": {
-    "dockerode": "^4.0.4",
+    "dockerode": "^4.0.5",
     "p-retry": "^6.2.1",
     "undici": "^7.6.0"
   },
   "devDependencies": {
-    "@types/dockerode": "^3.3.36"
+    "@types/dockerode": "^3.3.37"
   },
   "files": [
     "package.json",
