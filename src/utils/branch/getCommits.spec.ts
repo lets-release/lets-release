@@ -73,9 +73,13 @@ const context = {
 } as VerifyConditionsContext;
 
 vi.mocked(getLogs).mockResolvedValue([
-  { hash: "a" },
-  { hash: "b" },
-  { hash: "c" },
+  { hash: "a", message: "a" },
+  { hash: "b", message: "b" },
+  {
+    hash: "c",
+    message: "feat: test\n\n-affected-\na\n\nBREAKING CHANGE: test",
+  },
+  { hash: "d", message: "d" },
 ] as Commit[]);
 // eslint-disable-next-line @typescript-eslint/require-await
 vi.mocked(getCommittedFiles).mockImplementation(async (hash) => {
@@ -98,11 +102,17 @@ describe("getCommits", () => {
       a: [
         {
           hash: "a",
+          message: "a",
+        },
+        {
+          hash: "c",
+          message: "feat: test\n\n-affected-\na\n\nBREAKING CHANGE: test",
         },
       ],
       b: [
         {
           hash: "b",
+          message: "b",
         },
       ],
     });
@@ -113,11 +123,17 @@ describe("getCommits", () => {
       a: [
         {
           hash: "a",
+          message: "a",
+        },
+        {
+          hash: "c",
+          message: "feat: test\n\n-affected-\na\n\nBREAKING CHANGE: test",
         },
       ],
       b: [
         {
           hash: "b",
+          message: "b",
         },
       ],
     });
@@ -139,11 +155,17 @@ describe("getCommits", () => {
       a: [
         {
           hash: "a",
+          message: "a",
+        },
+        {
+          hash: "c",
+          message: "feat: test\n\n-affected-\na\n\nBREAKING CHANGE: test",
         },
       ],
       b: [
         {
           hash: "b",
+          message: "b",
         },
       ],
     });

@@ -1,5 +1,6 @@
 import path from "node:path";
 
+import { CommitParser } from "conventional-commits-parser";
 import debug from "debug";
 import { uniq } from "lodash-es";
 
@@ -55,7 +56,13 @@ export async function getCommits(
   return Object.fromEntries(
     packages.map((pkg) => [
       pkg.uniqueName,
-      commits.filter((_, index) => {
+      commits.filter(({ message }, index) => {
+        const { affected } = new CommitParser().parse(message);
+
+        if (affected?.split("\n").some((name) => name.trim() === pkg.name)) {
+          return true;
+        }
+
         const sharedFiles = new Set(
           uniq(
             sharedWorkspaceFiles.flatMap((asset) =>
@@ -64,21 +71,23 @@ export async function getCommits(
           ),
         );
 
-        return committedFiles[index]
-          .filter((file) => !sharedFiles.has(file))
-          .some((file) => {
-            let dir = path.dirname(path.resolve(repositoryRoot, file));
+        return committedFiles[index].some((file) => {
+          if (sharedFiles.has(file)) {
+            return false;
+          }
 
-            while (!pkgPaths.has(dir)) {
-              const nextDir = path.dirname(dir);
+          let dir = path.dirname(path.resolve(repositoryRoot, file));
 
-              if (nextDir === dir) return false;
+          while (!pkgPaths.has(dir)) {
+            const nextDir = path.dirname(dir);
 
-              dir = nextDir;
-            }
+            if (nextDir === dir) return false;
 
-            return dir === pkg.path;
-          });
+            dir = nextDir;
+          }
+
+          return dir === pkg.path;
+        });
       }),
     ]),
   );
