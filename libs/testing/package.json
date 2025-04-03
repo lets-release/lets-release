@@ -1,6 +1,6 @@
 {
   "name": "@lets-release/testing",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Let's Release testing library",
   "author": "Sean Tu <manlao@gmail.com> (https://github.com/manlao)",
   "license": "MIT",

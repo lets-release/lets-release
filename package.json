@@ -1,6 +1,6 @@
 {
   "name": "lets-release",
-  "version": "3.3.0",
+  "version": "3.3.1",
   "description": "Run automated workspace packages releasing",
   "author": "Sean Tu <manlao@gmail.com> (https://github.com/manlao)",
   "license": "MIT",
