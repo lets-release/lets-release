@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 import { isNil } from "lodash-es";
 
 import { BaseContext } from "@lets-release/config";

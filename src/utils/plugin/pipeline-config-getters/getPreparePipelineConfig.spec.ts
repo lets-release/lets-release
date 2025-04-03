@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { BaseContext, Step } from "@lets-release/config";
 
 import { NormalizedStepContext } from "src/types/NormalizedStepContext";
@@ -13,6 +14,7 @@ vi.mocked(getHeadHash).mockResolvedValue(hash);
 describe("getPreparePipelineConfig", () => {
   it("should return prepare pipeline config", async () => {
     const config = getPreparePipelineConfig(
+      // eslint-disable-next-line @typescript-eslint/require-await
       { generateNotes: async () => undefined },
       {} as BaseContext["logger"],
     );

@@ -13,7 +13,7 @@ import { PyPIPackageContext } from "src/types/PyPIPackageContext";
 
 const getDependencies = (deps: string[]) =>
   deps.flatMap((dep) => {
-    const name = dep.match(/^([A-Z0-9]|[A-Z0-9][A-Z0-9._-]*[A-Z0-9])/i)?.[1];
+    const name = /^([A-Z0-9]|[A-Z0-9][A-Z0-9._-]*[A-Z0-9])/i.exec(dep)?.[1];
 
     return name ? [name] : [];
   });

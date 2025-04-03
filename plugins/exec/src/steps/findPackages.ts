@@ -1,7 +1,7 @@
 import debug from "debug";
 import { isNil } from "lodash-es";
 
-import { Step, StepFunction } from "@lets-release/config";
+import { FindPackagesResult, Step, StepFunction } from "@lets-release/config";
 
 import { exec } from "src/helpers/exec";
 import { name } from "src/plugin";
@@ -20,7 +20,7 @@ export const findPackages: StepFunction<
   const stdout = await exec("findPackagesCmd", context, options);
 
   try {
-    return stdout ? JSON.parse(stdout) : undefined;
+    return stdout ? (JSON.parse(stdout) as FindPackagesResult) : undefined;
   } catch (error) {
     debug(name)(stdout);
     debug(name)(error);

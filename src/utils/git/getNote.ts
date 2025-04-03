@@ -11,7 +11,7 @@ const handleError = (error: ExecaError) => {
     return { stdout: "{}" };
   }
 
-  throw error;
+  throw error as Error;
 };
 
 /**

@@ -77,6 +77,7 @@ vi.mocked(getLogs).mockResolvedValue([
   { hash: "b" },
   { hash: "c" },
 ] as Commit[]);
+// eslint-disable-next-line @typescript-eslint/require-await
 vi.mocked(getCommittedFiles).mockImplementation(async (hash) => {
   switch (hash) {
     case "a": {

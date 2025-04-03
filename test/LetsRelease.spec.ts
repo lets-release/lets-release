@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import envCi, { CiEnv } from "env-ci";
 import { omit } from "lodash-es";
 import { WritableStreamBuffer } from "stream-buffers";
@@ -424,7 +426,7 @@ describe("LetsRelease", () => {
         options: {},
         packages: pkgs,
       } as VerifyConditionsContext,
-      packages,
+      pkgs,
     );
     const baseAddChannelsContext = {
       ...verifyConditionsContext,
@@ -2469,7 +2471,7 @@ describe("LetsRelease", () => {
     const analyzeCommits = vi.fn().mockResolvedValue(ReleaseType.minor);
     const publish = vi
       .fn()
-      .mockRejectedValue(new Error(`Exposing token ${env.MY_TOKEN}`));
+      .mockRejectedValue(new Error(`Exposing token ${env.MY_TOKEN as string}`));
     const success = vi.fn();
     const fail = vi.fn();
 
@@ -2537,9 +2539,9 @@ describe("LetsRelease", () => {
     const analyzeCommits = vi.fn().mockResolvedValue(ReleaseType.minor);
     const generateNotes = vi
       .fn()
-      .mockResolvedValue(`Exposing token ${env.MY_TOKEN}`);
+      .mockResolvedValue(`Exposing token ${env.MY_TOKEN as string}`);
     const publish = vi.fn().mockResolvedValue({
-      name: `Exposing token ${env.MY_TOKEN}`,
+      name: `Exposing token ${env.MY_TOKEN as string}`,
       url: "https://release.com",
     });
     const success = vi.fn();

@@ -38,9 +38,9 @@ describe("verifyConditions", () => {
     mockPool = mockAgent.get(url);
   });
 
-  afterEach(() => {
-    mockPool.close();
-    mockAgent.close();
+  afterEach(async () => {
+    await mockPool.close();
+    await mockAgent.close();
   });
 
   it("should verify gitlab api permissions", async () => {

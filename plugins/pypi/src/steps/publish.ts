@@ -61,6 +61,7 @@ export const publish: StepFunction<Step.publish, PyPIOptions> = async (
       case PyPIPackageManagerName.poetry: {
         result = $(
           execaOptions,
+          // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
         )`poetry publish --repository ${registry.name} --username ${token ? DEFAULT_PYPI_USERNAME : username} --password ${token || password!} --dist-dir ${path.resolve(pkgRoot, distDir)} --skip-existing`;
         break;
       }
@@ -79,7 +80,7 @@ export const publish: StepFunction<Step.publish, PyPIOptions> = async (
 
     logger.log({
       prefix: `[${uniqueName}]`,
-      message: `Published ${name}@${version} to ${registry}`,
+      message: `Published ${name}@${version} to ${registry.publishUrl}`,
     });
 
     return getArtifactInfo(context, pkgContext);

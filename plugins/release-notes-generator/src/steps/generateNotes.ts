@@ -140,6 +140,7 @@ export const generateNotes: StepFunction<
     commit: commitConfig,
     issue: issueConfig,
   } = parsedOptions;
+  const readResult = await readPackageUp({ normalize: false, cwd: pkg.path });
   const changelogContext = merge(
     {
       version: nextRelease.version,
@@ -155,9 +156,7 @@ export const generateNotes: StepFunction<
       linkCompare: !!currentTag && !!previousTag,
       commit,
       issue,
-      packageData: (
-        (await readPackageUp({ normalize: false, cwd: pkg.path })) || {}
-      ).packageJson,
+      packageData: readResult?.packageJson,
     },
     {
       host: hostConfig,

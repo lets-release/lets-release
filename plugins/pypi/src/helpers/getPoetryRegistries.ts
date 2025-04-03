@@ -11,11 +11,9 @@ export async function getPoetryRegistries(
   })`poetry config --list`;
 
   const names = stdout.flatMap((line) => {
-    const name = stripAnsi(line)
-      .trim()
-      .split(" = ")[0]
-      .trim()
-      .match(/^repositories\.(.+)\.url$/i)?.[1];
+    const name = /^repositories\.(.+)\.url$/i.exec(
+      stripAnsi(line).trim().split(" = ")[0].trim(),
+    )?.[1];
 
     if (name) {
       return [name];

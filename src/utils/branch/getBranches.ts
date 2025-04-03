@@ -49,9 +49,7 @@ export async function getBranches(
 
   await fetchNotes(repositoryUrl, { cwd: repositoryRoot, env });
 
-  const branchesWithTags: {
-    [K in BranchType]?: MatchBranchWithTags<K>[];
-  } = Object.fromEntries(
+  const branchesWithTags = Object.fromEntries(
     await Promise.all(
       Object.entries(matchBranches).map(async ([type, list]) => [
         type,
@@ -62,7 +60,9 @@ export async function getBranches(
         ),
       ]),
     ),
-  );
+  ) as {
+    [K in BranchType]?: MatchBranchWithTags<K>[];
+  };
 
   return normalizeBranches(packages, branchesWithTags);
 }

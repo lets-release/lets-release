@@ -35,9 +35,9 @@ describe("verifyConditions", () => {
     mockPool = mockAgent.get(apiUrl);
   });
 
-  afterEach(() => {
-    mockPool.close();
-    mockAgent.close();
+  afterEach(async () => {
+    await mockPool.close();
+    await mockAgent.close();
   });
 
   it("should verify github api permissions", async () => {

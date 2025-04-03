@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable unicorn/consistent-function-scoping */
 import { existsSync } from "node:fs";
 import { mkdir, writeFile } from "node:fs/promises";

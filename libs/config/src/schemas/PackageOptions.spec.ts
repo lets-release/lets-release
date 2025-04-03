@@ -3,7 +3,7 @@ import { DEFAULT_SEMVER_PRERELEASE_OPTIONS } from "@lets-release/semver";
 import { PackageOptions } from "src/schemas/PackageOptions";
 
 describe("PackageOptions", () => {
-  it("should validate package options", async () => {
+  it("should validate package options", () => {
     expect(
       PackageOptions.parse({
         paths: ["packages/*"],

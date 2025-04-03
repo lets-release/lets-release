@@ -73,6 +73,7 @@ describe("getStepPipelinesList", () => {
   it("should handle errors in step pipelines list", async () => {
     vi.mocked(getStepPipeline)
       .mockReset()
+      // eslint-disable-next-line @typescript-eslint/require-await
       .mockImplementation(async (_1, _2, step) => {
         if (step === Step.findPackages) {
           return vi

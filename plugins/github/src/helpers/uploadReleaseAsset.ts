@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 import { readFile, stat } from "node:fs/promises";
 import path from "node:path";
 
@@ -54,14 +55,14 @@ export async function uploadReleaseAsset(
 
     const {
       data: { browser_download_url: downloadUrl },
-    } = await octokit.request({
+    } = (await octokit.request({
       ...upload,
       ...(!isString(asset) && asset.label
         ? {
             label: template(asset.label)(context),
           }
         : {}),
-    });
+    })) as { data: { browser_download_url: string } };
 
     logger.log({
       prefix: `[${pkg.uniqueName}]`,

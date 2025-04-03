@@ -3,13 +3,15 @@ import { Container } from "dockerode";
 import { GitBox } from "src/services/GitBox/GitBox";
 import { Service } from "src/services/Service";
 
-const on = vi.fn().mockImplementation((event, cb) => {
-  if (event === "data") {
-    cb("data");
-  } else if (event === "end") {
-    cb();
-  }
-});
+const on = vi
+  .fn()
+  .mockImplementation((event, cb: (...args: unknown[]) => void) => {
+    if (event === "data") {
+      cb("data");
+    } else if (event === "end") {
+      cb();
+    }
+  });
 const duplex = {
   setEncoding: vi.fn(),
   on,
@@ -24,6 +26,7 @@ const container = {
 const gitBox = new GitBox("git-box");
 const superStart = vi
   .spyOn(Service.prototype, "start")
+  // eslint-disable-next-line @typescript-eslint/require-await
   .mockImplementation(async () => {
     gitBox.container = container as unknown as Container;
   });

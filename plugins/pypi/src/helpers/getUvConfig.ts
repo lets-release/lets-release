@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 import { existsSync } from "node:fs";
 import { platform } from "node:os";
 import path from "node:path";

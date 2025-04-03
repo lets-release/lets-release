@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 import { readFile, stat } from "node:fs/promises";
 import path from "node:path";
 

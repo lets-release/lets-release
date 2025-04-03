@@ -58,9 +58,11 @@ describe("findPackages", () => {
     const contexts: Record<string, NpmPackageContext> = {};
     const setPluginPackageContext = vi
       .fn()
-      .mockImplementation((type, name, context) => {
-        contexts[`${type}/${name}`] = context;
-      });
+      .mockImplementation(
+        (type: string, name: string, context: NpmPackageContext) => {
+          contexts[`${type}/${name}`] = context;
+        },
+      );
     const getPluginPackageContext = vi.fn().mockImplementation((type, name) => {
       return contexts[`${type}/${name}`];
     });

@@ -1,6 +1,7 @@
 import {
   BaseContext,
   LetsReleaseError,
+  Package,
   extractErrors,
 } from "@lets-release/config";
 
@@ -28,7 +29,10 @@ export async function logErrors(
   });
 
   for (const e of errors) {
-    const prefix = e.pkg ? `[${e.pkg.uniqueName}]` : undefined;
+    const prefix =
+      e && typeof e === "object" && "pkg" in e && e.pkg
+        ? `[${(e.pkg as Package).uniqueName}]`
+        : undefined;
 
     if (e instanceof LetsReleaseError) {
       logger.error({

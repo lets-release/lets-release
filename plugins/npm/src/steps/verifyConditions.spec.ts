@@ -29,6 +29,7 @@ const context = {
 } as unknown as VerifyConditionsContext;
 
 vi.mocked(ensureNpmPackageContext).mockImplementation(
+  // eslint-disable-next-line @typescript-eslint/require-await
   async ({ getPluginPackageContext, setPluginPackageContext }) => {
     getPluginPackageContext();
     setPluginPackageContext({});
@@ -37,7 +38,7 @@ vi.mocked(ensureNpmPackageContext).mockImplementation(
   },
 );
 
-describe("verifyConditions", async () => {
+describe("verifyConditions", () => {
   beforeEach(() => {
     getPluginPackageContext.mockClear();
     setPluginPackageContext.mockClear();

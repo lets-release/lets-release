@@ -14,6 +14,7 @@ describe("validatePackageInfos", () => {
   beforeEach(() => {
     vi.mocked(stat)
       .mockReset()
+      // eslint-disable-next-line @typescript-eslint/require-await
       .mockImplementation(async () => {
         return {
           isDirectory: () => true,
@@ -70,6 +71,7 @@ describe("validatePackageInfos", () => {
   });
 
   it("should throw error if path is not a directory", async () => {
+    // eslint-disable-next-line @typescript-eslint/require-await
     vi.mocked(stat).mockImplementation(async () => {
       return {
         isDirectory: () => false,

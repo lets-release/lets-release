@@ -53,9 +53,9 @@ describe("addChannels", () => {
     mockCheckRepoPermissions(mockPool);
   });
 
-  afterEach(() => {
-    mockPool.close();
-    mockAgent.close();
+  afterEach(async () => {
+    await mockPool.close();
+    await mockAgent.close();
   });
 
   it("should update a release", async () => {

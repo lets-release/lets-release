@@ -252,6 +252,7 @@ describe("generateNotes", () => {
         message: "%%Update%% Second feature (keyword JIRA-456)",
       },
     ];
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
     const { writer } = await conventionalChangelogEslint();
     const changelog = await generateNotes(
       {
@@ -270,6 +271,7 @@ describe("generateNotes", () => {
           referenceActions: ["keyword"],
           issuePrefixes: ["#", "JIRA-"],
         },
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         writerOptions: writer,
       },
     );

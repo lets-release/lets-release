@@ -1,7 +1,7 @@
 import debug from "debug";
 import { isNil } from "lodash-es";
 
-import { Step, StepFunction } from "@lets-release/config";
+import { ReleaseResult, Step, StepFunction } from "@lets-release/config";
 
 import { exec } from "src/helpers/exec";
 import { name } from "src/plugin";
@@ -20,7 +20,7 @@ export const publish: StepFunction<Step.publish, ExecOptions> = async (
   const stdout = await exec("publishCmd", context, options);
 
   try {
-    return stdout ? JSON.parse(stdout) : undefined;
+    return stdout ? (JSON.parse(stdout) as ReleaseResult) : undefined;
   } catch (error) {
     const namespace = `${name}:${context.package.uniqueName}`;
 

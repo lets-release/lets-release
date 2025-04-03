@@ -80,7 +80,7 @@ describe("publish", () => {
       });
       expect(log).toHaveBeenNthCalledWith(2, {
         prefix: "[test-package]",
-        message: "Published test-package@1.0.0 to [object Object]",
+        message: "Published test-package@1.0.0 to https://test.registry",
       });
     });
 
@@ -101,7 +101,7 @@ describe("publish", () => {
       });
       expect(log).toHaveBeenNthCalledWith(2, {
         prefix: "[test-package]",
-        message: "Published test-package@1.0.0 to [object Object]",
+        message: "Published test-package@1.0.0 to https://test.registry",
       });
     });
   });
@@ -129,7 +129,7 @@ describe("publish", () => {
       });
       expect(log).toHaveBeenNthCalledWith(2, {
         prefix: "[test-package]",
-        message: "Published test-package@1.0.0 to [object Object]",
+        message: "Published test-package@1.0.0 to https://test.registry",
       });
     });
 
@@ -156,7 +156,7 @@ describe("publish", () => {
       });
       expect(log).toHaveBeenNthCalledWith(2, {
         prefix: "[test-package]",
-        message: "Published test-package@1.0.0 to [object Object]",
+        message: "Published test-package@1.0.0 to https://test.registry",
       });
     });
   });

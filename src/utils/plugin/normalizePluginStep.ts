@@ -160,7 +160,7 @@ export async function normalizePluginStep<T extends Step = Step>(
       });
 
       for (const err of extractErrors(error)) {
-        Object.assign(err, { pluginName });
+        Object.assign(err as object, { pluginName });
       }
 
       throw error;

@@ -4,13 +4,15 @@ import { createRepo } from "src/helpers/createRepo";
 
 vi.mock("dockerode");
 
-const on = vi.fn().mockImplementation((event, cb) => {
-  if (event === "data") {
-    cb("data");
-  } else if (event === "end") {
-    cb();
-  }
-});
+const on = vi
+  .fn()
+  .mockImplementation((event, cb: (...args: unknown[]) => void) => {
+    if (event === "data") {
+      cb("data");
+    } else if (event === "end") {
+      cb();
+    }
+  });
 const duplex = {
   setEncoding: vi.fn(),
   on,

@@ -4,6 +4,7 @@ import { CalVerBuildMetadataSpec } from "@lets-release/calver";
 import { SemVerBuildMetadataSpec } from "@lets-release/semver";
 
 export function getBuildMetadata(
+  // eslint-disable-next-line @typescript-eslint/no-duplicate-type-constituents
   build: SemVerBuildMetadataSpec | CalVerBuildMetadataSpec,
   hash: string,
   pluginName?: string,

@@ -17,7 +17,7 @@ export function formatCalVer(
   options: CalVerPrereleaseOptions = {}, // not forced
 ) {
   const { tokens } = parseCalVerFormat(format);
-  const main = Object.entries(tokens)
+  const main = (Object.entries(tokens) as [string, string][])
     .filter(([, token]) => !!token)
     .reduce((version, [key, token]) => {
       const value = tokenValues[key as keyof CalVerTokenValues];

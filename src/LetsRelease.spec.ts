@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import envCi, { JenkinsEnv } from "env-ci";
 
 import {
@@ -220,7 +221,7 @@ describe("LetsRelease", () => {
   beforeEach(() => {
     findPackages
       .mockReset()
-      .mockImplementation(async (_, { getPluginContext, setPluginContext }) => {
+      .mockImplementation((_, { getPluginContext, setPluginContext }) => {
         setPluginContext(0, "@lets-release/npm", "test");
         getPluginContext(0, "@lets-release/npm");
         return packages;
@@ -229,7 +230,7 @@ describe("LetsRelease", () => {
     analyzeCommits
       .mockReset()
       .mockImplementation(
-        async (_, { getPluginPackageContext, setPluginPackageContext }) => {
+        (_, { getPluginPackageContext, setPluginPackageContext }) => {
           setPluginPackageContext(0, "@lets-release/npm", "pkg", "test");
           getPluginPackageContext(0, "@lets-release/npm", "pkg");
           return releaseType;
@@ -291,7 +292,7 @@ describe("LetsRelease", () => {
     vi.mocked(addNote).mockClear();
     vi.mocked(getHeadHash).mockReset().mockResolvedValue("headhash");
     vi.mocked(getReleases).mockReset().mockReturnValue({});
-    vi.mocked(getNextVersion).mockReset().mockResolvedValue("2.0.1");
+    vi.mocked(getNextVersion).mockReset().mockReturnValue("2.0.1");
     vi.mocked(addTag).mockClear();
     vi.mocked(parseMarkdown).mockClear();
     vi.mocked(getModifiedFiles).mockReset().mockResolvedValue(files);
@@ -747,8 +748,8 @@ describe("LetsRelease", () => {
       ],
     });
     vi.mocked(getNextVersion)
-      .mockResolvedValueOnce(undefined)
-      .mockResolvedValue("2.1.0");
+      .mockReturnValueOnce(undefined)
+      .mockReturnValue("2.1.0");
 
     await expect(letsRelease.run()).rejects.toThrow();
     expect(fail).toHaveBeenCalledOnce();
@@ -807,8 +808,8 @@ describe("LetsRelease", () => {
       ],
     });
     vi.mocked(getNextVersion)
-      .mockResolvedValueOnce(undefined)
-      .mockResolvedValue("2.1.0");
+      .mockReturnValueOnce(undefined)
+      .mockReturnValue("2.1.0");
 
     await expect(letsRelease.run()).rejects.toEqual(
       expect.objectContaining({
@@ -885,8 +886,8 @@ describe("LetsRelease", () => {
       ],
     });
     vi.mocked(getNextVersion)
-      .mockResolvedValueOnce(undefined)
-      .mockResolvedValue("2.1.0");
+      .mockReturnValueOnce(undefined)
+      .mockReturnValue("2.1.0");
 
     await expect(letsRelease.run()).resolves.toEqual([
       {
@@ -969,8 +970,8 @@ describe("LetsRelease", () => {
       ],
     });
     vi.mocked(getNextVersion)
-      .mockResolvedValueOnce(undefined)
-      .mockResolvedValue("2.1.0");
+      .mockReturnValueOnce(undefined)
+      .mockReturnValue("2.1.0");
 
     await expect(letsRelease.run()).resolves.toEqual([
       {

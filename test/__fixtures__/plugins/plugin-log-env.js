@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 export default {
   verifyConditions: ({ env, logger }) => {
     // eslint-disable-next-line no-undef

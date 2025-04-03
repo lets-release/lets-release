@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 import normalizeUrl from "normalize-url";
 
 import {

@@ -12,7 +12,7 @@ export function normalizeGitUrl(url: string) {
   if (info && info.getDefaultRepresentation() === "shortcut") {
     // Expand shorthand URLs (such as `owner/repo` or `gitlab:owner/repo`)
     return info.https();
-  } else if (protocol && protocol.includes("http")) {
+  } else if (protocol?.includes("http")) {
     // Replace `git+https` and `git+http` with `https` or `http`
     return url.replace(
       protocol,

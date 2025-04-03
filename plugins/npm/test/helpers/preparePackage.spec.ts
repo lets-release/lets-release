@@ -101,7 +101,7 @@ describe("preparePackage", () => {
       );
     });
 
-    it("should pack the package", async () => {
+    it("should pack the package", () => {
       expect(
         existsSync(
           path.resolve(
@@ -179,7 +179,7 @@ describe("preparePackage", () => {
       );
     });
 
-    it("should pack the package", async () => {
+    it("should pack the package", () => {
       expect(
         existsSync(
           path.resolve(
@@ -257,7 +257,7 @@ describe("preparePackage", () => {
       );
     });
 
-    it("should pack the package", async () => {
+    it("should pack the package", () => {
       expect(
         existsSync(
           path.resolve(

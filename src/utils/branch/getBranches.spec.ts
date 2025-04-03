@@ -50,6 +50,7 @@ const packages: Package[] = [
 ];
 
 vi.mocked(mapMatchBranch).mockImplementation(
+  // eslint-disable-next-line @typescript-eslint/require-await
   async (context, packages, branch) => {
     return {
       ...branch,

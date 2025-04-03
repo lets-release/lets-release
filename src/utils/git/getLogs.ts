@@ -32,7 +32,7 @@ export async function getLogs(
     ),
   );
 
-  return commits.map(({ message, gitTags, ...commit }) => ({
+  return commits.map(({ message, gitTags, ...commit }: Commit) => ({
     ...commit,
     message: message.trim(),
     gitTags: gitTags.trim(),

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 import { $, ResultPromise } from "execa";
 import stripAnsi from "strip-ansi";
 

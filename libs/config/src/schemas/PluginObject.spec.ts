@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Step } from "src/enums/Step";
 import { PluginObject } from "src/schemas/PluginObject";
 

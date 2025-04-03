@@ -21,13 +21,13 @@ export async function loadModule<T>(
       undefined,
     ) ?? resolveFrom(cwd, name);
 
-  const { default: cjsExport, ...esmNamedExports } = await import(
+  const { default: cjsExport, ...esmNamedExports } = (await import(
     pathToFileURL(file).toString()
-  );
+  )) as { default?: T } & T;
 
   if (cjsExport) {
     return cjsExport;
   }
 
-  return esmNamedExports;
+  return esmNamedExports as T;
 }

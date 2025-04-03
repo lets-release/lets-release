@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { RequestError } from "@octokit/request-error";
 
 import { SuccessContext } from "@lets-release/config";

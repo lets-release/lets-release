@@ -2,7 +2,7 @@ import eslintJs from "@eslint/js";
 import tsParser from "@typescript-eslint/parser";
 import { TSESLint } from "@typescript-eslint/utils";
 import { createTypeScriptImportResolver } from "eslint-import-resolver-typescript";
-import importXPlugin from "eslint-plugin-import-x";
+import { flatConfigs } from "eslint-plugin-import-x";
 import prettierPluginRecommended from "eslint-plugin-prettier/recommended";
 import unicornPlugin from "eslint-plugin-unicorn";
 import unusedImportsPlugin from "eslint-plugin-unused-imports";
@@ -11,10 +11,10 @@ import { config, configs } from "typescript-eslint";
 
 const eslintConfig: TSESLint.FlatConfig.ConfigArray = config(
   eslintJs.configs.recommended,
-  ...configs.recommended,
-  ...configs.stylistic,
-  importXPlugin.flatConfigs.recommended,
-  importXPlugin.flatConfigs.typescript,
+  ...configs.recommendedTypeChecked,
+  ...configs.stylisticTypeChecked,
+  flatConfigs.recommended,
+  flatConfigs.typescript,
   unicornPlugin.configs.recommended,
   prettierPluginRecommended,
   // global ignores

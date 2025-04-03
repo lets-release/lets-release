@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { SuccessContext } from "@lets-release/config";
 import { parseIssues } from "@lets-release/git-host";
 

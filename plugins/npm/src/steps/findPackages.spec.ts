@@ -46,6 +46,7 @@ vi.mocked(getNpmPackageContext).mockImplementation(
     package: { path: pkgRoot },
   }: Pick<FindPackagesContext, "env"> & {
     package: Pick<PackageInfo, "path">;
+    // eslint-disable-next-line @typescript-eslint/require-await
   }) => {
     if (pkgRoot === path.resolve(repositoryRoot, "a")) {
       return ctxA;

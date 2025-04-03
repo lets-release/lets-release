@@ -38,7 +38,7 @@ import { getCalVerReleaseType } from "src/utils/getCalVerReleaseType";
 
 const namespace = `${name}:utils.branch.getNextVersion`;
 
-export async function getNextVersion(
+export function getNextVersion(
   {
     logger,
     options: { prerelease },

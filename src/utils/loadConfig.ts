@@ -15,8 +15,12 @@ export async function loadConfig(
   partialOptions: Partial<Options>,
   { env, repositoryRoot }: Pick<BaseContext, "env" | "repositoryRoot">,
 ): Promise<NormalizedOptions> {
-  const { config, filepath } =
-    (await cosmiconfig(configFileName).search(repositoryRoot)) ?? {};
+  const { config, filepath } = ((await cosmiconfig(configFileName).search(
+    repositoryRoot,
+  )) ?? {}) as {
+    config?: object;
+    filepath?: string;
+  };
 
   debug(namespace)(`config loaded from: ${filepath}`);
 

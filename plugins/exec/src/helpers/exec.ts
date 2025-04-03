@@ -25,7 +25,7 @@ export async function exec<T extends Step>(
   });
 
   const result = $({
-    shell: shell || true,
+    shell: shell ?? true,
     cwd: execCwd ? path.resolve(cwd, execCwd) : cwd,
     env,
   })`${script}`;

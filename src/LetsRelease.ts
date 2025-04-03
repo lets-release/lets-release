@@ -319,14 +319,24 @@ export class LetsRelease {
       branchName,
       flattenPackages,
     );
-    const flattenBranches: (
-      | MainBranch
-      | NextBranch
-      | NextMajorBranch
-      | MaintenanceBranch
-      | PrereleaseBranch
-    )[] = Object.values(branches).flatMap((value) =>
-      isArray(value) ? value : value ? [value] : [],
+    const flattenBranches = Object.values(branches).flatMap((value) =>
+      isArray(value)
+        ? (value as (
+            | MainBranch
+            | NextBranch
+            | NextMajorBranch
+            | MaintenanceBranch
+            | PrereleaseBranch
+          )[])
+        : value
+          ? ([value] as (
+              | MainBranch
+              | NextBranch
+              | NextMajorBranch
+              | MaintenanceBranch
+              | PrereleaseBranch
+            )[])
+          : [],
     );
     const currentBranch = flattenBranches.find(
       ({ name }) => name === branchName,
@@ -525,7 +535,7 @@ export class LetsRelease {
             result[index],
           );
         } catch (error) {
-          logErrors({ stderr, logger }, error);
+          await logErrors({ stderr, logger }, error);
 
           errors.push(...extractErrors(error));
         }
@@ -555,7 +565,7 @@ export class LetsRelease {
       try {
         result.push(await workflow(index, stepPipelines));
       } catch (error) {
-        logErrors({ stderr, logger }, error);
+        await logErrors({ stderr, logger }, error);
 
         errors.push(...extractErrors(error));
       }
@@ -583,10 +593,10 @@ export class LetsRelease {
         const workflowErrors = extractErrors(error);
 
         for (const err of workflowErrors) {
-          Object.assign(err, { pkg });
+          Object.assign(err as object, { pkg });
         }
 
-        logErrors(
+        await logErrors(
           { stderr, logger },
           new AggregateError(workflowErrors, "AggregateError"),
         );
@@ -924,7 +934,7 @@ export class LetsRelease {
           return [];
         }
 
-        const version = await getNextVersion(normalizedContext, type, hash);
+        const version = getNextVersion(normalizedContext, type, hash);
 
         if (!version) {
           return [];

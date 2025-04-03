@@ -119,8 +119,8 @@ describe("getNextVersion", () => {
       ["2.0.0", "3.0.0-alpha.1+build"],
     ];
 
-    it("should return undefined if no version range on non-prerelease branch", async () => {
-      await expect(
+    it("should return undefined if no version range on non-prerelease branch", () => {
+      expect(
         getNextVersion(
           {
             ...releaseBranchCtx,
@@ -134,12 +134,12 @@ describe("getNextVersion", () => {
           ReleaseType.patch,
           hash,
         ),
-      ).resolves.toBeUndefined();
+      ).toBeUndefined();
     });
 
-    it("should get next patch prerelease version without build metadata for prerelease branch", async () => {
+    it("should get next patch prerelease version without build metadata for prerelease branch", () => {
       for (const [version, next] of prereleasePatchVersionsWithoutBuild) {
-        await expect(
+        expect(
           getNextVersion(
             {
               ...prereleaseBranchCtx,
@@ -155,13 +155,13 @@ describe("getNextVersion", () => {
             ReleaseType.patch,
             hash,
           ),
-        ).resolves.toBe(next);
+        ).toBe(next);
       }
     });
 
-    it("should get next patch prerelease version for prerelease branch", async () => {
+    it("should get next patch prerelease version for prerelease branch", () => {
       for (const [version, next] of prereleasePatchVersions) {
-        await expect(
+        expect(
           getNextVersion(
             {
               ...prereleaseBranchCtx,
@@ -170,13 +170,13 @@ describe("getNextVersion", () => {
             ReleaseType.patch,
             hash,
           ),
-        ).resolves.toBe(next);
+        ).toBe(next);
       }
     });
 
-    it("should get next minor prerelease version for prerelease branch", async () => {
+    it("should get next minor prerelease version for prerelease branch", () => {
       for (const [version, next] of prereleaseMinorVersions) {
-        await expect(
+        expect(
           getNextVersion(
             {
               ...prereleaseBranchCtx,
@@ -185,13 +185,13 @@ describe("getNextVersion", () => {
             ReleaseType.minor,
             hash,
           ),
-        ).resolves.toBe(next);
+        ).toBe(next);
       }
     });
 
-    it("should get next major prerelease version for prerelease branch", async () => {
+    it("should get next major prerelease version for prerelease branch", () => {
       for (const [version, next] of prereleaseMajorVersions) {
-        await expect(
+        expect(
           getNextVersion(
             {
               ...prereleaseBranchCtx,
@@ -200,13 +200,13 @@ describe("getNextVersion", () => {
             ReleaseType.major,
             hash,
           ),
-        ).resolves.toBe(next);
+        ).toBe(next);
       }
     });
 
-    it("should get next patch prerelease version for release branch", async () => {
+    it("should get next patch prerelease version for release branch", () => {
       for (const [version, next] of prereleasePatchVersions) {
-        await expect(
+        expect(
           getNextVersion(
             {
               ...releaseBranchPrereleaseCtx,
@@ -215,13 +215,13 @@ describe("getNextVersion", () => {
             ReleaseType.patch,
             hash,
           ),
-        ).resolves.toBe(next);
+        ).toBe(next);
       }
     });
 
-    it("should get next minor prerelease version for release branch", async () => {
+    it("should get next minor prerelease version for release branch", () => {
       for (const [version, next] of prereleaseMinorVersions) {
-        await expect(
+        expect(
           getNextVersion(
             {
               ...releaseBranchPrereleaseCtx,
@@ -230,13 +230,13 @@ describe("getNextVersion", () => {
             ReleaseType.minor,
             hash,
           ),
-        ).resolves.toBe(next);
+        ).toBe(next);
       }
     });
 
-    it("should get next major prerelease version for release branch", async () => {
+    it("should get next major prerelease version for release branch", () => {
       for (const [version, next] of prereleaseMajorVersions) {
-        await expect(
+        expect(
           getNextVersion(
             {
               ...releaseBranchPrereleaseCtx,
@@ -245,22 +245,22 @@ describe("getNextVersion", () => {
             ReleaseType.major,
             hash,
           ),
-        ).resolves.toBe(next);
+        ).toBe(next);
       }
     });
 
-    it("should get next patch version for release branch if no last release found", async () => {
-      await expect(
+    it("should get next patch version for release branch if no last release found", () => {
+      expect(
         getNextVersion(
           releaseBranchCtx as unknown as NormalizedStepContext<Step.analyzeCommits>,
           ReleaseType.patch,
           hash,
         ),
-      ).resolves.toBe("2.0.0");
+      ).toBe("2.0.0");
     });
 
-    it("should get next patch version for release branch if last release found", async () => {
-      await expect(
+    it("should get next patch version for release branch if last release found", () => {
+      expect(
         getNextVersion(
           {
             ...releaseBranchCtx,
@@ -269,11 +269,11 @@ describe("getNextVersion", () => {
           ReleaseType.patch,
           hash,
         ),
-      ).resolves.toBe("2.0.1");
+      ).toBe("2.0.1");
     });
 
-    it("should get next patch version for release branch if last release is prerelease", async () => {
-      await expect(
+    it("should get next patch version for release branch if last release is prerelease", () => {
+      expect(
         getNextVersion(
           {
             ...releaseBranchCtx,
@@ -282,21 +282,21 @@ describe("getNextVersion", () => {
           ReleaseType.patch,
           hash,
         ),
-      ).resolves.toBe("2.0.0");
+      ).toBe("2.0.0");
     });
 
-    it("should get next minor version for release branch if no last release found", async () => {
-      await expect(
+    it("should get next minor version for release branch if no last release found", () => {
+      expect(
         getNextVersion(
           releaseBranchCtx as unknown as NormalizedStepContext<Step.analyzeCommits>,
           ReleaseType.minor,
           hash,
         ),
-      ).resolves.toBe("2.0.0");
+      ).toBe("2.0.0");
     });
 
-    it("should get next minor version for release branch if last release found", async () => {
-      await expect(
+    it("should get next minor version for release branch if last release found", () => {
+      expect(
         getNextVersion(
           {
             ...releaseBranchCtx,
@@ -305,11 +305,11 @@ describe("getNextVersion", () => {
           ReleaseType.minor,
           hash,
         ),
-      ).resolves.toBe("2.1.0");
+      ).toBe("2.1.0");
     });
 
-    it("should get next minor version for release branch if last release is prerelease", async () => {
-      await expect(
+    it("should get next minor version for release branch if last release is prerelease", () => {
+      expect(
         getNextVersion(
           {
             ...releaseBranchCtx,
@@ -318,21 +318,21 @@ describe("getNextVersion", () => {
           ReleaseType.minor,
           hash,
         ),
-      ).resolves.toBe("2.0.0");
+      ).toBe("2.0.0");
     });
 
-    it("should get next major version for release branch if no last release found", async () => {
-      await expect(
+    it("should get next major version for release branch if no last release found", () => {
+      expect(
         getNextVersion(
           releaseBranchCtx as unknown as NormalizedStepContext<Step.analyzeCommits>,
           ReleaseType.major,
           hash,
         ),
-      ).resolves.toBe("2.0.0");
+      ).toBe("2.0.0");
     });
 
-    it("should get next major version for release branch if last release found", async () => {
-      await expect(
+    it("should get next major version for release branch if last release found", () => {
+      expect(
         getNextVersion(
           {
             ...releaseBranchCtx,
@@ -341,11 +341,11 @@ describe("getNextVersion", () => {
           ReleaseType.major,
           hash,
         ),
-      ).resolves.toBe("3.0.0");
+      ).toBe("3.0.0");
     });
 
-    it("should get next major version for release branch if last release is prerelease", async () => {
-      await expect(
+    it("should get next major version for release branch if last release is prerelease", () => {
+      expect(
         getNextVersion(
           {
             ...releaseBranchCtx,
@@ -354,11 +354,11 @@ describe("getNextVersion", () => {
           ReleaseType.major,
           hash,
         ),
-      ).resolves.toBe("2.0.0");
+      ).toBe("2.0.0");
     });
 
-    it("should throw error if version is not in range", async () => {
-      await expect(
+    it("should throw error if version is not in range", () => {
+      expect(() =>
         getNextVersion(
           {
             ...releaseBranchCtx,
@@ -367,9 +367,9 @@ describe("getNextVersion", () => {
           ReleaseType.minor,
           hash,
         ),
-      ).rejects.toThrow(InvalidNextVersionError);
+      ).toThrow(InvalidNextVersionError);
 
-      await expect(
+      expect(() =>
         getNextVersion(
           {
             ...releaseBranchCtx,
@@ -379,11 +379,11 @@ describe("getNextVersion", () => {
           ReleaseType.minor,
           hash,
         ),
-      ).rejects.toThrow(InvalidNextVersionError);
+      ).toThrow(InvalidNextVersionError);
     });
 
-    it("should return undefined if there is no initial version", async () => {
-      await expect(
+    it("should return undefined if there is no initial version", () => {
+      expect(
         getNextVersion(
           {
             ...prereleaseBranchCtx,
@@ -399,7 +399,7 @@ describe("getNextVersion", () => {
           ReleaseType.major,
           hash,
         ),
-      ).resolves.toBeUndefined();
+      ).toBeUndefined();
     });
   });
 
@@ -457,8 +457,8 @@ describe("getNextVersion", () => {
       ["2.0.0", `${new Date().getFullYear() - 2000}.0.0-alpha.1+build`],
     ];
 
-    it("should return undefined if no version range on maintenance branch", async () => {
-      await expect(
+    it("should return undefined if no version range on maintenance branch", () => {
+      expect(
         getNextVersion(
           {
             ...releaseBranchCtx,
@@ -472,11 +472,11 @@ describe("getNextVersion", () => {
           ReleaseType.patch,
           hash,
         ),
-      ).resolves.toBeUndefined();
+      ).toBeUndefined();
     });
 
-    it("should return undefined on next branch", async () => {
-      await expect(
+    it("should return undefined on next branch", () => {
+      expect(
         getNextVersion(
           {
             ...releaseBranchCtx,
@@ -494,11 +494,11 @@ describe("getNextVersion", () => {
           ReleaseType.patch,
           hash,
         ),
-      ).resolves.toBeUndefined();
+      ).toBeUndefined();
     });
 
-    it("should return undefined on next-major branch", async () => {
-      await expect(
+    it("should return undefined on next-major branch", () => {
+      expect(
         getNextVersion(
           {
             ...releaseBranchCtx,
@@ -516,12 +516,12 @@ describe("getNextVersion", () => {
           ReleaseType.patch,
           hash,
         ),
-      ).resolves.toBeUndefined();
+      ).toBeUndefined();
     });
 
-    it("should get next patch prerelease version without build metadata for prerelease branch", async () => {
+    it("should get next patch prerelease version without build metadata for prerelease branch", () => {
       for (const [version, next] of prereleasePatchVersionsWithoutBuild) {
-        await expect(
+        expect(
           getNextVersion(
             {
               ...prereleaseBranchCtx,
@@ -537,13 +537,13 @@ describe("getNextVersion", () => {
             ReleaseType.patch,
             hash,
           ),
-        ).resolves.toBe(next);
+        ).toBe(next);
       }
     });
 
-    it("should get next patch prerelease version for prerelease branch", async () => {
+    it("should get next patch prerelease version for prerelease branch", () => {
       for (const [version, next] of prereleasePatchVersions) {
-        await expect(
+        expect(
           getNextVersion(
             {
               ...prereleaseBranchCtx,
@@ -552,13 +552,13 @@ describe("getNextVersion", () => {
             ReleaseType.patch,
             hash,
           ),
-        ).resolves.toBe(next);
+        ).toBe(next);
       }
     });
 
-    it("should get next minor prerelease version for prerelease branch", async () => {
+    it("should get next minor prerelease version for prerelease branch", () => {
       for (const [version, next] of prereleaseMinorVersions) {
-        await expect(
+        expect(
           getNextVersion(
             {
               ...prereleaseBranchCtx,
@@ -567,13 +567,13 @@ describe("getNextVersion", () => {
             ReleaseType.minor,
             hash,
           ),
-        ).resolves.toBe(next);
+        ).toBe(next);
       }
     });
 
-    it("should get next major prerelease version for prerelease branch", async () => {
+    it("should get next major prerelease version for prerelease branch", () => {
       for (const [version, next] of prereleaseMajorVersions) {
-        await expect(
+        expect(
           getNextVersion(
             {
               ...prereleaseBranchCtx,
@@ -582,13 +582,13 @@ describe("getNextVersion", () => {
             ReleaseType.major,
             hash,
           ),
-        ).resolves.toBe(next);
+        ).toBe(next);
       }
     });
 
-    it("should get next patch prerelease version for release branch", async () => {
+    it("should get next patch prerelease version for release branch", () => {
       for (const [version, next] of prereleasePatchVersions) {
-        await expect(
+        expect(
           getNextVersion(
             {
               ...releaseBranchPrereleaseCtx,
@@ -597,13 +597,13 @@ describe("getNextVersion", () => {
             ReleaseType.patch,
             hash,
           ),
-        ).resolves.toBe(next);
+        ).toBe(next);
       }
     });
 
-    it("should get next minor prerelease version for release branch", async () => {
+    it("should get next minor prerelease version for release branch", () => {
       for (const [version, next] of prereleaseMinorVersions) {
-        await expect(
+        expect(
           getNextVersion(
             {
               ...releaseBranchPrereleaseCtx,
@@ -612,13 +612,13 @@ describe("getNextVersion", () => {
             ReleaseType.minor,
             hash,
           ),
-        ).resolves.toBe(next);
+        ).toBe(next);
       }
     });
 
-    it("should get next major prerelease version for release branch", async () => {
+    it("should get next major prerelease version for release branch", () => {
       for (const [version, next] of prereleaseMajorVersions) {
-        await expect(
+        expect(
           getNextVersion(
             {
               ...releaseBranchPrereleaseCtx,
@@ -627,22 +627,22 @@ describe("getNextVersion", () => {
             ReleaseType.major,
             hash,
           ),
-        ).resolves.toBe(next);
+        ).toBe(next);
       }
     });
 
-    it("should get next patch version for release branch if no last release found", async () => {
-      await expect(
+    it("should get next patch version for release branch if no last release found", () => {
+      expect(
         getNextVersion(
           releaseBranchCtx as unknown as NormalizedStepContext<Step.analyzeCommits>,
           ReleaseType.patch,
           hash,
         ),
-      ).resolves.toBe("2.0.0");
+      ).toBe("2.0.0");
     });
 
-    it("should get next patch version for release branch if last release found", async () => {
-      await expect(
+    it("should get next patch version for release branch if last release found", () => {
+      expect(
         getNextVersion(
           {
             ...releaseBranchCtx,
@@ -651,11 +651,11 @@ describe("getNextVersion", () => {
           ReleaseType.patch,
           hash,
         ),
-      ).resolves.toBe("2.0.1");
+      ).toBe("2.0.1");
     });
 
-    it("should get next patch version for release branch if last release is prerelease", async () => {
-      await expect(
+    it("should get next patch version for release branch if last release is prerelease", () => {
+      expect(
         getNextVersion(
           {
             ...releaseBranchCtx,
@@ -664,21 +664,21 @@ describe("getNextVersion", () => {
           ReleaseType.patch,
           hash,
         ),
-      ).resolves.toBe("2.0.0");
+      ).toBe("2.0.0");
     });
 
-    it("should get next minor version for release branch if no last release found", async () => {
-      await expect(
+    it("should get next minor version for release branch if no last release found", () => {
+      expect(
         getNextVersion(
           releaseBranchCtx as unknown as NormalizedStepContext<Step.analyzeCommits>,
           ReleaseType.minor,
           hash,
         ),
-      ).resolves.toBe("2.0.0");
+      ).toBe("2.0.0");
     });
 
-    it("should get next minor version for release branch if last release found", async () => {
-      await expect(
+    it("should get next minor version for release branch if last release found", () => {
+      expect(
         getNextVersion(
           {
             ...releaseBranchCtx,
@@ -687,11 +687,11 @@ describe("getNextVersion", () => {
           ReleaseType.minor,
           hash,
         ),
-      ).resolves.toBe("2.1.0");
+      ).toBe("2.1.0");
     });
 
-    it("should get next minor version for release branch if last release is prerelease", async () => {
-      await expect(
+    it("should get next minor version for release branch if last release is prerelease", () => {
+      expect(
         getNextVersion(
           {
             ...releaseBranchCtx,
@@ -700,21 +700,21 @@ describe("getNextVersion", () => {
           ReleaseType.minor,
           hash,
         ),
-      ).resolves.toBe("2.0.0");
+      ).toBe("2.0.0");
     });
 
-    it("should get next major version for release branch if no last release found", async () => {
-      await expect(
+    it("should get next major version for release branch if no last release found", () => {
+      expect(
         getNextVersion(
           releaseBranchCtx as unknown as NormalizedStepContext<Step.analyzeCommits>,
           ReleaseType.major,
           hash,
         ),
-      ).resolves.toBe("2.0.0");
+      ).toBe("2.0.0");
     });
 
-    it("should get next major version for release branch if last release found", async () => {
-      await expect(
+    it("should get next major version for release branch if last release found", () => {
+      expect(
         getNextVersion(
           {
             ...releaseBranchCtx,
@@ -723,11 +723,11 @@ describe("getNextVersion", () => {
           ReleaseType.major,
           hash,
         ),
-      ).resolves.toBe(`${new Date().getFullYear() - 2000}.0.0`);
+      ).toBe(`${new Date().getFullYear() - 2000}.0.0`);
     });
 
-    it("should get next major version for release branch if last release is prerelease", async () => {
-      await expect(
+    it("should get next major version for release branch if last release is prerelease", () => {
+      expect(
         getNextVersion(
           {
             ...releaseBranchCtx,
@@ -736,11 +736,11 @@ describe("getNextVersion", () => {
           ReleaseType.major,
           hash,
         ),
-      ).resolves.toBe("2.0.0");
+      ).toBe("2.0.0");
     });
 
-    it("should throw error if version is not in range", async () => {
-      await expect(
+    it("should throw error if version is not in range", () => {
+      expect(() =>
         getNextVersion(
           {
             ...releaseBranchCtx,
@@ -749,9 +749,9 @@ describe("getNextVersion", () => {
           ReleaseType.minor,
           hash,
         ),
-      ).rejects.toThrow(InvalidNextVersionError);
+      ).toThrow(InvalidNextVersionError);
 
-      await expect(
+      expect(() =>
         getNextVersion(
           {
             ...releaseBranchCtx,
@@ -761,11 +761,11 @@ describe("getNextVersion", () => {
           ReleaseType.minor,
           hash,
         ),
-      ).rejects.toThrow(InvalidNextVersionError);
+      ).toThrow(InvalidNextVersionError);
     });
 
-    it("should return undefined if there is no initial version", async () => {
-      await expect(
+    it("should return undefined if there is no initial version", () => {
+      expect(
         getNextVersion(
           {
             ...releaseBranchCtx,
@@ -774,7 +774,7 @@ describe("getNextVersion", () => {
           ReleaseType.major,
           hash,
         ),
-      ).resolves.toBeUndefined();
+      ).toBeUndefined();
     });
   });
 });

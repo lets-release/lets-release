@@ -29,7 +29,7 @@ describe("Service", () => {
     docker.getContainer.mockReset().mockReturnValue(container);
     docker.modem.followProgress
       .mockReset()
-      .mockImplementation((_, callback) => {
+      .mockImplementation((_, callback: (...args: unknown[]) => void) => {
         callback(undefined);
       });
   });
@@ -43,9 +43,11 @@ describe("Service", () => {
   });
 
   it("should throw error if failed to pull the image", async () => {
-    docker.modem.followProgress.mockImplementation((_, callback) => {
-      callback(new Error("Failed to pull image"));
-    });
+    docker.modem.followProgress.mockImplementation(
+      (_, callback: (...args: unknown[]) => void) => {
+        callback(new Error("Failed to pull image"));
+      },
+    );
 
     const service = new Service(image, name);
 

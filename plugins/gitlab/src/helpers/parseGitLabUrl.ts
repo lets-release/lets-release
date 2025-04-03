@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 import { escapeRegExp } from "lodash-es";
 
 import {

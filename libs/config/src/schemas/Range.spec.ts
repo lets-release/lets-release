@@ -3,7 +3,7 @@ import { ZodError } from "zod";
 import { Range } from "src/schemas/Range";
 
 describe("Range", () => {
-  it("should return valid range", async () => {
+  it("should return valid range", () => {
     expect(Range.parse("1.0.x")).toBe("1.0.x");
 
     expect(Range.parse("1.x.x")).toBe("1.x.x");

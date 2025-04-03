@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { $ } from "execa";
 import findVersions from "find-versions";
 import stripAnsi from "strip-ansi";

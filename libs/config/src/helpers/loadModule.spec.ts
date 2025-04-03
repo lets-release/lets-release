@@ -13,6 +13,7 @@ const silent = vi.fn();
 const loader = vi.fn();
 
 vi.mocked(resolveFrom).mockReturnValue(file);
+// eslint-disable-next-line @typescript-eslint/unbound-method
 vi.mocked(resolveFrom.silent).mockImplementation(silent);
 
 const dir = "dir";

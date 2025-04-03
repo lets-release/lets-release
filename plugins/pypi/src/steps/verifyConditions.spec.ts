@@ -23,6 +23,7 @@ describe("verifyConditions", () => {
     vi.mocked(ensurePyPIPackageContext)
       .mockReset()
       .mockImplementation(
+        // eslint-disable-next-line @typescript-eslint/require-await
         async ({ getPluginPackageContext, setPluginPackageContext }) => {
           getPluginPackageContext();
           setPluginPackageContext(undefined);

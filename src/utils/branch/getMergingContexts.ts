@@ -186,5 +186,7 @@ export async function getMergingContexts(
     }),
   );
 
-  return Object.fromEntries(entries.flat());
+  return Object.fromEntries(entries.flat()) as Partial<
+    Record<string, MergingContext>
+  >;
 }

@@ -77,7 +77,7 @@ export const analyzeCommits: StepFunction<
 
   logger.log({
     prefix: `[${pkg.uniqueName}]`,
-    message: `Analysis of ${commits.length} commits complete: ${releaseType || "no"} release`,
+    message: `Analysis of ${commits.length} commits complete: ${releaseType ?? "no"} release`,
   });
 
   return releaseType;

@@ -34,7 +34,7 @@ export async function getDistTagVersion(
           }
 
           try {
-            return [JSON.parse(trimmed)];
+            return [JSON.parse(trimmed) as Record<string, string>];
           } catch {
             return [];
           }

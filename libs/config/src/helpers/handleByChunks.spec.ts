@@ -1,5 +1,6 @@
 import { handleByChunks } from "src/helpers/handleByChunks";
 
+// eslint-disable-next-line @typescript-eslint/require-await
 const handler = async (chunk: number[]) => chunk.map((x) => x * 2);
 
 describe("handleByChunks", () => {

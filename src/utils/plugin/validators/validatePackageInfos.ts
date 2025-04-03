@@ -44,7 +44,7 @@ export const validatePackageInfos: StepResultValidator<
         } else {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
-            message: `Path is not absolute: ${val}`,
+            message: `Path is not absolute: ${pkg.path}`,
           });
         }
       }

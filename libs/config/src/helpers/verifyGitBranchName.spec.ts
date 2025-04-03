@@ -1,6 +1,6 @@
 import { verifyGitBranchName } from "src/helpers/verifyGitBranchName";
 
-describe("verifyGitBranchName", async () => {
+describe("verifyGitBranchName", () => {
   it("should return true for valid branch name", async () => {
     await expect(verifyGitBranchName("main")).resolves.toBe(true);
   });
