@@ -19,7 +19,7 @@ export const ReleaseCommit = z.object({
    * The message for the release commit.
    */
   message: NonEmptyString.default(
-    "chore(release): [skip ci]\n\n${releases.map(x => x.tag).join('\\n')}",
+    "chore(release): [skip ci]\n\n${releases.map(x => x.tag).toSorted().join('\\n')}",
   ),
 });
 

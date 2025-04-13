@@ -18,7 +18,7 @@ describe("ReleaseCommit", () => {
     ).toEqual({
       assets: false,
       message:
-        "chore(release): [skip ci]\n\n${releases.map(x => x.tag).join('\\n')}",
+        "chore(release): [skip ci]\n\n${releases.map(x => x.tag).toSorted().join('\\n')}",
     });
   });
 });
