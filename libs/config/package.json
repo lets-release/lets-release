@@ -35,7 +35,7 @@
     "@types/env-ci": "^3.1.4",
     "@types/signale": "^1.4.7",
     "execa": "^9.5.2",
-    "hosted-git-info": "^8.0.2",
+    "hosted-git-info": "^8.1.0",
     "lodash-es": "^4.17.21",
     "resolve-from": "^5.0.0",
     "zod": "^3.24.2"
