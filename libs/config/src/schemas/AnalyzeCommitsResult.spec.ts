@@ -1,5 +1,4 @@
-import { ReleaseType } from "@lets-release/versioning";
-
+import { ReleaseType } from "src/enums/ReleaseType";
 import { AnalyzeCommitsResult } from "src/schemas/AnalyzeCommitsResult";
 
 describe("AnalyzeCommitsResult", () => {

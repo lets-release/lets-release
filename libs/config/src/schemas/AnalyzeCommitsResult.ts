@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { ReleaseType } from "@lets-release/versioning";
+import { ReleaseType } from "src/enums/ReleaseType";
 
 /**
  * Result of analyzeCommits step.

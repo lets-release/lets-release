@@ -1,4 +1,4 @@
-import { ReleaseType } from "@lets-release/versioning";
+import { ReleaseType } from "src/enums/ReleaseType";
 
 export const RELEASE_TYPES = [
   ReleaseType.major,

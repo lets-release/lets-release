@@ -1,10 +1,12 @@
 export * from "src/constants/RELEASE_TYPES";
 
 export * from "src/enums/BranchType";
+export * from "src/enums/ReleaseType";
 export * from "src/enums/Step";
 
 export * from "src/errors/LetsReleaseError";
 
+export * from "src/helpers/compareReleaseTypes";
 export * from "src/helpers/extractErrors";
 export * from "src/helpers/formatGitUrlWithProtocol";
 export * from "src/helpers/getUrlProtocol";
@@ -81,8 +83,4 @@ export * from "src/types/VerifyReleaseContext";
 export * from "src/types/VersionRange";
 export * from "src/types/VersionTag";
 
-export {
-  NonEmptyString,
-  ReleaseType,
-  VersioningScheme,
-} from "@lets-release/versioning";
+export { NonEmptyString, VersioningScheme } from "@lets-release/versioning";
