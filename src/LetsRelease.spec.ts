@@ -77,7 +77,6 @@ vi.mock("src/utils/plugin/getStepPipelinesList");
 
 const write = vi.spyOn(process.stdout, "write");
 
-const letsRelease = new LetsRelease();
 const logger = {
   log: vi.fn(),
   warn: vi.fn(),
@@ -218,7 +217,11 @@ const publish = vi.fn();
 const success = vi.fn();
 
 describe("LetsRelease", () => {
+  let letsRelease: LetsRelease;
+
   beforeEach(() => {
+    letsRelease = new LetsRelease();
+
     findPackages
       .mockReset()
       .mockImplementation((_, { getPluginContext, setPluginContext }) => {
@@ -829,19 +832,29 @@ describe("LetsRelease", () => {
         path: "/path/to/pkg1",
         type: "npm",
         name: "pkg1",
-        uniqueName: "pkg1",
+        uniqueName: "npm/pkg1",
+        dependencies: [
+          {
+            type: "npm",
+            name: "pkg2",
+          },
+          {
+            type: "npm",
+            name: "pkg3",
+          },
+        ],
       },
       {
         path: "/path/to/pkg2",
         type: "npm",
         name: "pkg2",
-        uniqueName: "pkg2",
+        uniqueName: "npm/pkg2",
       },
       {
         path: "/path/to/pkg3",
         type: "npm",
         name: "pkg3",
-        uniqueName: "pkg3",
+        uniqueName: "npm/pkg3",
       },
     ]);
 
@@ -850,7 +863,8 @@ describe("LetsRelease", () => {
       .mockResolvedValue({
         tagFormat: "v${version}",
         refSeparator: "/",
-        mainPackage: "pkg3",
+        releaseFollowingDependencies: true,
+        mainPackage: "pkg1",
         packages: [
           {
             paths: ["/path/to"],
@@ -864,15 +878,16 @@ describe("LetsRelease", () => {
       prerelease: undefined,
     });
     analyzeCommits
-      .mockResolvedValueOnce(undefined)
-      .mockResolvedValue(releaseType);
+      .mockResolvedValueOnce(ReleaseType.patch)
+      .mockResolvedValueOnce(ReleaseType.major)
+      .mockResolvedValueOnce(ReleaseType.minor);
     vi.mocked(getStepPipelinesList).mockResolvedValue([
       { findPackages, analyzeCommits, generateNotes, publish },
     ]);
     vi.mocked(getReleases).mockReturnValue({
       pkg3: [
         {
-          package: "pkg3",
+          package: "pkg1",
           tag: "v2.0.0",
           version: "2.0.0",
           artifacts: [
@@ -886,8 +901,9 @@ describe("LetsRelease", () => {
       ],
     });
     vi.mocked(getNextVersion)
-      .mockReturnValueOnce(undefined)
-      .mockReturnValue("2.1.0");
+      .mockReturnValueOnce("1.0.0")
+      .mockReturnValueOnce("1.0.0")
+      .mockReturnValueOnce("3.0.0");
 
     await expect(letsRelease.run()).resolves.toEqual([
       {
@@ -895,8 +911,24 @@ describe("LetsRelease", () => {
         notes,
         artifacts,
         channels: { default: [null] },
-        tag: "v2.1.0",
-        version: "2.1.0",
+        tag: "pkg2/v1.0.0",
+        version: "1.0.0",
+      },
+      {
+        hash: "headhash",
+        notes,
+        artifacts,
+        channels: { default: [null] },
+        tag: "pkg3/v1.0.0",
+        version: "1.0.0",
+      },
+      {
+        hash: "headhash",
+        notes,
+        artifacts,
+        channels: { default: [null] },
+        tag: "v3.0.0",
+        version: "3.0.0",
       },
     ]);
   });

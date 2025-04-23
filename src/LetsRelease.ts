@@ -18,7 +18,10 @@ import {
   Options,
   Package,
   PrereleaseBranch,
+  RELEASE_TYPES,
+  ReleaseType,
   Step,
+  compareReleaseTypes,
   extractErrors,
 } from "@lets-release/config";
 
@@ -78,6 +81,7 @@ const { Signale } = signale;
 export class LetsRelease {
   private pluginContexts: Record<string, unknown>[] = [];
   private pluginPackageContexts: Record<string, unknown>[] = [];
+  private releaseTypes: Record<string, ReleaseType | undefined> = {};
 
   async run(options: Partial<Options> = {}, context: Context = {}) {
     const { cwd = process.cwd(), env = process.env } = context;
@@ -862,7 +866,12 @@ export class LetsRelease {
       stderr,
       logger,
       repositoryRoot,
-      options: { prerelease, tagFormat, refSeparator },
+      options: {
+        prerelease,
+        tagFormat,
+        refSeparator,
+        releaseFollowingDependencies,
+      },
       packages,
       branch,
     } = context;
@@ -919,12 +928,36 @@ export class LetsRelease {
             index,
           );
 
-        const type = await stepPipelines.analyzeCommits?.(
+        let releaseType = await stepPipelines.analyzeCommits?.(
           stepPipelines,
           normalizedContext,
         );
 
-        if (!type) {
+        if (releaseFollowingDependencies && releaseType !== RELEASE_TYPES[0]) {
+          const deps =
+            (pkg.dependencies?.map(
+              ({ type, name }) =>
+                allPackages.find(
+                  (pkg) => pkg.type === type && pkg.name === name,
+                )?.uniqueName,
+            ) as string[]) ?? [];
+
+          for (const dep of deps) {
+            const depReleaseType = this.releaseTypes[dep];
+
+            // Set release type if dependency release type is higher
+            if (
+              depReleaseType &&
+              compareReleaseTypes(depReleaseType, releaseType)
+            ) {
+              releaseType = depReleaseType;
+            }
+          }
+        }
+
+        this.releaseTypes[pkg.uniqueName] = releaseType;
+
+        if (!releaseType) {
           logger.log({
             prefix: `[${pkg.uniqueName}]`,
             message:
@@ -934,7 +967,7 @@ export class LetsRelease {
           return [];
         }
 
-        const version = getNextVersion(normalizedContext, type, hash);
+        const version = getNextVersion(normalizedContext, releaseType, hash);
 
         if (!version) {
           return [];

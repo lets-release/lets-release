@@ -26,6 +26,7 @@ export const Options = CliOptions.extend({
   refSeparator: RefSeparator.default("/"),
   mainPackage: NonEmptyString.optional(),
   releaseCommit: ReleaseCommit.optional(),
+  releaseFollowingDependencies: z.boolean().optional(),
   branches: BranchesOptions.default(BranchesOptions.parse({})),
   sharedWorkspaceFiles: z.array(GlobPattern).optional(),
   packages: z.array(PackageOptions).min(1),
@@ -79,6 +80,12 @@ export interface Options extends CliOptions {
    * If not set, **lets-release** will not generate a release commit.
    */
   releaseCommit?: ReleaseCommit;
+
+  /**
+   * If set to `true`, the final release type of dependent package will be the highest
+   * one of its own release type and the release types of all its dependencies.
+   */
+  releaseFollowingDependencies?: boolean;
 
   /**
    * The branches on which releases should happen. By default
