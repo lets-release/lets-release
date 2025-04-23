@@ -6,12 +6,12 @@ import {
   ReleaseType,
   Step,
   StepFunction,
+  compareReleaseTypes,
 } from "@lets-release/config";
 import { loadPreset, parseCommits } from "@lets-release/conventional-changelog";
 
 import { DEFAULT_RELEASE_RULES } from "src/constants/DEFAULT_RELEASE_RULES";
 import { analyzeCommit } from "src/helpers/analyzeCommit";
-import { compareReleaseTypes } from "src/helpers/compareReleaseTypes";
 import { loadReleaseRules } from "src/helpers/loadReleaseRules";
 import { name } from "src/plugin";
 import { CommitAnalyzerOptions } from "src/schemas/CommitAnalyzerOptions";

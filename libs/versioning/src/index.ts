@@ -1,4 +1,3 @@
-export * from "src/enums/ReleaseType";
 export * from "src/enums/VersioningScheme";
 
 export * from "src/helpers/compareIdentifierLists";

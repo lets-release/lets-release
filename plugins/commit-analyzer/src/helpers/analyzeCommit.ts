@@ -2,10 +2,14 @@ import debug from "debug";
 import { isMatchWith, isString } from "lodash-es";
 import micromatch from "micromatch";
 
-import { Package, RELEASE_TYPES, ReleaseType } from "@lets-release/config";
+import {
+  Package,
+  RELEASE_TYPES,
+  ReleaseType,
+  compareReleaseTypes,
+} from "@lets-release/config";
 import { ParsedCommit } from "@lets-release/conventional-changelog";
 
-import { compareReleaseTypes } from "src/helpers/compareReleaseTypes";
 import { name } from "src/plugin";
 import { ReleaseRule } from "src/schemas/ReleaseRule";
 
