@@ -9,7 +9,7 @@ import { CalVerBuildMetadata } from "src/schemas/CalVerBuildMetadata";
  *
  * If set to `true`, the tag short hash is used as the build metadata.
  *
- * If set to an record, the key is the plugin name or `default`.
+ * If set to a record, the key is the plugin name or `default`.
  */
 export const CalVerBuildMetadataSpec = z.union([
   z.literal(true),

@@ -2,12 +2,12 @@
 
 **[lets-release][]** plugin for publishing a [GitLab release][].
 
-| Step               | Description                                                                                          |
-|--------------------|------------------------------------------------------------------------------------------------------|
-| `verifyConditions` | Verify the presence and the validity of the authentication and the [assets][] option configuration.  |
-| `addChannels`      | Update a [GitLab release][].                                                                         |
-| `publish`          | Publish a [GitLab release][].                                                                        |
-| `success`          | Add a comment to each [GitLab Issue][] or Merge Request resolved by the release.                     |
+| Step               | Description                                                                                         |
+| ------------------ | --------------------------------------------------------------------------------------------------- |
+| `verifyConditions` | Verify the presence and the validity of the authentication and the [assets][] option configuration. |
+| `addChannels`      | Update a [GitLab release][].                                                                        |
+| `publish`          | Publish a [GitLab release][].                                                                       |
+| `success`          | Add a comment to each [GitLab Issue][] or Merge Request resolved by the release.                    |
 
 ## Usage
 
@@ -54,7 +54,7 @@ If you are using the token for [remote Git repository authentication][], it must
 ### Environment variables
 
 | Variable                     | Description                                          |
-|------------------------------|------------------------------------------------------|
+| ---------------------------- | ---------------------------------------------------- |
 | `GL_TOKEN` or `GITLAB_TOKEN` | The personal token used to authenticate with GitLab. |
 | `CI_JOB_TOKEN`               | The GitLab CI job token.                             |
 | `CI_SERVER_URL`              | The GitLab endpoint.                                 |
@@ -63,7 +63,7 @@ If you are using the token for [remote Git repository authentication][], it must
 ### Options
 
 | Option                     | Description                                                                                                                                                               | Default                                    |
-|----------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------|
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
 | `token`                    | The GitLab personal token.                                                                                                                                                | `GH_TOKEN` or `GITHUB_TOKEN`               |
 | `oauthToken`               | The GitLab OAuth token.                                                                                                                                                   | -                                          |
 | `jobToken`                 | The GitLab CI job token.                                                                                                                                                  | `CI_JOB_TOKEN`                             |
@@ -84,7 +84,7 @@ If you are using the token for [remote Git repository authentication][], it must
 Can be a [glob][], an `Array` of [globs][glob], or an `Object` with the following properties:
 
 | Property   | Description                                                                                                                                                                             | Default                              |
-|------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
 | `path`     | **Required**, unless `url` is set. A [glob][] to identify the files to be uploaded.                                                                                                     | -                                    |
 | `url`      | As an alternative to setting `path`, this provides the ability to add links to releases, e.g., URLs to container images.                                                                | -                                    |
 | `label`    | A short description of the file displayed on the GitLab release. Ignored if `path` matches more than one file.                                                                          | File name extracted from the `path`. |
@@ -101,7 +101,7 @@ If a directory is configured, all the files under this directory and its subdire
 The `label` for each asset is generated with [Lodash template][]. The following variables are available:
 
 | Parameter     | Description                                |
-|---------------|--------------------------------------------|
+| ------------- | ------------------------------------------ |
 | `branch`      | The branch from which the release is done. |
 | `lastRelease` | The last release.                          |
 | `nextRelease` | The release being done.                    |
@@ -126,7 +126,7 @@ plus the `build/MyLibrary.zip` file and labels it `MyLibrary` in the GitLab rele
 A `boolean` or a function that returns a `boolean` or `Promise<boolean>` to determine whether to comment on issues and merge requests on success. The following variables are available:
 
 | Parameter     | Description                                                                                                              |
-|---------------|--------------------------------------------------------------------------------------------------------------------------|
+| ------------- | ------------------------------------------------------------------------------------------------------------------------ |
 | `branch`      | The branch from which the release is done.                                                                               |
 | `lastRelease` | The last release.                                                                                                        |
 | `nextRelease` | The release being done.                                                                                                  |
@@ -139,7 +139,7 @@ A `boolean` or a function that returns a `boolean` or `Promise<boolean>` to dete
 The message for the issue comments is generated with [Lodash template][]. The following variables are available:
 
 | Parameter     | Description                                                                                                              |
-|---------------|--------------------------------------------------------------------------------------------------------------------------|
+| ------------- | ------------------------------------------------------------------------------------------------------------------------ |
 | `branch`      | The branch from which the release is done.                                                                               |
 | `lastRelease` | The last release.                                                                                                        |
 | `nextRelease` | The release being done.                                                                                                  |
@@ -152,7 +152,7 @@ The message for the issue comments is generated with [Lodash template][]. The fo
 Each label name is generated with [Lodash template][]. The following variables are available:
 
 | Parameter     | Description                                                                                                              |
-|---------------|--------------------------------------------------------------------------------------------------------------------------|
+| ------------- | ------------------------------------------------------------------------------------------------------------------------ |
 | `branch`      | The branch from which the release is done.                                                                               |
 | `lastRelease` | The last release.                                                                                                        |
 | `nextRelease` | The release being done.                                                                                                  |

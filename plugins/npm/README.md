@@ -3,7 +3,7 @@
 **[lets-release][]** plugin for publishing [npm][] packages.
 
 | Step               | Description                                                               |
-|--------------------|---------------------------------------------------------------------------|
+| ------------------ | ------------------------------------------------------------------------- |
 | `findPackages`     | Find packages in workspace.                                               |
 | `verifyConditions` | Verify the authentication method is valid.                                |
 | `prepare`          | Update the `package.json` version and [create][] the npm package tarball. |
@@ -54,7 +54,7 @@ permissions:
 ### Options
 
 | Options          | Description                                                                                                        | Default                                                                         |
-|------------------|--------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
+| ---------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------- |
 | `skipPublishing` | Whether to publish the `npm` package to the registry. If `true`, the `package.json` version will still be updated. | `true` if the `package.json` [private][] property is `true`; `false` otherwise. |
 | `tarballDir`     | Directory path in which to write the package tarball. If not set the tarball will not be kept on the file system.  | -                                                                               |
 

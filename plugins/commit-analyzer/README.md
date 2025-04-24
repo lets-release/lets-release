@@ -3,7 +3,7 @@
 **[lets-release][]** plugin for analyzing commits with [conventional-changelog][]
 
 | Step             | Description                                                                         |
-|------------------|-------------------------------------------------------------------------------------|
+| ---------------- | ----------------------------------------------------------------------------------- |
 | `analyzeCommits` | Determine the type of release by analyzing commits with [conventional-changelog][]. |
 
 ## Usage
@@ -47,7 +47,7 @@ For example, the [Angular Commit Message Conventions][] require the `BREAKING CH
 ### Options
 
 | Option          | Description                                                                                                                                                                                                                                                              | Default                                      |
-|-----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------|
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------- |
 | `preset`        | [conventional-changelog][] preset (possible values: [`angular`][angular], [`atom`][atom], [`codemirror`][codemirror], [`conventionalcommits`][conventionalcommits], [`ember`][ember], [`eslint`][eslint], [`express`][express], [`jquery`][jquery], [`jshint`][jshint]). | [`conventionalcommits`][conventionalcommits] |
 | `presetConfig`  | Additional configuration passed to the [conventional-changelog][] preset. Used, for example, with [conventional-changelog-conventionalcommits][].                                                                                                                        | -                                            |
 | `config`        | Package name of a custom [conventional-changelog][] preset.                                                                                                                                                                                                              | -                                            |

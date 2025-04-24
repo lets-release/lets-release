@@ -3,7 +3,7 @@
 **[lets-release][]** plugin for creating or updating a changelog file.
 
 | Step               | Description                                                                                                                       |
-|--------------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------- |
 | `verifyConditions` | Verify the `changelogFile` and `changelogTitle` options configuration.                                                            |
 | `prepare`          | Create or update a changelog file in the local project directory using the changelog content created in the `generateNotes` step. |
 
@@ -36,7 +36,7 @@ With this example, for each release, a `docs/CHANGELOG.md` will be created or up
 ### Options
 
 | Options          | Description                                           | Default        |
-|------------------|-------------------------------------------------------|----------------|
+| ---------------- | ----------------------------------------------------- | -------------- |
 | `changelogFile`  | File path of the changelog.                           | `CHANGELOG.md` |
 | `changelogTitle` | Title of the changelog file (first line of the file). | -              |
 

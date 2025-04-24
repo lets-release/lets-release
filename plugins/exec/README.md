@@ -3,7 +3,7 @@
 **[lets-release][]** plugin for executing custom shell commands.
 
 | Step               | Description                                                                                          |
-|--------------------|------------------------------------------------------------------------------------------------------|
+| ------------------ | ---------------------------------------------------------------------------------------------------- |
 | `findPackages`     | Execute a shell command to find packages in the workspace.                                           |
 | `verifyConditions` | Execute a shell command to verify if the release should happen.                                      |
 | `analyzeCommits`   | Execute a shell command to determine the type of release.                                            |
@@ -45,7 +45,7 @@ If no [analyzeCommitsCmd][] is defined the plugin [@lets-release/commit-analyzer
 ### Options
 
 | Options               | Description                                                                                                                                                                                                                                                                                                                  |
-|-----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `findPackagesCmd`     | The shell command to be executed during the `findPackages` step. See [findPackagesCmd][].                                                                                                                                                                                                                                    |
 | `verifyConditionsCmd` | The shell command to be executed during the `verifyConditions` step. See [verifyConditionsCmd][].                                                                                                                                                                                                                            |
 | `analyzeCommitsCmd`   | The shell command to be executed during the `analyzeCommits` step. See [analyzeCommitsCmd][].                                                                                                                                                                                                                                |
@@ -64,7 +64,7 @@ Each shell command is generated with [Lodash template][]. All the objects passed
 ## findPackagesCmd
 
 | Command property | Description                                                                                                                                                                                                      |
-|------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `exit code`      | Any non `0` code is considered as an unexpected error and will stop the `lets-release` execution with an error.                                                                                                  |
 | `stdout`         | The `packages` should be written to `stdout` as stringified JSON (for example `{"name": "pkg", "path": "/path/to/pkg"}`). If the command write non-stringified JSON to `stdout`, no `packages` will be returned. |
 | `stderr`         | Can be used for logging.                                                                                                                                                                                         |
@@ -72,7 +72,7 @@ Each shell command is generated with [Lodash template][]. All the objects passed
 ## verifyConditionsCmd
 
 | Command property | Description                                                              |
-|------------------|--------------------------------------------------------------------------|
+| ---------------- | ------------------------------------------------------------------------ |
 | `exit code`      | `0` if the verification is successful, or any other exit code otherwise. |
 | `stdout`         | Only the reason for the verification failure should be written.          |
 | `stderr`         | Can be used for logging.                                                 |
@@ -80,7 +80,7 @@ Each shell command is generated with [Lodash template][]. All the objects passed
 ## analyzeCommitsCmd
 
 | Command property | Description                                                                                                                                                  |
-|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `exit code`      | Any non `0` code is considered as an unexpected error and will stop the `lets-release` execution with an error.                                              |
 | `stdout`         | Only the release type (`major`, `minor` or `patch` etc.) should be written to `stdout`. If no release has to be done the command must not write to `stdout`. |
 | `stderr`         | Can be used for logging.                                                                                                                                     |
@@ -88,7 +88,7 @@ Each shell command is generated with [Lodash template][]. All the objects passed
 ## verifyReleaseCmd
 
 | Command property | Description                                                                 |
-|------------------|-----------------------------------------------------------------------------|
+| ---------------- | --------------------------------------------------------------------------- |
 | `exit code`      | `0` if the verification is successful, or any other exit code otherwise.    |
 | `stdout`         | Only the reason for the verification failure should be written to `stdout`. |
 | `stderr`         | Can be used for logging.                                                    |
@@ -96,7 +96,7 @@ Each shell command is generated with [Lodash template][]. All the objects passed
 ## generateNotesCmd
 
 | Command property | Description                                                                                                     |
-|------------------|-----------------------------------------------------------------------------------------------------------------|
+| ---------------- | --------------------------------------------------------------------------------------------------------------- |
 | `exit code`      | Any non `0` code is considered as an unexpected error and will stop the `lets-release` execution with an error. |
 | `stdout`         | Only the release notes should be written to `stdout`.                                                           |
 | `stderr`         | Can be used for logging.                                                                                        |
@@ -104,7 +104,7 @@ Each shell command is generated with [Lodash template][]. All the objects passed
 ## prepareCmd
 
 | Command property | Description                                                                                                     |
-|------------------|-----------------------------------------------------------------------------------------------------------------|
+| ---------------- | --------------------------------------------------------------------------------------------------------------- |
 | `exit code`      | Any non `0` code is considered as an unexpected error and will stop the `lets-release` execution with an error. |
 | `stdout`         | Can be used for logging.                                                                                        |
 | `stderr`         | Can be used for logging.                                                                                        |
@@ -112,7 +112,7 @@ Each shell command is generated with [Lodash template][]. All the objects passed
 ## addChannelsCmd
 
 | Command property | Description                                                                                                                                                                                                                                            |
-|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `exit code`      | Any non `0` code is considered as an unexpected error and will stop the `lets-release` execution with an error.                                                                                                                                        |
 | `stdout`         | The `release` information can be written to `stdout` as stringified JSON (for example `{"name": "Release name", "url": "http://url/release/1.0.0"}`). If the command writes non-parseable JSON to `stdout`, no `release` information will be returned. |
 | `stderr`         | Can be used for logging.                                                                                                                                                                                                                               |
@@ -120,7 +120,7 @@ Each shell command is generated with [Lodash template][]. All the objects passed
 ## publishCmd
 
 | Command property | Description                                                                                                                                                                                                                                            |
-|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `exit code`      | Any non `0` code is considered as an unexpected error and will stop the `lets-release` execution with an error.                                                                                                                                        |
 | `stdout`         | The `release` information can be written to `stdout` as stringified JSON (for example `{"name": "Release name", "url": "http://url/release/1.0.0"}`). If the command writes non-parseable JSON to `stdout`, no `release` information will be returned. |
 | `stderr`         | Can be used for logging.                                                                                                                                                                                                                               |
@@ -128,7 +128,7 @@ Each shell command is generated with [Lodash template][]. All the objects passed
 ## successCmd
 
 | Command property | Description                                                                                                     |
-|------------------|-----------------------------------------------------------------------------------------------------------------|
+| ---------------- | --------------------------------------------------------------------------------------------------------------- |
 | `exit code`      | Any non `0` code is considered as an unexpected error and will stop the `lets-release` execution with an error. |
 | `stdout`         | Can be used for logging.                                                                                        |
 | `stderr`         | Can be used for logging.                                                                                        |
@@ -136,7 +136,7 @@ Each shell command is generated with [Lodash template][]. All the objects passed
 ## failCmd
 
 | Command property | Description                                                                                                     |
-|------------------|-----------------------------------------------------------------------------------------------------------------|
+| ---------------- | --------------------------------------------------------------------------------------------------------------- |
 | `exit code`      | Any non `0` code is considered as an unexpected error and will stop the `lets-release` execution with an error. |
 | `stdout`         | Can be used for logging.                                                                                        |
 | `stderr`         | Can be used for logging.                                                                                        |

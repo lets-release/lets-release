@@ -5,7 +5,7 @@
 This plugin only supports python projects with valid [`pyproject.toml`][] file.
 
 | Step               | Description                                                         |
-|--------------------|---------------------------------------------------------------------|
+| ------------------ | ------------------------------------------------------------------- |
 | `findPackages`     | Find packages in workspace.                                         |
 | `verifyConditions` | Verify the authentication method is valid.                          |
 | `prepare`          | Update the [`pyproject.toml`][] project version and build packages. |
@@ -26,7 +26,7 @@ The plugin can be configured in the **[lets-release][]** configuration file:
 ### Options
 
 | Options          | Description                                                                                                                | Default                                                                                                               |
-|------------------|----------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
 | `skipPublishing` | Whether to publish the package to the registry. If `true`, the [`pyproject.toml`][] project version will still be updated. | `true` if the `project` table in [`pyproject.toml`][] has classifiers beginning with `Private ::`; `false` otherwise. |
 | `distDir`        | The output directory to which distributions should be written. Relative to the package root.                               | `dist`                                                                                                                |
 

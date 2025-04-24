@@ -3,7 +3,7 @@
 **[lets-release][]** plugin for publishing a [GitHub release][] and commenting on released Pull Requests/Issues.
 
 | Step               | Description                                                                                         |
-|--------------------|-----------------------------------------------------------------------------------------------------|
+| ------------------ | --------------------------------------------------------------------------------------------------- |
 | `verifyConditions` | Verify the presence and the validity of the authentication and the [assets][] option configuration. |
 | `addChannels`      | Update a [GitHub release][].                                                                        |
 | `publish`          | Publish a [GitHub release][], optionally uploading file assets.                                     |
@@ -60,16 +60,16 @@ When using the _GITHUB_TOKEN_, the **minimum required permissions** are:
 
 ### Environment variables
 
-| Variable                       | Description                                 |
-|--------------------------------|---------------------------------------------|
-| `GH_TOKEN` or `GITHUB_TOKEN`   | The token used to authenticate with GitHub. |
-| `GITHUB_SERVER_URL`            | The GitHub server endpoint.                 |
-| `GITHUB_API_URL`               | The GitHub API endpoint.                    |
+| Variable                     | Description                                 |
+| ---------------------------- | ------------------------------------------- |
+| `GH_TOKEN` or `GITHUB_TOKEN` | The token used to authenticate with GitHub. |
+| `GITHUB_SERVER_URL`          | The GitHub server endpoint.                 |
+| `GITHUB_API_URL`             | The GitHub API endpoint.                    |
 
 ### Options
 
 | Option                      | Description                                                                                                                                                          | Default                                            |
-|-----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------|
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
 | `token`                     | The GitHub token.                                                                                                                                                    | `GH_TOKEN` or `GITHUB_TOKEN` environment variable. |
 | `url`                       | The GitHub server endpoint.                                                                                                                                          | `GITHUB_SERVER_URL` environment variable.          |
 | `apiUrl`                    | The GitHub API endpoint.                                                                                                                                             | `GITHUB_API_URL` environment variable.             |
@@ -91,7 +91,7 @@ When using the _GITHUB_TOKEN_, the **minimum required permissions** are:
 An asset can be a [glob][] or an `Array` of [globs][glob] or an `Object` with the following properties:
 
 | Property | Description                                                    | Default                              |
-|----------|----------------------------------------------------------------|--------------------------------------|
+| -------- | -------------------------------------------------------------- | ------------------------------------ |
 | `path`   | **Required.** A [glob][] to identify the files to upload.      | -                                    |
 | `name`   | The name of the downloadable file on the GitHub release.       | File name extracted from the `path`. |
 | `label`  | Short description of the file displayed on the GitHub release. | -                                    |
@@ -104,7 +104,7 @@ If a directory is configured, all the files under this directory and its childre
 The `name` and `label` for each asset are generated with [Lodash template][]. The following variables are available:
 
 | Parameter     | Description                                |
-|---------------|--------------------------------------------|
+| ------------- | ------------------------------------------ |
 | `branch`      | The branch from which the release is done. |
 | `lastRelease` | The last release.                          |
 | `nextRelease` | The release being done.                    |
@@ -133,7 +133,7 @@ plus the `build/MyLibrary.zip` file and label it `MyLibrary` in the GitHub relea
 A `boolean` or a function that returns a `boolean` or `Promise<boolean>` to determine whether to comment to issues and pull requests on success. The following variables are available:
 
 | Parameter     | Description                                                                                                                                     |
-|---------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
 | `branch`      | The branch from which the release is done.                                                                                                      |
 | `lastRelease` | The last release.                                                                                                                               |
 | `nextRelease` | The release being done.                                                                                                                         |
@@ -146,7 +146,7 @@ A `boolean` or a function that returns a `boolean` or `Promise<boolean>` to dete
 The message for the issue comments is generated with [Lodash template][]. The following variables are available:
 
 | Parameter     | Description                                                                                                                                     |
-|---------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
 | `branch`      | The branch from which the release is done.                                                                                                      |
 | `lastRelease` | The last release.                                                                                                                               |
 | `nextRelease` | The release being done.                                                                                                                         |
@@ -165,7 +165,7 @@ The `successComment` `This ${issue.pull_request ? 'pull request' : 'issue'} is i
 Each label name is generated with [Lodash template][]. The following variables are available:
 
 | Parameter     | Description                                                                                                                                     |
-|---------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
 | `branch`      | The branch from which the release is done.                                                                                                      |
 | `lastRelease` | The last release.                                                                                                                               |
 | `nextRelease` | The release being done.                                                                                                                         |

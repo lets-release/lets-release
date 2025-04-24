@@ -1,6 +1,6 @@
 # @lets-release/calver
 
-Internal utilities for handling calendar versions and schemes.
+**[lets-release][]** internal utilities for handling calendar versions and schemes.
 
 ## CalVer Specification
 
@@ -61,5 +61,7 @@ A prerelease MUST immediately follow the main version, and MAY be separated with
 A build metadata MUST be a series of dot separated identifiers.
 Identifiers MUST consist of only ASCII alphanumerics, hyphens, and dashes `[0-9A-Za-z_-]`.
 A build metadata MUST be the last part and MUST be separated with a plug `+`.
+
+[lets-release]: ../../
 
 [calver.org]: https://calver.org

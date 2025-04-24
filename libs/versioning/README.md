@@ -1,3 +1,5 @@
 # @lets-release/versioning
 
-Internal versioning utilities.
+**[lets-release][]** internal versioning utilities.
+
+[lets-release]: ../../

@@ -53,7 +53,7 @@ Certain commands and options (such as [the `--merged` option of the `git tag` co
 The Git authentication can be set with one of the following environment variables:
 
 | Variable                                              | Description                                                                                                                                                                    |
-|-------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `GH_TOKEN` or `GITHUB_TOKEN`                          | A [GitHub personal access token][].                                                                                                                                            |
 | `GL_TOKEN` or `GITLAB_TOKEN`                          | A [GitLab personal access token][].                                                                                                                                            |
 | `BB_TOKEN` or `BITBUCKET_TOKEN`                       | A [Bitbucket personal access token][].                                                                                                                                         |
@@ -65,7 +65,7 @@ Alternatively the Git authentication can be set up via [SSH][].
 ## Git environment variables
 
 | Variable              | Description                                                                                     | Default                          |
-|-----------------------|-------------------------------------------------------------------------------------------------|----------------------------------|
+| --------------------- | ----------------------------------------------------------------------------------------------- | -------------------------------- |
 | `GIT_AUTHOR_NAME`     | The author name associated with the [Git release tag][]. See [Git environment variables][].     | @lets-release-bot.               |
 | `GIT_AUTHOR_EMAIL`    | The author email associated with the [Git release tag][]. See [Git environment variables][].    | @lets-release-bot email address. |
 | `GIT_COMMITTER_NAME`  | The committer name associated with the [Git release tag][]. See [Git environment variables][].  | @lets-release-bot.               |
@@ -78,7 +78,7 @@ Alternatively the Git authentication can be set up via [SSH][].
 A plugin is a npm module that can implement one or more of the following steps:
 
 | Step               | Description                               | Context                     | Return                   |
-|--------------------|-------------------------------------------|-----------------------------|--------------------------|
+| ------------------ | ----------------------------------------- | --------------------------- | ------------------------ |
 | `findPackages`     | Find all packages                         | [FindPackagesContext][]     | [FindPackagesResult][]   |
 | `verifyConditions` | Verify release conditions                 | [VerifyConditionsContext][] |                          |
 | `analyzeCommits`   | Analyze commits to determine release type | [AnalyzeCommitsContext][]   | [AnalyzeCommitsResult][] |
@@ -132,7 +132,7 @@ See [Options][].
 [@lets-release/exec]: ./plugins/exec
 [@lets-release/pypi]: ./plugins/pypi
 
-[Options]: ./libs/config/src/schemas/Options.ts
+[Options]: ./libs/config/docs/Options.md
 [FindPackagesContext]: ./libs/config/src/types/FindPackagesContext.ts
 [FindPackagesResult]: ./libs/config/src/schemas/FindPackagesResult.ts
 [VerifyConditionsContext]: ./libs/config/src/types/VerifyConditionsContext.ts

@@ -1,6 +1,6 @@
 # @lets-release/semver
 
-Internal utilities for handling semantic versions.
+**[lets-release][]**  internal utilities for handling semantic versions.
 
 ## SemVer Specification
 
@@ -21,5 +21,7 @@ If there is a prerelease name, the initial prerelease number (0) can be omitted.
 
 The prerelease name and the prerelease number MUST be dot-separated,
 unless the prerelease name does not end with a digit.
+
+[lets-release]: ../../
 
 [semver.org]: https://semver.org

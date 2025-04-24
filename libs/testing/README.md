@@ -1,5 +1,5 @@
 # @lets-release/testing
 
-Internal test utilities for **[lets-release][]**.
+**[lets-release][]** internal test utilities.
 
 [lets-release]: ../../

@@ -1,3 +1,5 @@
 # @lets-release/git-host
 
-Utilities for plugins related to git hosts.
+**[lets-release][]** utilities for plugins related to git hosts.
+
+[lets-release]: ../../
