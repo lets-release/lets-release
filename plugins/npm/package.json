@@ -39,8 +39,8 @@
     "resolve-workspace-root": "^2.0.0",
     "semver": "^7.7.1",
     "strip-ansi": "^7.1.0",
-    "tinyglobby": "^0.2.12",
-    "zod": "^3.24.2"
+    "tinyglobby": "^0.2.13",
+    "zod": "^3.24.3"
   },
   "devDependencies": {
     "@lets-release/testing": "workspace:^",
