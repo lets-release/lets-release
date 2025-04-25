@@ -1,6 +1,6 @@
 import path from "node:path";
-import { inspect } from "node:util";
 
+import debug from "debug";
 import { uniq } from "lodash-es";
 import { globSync } from "tinyglobby";
 
@@ -8,6 +8,7 @@ import { PackageInfo, Step, StepFunction } from "@lets-release/config";
 
 import { NPM_PACKAGE_TYPE } from "src/constants/NPM_PACKAGE_TYPE";
 import { getNpmPackageContext } from "src/helpers/getNpmPackageContext";
+import { name } from "src/plugin";
 import { NpmOptions } from "src/schemas/NpmOptions";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
 
@@ -70,9 +71,11 @@ export const findPackages: StepFunction<Step.findPackages, NpmOptions> = async (
         pkgContext,
       );
     } catch (error) {
-      logger.warn(
-        `Skipping package at ${pkgRoot}: ${inspect(error, { breakLength: Infinity, depth: 2, maxArrayLength: 5 })}`,
-      );
+      if (error instanceof Error) {
+        logger.warn(`Skipping package at ${pkgRoot}: ${error.message}`);
+      }
+
+      debug(name)(error);
     }
   }
 

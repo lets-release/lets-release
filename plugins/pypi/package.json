@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "@lets-release/config": "workspace:^",
+    "debug": "^4.4.0",
     "execa": "^9.5.2",
     "find-up-simple": "^1.0.1",
     "form-data": "^4.0.2",

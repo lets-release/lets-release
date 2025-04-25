@@ -1,6 +1,6 @@
 import path from "node:path";
-import { inspect } from "node:util";
 
+import debug from "debug";
 import { uniq } from "lodash-es";
 import { globSync } from "tinyglobby";
 
@@ -8,6 +8,7 @@ import { PackageInfo, Step, StepFunction } from "@lets-release/config";
 
 import { PYPI_PACKAGE_TYPE } from "src/constants/PYPI_PACKAGE_TYPE";
 import { getPyPIPackageContext } from "src/helpers/getPyPIPackageContext";
+import { name } from "src/plugin";
 import { PyPIOptions } from "src/schemas/PyPIOptions";
 import { PyPIPackageContext } from "src/types/PyPIPackageContext";
 
@@ -77,9 +78,11 @@ export const findPackages: StepFunction<
         pkgContext,
       );
     } catch (error) {
-      logger.warn(
-        `Skipping package at ${pkgRoot}: ${inspect(error, { breakLength: Infinity, depth: 2, maxArrayLength: 5 })}`,
-      );
+      if (error instanceof Error) {
+        logger.warn(`Skipping package at ${pkgRoot}: ${error.message}`);
+      }
+
+      debug(name)(error);
     }
   }
 
