@@ -1,4 +1,5 @@
 export * from "src/constants/PYPI_ARTIFACT_NAME";
+export * from "src/constants/PYPI_PACKAGE_TYPE";
 
 export * from "src/schemas/PyPIOptions";
 
