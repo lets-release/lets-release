@@ -29,6 +29,7 @@ describe("findPackages", () => {
   beforeEach(() => {
     vi.mocked(globSync).mockReset();
     vi.mocked(getPyPIPackageContext).mockReset();
+    warn.mockClear();
     getPluginPackageContext.mockReset().mockReturnValue({
       pkg: {
         project: {
@@ -107,7 +108,7 @@ describe("findPackages", () => {
     expect(result).toEqual([]);
     expect(warn).toHaveBeenCalledWith(
       expect.stringContaining(
-        `Skipping package at ${path.resolve("/repo", "packages/pkg1")}: Error: Test error`,
+        `Skipping package at ${path.resolve("/repo", "packages/pkg1")}: Test error`,
       ),
     );
   });
