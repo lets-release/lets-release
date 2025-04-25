@@ -1,4 +1,5 @@
 export * from "src/constants/NPM_ARTIFACT_NAME";
+export * from "src/constants/NPM_PACKAGE_TYPE";
 
 export * from "src/schemas/NpmOptions";
 
