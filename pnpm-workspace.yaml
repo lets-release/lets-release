@@ -1,3 +1,9 @@
 packages:
   - "libs/*"
   - "plugins/*"
+onlyBuiltDependencies:
+  - cpu-features
+  - esbuild
+  - protobufjs
+  - ssh2
+  - unrs-resolver
