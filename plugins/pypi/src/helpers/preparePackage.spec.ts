@@ -11,6 +11,7 @@ vi.mock("execa");
 vi.mock("smol-toml");
 vi.mock("src/helpers/toml/readTomlFile");
 
+const version = "2.0.0";
 const cwd = "/path/cwd";
 const log = vi.fn();
 const logger = { log };
@@ -52,7 +53,9 @@ describe("preparePackage", () => {
           name: "pkg",
           uniqueName: "pypi/pkg",
         },
-        nextRelease: {},
+        nextRelease: {
+          version,
+        },
       } as unknown as PrepareContext,
       { pm: { name: "poetry", version: "1", root: cwd } } as PyPIPackageContext,
       { distDir: "dist" },
@@ -66,30 +69,113 @@ describe("preparePackage", () => {
     );
   });
 
-  it("should prepare package for uv", async () => {
-    await preparePackage(
-      {
-        cwd,
-        logger,
-        setPluginPackageContext,
-        repositoryRoot: "/root",
-        package: {
-          path: "/root/a",
-          type: "pypi",
-          name: "pkg",
-          uniqueName: "pypi/pkg",
-        },
-        nextRelease: {},
-      } as unknown as PrepareContext,
-      { pm: { name: "uv", version: "1", root: cwd } } as PyPIPackageContext,
-      { distDir: "dist" },
-    );
+  describe("uv", () => {
+    beforeEach(() => {
+      vi.mocked($).mockReset();
+    });
 
-    expect(log).toHaveBeenCalledTimes(2);
-    expect(setPluginPackageContext).toHaveBeenCalledWith(
-      expect.objectContaining({
-        prepared: true,
-      }),
-    );
+    it("should prepare package if uv version command is successful (uv>0.7.0)", async () => {
+      vi.mocked($).mockReturnValue((() => promise) as never);
+
+      await preparePackage(
+        {
+          cwd,
+          logger,
+          setPluginPackageContext,
+          repositoryRoot: "/root",
+          package: {
+            path: "/root/a",
+            type: "pypi",
+            name: "pkg",
+            uniqueName: "pypi/pkg",
+          },
+          nextRelease: {
+            version,
+          },
+        } as unknown as PrepareContext,
+        { pm: { name: "uv", version: "1", root: cwd } } as PyPIPackageContext,
+        { distDir: "dist" },
+      );
+
+      expect(log).toHaveBeenCalledTimes(2);
+      expect(setPluginPackageContext).toHaveBeenCalledWith(
+        expect.objectContaining({
+          prepared: true,
+        }),
+      );
+    });
+
+    it("should prepare package if uv version command fails with argument error", async () => {
+      const error = new Error(`error: unexpected argument '${version}' found`);
+
+      vi.mocked($)
+        .mockReturnValueOnce(
+          (() =>
+            new ExtendedPromise((resolve, reject) => {
+              reject(error);
+            })) as never,
+        )
+        .mockReturnValue((() => promise) as never);
+
+      await preparePackage(
+        {
+          cwd,
+          logger,
+          setPluginPackageContext,
+          repositoryRoot: "/root",
+          package: {
+            path: "/root/a",
+            type: "pypi",
+            name: "pkg",
+            uniqueName: "pypi/pkg",
+          },
+          nextRelease: {
+            version,
+          },
+        } as unknown as PrepareContext,
+        { pm: { name: "uv", version: "1", root: cwd } } as PyPIPackageContext,
+        { distDir: "dist" },
+      );
+
+      expect(log).toHaveBeenCalledTimes(2);
+      expect(setPluginPackageContext).toHaveBeenCalledWith(
+        expect.objectContaining({
+          prepared: true,
+        }),
+      );
+    });
+
+    it("should throw error if uv version command fails with other errors", async () => {
+      const error = new Error(`error: unknown error`);
+
+      vi.mocked($).mockReturnValue(
+        (() =>
+          new ExtendedPromise((resolve, reject) => {
+            reject(error);
+          })) as never,
+      );
+
+      await expect(
+        preparePackage(
+          {
+            cwd,
+            logger,
+            setPluginPackageContext,
+            repositoryRoot: "/root",
+            package: {
+              path: "/root/a",
+              type: "pypi",
+              name: "pkg",
+              uniqueName: "pypi/pkg",
+            },
+            nextRelease: {
+              version,
+            },
+          } as unknown as PrepareContext,
+          { pm: { name: "uv", version: "1", root: cwd } } as PyPIPackageContext,
+          { distDir: "dist" },
+        ),
+      ).rejects.toThrow(error);
+    });
   });
 });

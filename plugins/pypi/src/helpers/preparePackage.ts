@@ -18,7 +18,7 @@ export async function preparePackage(
     stderr,
     logger,
     repositoryRoot,
-    package: { path: pkgRoot, uniqueName },
+    package: { name, path: pkgRoot, uniqueName },
     nextRelease: { version },
     setPluginPackageContext,
   }: PrepareContext,
@@ -54,21 +54,49 @@ export async function preparePackage(
     }
 
     // uv
-    // FIXME: https://github.com/astral-sh/uv/issues/6298
     default: {
-      const file = path.resolve(pkgRoot, "pyproject.toml");
-      const toml = await readTomlFile(file);
+      try {
+        versionPromise = $({
+          ...options,
+          cwd: pm.root,
+        })`uv version --project ${pkgRoot} ${version}`;
 
-      await writeFile(
-        file,
-        stringify({
-          ...toml,
-          project: {
-            ...(toml.project as object),
-            version,
-          },
-        }),
-      );
+        versionPromise.stdout?.pipe(stdout, { end: false });
+        versionPromise.stderr?.pipe(stderr, { end: false });
+
+        const { stdout: versionStdout } = await versionPromise;
+
+        // https://github.com/astral-sh/uv/issues/13213
+        if (
+          !versionStdout.some((line) => line.includes(`${name} ${version}`))
+        ) {
+          throw new Error("error: uv issue #13213");
+        }
+      } catch (error) {
+        if (
+          error instanceof Error &&
+          (error.message.includes(
+            `error: unexpected argument '${version}' found`,
+          ) ||
+            error.message.includes("error: uv issue #13213"))
+        ) {
+          const file = path.resolve(pkgRoot, "pyproject.toml");
+          const toml = await readTomlFile(file);
+
+          await writeFile(
+            file,
+            stringify({
+              ...toml,
+              project: {
+                ...(toml.project as object),
+                version,
+              },
+            }),
+          );
+        } else {
+          throw error;
+        }
+      }
 
       break;
     }
