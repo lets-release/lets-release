@@ -39,7 +39,11 @@ export async function getStepPipelinesList({
         try {
           const pluginObject = (await PluginObject.parseAsync(
             isString(plugin)
-              ? await loadModule(plugin, [repositoryRoot], cwd)
+              ? await loadModule(
+                  plugin,
+                  [repositoryRoot, import.meta.dirname],
+                  cwd,
+                )
               : plugin,
           )) as PluginObject;
 

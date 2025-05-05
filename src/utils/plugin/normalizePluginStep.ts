@@ -51,7 +51,11 @@ export async function normalizePluginStep<T extends Step = Step>(
 
   const pluginObject = isString(pluginStep)
     ? await PluginObject.parseAsync(
-        await loadModule(pluginStep, [repositoryRoot], cwd),
+        await loadModule(
+          pluginStep,
+          [repositoryRoot, import.meta.dirname],
+          cwd,
+        ),
       )
     : { [step]: pluginStep };
   const func = pluginObject[step];
