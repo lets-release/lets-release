@@ -2,6 +2,7 @@ import { writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { $, ResultPromise } from "execa";
+import { escapeRegExp } from "lodash-es";
 import { stringify } from "smol-toml";
 
 import { PrepareContext } from "@lets-release/config";
@@ -68,7 +69,11 @@ export async function preparePackage(
 
         // https://github.com/astral-sh/uv/issues/13213
         if (
-          !versionStdout.some((line) => line.includes(`${name} ${version}`))
+          !versionStdout.some((line) =>
+            new RegExp(
+              String.raw`^${name} \S+ => ${escapeRegExp(version)}$`,
+            ).test(line),
+          )
         ) {
           throw new Error("error: uv issue #13213");
         }
