@@ -32,14 +32,20 @@ export async function ensureNpmPackageContext(
     throw new UnsupportedNpmPackageManagerError(uniqueName);
   }
 
-  // Verify the npm authentication only if `skipPublishing` is not `true` and `pkg.private` is not `true`
-  if (!pkgContext.verified && !skipPublishing && !pkgContext.pkg.private) {
-    await verifyNpmPackageManagerVersion(context, pkgContext);
-    await verifyAuth(context, pkgContext);
+  let pmVersion: string | undefined = undefined;
+
+  if (!pkgContext.verified) {
+    pmVersion = await verifyNpmPackageManagerVersion(context, pkgContext);
+
+    // Verify the npm authentication only if `skipPublishing` is not `true` and `pkg.private` is not `true`
+    if (!skipPublishing && !pkgContext.pkg.private) {
+      await verifyAuth(context, pkgContext);
+    }
   }
 
   const verifiedPkgContext = {
     ...pkgContext,
+    pm: pmVersion ? { ...pkgContext.pm, version: pmVersion } : pkgContext.pm,
     verified: true,
   };
 

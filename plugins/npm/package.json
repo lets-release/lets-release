@@ -31,14 +31,14 @@
   },
   "dependencies": {
     "@lets-release/config": "workspace:^",
-    "debug": "^4.4.0",
-    "execa": "^9.5.2",
+    "debug": "^4.4.1",
+    "execa": "^9.5.3",
     "find-versions": "^6.0.0",
     "normalize-url": "^8.0.1",
     "preferred-pm": "^4.1.1",
     "read-pkg": "^9.0.1",
     "resolve-workspace-root": "^2.0.0",
-    "semver": "^7.7.1",
+    "semver": "^7.7.2",
     "strip-ansi": "^7.1.0",
     "tinyglobby": "^0.2.13",
     "zod": "^3.24.4"

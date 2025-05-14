@@ -2,6 +2,7 @@ import { mkdir, rename } from "node:fs/promises";
 import path from "node:path";
 
 import { $, ResultPromise } from "execa";
+import { gte } from "semver";
 import stripAnsi from "strip-ansi";
 
 import { PrepareContext } from "@lets-release/config";
@@ -79,10 +80,16 @@ export async function preparePackage(
 
     switch (pm.name) {
       case NpmPackageManagerName.pnpm: {
-        promise = $({
-          ...options,
-          cwd: pkgRoot, // FIXME: https://github.com/pnpm/pnpm/issues/4351
-        })`pnpm pack ${pkgRoot} --pack-destination ${pkgRoot}`;
+        // https://github.com/pnpm/pnpm/issues/4351
+        promise = gte(pm.version, "10.11.0")
+          ? $({
+              ...options,
+              cwd: pm.root,
+            })`pnpm --filter ${name} pack ${pkgRoot} --pack-destination ${pkgRoot}`
+          : $({
+              ...options,
+              cwd: pkgRoot,
+            })`pnpm pack ${pkgRoot} --pack-destination ${pkgRoot}`;
         break;
       }
 

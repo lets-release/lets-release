@@ -62,7 +62,7 @@ describe("preparePackage", () => {
     expect(log).toHaveBeenCalledTimes(1);
   });
 
-  it("should prepare package with pnpm", async () => {
+  it("should prepare package with pnpm < 10.11.0", async () => {
     const promise = new ExtendedPromise((resolve) => {
       resolve({
         stdout: [tgz],
@@ -88,7 +88,44 @@ describe("preparePackage", () => {
         {
           pm: {
             name: "pnpm",
-            version: "1",
+            version: "10.10.0",
+            root: cwd,
+          },
+        } as NpmPackageContext,
+        { tarballDir: "b" },
+      ),
+    ).resolves.toBe(undefined);
+
+    expect(log).toHaveBeenCalledTimes(2);
+  });
+
+  it("should prepare package with pnpm >= 10.11.0", async () => {
+    const promise = new ExtendedPromise((resolve) => {
+      resolve({
+        stdout: [tgz],
+      });
+    });
+    vi.mocked($).mockReturnValue((() => promise) as never);
+
+    await expect(
+      preparePackage(
+        {
+          cwd,
+          logger,
+          setPluginPackageContext,
+          repositoryRoot: "/root",
+          package: {
+            path: "/root/a",
+            type: "npm",
+            name: "pkg",
+            uniqueName: "npm/pkg",
+          },
+          nextRelease: {},
+        } as unknown as PrepareContext,
+        {
+          pm: {
+            name: "pnpm",
+            version: "10.11.0",
             root: cwd,
           },
         } as NpmPackageContext,

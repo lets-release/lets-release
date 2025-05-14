@@ -83,7 +83,7 @@ describe("preparePackage", () => {
         },
       } as unknown as PrepareContext;
       pkgContext = {
-        pm: { name: "pnpm", root: cwd },
+        pm: { name: "pnpm", version: "10.10.0", root: cwd },
         registry,
       } as NpmPackageContext;
 
@@ -161,7 +161,7 @@ describe("preparePackage", () => {
         },
       } as unknown as PrepareContext;
       pkgContext = {
-        pm: { name: "yarn", root: cwd },
+        pm: { name: "yarn", version: "4.0.0", root: cwd },
         registry,
       } as NpmPackageContext;
 
@@ -239,7 +239,7 @@ describe("preparePackage", () => {
         },
       } as unknown as PrepareContext;
       pkgContext = {
-        pm: { name: "npm", root: cwd },
+        pm: { name: "npm", version: "10.0.0", root: cwd },
         registry,
       } as NpmPackageContext;
 

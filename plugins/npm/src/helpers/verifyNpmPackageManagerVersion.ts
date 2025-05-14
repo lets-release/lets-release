@@ -39,4 +39,6 @@ export async function verifyNpmPackageManagerVersion(
       version,
     );
   }
+
+  return version;
 }

@@ -3,6 +3,7 @@ import { AnalyzeCommitsContext } from "@lets-release/config";
 import { UnsupportedNpmPackageManagerError } from "src/errors/UnsupportedNpmPackageManagerError";
 import { ensureNpmPackageContext } from "src/helpers/ensureNpmPackageContext";
 import { getNpmPackageContext } from "src/helpers/getNpmPackageContext";
+import { verifyNpmPackageManagerVersion } from "src/helpers/verifyNpmPackageManagerVersion";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
 
 vi.mock("src/helpers/getNpmPackageContext");
@@ -68,13 +69,22 @@ describe("ensureNpmPackageContext", () => {
 
   it("should return new package context", async () => {
     vi.mocked(getNpmPackageContext).mockResolvedValue(pkgContext);
+    vi.mocked(verifyNpmPackageManagerVersion).mockResolvedValue("10.11.0");
 
     await expect(ensureNpmPackageContext(context, {})).resolves.toEqual({
       ...pkgContext,
+      pm: {
+        ...pkgContext.pm,
+        version: "10.11.0",
+      },
       verified: true,
     });
     expect(setPluginPackageContext).toHaveBeenNthCalledWith(1, {
       ...pkgContext,
+      pm: {
+        ...pkgContext.pm,
+        version: "10.11.0",
+      },
       verified: true,
     });
   });

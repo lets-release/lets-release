@@ -90,7 +90,7 @@ describe("verifyNpmPackageManagerVersion", () => {
         pm: { name: "pnpm" },
         pkg,
       } as unknown as NpmPackageContext),
-    ).resolves.toBeUndefined();
+    ).resolves.toBe("8.0.0");
 
     vi.mocked(findVersions).mockReturnValueOnce(["4.0.0"]);
     await expect(
@@ -98,7 +98,7 @@ describe("verifyNpmPackageManagerVersion", () => {
         pm: { name: "yarn" },
         pkg,
       } as unknown as NpmPackageContext),
-    ).resolves.toBeUndefined();
+    ).resolves.toBe("4.0.0");
 
     vi.mocked(findVersions).mockReturnValueOnce(["8.13.0"]);
     await expect(
@@ -106,6 +106,6 @@ describe("verifyNpmPackageManagerVersion", () => {
         pm: { name: "npm" },
         pkg,
       } as unknown as NpmPackageContext),
-    ).resolves.toBeUndefined();
+    ).resolves.toBe("8.13.0");
   });
 });
