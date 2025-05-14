@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@octokit/types": "^14.0.0",
-    "undici": "^7.8.0"
+    "undici": "^7.9.0"
   },
   "files": [
     "package.json",
