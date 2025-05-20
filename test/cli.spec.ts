@@ -68,7 +68,7 @@ describe("cli", () => {
           repository: { url },
           publishConfig: { registry },
           devDependencies: {
-            "conventional-changelog-conventionalcommits": "^8.0.0",
+            "conventional-changelog-conventionalcommits": "^9.0.0",
             vite: "^6.0.7",
             "vite-node": "^2.1.8",
             "vite-tsconfig-paths": "^5.1.4",
@@ -252,7 +252,7 @@ describe("cli", () => {
           repository: { url },
           publishConfig: { registry },
           devDependencies: {
-            "conventional-changelog-conventionalcommits": "^8.0.0",
+            "conventional-changelog-conventionalcommits": "^9.0.0",
             vite: "^6.0.7",
             "vite-node": "^2.1.8",
             "vite-tsconfig-paths": "^5.1.4",
@@ -320,7 +320,7 @@ describe("cli", () => {
           repository: { url },
           publishConfig: { registry },
           devDependencies: {
-            "conventional-changelog-conventionalcommits": "^8.0.0",
+            "conventional-changelog-conventionalcommits": "^9.0.0",
             vite: "^6.0.7",
             "vite-node": "^2.1.8",
             "vite-tsconfig-paths": "^5.1.4",
@@ -405,7 +405,7 @@ describe("cli", () => {
           repository: { url },
           publishConfig: { registry },
           devDependencies: {
-            "conventional-changelog-conventionalcommits": "^8.0.0",
+            "conventional-changelog-conventionalcommits": "^9.0.0",
             vite: "^6.0.7",
             "vite-node": "^2.1.8",
             "vite-tsconfig-paths": "^5.1.4",
@@ -523,7 +523,7 @@ describe("cli", () => {
           repository: { url },
           publishConfig: { registry },
           devDependencies: {
-            "conventional-changelog-conventionalcommits": "^8.0.0",
+            "conventional-changelog-conventionalcommits": "^9.0.0",
             vite: "^6.0.7",
             "vite-node": "^2.1.8",
             "vite-tsconfig-paths": "^5.1.4",
@@ -591,7 +591,7 @@ describe("cli", () => {
           type: "module",
           publishConfig: { registry },
           devDependencies: {
-            "conventional-changelog-conventionalcommits": "^8.0.0",
+            "conventional-changelog-conventionalcommits": "^9.0.0",
             vite: "^6.0.7",
             "vite-node": "^2.1.8",
             "vite-tsconfig-paths": "^5.1.4",
@@ -663,7 +663,7 @@ describe("cli", () => {
           repository: { url },
           publishConfig: { registry },
           devDependencies: {
-            "conventional-changelog-conventionalcommits": "^8.0.0",
+            "conventional-changelog-conventionalcommits": "^9.0.0",
             vite: "^6.0.7",
             "vite-node": "^2.1.8",
             "vite-tsconfig-paths": "^5.1.4",

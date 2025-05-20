@@ -35,12 +35,12 @@
     "lodash-es": "^4.17.21",
     "micromatch": "^4.0.8",
     "read-pkg": "^9.0.1",
-    "zod": "^3.24.4"
+    "zod": "^3.25.7"
   },
   "devDependencies": {
     "conventional-changelog-angular": "^8.0.0",
     "conventional-changelog-atom": "^5.0.0",
-    "conventional-changelog-conventionalcommits": "^8.0.0",
+    "conventional-changelog-conventionalcommits": "^9.0.0",
     "conventional-changelog-ember": "^5.0.0",
     "conventional-changelog-eslint": "^6.0.0",
     "conventional-changelog-express": "^5.0.0",
