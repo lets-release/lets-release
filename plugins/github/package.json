@@ -32,7 +32,7 @@
   "dependencies": {
     "@lets-release/config": "workspace:^",
     "@lets-release/git-host": "workspace:^",
-    "@octokit/core": "^7.0.1",
+    "@octokit/core": "^7.0.2",
     "@octokit/plugin-paginate-rest": "^13.0.0",
     "@octokit/plugin-retry": "^8.0.1",
     "@octokit/plugin-throttling": "^11.0.0",
