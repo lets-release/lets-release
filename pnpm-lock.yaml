@@ -468,17 +468,17 @@ importers:
         specifier: workspace:^
         version: link:../../libs/git-host
       '@octokit/core':
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^7.0.1
+        version: 7.0.1
       '@octokit/plugin-paginate-rest':
         specifier: ^13.0.0
-        version: 13.0.0(@octokit/core@7.0.0)
+        version: 13.0.0(@octokit/core@7.0.1)
       '@octokit/plugin-retry':
-        specifier: ^8.0.0
-        version: 8.0.0(@octokit/core@7.0.0)
+        specifier: ^8.0.1
+        version: 8.0.1(@octokit/core@7.0.1)
       '@octokit/plugin-throttling':
         specifier: ^11.0.0
-        version: 11.0.0(@octokit/core@7.0.0)
+        version: 11.0.0(@octokit/core@7.0.1)
       '@octokit/request-error':
         specifier: ^7.0.0
         version: 7.0.0
@@ -1121,8 +1121,8 @@ packages:
     resolution: {integrity: sha512-JcQDsBdg49Yky2w2ld20IHAlwr8d/d8N6NiOXbtuoPCqzbsiJgF633mVUw3x4mo0H5ypataQIX7SFu3yy44Mpw==}
     engines: {node: '>= 18'}
 
-  '@octokit/core@7.0.0':
-    resolution: {integrity: sha512-4OxKhxh+3s7JRDwNfkQ16yqDxw/1RC/4HZ22+ZQ8vMZy7f3sh4/q0wd986rpm1UcLI6lH0labp6DRYFw2mF14g==}
+  '@octokit/core@7.0.1':
+    resolution: {integrity: sha512-XgQhCJcpLxv62d9oe8OsiYespL8WciUF0eejZlWYeV8NxjRcxsbetiPERcCIQB4F6t9FSAydSl0y84I0E23oQg==}
     engines: {node: '>= 20'}
 
   '@octokit/endpoint@10.1.4':
@@ -1142,11 +1142,11 @@ packages:
     peerDependencies:
       '@octokit/core': '>=6'
 
-  '@octokit/plugin-retry@8.0.0':
-    resolution: {integrity: sha512-v/H1OxA792Pvp/2G93IW47IvCKWb0A0VAy/P7uVXkpbl5dCvqiaWxT3a/nlHu2vcuA0bvtcKAZy+5VeBiLkFPA==}
+  '@octokit/plugin-retry@8.0.1':
+    resolution: {integrity: sha512-KUoYR77BjF5O3zcwDQHRRZsUvJwepobeqiSSdCJ8lWt27FZExzb0GgVxrhhfuyF6z2B2zpO0hN5pteni1sqWiw==}
     engines: {node: '>= 20'}
     peerDependencies:
-      '@octokit/core': '>=6'
+      '@octokit/core': '>=7'
 
   '@octokit/plugin-throttling@11.0.0':
     resolution: {integrity: sha512-a34qmeAZJltwlPlPBJ9odj+GgZc9vldCcq/BUps1ovrr7PO+njsSthDo2QxtTl9txnFK7Z3s2NyKsPVtXmhHfA==}
@@ -1768,8 +1768,8 @@ packages:
   bcrypt-pbkdf@1.0.2:
     resolution: {integrity: sha512-qeFIXtP4MSoi6NLqO12WfqARWWuCKi2Rn/9hJLEmtB5yTNr9DqFWkJRCf2qShWzPeAMRnOgCrq0sg/KLv5ES9w==}
 
-  before-after-hook@3.0.2:
-    resolution: {integrity: sha512-Nik3Sc0ncrMK4UUdXQmAnRtzmNQTAAXmXIopizwZ1W1t8QmfJj+zL4OA2I7XPTPW5z5TDqv4hRo/JzouDJnX3A==}
+  before-after-hook@4.0.0:
+    resolution: {integrity: sha512-q6tR3RPqIB1pMiTRMFcZwuG5T8vwp+vUvEG0vuI6B+Rikh5BfPp2fQ82c925FOs+b0lcFQ8CFrL+KbilfZFhOQ==}
 
   bl@4.1.0:
     resolution: {integrity: sha512-1W07cM9gS6DcLperZfFSj+bWLtaPGSOHWhPiGzXmvVJbRLdG82sH/Kn8EtW1VqWVA54AKf2h5k5BbnIbwF3h6w==}
@@ -4447,14 +4447,14 @@ snapshots:
 
   '@octokit/auth-token@5.1.2': {}
 
-  '@octokit/core@7.0.0':
+  '@octokit/core@7.0.1':
     dependencies:
       '@octokit/auth-token': 5.1.2
       '@octokit/graphql': 8.2.2
       '@octokit/request': 9.2.3
       '@octokit/request-error': 6.1.8
       '@octokit/types': 14.0.0
-      before-after-hook: 3.0.2
+      before-after-hook: 4.0.0
       universal-user-agent: 7.0.3
 
   '@octokit/endpoint@10.1.4':
@@ -4470,21 +4470,21 @@ snapshots:
 
   '@octokit/openapi-types@25.0.0': {}
 
-  '@octokit/plugin-paginate-rest@13.0.0(@octokit/core@7.0.0)':
+  '@octokit/plugin-paginate-rest@13.0.0(@octokit/core@7.0.1)':
     dependencies:
-      '@octokit/core': 7.0.0
+      '@octokit/core': 7.0.1
       '@octokit/types': 14.0.0
 
-  '@octokit/plugin-retry@8.0.0(@octokit/core@7.0.0)':
+  '@octokit/plugin-retry@8.0.1(@octokit/core@7.0.1)':
     dependencies:
-      '@octokit/core': 7.0.0
-      '@octokit/request-error': 6.1.8
+      '@octokit/core': 7.0.1
+      '@octokit/request-error': 7.0.0
       '@octokit/types': 14.0.0
       bottleneck: 2.19.5
 
-  '@octokit/plugin-throttling@11.0.0(@octokit/core@7.0.0)':
+  '@octokit/plugin-throttling@11.0.0(@octokit/core@7.0.1)':
     dependencies:
-      '@octokit/core': 7.0.0
+      '@octokit/core': 7.0.1
       '@octokit/types': 14.0.0
       bottleneck: 2.19.5
 
@@ -5047,7 +5047,7 @@ snapshots:
     dependencies:
       tweetnacl: 0.14.5
 
-  before-after-hook@3.0.2: {}
+  before-after-hook@4.0.0: {}
 
   bl@4.1.0:
     dependencies:
