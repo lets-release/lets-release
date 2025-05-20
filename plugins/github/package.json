@@ -32,11 +32,11 @@
   "dependencies": {
     "@lets-release/config": "workspace:^",
     "@lets-release/git-host": "workspace:^",
-    "@octokit/core": "^6.1.5",
-    "@octokit/plugin-paginate-rest": "^12.0.0",
-    "@octokit/plugin-retry": "^7.2.1",
-    "@octokit/plugin-throttling": "^10.0.0",
-    "@octokit/request-error": "^6.1.8",
+    "@octokit/core": "^7.0.0",
+    "@octokit/plugin-paginate-rest": "^13.0.0",
+    "@octokit/plugin-retry": "^8.0.0",
+    "@octokit/plugin-throttling": "^11.0.0",
+    "@octokit/request-error": "^7.0.0",
     "mime": "^4.0.7",
     "p-filter": "^4.1.0",
     "read-pkg": "^9.0.1",
@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@octokit/types": "^14.0.0",
-    "undici": "^7.9.0"
+    "undici": "^7.10.0"
   },
   "files": [
     "package.json",
