@@ -32,7 +32,7 @@
     "@lets-release/config": "workspace:^",
     "execa": "^9.5.3",
     "strip-ansi": "^7.1.0",
-    "zod": "^3.25.12"
+    "zod": "^3.25.17"
   },
   "files": [
     "package.json",
