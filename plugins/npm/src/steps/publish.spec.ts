@@ -63,7 +63,7 @@ describe("publish", () => {
     vi.mocked(preparePackage).mockClear();
   });
 
-  it("should skip publish if skipPublishing is true", async () => {
+  it("should skip publishing if skipPublishing is true", async () => {
     await expect(
       publish(
         {
@@ -77,7 +77,7 @@ describe("publish", () => {
     expect(log).toHaveBeenCalledTimes(1);
   });
 
-  it("should skip publish if package.json's private property is true", async () => {
+  it("should skip publishing if package.json's private property is true", async () => {
     vi.mocked(ensureNpmPackageContext)
       .mockReset()
       .mockResolvedValue({
@@ -99,7 +99,7 @@ describe("publish", () => {
     expect(log).toHaveBeenCalledTimes(1);
   });
 
-  it("should skip publish if version is already published", async () => {
+  it("should skip publishing if version is already published", async () => {
     vi.mocked(isVersionPublished).mockResolvedValue(true);
 
     await expect(

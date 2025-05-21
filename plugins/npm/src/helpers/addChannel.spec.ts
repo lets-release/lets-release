@@ -51,7 +51,7 @@ describe("addChannel", () => {
     vi.mocked(getDistTagVersion).mockReset();
   });
 
-  it("should skip add channel if the current version is less than the version on dist-tag", async () => {
+  it("should skip adding channel if the current version is less than the version on dist-tag", async () => {
     vi.mocked(getDistTagVersion).mockResolvedValue("2.0.0");
 
     await expect(
@@ -70,7 +70,7 @@ describe("addChannel", () => {
     expect(warn).toHaveBeenCalledOnce();
   });
 
-  it("should skip add channel if the current version is equal to the version on dist-tag", async () => {
+  it("should skip adding channel if the current version is equal to the version on dist-tag", async () => {
     vi.mocked(getDistTagVersion).mockResolvedValue("1.0.0");
 
     await expect(

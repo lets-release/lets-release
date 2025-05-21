@@ -43,7 +43,7 @@ const context = {
 };
 
 describe("publish", () => {
-  it('should skip publish if "skipPublishing" is true', async () => {
+  it('should skip publishing if "skipPublishing" is true', async () => {
     const cwd = temporaryDirectory();
     const pkg = {
       project: {
@@ -135,7 +135,7 @@ describe("publish", () => {
     expect(existsSync(wheelFile)).toBeTruthy();
   });
 
-  it("should skip publish if any private classifier is provided", async () => {
+  it("should skip publishing if any private classifier is provided", async () => {
     const cwd = temporaryDirectory();
     const pkg = {
       project: {

@@ -35,12 +35,12 @@
     "@octokit/core": "^7.0.2",
     "@octokit/plugin-paginate-rest": "^13.0.0",
     "@octokit/plugin-retry": "^8.0.1",
-    "@octokit/plugin-throttling": "^11.0.0",
+    "@octokit/plugin-throttling": "^11.0.1",
     "@octokit/request-error": "^7.0.0",
     "mime": "^4.0.7",
     "p-filter": "^4.1.0",
     "read-pkg": "^9.0.1",
-    "zod": "^3.25.7"
+    "zod": "^3.25.12"
   },
   "devDependencies": {
     "@octokit/types": "^14.0.0",

@@ -32,7 +32,7 @@
     "@lets-release/versioning": "workspace:^",
     "date-fns": "^4.1.0",
     "lodash-es": "^4.17.21",
-    "zod": "^3.25.7"
+    "zod": "^3.25.12"
   },
   "files": [
     "package.json",

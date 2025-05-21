@@ -50,7 +50,7 @@ describe("addChannels", () => {
     vi.mocked(getArtifactInfo).mockClear();
   });
 
-  it("should skip add channels if skipPublishing is true", async () => {
+  it("should skip adding channels if skipPublishing is true", async () => {
     await expect(
       addChannels(
         {
@@ -63,7 +63,7 @@ describe("addChannels", () => {
     ).resolves.toBeUndefined();
   });
 
-  it("should skip add channels if package.json's private property is true", async () => {
+  it("should skip adding channels if package.json's private property is true", async () => {
     vi.mocked(ensureNpmPackageContext)
       .mockReset()
       .mockResolvedValue({

@@ -31,7 +31,7 @@ const context = {
 };
 
 describe("publish", () => {
-  it('should skip publish if "skipPublishing" is true', async () => {
+  it('should skip publishing if "skipPublishing" is true', async () => {
     const cwd = temporaryDirectory();
     const pkg = {
       name: "skip-publish-npm-publish",
@@ -94,7 +94,7 @@ describe("publish", () => {
     expect(exitCode).not.toBe(0);
   });
 
-  it('should skip publish if "package.private" is true', async () => {
+  it('should skip publishing if "package.private" is true', async () => {
     const cwd = temporaryDirectory();
     const pkg = {
       name: "skip-publish-private",
@@ -158,7 +158,7 @@ describe("publish", () => {
     expect(exitCode).not.toBe(0);
   });
 
-  it("should skip publish if version is already published", async () => {
+  it("should skip publishing if version is already published", async () => {
     const cwd = temporaryDirectory();
     await writeFile(
       path.resolve(cwd, ".npmrc"),

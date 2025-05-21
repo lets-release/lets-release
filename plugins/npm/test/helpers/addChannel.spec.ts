@@ -86,7 +86,7 @@ describe("addChannel", () => {
       await publish(ctx, {});
     });
 
-    it("should skip add channel if the current version is less than the version on dist-tag", async () => {
+    it("should skip adding channel if the current version is less than the version on dist-tag", async () => {
       await addChannel(
         {
           ...context,
@@ -104,7 +104,7 @@ describe("addChannel", () => {
       ).resolves.toBe("2.0.0");
     });
 
-    it("should skip add channel if the current version is equal to the version on dist-tag", async () => {
+    it("should skip adding channel if the current version is equal to the version on dist-tag", async () => {
       await addChannel(
         {
           ...context,

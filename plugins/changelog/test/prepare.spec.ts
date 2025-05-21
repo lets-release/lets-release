@@ -33,7 +33,7 @@ describe("prepare", () => {
     expect(buffer.toString()).toBe(`${notes}\n`);
   });
 
-  it("should skip update changelog if release notes is empty", async () => {
+  it("should skip updating changelog if release notes is empty", async () => {
     const pkgRoot = temporaryDirectory();
     const changelogFile = "CHANGELOG.txt";
     const changelogPath = path.resolve(pkgRoot, changelogFile);
