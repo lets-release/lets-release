@@ -5,10 +5,6 @@ const config: KnipConfig = {
     ".": {
       entry: "src/{index,cli}.ts",
       project: ["src/**", "test/**", "!**/*.spec.ts"],
-      // FIXME: https://github.com/webpro-nl/knip/issues/859
-      eslint: {
-        config: ["eslint.config.ts"],
-      },
       ignore: ["test/__fixtures__/**"],
       ignoreDependencies: [
         "@aliser/ts-transformer-append-js-extension",
