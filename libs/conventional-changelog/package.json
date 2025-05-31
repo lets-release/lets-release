@@ -36,7 +36,7 @@
     "conventional-commits-parser": "^6.1.0",
     "debug": "^4.4.1",
     "read-pkg": "^9.0.1",
-    "zod": "^3.25.41"
+    "zod": "^3.25.42"
   },
   "files": [
     "package.json",

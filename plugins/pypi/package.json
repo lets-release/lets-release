@@ -41,7 +41,7 @@
     "strip-ansi": "^7.1.0",
     "tinyglobby": "^0.2.14",
     "undici": "^7.10.0",
-    "zod": "^3.25.41"
+    "zod": "^3.25.42"
   },
   "devDependencies": {
     "@lets-release/testing": "workspace:^",

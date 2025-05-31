@@ -42,6 +42,7 @@ const eslintConfig: TSESLint.FlatConfig.ConfigArray = config(
       "import-x/resolver-next": [
         createTypeScriptImportResolver({
           alwaysTryTypes: true,
+          noWarnOnMultipleProjects: true,
           project: [
             "tsconfig.json",
             "tsconfig.eslint.json",
