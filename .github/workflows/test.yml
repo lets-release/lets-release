@@ -1,6 +1,10 @@
 name: Test
 
-on: workflow_call
+on:
+  workflow_call:
+    secrets:
+      docker-token:
+        required: true
 
 env:
   FORCE_COLOR: 1
@@ -56,5 +60,5 @@ jobs:
       - uses: docker/login-action@v3
         with:
           username: letsrelease
-          password: ${{ secrets.LETS_RELEASE_DOCKER_TOKEN }}
+          password: ${{ secrets.docker-token }}
       - run: pnpm --recursive --workspace-concurrency=1 run test:e2e run

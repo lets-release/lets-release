@@ -29,6 +29,8 @@ concurrency:
 jobs:
   test:
     uses: ./.github/workflows/test.yml
+    secrets:
+      docker-token: ${{ secrets.LETS_RELEASE_DOCKER_TOKEN }}
 
   dependabot:
     needs: test
