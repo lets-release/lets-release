@@ -1,3 +1,5 @@
 {
-  "vitest.workspaceConfig": "./vitest.vscode.workspace.ts"
+  "vitest.ignoreWorkspace": true,
+  "vitest.configSearchPatternInclude": "**/vitest*.config*.ts",
+  "vitest.maximumConfigs": 100
 }
