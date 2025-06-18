@@ -1,0 +1,24 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      security:
+        applies-to: security-updates
+        update-types:
+          - "major"
+          - "minor"
+          - "patch"
+      version:
+        applies-to: version-updates
+        update-types:
+          - "major"
+          - "minor"
+          - "patch"
+    versioning-strategy: increase
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"

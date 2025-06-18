@@ -1,0 +1,54 @@
+name: Pull Request
+
+on:
+  pull_request:
+    branches:
+      - main
+      - next
+      - "*.x"
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+permissions:
+  contents: write
+  issues: write # to be able to comment on released issues
+  pull-requests: write # to be able to comment on released pull requests
+
+env:
+  FORCE_COLOR: 1
+  NPM_CONFIG_COLOR: always
+  YARN_ENABLE_IMMUTABLE_INSTALLS: false
+  NODE_OPTIONS: "--max-old-space-size=4096 --max-semi-space-size=4096"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  test:
+    uses: ./.github/workflows/test.yml
+
+  dependabot:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.user.login == 'dependabot[bot]' && github.repository == 'lets-release/lets-release'
+    steps:
+      - name: Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v2
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+      - name: Approve Dependabot PR
+        if: steps.metadata.outputs.package-ecosystem == 'github_actions' || (steps.metadata.outputs.update-type != 'version-update:semver-major' && steps.metadata.outputs.update-type != 'security-update:semver-major')
+        run: gh pr review --approve "$PR_URL"
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - name: Merge Dependabot PR
+        if: steps.metadata.outputs.package-ecosystem == 'github_actions' || (steps.metadata.outputs.update-type != 'version-update:semver-major' && steps.metadata.outputs.update-type != 'security-update:semver-major')
+        run: gh pr merge --auto --merge "$PR_URL"
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
