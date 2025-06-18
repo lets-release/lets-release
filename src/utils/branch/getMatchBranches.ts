@@ -39,7 +39,7 @@ export function getMatchBranches(
           ): MatchBranch<typeof type>[] => {
             return [
               ...matchBranches,
-              ...remove(parsedBranches, (branch) =>
+              ...remove(parsedBranches as never, (branch) =>
                 filterParsedBranch(type, obj.name, branch),
               ).flatMap((branch) =>
                 flatMapParsedBranch(packages, type, obj, branch),
