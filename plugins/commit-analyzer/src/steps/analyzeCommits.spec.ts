@@ -139,7 +139,7 @@ describe("analyzeCommits", () => {
     });
   });
 
-  it('should accept a "parseOptions" object as option', async () => {
+  it('should accept a "parserOptions" object as option', async () => {
     const commits = [
       { hash: "123", message: "%%BUGFIX%% First fix (fixes #123)" },
       {
@@ -148,6 +148,8 @@ describe("analyzeCommits", () => {
       },
     ];
 
+    // CommitParser can not correctly handle headerCorrespondence with named captures
+    // https://github.com/conventional-changelog/conventional-changelog/issues/1371
     await expect(
       analyzeCommits(
         {
@@ -159,7 +161,7 @@ describe("analyzeCommits", () => {
         } as unknown as AnalyzeCommitsContext,
         {
           parserOptions: {
-            headerPattern: /^%%(?<type>.*?)%% (?<subject>.*)$/,
+            headerPattern: /^%%(.*?)%% (.*)$/,
             headerCorrespondence: ["tag", "shortDesc"],
           },
         },
@@ -172,7 +174,7 @@ describe("analyzeCommits", () => {
     });
   });
 
-  it('should accept a partial "parseOptions" object as option', async () => {
+  it('should accept a partial "parserOptions" object as option', async () => {
     const commits = [
       { hash: "123", message: "%%fix%% First fix (fixes #123)" },
       {
