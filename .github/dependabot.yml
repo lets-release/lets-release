@@ -5,13 +5,13 @@ updates:
     schedule:
       interval: "weekly"
     groups:
-      security:
+      security-updates:
         applies-to: security-updates
         update-types:
           - "major"
           - "minor"
           - "patch"
-      version:
+      version-updates:
         applies-to: version-updates
         update-types:
           - "major"
