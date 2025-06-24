@@ -1,7 +1,8 @@
-name: Pull Request
+name: Dependabot Pull Request
+# https://github.com/dependabot/dependabot-core/issues/3253
 
 on:
-  pull_request:
+  pull_request_target:
     branches:
       - main
       - next
@@ -28,14 +29,15 @@ concurrency:
 
 jobs:
   test:
+    if: github.actor == 'dependabot[bot]'
     uses: ./.github/workflows/test.yml
     secrets:
       docker-token: ${{ secrets.LETS_RELEASE_DOCKER_TOKEN }}
 
-  dependabot:
+  merge:
     needs: test
     runs-on: ubuntu-latest
-    if: github.event.pull_request.user.login == 'dependabot[bot]' && github.repository == 'lets-release/lets-release'
+    if: github.actor == 'dependabot[bot]' && github.event.pull_request.user.login == 'dependabot[bot]' && github.repository == 'lets-release/lets-release'
     steps:
       - name: Dependabot metadata
         id: metadata
