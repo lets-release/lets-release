@@ -52,7 +52,7 @@
     "git-log-parser": "^1.2.1",
     "hook-std": "^3.0.0",
     "lodash-es": "^4.17.21",
-    "marked": "^15.0.12",
+    "marked": "^16.0.0",
     "marked-terminal": "^7.3.0",
     "micromatch": "^4.0.8",
     "read-package-up": "^11.0.0",
@@ -108,7 +108,7 @@
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.34.1",
     "typescript-transform-paths": "^3.5.5",
-    "vite": "^6.3.5",
+    "vite": "^7.0.0",
     "vite-node": "^3.2.4",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.2.4"
