@@ -1,5 +1,5 @@
 import { template } from "lodash-es";
-import { TomlPrimitive } from "smol-toml";
+import { TomlValue } from "smol-toml";
 
 import { BaseContext } from "@lets-release/config";
 
@@ -10,7 +10,7 @@ import { normalizeRegistry } from "src/helpers/toml/normalizeRegistry";
 
 export function normalizeUv(
   { env }: Pick<BaseContext, "env">,
-  raw: Record<string, TomlPrimitive>,
+  raw: Record<string, TomlValue>,
 ) {
   const index = getMaybeValue(raw.index, isArray)?.flatMap((r) => {
     const normalized = normalizeRegistry({ env }, r);

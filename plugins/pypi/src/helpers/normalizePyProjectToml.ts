@@ -1,5 +1,5 @@
 import { template } from "lodash-es";
-import { TomlPrimitive } from "smol-toml";
+import { TomlValue } from "smol-toml";
 
 import { BaseContext } from "@lets-release/config";
 
@@ -15,7 +15,7 @@ import { NormalizedPyProjectToml } from "src/types/NormalizedPyProjectToml";
 
 export function normalizePyProjectToml(
   { env }: Pick<BaseContext, "env">,
-  raw: Record<string, TomlPrimitive>,
+  raw: Record<string, TomlValue>,
 ): NormalizedPyProjectToml {
   const project = getMaybeValue(raw.project, isObject);
   const name = getMaybeValue(project?.name, isString);

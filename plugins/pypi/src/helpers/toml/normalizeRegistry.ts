@@ -1,5 +1,5 @@
 import { template } from "lodash-es";
-import { TomlPrimitive } from "smol-toml";
+import { TomlValue } from "smol-toml";
 
 import { BaseContext } from "@lets-release/config";
 
@@ -10,7 +10,7 @@ import { PyPIRegistry } from "src/types/PyPIRegistry";
 
 export function normalizeRegistry(
   { env }: Pick<BaseContext, "env">,
-  registry?: TomlPrimitive,
+  registry?: TomlValue,
 ): PyPIRegistry | undefined {
   if (!registry || !isObject(registry)) {
     return;

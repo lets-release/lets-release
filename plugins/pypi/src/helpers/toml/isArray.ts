@@ -1,5 +1,5 @@
-import { TomlPrimitive } from "smol-toml";
+import { TomlValue } from "smol-toml";
 
-export function isArray(value: TomlPrimitive): value is TomlPrimitive[] {
+export function isArray(value: TomlValue): value is TomlValue[] {
   return Array.isArray(value);
 }
