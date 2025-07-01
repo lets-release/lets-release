@@ -1,7 +1,7 @@
 import { setTimeout } from "node:timers/promises";
 
 import pRetry from "p-retry";
-import { fetch } from "undici";
+import { Response, fetch } from "undici";
 
 import { Service } from "src/services/Service";
 import { Verdaccio } from "src/services/Verdaccio/Verdaccio";

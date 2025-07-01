@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { ProxyAgent, fetch as undiciFetch } from "undici";
+import { ProxyAgent, Request, fetch as undiciFetch } from "undici";
 
 import { generateFetchFunction } from "src/helpers/generateFetchFunction";
 

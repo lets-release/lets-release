@@ -1,4 +1,4 @@
-import { fetch } from "undici";
+import { Response, fetch } from "undici";
 
 import { AnalyzeCommitsContext } from "@lets-release/config";
 
