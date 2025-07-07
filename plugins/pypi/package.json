@@ -37,11 +37,11 @@
     "form-data": "^4.0.3",
     "lodash-es": "^4.17.21",
     "normalize-url": "^8.0.2",
-    "smol-toml": "^1.4.0",
+    "smol-toml": "^1.4.1",
     "strip-ansi": "^7.1.0",
     "tinyglobby": "^0.2.14",
     "undici": "^7.11.0",
-    "zod": "^3.25.67"
+    "zod": "^3.25.75"
   },
   "devDependencies": {
     "@lets-release/testing": "workspace:^",
