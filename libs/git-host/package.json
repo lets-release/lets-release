@@ -37,7 +37,7 @@
     "read-pkg": "^9.0.1",
     "tinyglobby": "^0.2.14",
     "undici": "^7.11.0",
-    "zod": "^3.25.67"
+    "zod": "^3.25.75"
   },
   "devDependencies": {
     "@types/issue-parser": "^3.0.5"
