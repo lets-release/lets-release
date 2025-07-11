@@ -15,6 +15,12 @@ describe("Options", () => {
     ).resolves.toEqual({
       tagFormat: "v${version}",
       refSeparator: "/",
+      bumpMinorVersionCommit: {
+        subject: "feat: bump ${name} to v${version}",
+      },
+      bumpMajorVersionCommit: {
+        subject: "feat!: bump ${name} to v${version}",
+      },
       branches: {
         main: "(main|master)",
         next: "next",

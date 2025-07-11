@@ -27,6 +27,7 @@ export * from "src/schemas/ArtifactInfo";
 export * from "src/schemas/BranchesOptions";
 export * from "src/schemas/BranchObject";
 export * from "src/schemas/BranchSpec";
+export * from "src/schemas/BumpVersionCommit";
 export * from "src/schemas/Channel";
 export * from "src/schemas/Channels";
 export * from "src/schemas/CliOptions";

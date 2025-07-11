@@ -6,6 +6,10 @@ import {
   BranchesOptions,
   NormalizedBranchesOptions,
 } from "src/schemas/BranchesOptions";
+import {
+  BumpVersionCommit,
+  NormalizedBumpVersionCommit,
+} from "src/schemas/BumpVersionCommit";
 import { CliOptions } from "src/schemas/CliOptions";
 import { GlobPattern } from "src/schemas/GlobPattern";
 import {
@@ -27,6 +31,12 @@ export const Options = CliOptions.extend({
   mainPackage: NonEmptyString.optional(),
   releaseCommit: ReleaseCommit.optional(),
   releaseFollowingDependencies: z.boolean().optional(),
+  bumpMinorVersionCommit: BumpVersionCommit.default({
+    subject: "feat: bump ${name} to v${version}",
+  }),
+  bumpMajorVersionCommit: BumpVersionCommit.default({
+    subject: "feat!: bump ${name} to v${version}",
+  }),
   branches: BranchesOptions.default(BranchesOptions.parse({})),
   sharedWorkspaceFiles: z.array(GlobPattern).optional(),
   packages: z.array(PackageOptions).min(1),
@@ -86,6 +96,22 @@ export interface Options extends CliOptions {
    * one of its own release type and the release types of all its dependencies.
    */
   releaseFollowingDependencies?: boolean;
+
+  /**
+   * This option is only used for generating release notes when `releaseFollowingDependencies`
+   * is `true` and the release type is `minor`.
+   *
+   * Default: { subject: "feat: bump ${name} to v${version}" }
+   */
+  bumpMinorVersionCommit?: BumpVersionCommit;
+
+  /**
+   * This option is only used for generating release notes when `releaseFollowingDependencies`
+   * is `true` and the release type is `major`.
+   *
+   * Default: { subject: "feat!: bump ${name} to v${version}" }
+   */
+  bumpMajorVersionCommit?: BumpVersionCommit;
 
   /**
    * The branches on which releases should happen. By default
@@ -151,6 +177,8 @@ export interface NormalizedOptions
     Options,
     "repositoryUrl" | "tagFormat" | "refSeparator"
   > {
+  bumpMinorVersionCommit: NormalizedBumpVersionCommit;
+  bumpMajorVersionCommit: NormalizedBumpVersionCommit;
   releaseCommit?: NormalizedReleaseCommit;
   branches: NormalizedBranchesOptions;
   packages: NormalizedPackageOptions[];

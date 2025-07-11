@@ -70,7 +70,36 @@ Release commit options. If not set, **lets-release** will not generate a release
 
 **Type**: `boolean`
 
-If `true`, the final release type of a dependent package will be the highest of its own release type and the release types of all its dependencies.
+If `true`, the final release type of a dependent package will be the highest of its own release type and the release types of all its dependencies,
+and the release notes will contain information about dependency version updates.
+
+## bumpMinorVersionCommit
+
+**Type**: [`BumpVersionCommit`][]
+
+**Default**:
+
+```typescript
+{
+  subject: "feat: bump ${name} to ${version}",
+}
+```
+
+This option is only used for generating release notes when `releaseFollowingDependencies` is `true` and the release type is `minor`.
+
+## bumpMajorVersionCommit
+
+**Type**: [`BumpVersionCommit`][]
+
+**Default**:
+
+```typescript
+{
+  subject: "feat!: bump ${name} to ${version}",
+}
+```
+
+This option is only used for generating release notes when `releaseFollowingDependencies` is `true` and the release type is `major`.
 
 ## branches
 
@@ -102,6 +131,7 @@ List of files shared between packages in a monorepo.
 
 List of [PackageOptions][]. Each entry configures paths, versioning scheme (SemVer/CalVer), plugins and per-step plugin overrides.
 
+[`BumpVersionCommit`]: ./BumpVersionCommit.md
 [`ReleaseCommit`]: ./ReleaseCommit.md
 [`BranchesOptions`]: ./BranchesOptions.md
 [PackageOptions]: ./PackageOptions.md
