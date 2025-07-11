@@ -70,6 +70,7 @@ export const findPackages: StepFunction<
         path: pkgRoot,
         type: PYPI_PACKAGE_TYPE,
         name: pkgContext.pkg.project.name,
+        formerName: pkgContext.pkg.tool?.letsRelease?.formerName,
       });
 
       setPluginPackageContext(

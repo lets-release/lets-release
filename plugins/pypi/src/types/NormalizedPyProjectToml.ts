@@ -21,6 +21,7 @@ export interface NormalizedPyProjectToml {
       group?: Record<string, { dependencies?: Record<string, unknown> }>;
     };
     letsRelease?: {
+      formerName?: string;
       registry?: PyPIRegistry;
       token?: string;
       username?: string;

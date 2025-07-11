@@ -77,6 +77,7 @@ export function normalizePyProjectToml(
   );
 
   const letsRelease = getMaybeValue(tool?.["lets-release"], isObject);
+  const formerName = getMaybeValue(letsRelease?.["former-name"], isString);
   const registry = normalizeRegistry(
     { env },
     getMaybeValue(letsRelease?.registry, isObject),
@@ -101,6 +102,7 @@ export function normalizePyProjectToml(
         group,
       },
       letsRelease: {
+        formerName,
         registry,
         token: token ? template(token)(env) : undefined,
         username: username ? template(username)(env) : undefined,

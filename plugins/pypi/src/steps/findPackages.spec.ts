@@ -64,7 +64,10 @@ describe("findPackages", () => {
         pkg: { project: { name: "pkg1" } },
       } as PyPIPackageContext)
       .mockResolvedValueOnce({
-        pkg: { project: { name: "pkg2" } },
+        pkg: {
+          project: { name: "pkg2" },
+          tool: { letsRelease: { formerName: "former-name" } },
+        },
       } as PyPIPackageContext);
 
     const result = await findPackages(context, options);
@@ -80,6 +83,7 @@ describe("findPackages", () => {
         path: path.resolve("/repo", "packages/pkg2"),
         type: PYPI_PACKAGE_TYPE,
         name: "pkg2",
+        formerName: "former-name",
         dependencies: [],
       },
     ]);
