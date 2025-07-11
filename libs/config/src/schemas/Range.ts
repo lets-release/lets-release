@@ -12,10 +12,11 @@ import { NonEmptyString } from "@lets-release/versioning";
  * [semantic versions]: https://semver.org/
  * [calendar versions]: https://calver.org/
  */
-export const Range = NonEmptyString.superRefine((val, ctx) => {
-  if (!/^(\d+[._-])+(x[._-])?x$/i.test(val)) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
+export const Range = NonEmptyString.check((ctx) => {
+  if (!/^(\d+[._-])+(x[._-])?x$/i.test(ctx.value)) {
+    ctx.issues.push({
+      input: ctx.value,
+      code: "custom",
       message: "Invalid range",
     });
   }

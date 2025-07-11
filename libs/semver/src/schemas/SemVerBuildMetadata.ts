@@ -19,12 +19,13 @@ import { isValidSemVerBuildMetadata } from "src/helpers/isValidSemVerBuildMetada
  * [Semantic Versioning Specification]: https://semver.org/#spec-item-10
  * [Lodash template]: https://lodash.com/docs#template
  */
-export const SemVerBuildMetadata = NonEmptyString.superRefine((val, ctx) => {
-  const value = template(val)({ hash: "a3478afc" });
+export const SemVerBuildMetadata = NonEmptyString.check((ctx) => {
+  const value = template(ctx.value)({ hash: "a3478afc" });
 
   if (!isValidSemVerBuildMetadata(value)) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
+    ctx.issues.push({
+      input: ctx.value,
+      code: "custom",
       message: `Build metadata must be valid according to the [Semantic Versioning Specification][].
 
 [Semantic Versioning Specification]: https://semver.org/#spec-item-10`,

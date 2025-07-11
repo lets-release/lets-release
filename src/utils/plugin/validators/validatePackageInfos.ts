@@ -1,8 +1,6 @@
 import { stat } from "node:fs/promises";
 import path from "node:path";
 
-import { z } from "zod";
-
 import { FindPackagesResult, Step } from "@lets-release/config";
 
 import { InvalidStepResultError } from "src/errors/InvalidStepResultError";
@@ -12,38 +10,42 @@ export const validatePackageInfos: StepResultValidator<
   Step.findPackages
 > = async ({ repositoryRoot }, pluginName, result) => {
   try {
-    await FindPackagesResult.superRefine(async (val, ctx) => {
-      if (!val) {
+    await FindPackagesResult.check(async (ctx) => {
+      if (!ctx.value) {
         return;
       }
 
-      for (const pkg of val) {
+      for (const pkg of ctx.value) {
         if (path.isAbsolute(pkg.path)) {
           try {
             const stats = await stat(pkg.path);
 
             if (!stats.isDirectory()) {
-              ctx.addIssue({
-                code: z.ZodIssueCode.custom,
+              ctx.issues.push({
+                input: ctx.value,
+                code: "custom",
                 message: `Path is not a directory: ${pkg.path}`,
               });
             }
 
             if (/^\.\.[/\\]/.test(path.relative(repositoryRoot, pkg.path))) {
-              ctx.addIssue({
-                code: z.ZodIssueCode.custom,
+              ctx.issues.push({
+                input: ctx.value,
+                code: "custom",
                 message: `Path is not inside the repository: ${pkg.path}`,
               });
             }
           } catch {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
+            ctx.issues.push({
+              input: ctx.value,
+              code: "custom",
               message: `Path does not exist: ${pkg.path}`,
             });
           }
         } else {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
+          ctx.issues.push({
+            input: ctx.value,
+            code: "custom",
             message: `Path is not absolute: ${pkg.path}`,
           });
         }

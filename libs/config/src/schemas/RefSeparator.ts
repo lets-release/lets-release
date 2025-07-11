@@ -8,16 +8,19 @@ import { verifyGitTagName } from "src/helpers/verifyGitTagName";
 /**
  * Git ref separator.
  */
-export const RefSeparator = NonEmptyString.superRefine(async (val, ctx) => {
+export const RefSeparator = NonEmptyString.check(async (ctx) => {
   // Verify that the `refSeparator` is a valid git reference character
   const isValidBranchNameChar = await verifyGitBranchName(
-    `lets-release${val}0.0.x`,
+    `lets-release${ctx.value}0.0.x`,
   );
-  const isValidTagNameChar = await verifyGitTagName(`lets-release${val}v0.0.0`);
+  const isValidTagNameChar = await verifyGitTagName(
+    `lets-release${ctx.value}v0.0.0`,
+  );
 
   if (!isValidBranchNameChar || !isValidTagNameChar) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
+    ctx.issues.push({
+      input: ctx.value,
+      code: "custom",
       message: `Ref separator must only contain [valid Git reference][] characters
 
 [valid Git reference]: https://git-scm.com/docs/git-check-ref-format#_description`,

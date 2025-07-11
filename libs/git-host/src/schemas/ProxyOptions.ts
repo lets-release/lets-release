@@ -6,11 +6,9 @@ export const ProxyOptions = z.union([
   z.literal(false),
   NonEmptyString,
   z.instanceof(URL),
-  z
-    .object({
-      uri: NonEmptyString,
-    })
-    .passthrough(),
+  z.looseObject({
+    uri: NonEmptyString,
+  }),
 ]);
 
 export type ProxyOptions = z.infer<typeof ProxyOptions>;

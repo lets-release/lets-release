@@ -20,12 +20,13 @@ import { isValidSemVerPrereleaseName } from "src/helpers/isValidSemVerPrerelease
  * [Semantic Versioning Specification]: https://semver.org/#spec-item-9
  * [Lodash template]: https://lodash.com/docs#template
  */
-export const SemVerPrereleaseName = NonEmptyString.superRefine((val, ctx) => {
-  const value = template(val)({ name: "beta" });
+export const SemVerPrereleaseName = NonEmptyString.check((ctx) => {
+  const value = template(ctx.value)({ name: "beta" });
 
   if (value && !isValidSemVerPrereleaseName(value)) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
+    ctx.issues.push({
+      input: ctx.value,
+      code: "custom",
       message: `SemVer Prerelease name must be be valid per the [Semantic Versioning Specification][]
 
 [Semantic Versioning Specification]: https://semver.org/#spec-item-9`,

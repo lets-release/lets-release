@@ -7,10 +7,11 @@ import { isValidCalVerFormat } from "src/helpers/isValidCalVerFormat";
 /**
  * Calendar versioning format.
  */
-export const CalVerFormat = NonEmptyString.superRefine((val, ctx) => {
-  if (!isValidCalVerFormat(val)) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
+export const CalVerFormat = NonEmptyString.check((ctx) => {
+  if (!isValidCalVerFormat(ctx.value)) {
+    ctx.issues.push({
+      input: ctx.value,
+      code: "custom",
       message: "Invalid calendar versioning format.",
     });
   }

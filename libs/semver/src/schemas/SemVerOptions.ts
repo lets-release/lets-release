@@ -26,10 +26,11 @@ export const SemVerOptions = VersioningOptions.extend({
    *
    * @default 1.0.0
    */
-  initialVersion: NonEmptyString.superRefine((val, ctx) => {
-    if (!isValidSemVer(val) || isValidPrereleaseSemVer(val)) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
+  initialVersion: NonEmptyString.check((ctx) => {
+    if (!isValidSemVer(ctx.value) || isValidPrereleaseSemVer(ctx.value)) {
+      ctx.issues.push({
+        input: ctx.value,
+        code: "custom",
         message: "Invalid initial version.",
       });
     }

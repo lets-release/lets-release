@@ -18,12 +18,14 @@ export const PackageInfo = PackageDependency.extend({
    * Package dependencies.
    */
   dependencies: z.array(PackageDependency).optional(),
-}).superRefine(async ({ type, name }, ctx) => {
+}).check(async (ctx) => {
+  const { type, name } = ctx.value;
   const valid = await verifyGitTagName(`${type}/${name}`);
 
   if (!valid) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
+    ctx.issues.push({
+      input: ctx.value,
+      code: "custom",
       message: `Package type and name must compile to a [valid Git reference][] in the format "\${type}\${refSeparator}\${name}"
 
 [valid Git reference]: https://git-scm.com/docs/git-check-ref-format#_description`,

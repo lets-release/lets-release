@@ -16,12 +16,13 @@ import { isValidCalVerBuildMetadata } from "src/helpers/isValidCalVerBuildMetada
  *
  * [Lodash template]: https://lodash.com/docs#template
  */
-export const CalVerBuildMetadata = NonEmptyString.superRefine((val, ctx) => {
-  const value = template(val)({ hash: "a3478afc" });
+export const CalVerBuildMetadata = NonEmptyString.check((ctx) => {
+  const value = template(ctx.value)({ hash: "a3478afc" });
 
   if (!isValidCalVerBuildMetadata(value)) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
+    ctx.issues.push({
+      input: ctx.value,
+      code: "custom",
       message:
         "Build metadata must comprise only ASCII alphanumerics hyphens, and dashes: `[0-9A-Za-z-]`",
     });

@@ -19,12 +19,13 @@ import { isValidCalVerPrereleaseName } from "src/helpers/isValidCalVerPrerelease
  *
  * [Lodash template]: https://lodash.com/docs#template
  */
-export const CalVerPrereleaseName = NonEmptyString.superRefine((val, ctx) => {
-  const value = template(val)({ name: "beta" });
+export const CalVerPrereleaseName = NonEmptyString.check((ctx) => {
+  const value = template(ctx.value)({ name: "beta" });
 
   if (value && !isValidCalVerPrereleaseName(value)) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
+    ctx.issues.push({
+      input: ctx.value,
+      code: "custom",
       message:
         "CalVer Prerelease name must comprise only ASCII alphanumerics hyphens, and dashes: `[0-9A-Za-z-]`",
     });

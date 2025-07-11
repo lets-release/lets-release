@@ -9,7 +9,7 @@ export const PluginSpec = z.union([
   PluginObject,
   z.tuple([
     z.union([NonEmptyString, PluginObject]),
-    z.object({}).passthrough().optional(),
+    z.looseObject({}).optional(),
   ]),
 ]);
 

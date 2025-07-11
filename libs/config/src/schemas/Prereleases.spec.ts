@@ -41,13 +41,10 @@ describe("Prereleases", () => {
   it("should throw for invalid prereleases", async () => {
     await expect(
       Prereleases.parseAsync({
-        "bug/alpha": {
-          name: true,
-        },
-        "feat/beta": {
+        test: {
           names: {
-            SemVer: true,
-            CalVer: true,
+            SemVer: "feat test",
+            CalVer: "feat test",
           },
         },
       }),

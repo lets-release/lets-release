@@ -55,14 +55,13 @@ export const GitLabAssetObject = AssetObject.partial()
      *
      * [generic package]: https://docs.gitlab.com/ee/user/packages/generic_packages/
      */
-    status: z
-      .nativeEnum(GenericPackageStatus)
-      .default(GenericPackageStatus.Default),
+    status: z.enum(GenericPackageStatus).default(GenericPackageStatus.Default),
   })
-  .superRefine((val, ctx) => {
-    if (!val.path && !val.url) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
+  .check((ctx) => {
+    if (!ctx.value.path && !ctx.value.url) {
+      ctx.issues.push({
+        input: ctx.value,
+        code: "custom",
         message: "Either `path` or `url` must be set.",
       });
     }

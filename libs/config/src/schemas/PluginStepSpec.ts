@@ -11,7 +11,7 @@ export const PluginStepSpec = z.union([
   AnyFunction,
   z.tuple([
     z.union([NonEmptyString, AnyFunction]),
-    z.object({}).passthrough().optional(),
+    z.looseObject({}).optional(),
   ]),
 ]);
 

@@ -7,6 +7,8 @@ export * from "src/enums/Step";
 export * from "src/errors/LetsReleaseError";
 
 export * from "src/helpers/compareReleaseTypes";
+export * from "src/helpers/createAsyncFunctionSchema";
+export * from "src/helpers/createFunctionSchema";
 export * from "src/helpers/extractErrors";
 export * from "src/helpers/formatGitUrlWithProtocol";
 export * from "src/helpers/getUrlProtocol";
