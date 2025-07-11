@@ -33,21 +33,26 @@ export async function ensurePyPIPackageContext(
     throw new UnsupportedPyPIPackageManagerError(uniqueName);
   }
 
-  // Verify the authentication only if `skipPublishing` is not `true`,
-  // and `pkg.project.classifiers` does not include classifier beginning with "Private ::"
-  if (
-    !pkgContext.verified &&
-    !skipPublishing &&
-    !pkgContext.pkg.project.classifiers?.some((classifier) =>
-      classifier.startsWith(PYPI_PRIVATE_CLASSIFIER_PREFIX),
-    )
-  ) {
-    await verifyPyPIPackageManagerVersion(context, pkgContext);
-    await verifyAuth(context, pkgContext);
+  let pmVersion: string | undefined = undefined;
+
+  if (!pkgContext.verified) {
+    pmVersion = await verifyPyPIPackageManagerVersion(context, pkgContext);
+
+    // Verify the authentication only if `skipPublishing` is not `true`,
+    // and `pkg.project.classifiers` does not include classifier beginning with "Private ::"
+    if (
+      !skipPublishing &&
+      !pkgContext.pkg.project.classifiers?.some((classifier) =>
+        classifier.startsWith(PYPI_PRIVATE_CLASSIFIER_PREFIX),
+      )
+    ) {
+      await verifyAuth(context, pkgContext);
+    }
   }
 
   const verifiedPkgContext = {
     ...pkgContext,
+    pm: pmVersion ? { ...pkgContext.pm, version: pmVersion } : pkgContext.pm,
     verified: true,
   };
 

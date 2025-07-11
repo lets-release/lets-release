@@ -9,22 +9,17 @@ export const verifyConditions: StepFunction<
 > = async (context, options) => {
   const parsedOptions = await PyPIOptions.parseAsync(options);
 
-  // Verify the authentication only if `skipPublishing` is not true
-  if (!parsedOptions.skipPublishing) {
-    const { packages } = context;
-
-    for (const pkg of packages) {
-      await ensurePyPIPackageContext(
-        {
-          ...context,
-          package: pkg,
-          getPluginPackageContext: () =>
-            context.getPluginPackageContext(pkg.type, pkg.name),
-          setPluginPackageContext: (pkgContext) =>
-            context.setPluginPackageContext(pkg.type, pkg.name, pkgContext),
-        },
-        parsedOptions,
-      );
-    }
+  for (const pkg of context.packages) {
+    await ensurePyPIPackageContext(
+      {
+        ...context,
+        package: pkg,
+        getPluginPackageContext: () =>
+          context.getPluginPackageContext(pkg.type, pkg.name),
+        setPluginPackageContext: (pkgContext) =>
+          context.setPluginPackageContext(pkg.type, pkg.name, pkgContext),
+      },
+      parsedOptions,
+    );
   }
 };

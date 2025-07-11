@@ -39,4 +39,6 @@ export async function verifyPyPIPackageManagerVersion(
       version,
     );
   }
+
+  return version;
 }

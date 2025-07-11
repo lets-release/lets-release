@@ -60,7 +60,7 @@ describe("verifyPyPIPackageManagerVersion", () => {
     ).rejects.toThrow(UnsupportedPyPIPackageManagerVersionError);
   });
 
-  it("should pass if version is greater than or equal to required", async () => {
+  it("should return version if version is greater than or equal to required", async () => {
     exec.mockResolvedValueOnce({ stdout: "poetry version 2.0.0" });
 
     await expect(
@@ -68,7 +68,7 @@ describe("verifyPyPIPackageManagerVersion", () => {
         pm: { name: "poetry", version: "1", root: "/path/to/repo" },
         pkg,
       } as PyPIPackageContext),
-    ).resolves.toBeUndefined();
+    ).resolves.toBe("2.0.0");
 
     exec.mockResolvedValueOnce({ stdout: "uv version 0.5.0" });
 
@@ -77,6 +77,6 @@ describe("verifyPyPIPackageManagerVersion", () => {
         pm: { name: "uv", version: "1", root: "/path/to/repo" },
         pkg,
       } as PyPIPackageContext),
-    ).resolves.toBeUndefined();
+    ).resolves.toBe("0.5.0");
   });
 });

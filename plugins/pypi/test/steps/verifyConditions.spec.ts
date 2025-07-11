@@ -53,12 +53,44 @@ describe("verifyConditions", () => {
         },
       },
     };
-    await writeFile(path.resolve(cwd, "pyproject.toml"), stringify(pkg));
+    await $({ cwd, env })`uv init --lib --name ${pkg.project.name}`;
+    await $({ cwd, env })`uv sync`;
+
+    const tomlFile = path.resolve(cwd, "pyproject.toml");
+    const toml = await readTomlFile(tomlFile);
+
+    await writeFile(
+      tomlFile,
+      stringify({
+        ...toml,
+        project: {
+          ...(toml.project as object),
+          ...pkg.project,
+        },
+        tool: {
+          ...(toml.tool as object),
+          ...pkg.tool,
+        },
+      }),
+    );
+
+    let pkgContext: PyPIPackageContext;
+
+    const getPluginPackageContext = () => pkgContext;
+    const setPluginPackageContext = (
+      type: string,
+      name: string,
+      context: PyPIPackageContext,
+    ) => {
+      pkgContext = context;
+    };
 
     await expect(
       verifyConditions(
         {
           ...context,
+          getPluginPackageContext,
+          setPluginPackageContext,
           cwd,
           env,
           repositoryRoot: cwd,

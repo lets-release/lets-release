@@ -38,11 +38,26 @@ describe("verifyConditions", () => {
       path.resolve(cwd, "package.json"),
       JSON.stringify(pkg, null, 2),
     );
+    await $({ cwd })`corepack use npm@latest`;
+    await $({ cwd })`npm install`;
+
+    let pkgContext: NpmPackageContext;
+
+    const getPluginPackageContext = () => pkgContext;
+    const setPluginPackageContext = (
+      type: string,
+      name: string,
+      context: NpmPackageContext,
+    ) => {
+      pkgContext = context;
+    };
 
     await expect(
       verifyConditions(
         {
           ...context,
+          getPluginPackageContext,
+          setPluginPackageContext,
           cwd,
           env: process.env,
           repositoryRoot: cwd,

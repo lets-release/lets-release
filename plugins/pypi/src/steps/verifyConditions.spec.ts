@@ -33,7 +33,7 @@ describe("verifyConditions", () => {
       );
   });
 
-  it("should call ensurePyPIPackageContext for each package if skipPublishing is false", async () => {
+  it("should ensure package context for each package", async () => {
     const options = { skipPublishing: false };
     const parsedOptions = await PyPIOptions.parseAsync(options);
 
@@ -74,13 +74,5 @@ describe("verifyConditions", () => {
       "package2",
       undefined,
     );
-  });
-
-  it("should not call ensurePyPIPackageContext if skipPublishing is true", async () => {
-    const options = { skipPublishing: true };
-
-    await verifyConditions(context, options);
-
-    expect(ensurePyPIPackageContext).not.toHaveBeenCalled();
   });
 });

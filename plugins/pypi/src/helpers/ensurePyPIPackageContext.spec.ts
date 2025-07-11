@@ -34,7 +34,9 @@ describe("ensurePyPIPackageContext", () => {
     getPluginPackageContext.mockReset();
     setPluginPackageContext.mockClear();
     vi.mocked(verifyAuth).mockClear();
-    vi.mocked(verifyPyPIPackageManagerVersion).mockClear();
+    vi.mocked(verifyPyPIPackageManagerVersion)
+      .mockResolvedValue("1.0.0")
+      .mockClear();
   });
 
   it("should throw UnsupportedPyPIPackageManagerError if pkgContext is not found", async () => {
@@ -45,23 +47,7 @@ describe("ensurePyPIPackageContext", () => {
     ).rejects.toThrow(UnsupportedPyPIPackageManagerError);
   });
 
-  it("should verify auth and version if not verified and not skipping publishing", async () => {
-    getPluginPackageContext.mockReturnValueOnce(pkgContext);
-
-    await ensurePyPIPackageContext(context, { skipPublishing: false });
-    expect(verifyPyPIPackageManagerVersion).toHaveBeenCalled();
-    expect(verifyAuth).toHaveBeenCalled();
-  });
-
-  it("should not verify auth and version if skipping publishing", async () => {
-    getPluginPackageContext.mockReturnValueOnce(pkgContext);
-
-    await ensurePyPIPackageContext(context, { skipPublishing: true });
-    expect(verifyPyPIPackageManagerVersion).not.toHaveBeenCalled();
-    expect(verifyAuth).not.toHaveBeenCalled();
-  });
-
-  it("should not verify auth and version if already verified", async () => {
+  it("should not verify auth and pm version if already verified", async () => {
     getPluginPackageContext.mockReturnValueOnce({
       ...pkgContext,
       verified: true,
@@ -72,7 +58,15 @@ describe("ensurePyPIPackageContext", () => {
     expect(verifyAuth).not.toHaveBeenCalled();
   });
 
-  it("should not verify auth and version if classifiers include private prefix", async () => {
+  it("should verify pm version and not auth if skipping publishing", async () => {
+    getPluginPackageContext.mockReturnValueOnce(pkgContext);
+
+    await ensurePyPIPackageContext(context, { skipPublishing: true });
+    expect(verifyPyPIPackageManagerVersion).toHaveBeenCalled();
+    expect(verifyAuth).not.toHaveBeenCalled();
+  });
+
+  it("should verify pm version and not auth if classifiers include private prefix", async () => {
     getPluginPackageContext.mockReturnValueOnce({
       ...pkgContext,
       pkg: {
@@ -83,8 +77,16 @@ describe("ensurePyPIPackageContext", () => {
     });
 
     await ensurePyPIPackageContext(context, { skipPublishing: false });
-    expect(verifyPyPIPackageManagerVersion).not.toHaveBeenCalled();
+    expect(verifyPyPIPackageManagerVersion).toHaveBeenCalled();
     expect(verifyAuth).not.toHaveBeenCalled();
+  });
+
+  it("should verify auth and pm version if not verified and not skipping publishing", async () => {
+    getPluginPackageContext.mockReturnValueOnce(pkgContext);
+
+    await ensurePyPIPackageContext(context, { skipPublishing: false });
+    expect(verifyPyPIPackageManagerVersion).toHaveBeenCalled();
+    expect(verifyAuth).toHaveBeenCalled();
   });
 
   it("should set verifiedPkgContext", async () => {
@@ -93,6 +95,7 @@ describe("ensurePyPIPackageContext", () => {
     await ensurePyPIPackageContext(context, { skipPublishing: false });
     expect(context.setPluginPackageContext).toHaveBeenCalledWith({
       ...pkgContext,
+      pm: { version: "1.0.0" },
       verified: true,
     });
   });

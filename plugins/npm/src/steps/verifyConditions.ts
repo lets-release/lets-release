@@ -9,22 +9,17 @@ export const verifyConditions: StepFunction<
 > = async (context, options) => {
   const parsedOptions = await NpmOptions.parseAsync(options);
 
-  // Verify the npm authentication only if `skipPublishing` is not true
-  if (!parsedOptions.skipPublishing) {
-    const { packages } = context;
-
-    for (const pkg of packages) {
-      await ensureNpmPackageContext(
-        {
-          ...context,
-          package: pkg,
-          getPluginPackageContext: () =>
-            context.getPluginPackageContext(pkg.type, pkg.name),
-          setPluginPackageContext: (pkgContext) =>
-            context.setPluginPackageContext(pkg.type, pkg.name, pkgContext),
-        },
-        parsedOptions,
-      );
-    }
+  for (const pkg of context.packages) {
+    await ensureNpmPackageContext(
+      {
+        ...context,
+        package: pkg,
+        getPluginPackageContext: () =>
+          context.getPluginPackageContext(pkg.type, pkg.name),
+        setPluginPackageContext: (pkgContext) =>
+          context.setPluginPackageContext(pkg.type, pkg.name, pkgContext),
+      },
+      parsedOptions,
+    );
   }
 };
