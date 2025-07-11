@@ -2,7 +2,7 @@ import debug from "debug";
 import envCi, { JenkinsEnv } from "env-ci";
 import figures from "figures";
 import { hookStd } from "hook-std";
-import { isArray, template, uniq } from "lodash-es";
+import { escapeRegExp, isArray, template, uniq } from "lodash-es";
 import signale from "signale";
 
 import {
@@ -36,6 +36,7 @@ import {
   name,
   version,
 } from "src/program";
+import { MatchBranch } from "src/types/MatchBranch";
 import {
   NormalizedStepContext,
   PartialNormalizedStepContext,
@@ -48,6 +49,7 @@ import { getMergingContexts } from "src/utils/branch/getMergingContexts";
 import { getNextVersion } from "src/utils/branch/getNextVersion";
 import { getNormalizedChannels } from "src/utils/branch/getNormalizedChannels";
 import { getReleases } from "src/utils/branch/getReleases";
+import { mapMatchBranch } from "src/utils/branch/mapMatchBranch";
 import { mergeArtifacts } from "src/utils/branch/mergeArtifacts";
 import { verifyMaintenanceMergeRange } from "src/utils/branch/verifyMaintenanceMergeRange";
 import { getMaskingHandler } from "src/utils/getMaskingHandler";
@@ -888,8 +890,27 @@ export class LetsRelease {
       { stderr, logger },
       packages,
       async (pkg) => {
-        const releases = getReleases(context, branch, [pkg]);
-        const last = releases[pkg.uniqueName]?.[0];
+        let last = getReleases(context, branch, [pkg])[pkg.uniqueName]?.[0];
+
+        if (!last && pkg.formerName) {
+          const formerNamePkg = {
+            ...pkg,
+            name: pkg.formerName,
+            uniqueName: pkg.uniqueName.replace(
+              new RegExp(`${escapeRegExp(pkg.name)}$`),
+              pkg.formerName,
+            ),
+          };
+          const { tags: formerNameTags } = await mapMatchBranch(
+            context,
+            [formerNamePkg],
+            branch as MatchBranch,
+          );
+
+          last = getReleases(context, { ...branch, tags: formerNameTags }, [
+            formerNamePkg,
+          ])[formerNamePkg.uniqueName]?.[0];
+        }
 
         if (last) {
           logger.log({

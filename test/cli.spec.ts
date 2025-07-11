@@ -232,6 +232,188 @@ describe("cli", () => {
     await testRelease("2.0.0", { mergedChannel: "next" });
   });
 
+  it("should handle renamed package release", async () => {
+    const packageName = "cli-test-former-release";
+    const { cwd, url, authUrl } = await createAndCloneRepo(packageName);
+
+    await copyFile(gitIgnore, path.resolve(cwd, ".gitignore"));
+    await copyFile(viteConfig, path.resolve(cwd, "vite.config.js"));
+    await writeFile(
+      path.resolve(cwd, ".npmrc"),
+      `//${registry.replace(/^https?:\/\//, "")}/:_authToken=${npmToken}`,
+    );
+
+    const packageJsonFile = path.resolve(cwd, "package.json");
+    const packageJsonContent = {
+      name: packageName,
+      version: "0.0.0-dev",
+      type: "module",
+      repository: { url },
+      publishConfig: { registry },
+      devDependencies: {
+        "conventional-changelog-conventionalcommits": "^9.0.0",
+        vite: "^6.0.7",
+        "vite-node": "^2.1.8",
+        "vite-tsconfig-paths": "^5.1.4",
+      },
+      release: {
+        packages: [
+          {
+            paths: ["./"],
+            versioning: { scheme: "SemVer" },
+            plugins: [
+              "@lets-release/commit-analyzer",
+              "@lets-release/release-notes-generator",
+              "@lets-release/npm",
+            ],
+          },
+        ],
+        releaseCommit: {
+          assets: ["package.json", "package-lock.json"],
+        },
+      },
+    };
+
+    await writeFile(
+      packageJsonFile,
+      JSON.stringify(packageJsonContent, null, 2),
+    );
+
+    const options: Options = {
+      cwd,
+      env,
+      preferLocal: true,
+      reject: false,
+      extendEnv: false,
+    };
+
+    await $(options)`npm install`;
+    await checkoutBranch(cwd, "main");
+    await addFiles(cwd);
+    await commit(cwd, "chore: initial commit");
+    await pushBranch(cwd, authUrl, "main");
+
+    /* No release */
+    const result = await $(options)`npx vite-node -c ${viteConfig} ${cli}`;
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain(
+      "There are no relevant changes, so no new version is released",
+    );
+
+    const testRelease = async (
+      pkgName: string,
+      version: string,
+      {
+        branch = "main",
+        channel = null,
+        mergedChannel,
+      }: {
+        branch?: string;
+        channel?: string | null;
+        mergedChannel?: string | null;
+      } = {},
+    ) => {
+      const context = `${version} on ${branch}`;
+      const distTag = channel ?? "latest";
+      const result = await $({
+        ...options,
+        env: {
+          ...env,
+          TRAVIS_BRANCH: branch,
+        },
+      })`npx vite-node -c ${viteConfig} ${cli}`;
+
+      expect(result.exitCode, context).toBe(0);
+      expect(result.stdout, context).toContain(
+        `${mergedChannel === undefined ? "Publishing" : "Adding"} version ${version} to npm registry on dist-tag ${distTag}`,
+      );
+
+      const buffer = await readFile(path.resolve(cwd, "package.json"));
+
+      expect(JSON.parse(buffer.toString()), context).toEqual(
+        expect.objectContaining({
+          version,
+        }),
+      );
+
+      if (mergedChannel !== undefined) {
+        // Wait for 3s as the change of dist-tag takes time to be reflected in the registry
+        await setTimeout(3000);
+      }
+
+      const viewResult = await $({
+        cwd,
+        preferLocal: true,
+      })`npm view ${pkgName} dist-tags --registry ${registry} --json`;
+
+      expect(viewResult.exitCode, context).toBe(0);
+      expect(JSON.parse(viewResult.stdout.trim()), context).toEqual(
+        expect.objectContaining({
+          [distTag]: version,
+        }),
+      );
+
+      if (mergedChannel === undefined) {
+        const hash = await $({
+          cwd,
+          preferLocal: true,
+        })`git rev-parse HEAD`;
+        const tagHash = await $({
+          cwd,
+          preferLocal: true,
+        })`git rev-list -1 v${version}`;
+        const remoteTagHash = await getRemoteTagHash(
+          cwd,
+          authUrl,
+          `v${version}`,
+        );
+        const note = await getNote(`v${version}`, { cwd });
+
+        expect(tagHash.stdout?.trim(), context).toBe(hash.stdout?.trim());
+        expect(remoteTagHash, context).toBe(hash.stdout?.trim());
+        expect(note, context).toEqual(
+          expect.objectContaining({
+            artifacts: [
+              expect.objectContaining({
+                channels: [channel],
+              }),
+            ],
+          }),
+        );
+      }
+    };
+
+    /* Initial release */
+    await writeTestFile(cwd, ["index.js"], "export default {}");
+    await addFiles(cwd);
+    await commit(cwd, "feat: add index.js");
+    await testRelease(packageName, "1.0.0");
+
+    const newPackageName = "cli-test-renamed-release";
+
+    await writeFile(
+      packageJsonFile,
+      JSON.stringify(
+        {
+          ...packageJsonContent,
+          name: newPackageName,
+          "lets-release": {
+            formerName: packageName,
+          },
+        },
+        null,
+        2,
+      ),
+    );
+
+    /* Minor release */
+    await writeTestFile(cwd, ["baz.js"], "export default {}");
+    await addFiles(cwd);
+    await commit(cwd, "feat: baz");
+    await testRelease(newPackageName, "1.1.0");
+  });
+
   it("should exit with 1 if a plugin is not found", async () => {
     const packageName = "cli-test-plugin-not-found";
     const { cwd, url, authUrl } = await createAndCloneRepo(packageName);

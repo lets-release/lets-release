@@ -24,6 +24,7 @@ import { getCommits } from "src/utils/branch/getCommits";
 import { getMergingContexts } from "src/utils/branch/getMergingContexts";
 import { getNextVersion } from "src/utils/branch/getNextVersion";
 import { getReleases } from "src/utils/branch/getReleases";
+import { mapMatchBranch } from "src/utils/branch/mapMatchBranch";
 import { verifyMaintenanceMergeRange } from "src/utils/branch/verifyMaintenanceMergeRange";
 import { getMatchFiles } from "src/utils/getMatchFiles";
 import { addNote } from "src/utils/git/addNote";
@@ -56,6 +57,7 @@ vi.mock("src/utils/branch/getCommits");
 vi.mock("src/utils/branch/getMergingContexts");
 vi.mock("src/utils/branch/getNextVersion");
 vi.mock("src/utils/branch/getReleases");
+vi.mock("src/utils/branch/mapMatchBranch");
 vi.mock("src/utils/branch/verifyMaintenanceMergeRange");
 vi.mock("src/utils/git/addFiles");
 vi.mock("src/utils/git/addNote");
@@ -929,6 +931,82 @@ describe("LetsRelease", () => {
         channels: { default: [null] },
         tag: "v3.0.0",
         version: "3.0.0",
+      },
+    ]);
+  });
+
+  it("should find last release using formerName when package was renamed", async () => {
+    const findPackages = vi.fn().mockResolvedValue([
+      {
+        path: "/path/to/pkg1",
+        type: "npm",
+        name: "pkg1",
+        uniqueName: "npm/pkg1",
+        formerName: "test",
+      },
+    ]);
+
+    vi.mocked(loadConfig)
+      .mockReset()
+      .mockResolvedValue({
+        tagFormat: "v${version}",
+        refSeparator: "/",
+        releaseFollowingDependencies: true,
+        mainPackage: "pkg1",
+        packages: [
+          {
+            paths: ["/path/to"],
+          },
+        ],
+      } as NormalizedOptions);
+    vi.mocked(getBranches).mockResolvedValue({
+      main: mainBranch,
+      next: nextBranch,
+      maintenance: undefined,
+      prerelease: undefined,
+    });
+    analyzeCommits.mockResolvedValueOnce(ReleaseType.patch);
+    vi.mocked(getStepPipelinesList).mockResolvedValue([
+      { findPackages, analyzeCommits, generateNotes, publish },
+    ]);
+    vi.mocked(getReleases).mockReturnValue({
+      test: [
+        {
+          package: "test",
+          tag: "v2.0.0",
+          version: "2.0.0",
+          artifacts: [
+            {
+              pluginName: "@lets-release/npm",
+              channels: [null],
+              name: "npm package",
+            },
+          ],
+        },
+      ],
+    });
+    vi.mocked(getNextVersion).mockReturnValueOnce("2.0.1");
+    vi.mocked(mapMatchBranch).mockResolvedValue({
+      type: BranchType.main,
+      name: "main",
+      channels: { default: [null] },
+      tags: {},
+    });
+
+    await expect(letsRelease.run()).resolves.toEqual([
+      {
+        hash: "headhash",
+        notes: "notes",
+        artifacts: [
+          {
+            pluginName: "@lets-release/npm",
+            channels: [null],
+            name: "npm package",
+          },
+        ],
+        channels: { default: [null] },
+        tag: "v2.0.1",
+        version: "2.0.1",
       },
     ]);
   });
