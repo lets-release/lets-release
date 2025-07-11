@@ -9,4 +9,5 @@ export default {
   releaseCommit: {
     assets: ["package.json", "libs/*/package.json", "plugins/*/package.json"],
   },
+  releaseFollowingDependencies: true,
 };
