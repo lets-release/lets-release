@@ -1,0 +1,1 @@
+{"artifacts":[{"name":"npm package","url":"https://www.npmjs.com/package/@lets-release/commit-analyzer/v/2.0.0","pluginName":"@lets-release/npm","channels":[null]},{"name":"GitHub release","url":"https://github.com/lets-release/lets-release/releases/tag/%40lets-release/commit-analyzer/v2.0.0","id":231744183,"pluginName":"@lets-release/github","channels":[null]}]}
