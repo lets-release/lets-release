@@ -8,6 +8,7 @@ import signale from "signale";
 import {
   BaseContext,
   BranchType,
+  Commit,
   Context,
   HistoricalRelease,
   MainBranch,
@@ -83,7 +84,15 @@ const { Signale } = signale;
 export class LetsRelease {
   private pluginContexts: Record<string, unknown>[] = [];
   private pluginPackageContexts: Record<string, unknown>[] = [];
-  private releaseTypes: Record<string, ReleaseType | undefined> = {};
+  private releases: Record<
+    string,
+    | {
+        type: ReleaseType;
+        version: string;
+        commit: Commit;
+      }
+    | undefined
+  > = {};
 
   async run(options: Partial<Options> = {}, context: Context = {}) {
     const { cwd = process.cwd(), env = process.env } = context;
@@ -873,6 +882,8 @@ export class LetsRelease {
         tagFormat,
         refSeparator,
         releaseFollowingDependencies,
+        bumpMinorVersionCommit,
+        bumpMajorVersionCommit,
       },
       packages,
       branch,
@@ -954,6 +965,8 @@ export class LetsRelease {
           normalizedContext,
         );
 
+        const depCommits: Commit[] = [];
+
         if (releaseFollowingDependencies && releaseType !== RELEASE_TYPES[0]) {
           const deps =
             (pkg.dependencies?.map(
@@ -964,19 +977,36 @@ export class LetsRelease {
             ) as string[]) ?? [];
 
           for (const dep of deps) {
-            const depReleaseType = this.releaseTypes[dep];
+            const depRelease = this.releases[dep];
 
             // Set release type if dependency release type is higher
             if (
-              depReleaseType &&
-              compareReleaseTypes(depReleaseType, releaseType)
+              depRelease &&
+              compareReleaseTypes(depRelease.type, releaseType)
             ) {
-              releaseType = depReleaseType;
+              releaseType = depRelease.type;
+
+              const commit =
+                releaseType === ReleaseType.major
+                  ? bumpMajorVersionCommit
+                  : bumpMinorVersionCommit;
+              const values = {
+                name: dep,
+                version: depRelease.version,
+              };
+              const subject = template(commit.subject)(values);
+              const body = commit.body ? template(commit.body)(values) : "";
+              const message = body ? `${subject}\n\n${body}` : subject;
+
+              depCommits.push({
+                ...depRelease.commit,
+                subject,
+                body,
+                message,
+              });
             }
           }
         }
-
-        this.releaseTypes[pkg.uniqueName] = releaseType;
 
         if (!releaseType) {
           logger.log({
@@ -993,6 +1023,12 @@ export class LetsRelease {
         if (!version) {
           return [];
         }
+
+        this.releases[pkg.uniqueName] = {
+          type: releaseType,
+          version,
+          commit: normalizedContext.commits[0] ?? depCommits[0],
+        };
 
         const versionTag = template(tagFormat)({ version });
         const tag = pkg.main
@@ -1016,6 +1052,7 @@ export class LetsRelease {
 
         const notes = await stepPipelines.generateNotes?.(stepPipelines, {
           ...normalizedContext,
+          commits: [...normalizedContext.commits, ...depCommits],
           nextRelease,
         });
 

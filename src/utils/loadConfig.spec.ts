@@ -62,6 +62,12 @@ describe("loadConfig", () => {
         ],
         prerelease: ["alpha", "beta", "rc"],
       },
+      bumpMajorVersionCommit: {
+        subject: "feat!: bump ${name} to v${version}",
+      },
+      bumpMinorVersionCommit: {
+        subject: "feat: bump ${name} to v${version}",
+      },
       packages: [
         {
           paths: ["./"],

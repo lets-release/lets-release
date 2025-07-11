@@ -867,6 +867,14 @@ describe("LetsRelease", () => {
         refSeparator: "/",
         releaseFollowingDependencies: true,
         mainPackage: "pkg1",
+        bumpMajorVersionCommit: {
+          subject: "feat!: bump ${name} to v${version}",
+          body: "",
+        },
+        bumpMinorVersionCommit: {
+          subject: "feat: bump ${name} to v${version}",
+          body: "",
+        },
         packages: [
           {
             paths: ["/path/to"],
@@ -1152,6 +1160,163 @@ describe("LetsRelease", () => {
         channels: { default: [null] },
         tag: "v2.0.1",
         version: "2.0.1",
+      },
+    ]);
+  });
+
+  it("should generate dependency bump commits with body", async () => {
+    const findPackages = vi.fn().mockResolvedValue([
+      {
+        path: "/path/to/pkg1",
+        type: "npm",
+        name: "pkg1",
+        uniqueName: "pkg1",
+        main: true,
+        dependencies: [
+          {
+            type: "npm",
+            name: "pkg2",
+          },
+        ],
+      },
+      {
+        path: "/path/to/pkg2",
+        type: "npm",
+        name: "pkg2",
+        uniqueName: "pkg2",
+      },
+    ]);
+
+    vi.mocked(loadConfig)
+      .mockReset()
+      .mockResolvedValue({
+        tagFormat: "v${version}",
+        refSeparator: "/",
+        releaseFollowingDependencies: true,
+        bumpMajorVersionCommit: {
+          subject: "feat!: bump ${name} to v${version}",
+          body: "This is a major version upgrade of ${name} to v${version}",
+        },
+        bumpMinorVersionCommit: {
+          subject: "feat: bump ${name} to v${version}",
+          body: "This is a minor version upgrade of ${name} to v${version}",
+        },
+        packages: [
+          {
+            paths: ["/path/to"],
+          },
+        ],
+      } as NormalizedOptions);
+    vi.mocked(getBranches).mockResolvedValue({
+      main: mainBranch,
+      next: nextBranch,
+      maintenance: undefined,
+      prerelease: undefined,
+    });
+    vi.mocked(getStepPipelinesList).mockResolvedValue([
+      { findPackages, analyzeCommits, generateNotes, publish },
+    ]);
+    analyzeCommits
+      .mockResolvedValueOnce(ReleaseType.major)
+      .mockResolvedValueOnce(ReleaseType.minor);
+    vi.mocked(getReleases).mockReturnValue({});
+    vi.mocked(getNextVersion)
+      .mockReturnValueOnce("1.0.0")
+      .mockReturnValueOnce("2.0.0");
+
+    await expect(letsRelease.run()).resolves.toEqual([
+      {
+        hash: "headhash",
+        notes,
+        artifacts,
+        channels: { default: [null] },
+        tag: "pkg2/v1.0.0",
+        version: "1.0.0",
+      },
+      {
+        hash: "headhash",
+        notes,
+        artifacts,
+        channels: { default: [null] },
+        tag: "v2.0.0",
+        version: "2.0.0",
+      },
+    ]);
+  });
+
+  it("should use bumpMinorVersionCommit when dependency has minor version bump", async () => {
+    const findPackages = vi.fn().mockResolvedValue([
+      {
+        path: "/path/to/pkg1",
+        type: "npm",
+        name: "pkg1",
+        uniqueName: "npm/pkg1",
+        dependencies: [
+          {
+            type: "npm",
+            name: "pkg2",
+          },
+        ],
+      },
+      {
+        path: "/path/to/pkg2",
+        type: "npm",
+        name: "pkg2",
+        uniqueName: "npm/pkg2",
+      },
+    ]);
+
+    vi.mocked(loadConfig)
+      .mockReset()
+      .mockResolvedValue({
+        tagFormat: "v${version}",
+        refSeparator: "/",
+        releaseFollowingDependencies: true,
+        bumpMajorVersionCommit: {
+          subject: "feat!: bump ${name} to v${version}",
+        },
+        bumpMinorVersionCommit: {
+          subject: "feat: bump ${name} to v${version}",
+        },
+        packages: [
+          {
+            paths: ["/path/to"],
+          },
+        ],
+      } as NormalizedOptions);
+    vi.mocked(getBranches).mockResolvedValue({
+      main: mainBranch,
+      next: nextBranch,
+      maintenance: undefined,
+      prerelease: undefined,
+    });
+    analyzeCommits
+      .mockResolvedValueOnce(ReleaseType.minor)
+      .mockResolvedValueOnce(ReleaseType.patch);
+    vi.mocked(getStepPipelinesList).mockResolvedValue([
+      { findPackages, analyzeCommits, generateNotes, publish },
+    ]);
+    vi.mocked(getReleases).mockReturnValue({});
+    vi.mocked(getNextVersion)
+      .mockReturnValueOnce("1.0.0")
+      .mockReturnValueOnce("1.1.0");
+
+    await expect(letsRelease.run()).resolves.toEqual([
+      {
+        hash: "headhash",
+        notes,
+        artifacts,
+        channels: { default: [null] },
+        tag: "pkg2/v1.0.0",
+        version: "1.0.0",
+      },
+      {
+        hash: "headhash",
+        notes,
+        artifacts,
+        channels: { default: [null] },
+        tag: "pkg1/v1.1.0",
+        version: "1.1.0",
       },
     ]);
   });
