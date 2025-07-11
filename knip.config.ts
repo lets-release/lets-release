@@ -13,12 +13,10 @@ const config: KnipConfig = {
       ],
     },
     "libs/*": {
-      entry: "src/index.ts",
-      project: ["src/**", "test/**", "!**/*.spec.ts"],
+      project: ["**/*.ts", "!**/*.spec.ts"],
     },
     "plugins/*": {
-      entry: "src/index.ts",
-      project: ["src/**", "test/**", "!**/*.spec.ts"],
+      project: ["**/*.ts", "!**/*.spec.ts"],
     },
     "plugins/(commit-analyzer|release-notes-generator)": {
       ignoreDependencies: [/conventional-changelog-.*/],
