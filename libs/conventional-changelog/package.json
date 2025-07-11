@@ -1,6 +1,6 @@
 {
   "name": "@lets-release/conventional-changelog",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "description": "Let's Release conventional-changelog library",
   "author": "Sean Tu <manlao@gmail.com> (https://github.com/manlao)",
   "license": "MIT",

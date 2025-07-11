@@ -1,6 +1,6 @@
 {
   "name": "@lets-release/exec",
-  "version": "1.3.0",
+  "version": "2.0.0",
   "description": "Let's Release exec plugin",
   "author": "Sean Tu <manlao@gmail.com> (https://github.com/manlao)",
   "license": "MIT",
