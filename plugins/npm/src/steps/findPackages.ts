@@ -59,10 +59,22 @@ export const findPackages: StepFunction<Step.findPackages, NpmOptions> = async (
         `Found package ${pkgContext.pkg.name} at ./${path.relative(repositoryRoot, pkgRoot)}`,
       );
 
+      const letsRelease = pkgContext.pkg["lets-release"] as
+        | Record<string, unknown>
+        | undefined;
+      const formerName =
+        letsRelease &&
+        typeof letsRelease === "object" &&
+        letsRelease.formerName &&
+        typeof letsRelease.formerName === "string"
+          ? letsRelease.formerName
+          : undefined;
+
       pkgs.push({
         path: pkgRoot,
         type: NPM_PACKAGE_TYPE,
         name: pkgContext.pkg.name,
+        formerName,
       });
 
       setPluginPackageContext(
