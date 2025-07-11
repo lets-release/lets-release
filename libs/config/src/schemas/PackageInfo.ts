@@ -15,6 +15,11 @@ export const PackageInfo = PackageDependency.extend({
   path: NonEmptyString,
 
   /**
+   * Former Name
+   */
+  formerName: NonEmptyString.optional(),
+
+  /**
    * Package dependencies.
    */
   dependencies: z.array(PackageDependency).optional(),
