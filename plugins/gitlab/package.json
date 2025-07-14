@@ -30,9 +30,9 @@
     "build": "rimraf ./dist && tspc --build tsconfig.build.json"
   },
   "dependencies": {
-    "@gitbeaker/core": "^42.5.0",
-    "@gitbeaker/requester-utils": "^42.5.0",
-    "@gitbeaker/rest": "^42.5.0",
+    "@gitbeaker/core": "^43.0.0",
+    "@gitbeaker/requester-utils": "^43.0.0",
+    "@gitbeaker/rest": "^43.0.0",
     "@lets-release/config": "workspace:^",
     "@lets-release/git-host": "workspace:^",
     "read-pkg": "^9.0.1",
