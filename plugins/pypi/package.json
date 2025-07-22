@@ -34,7 +34,7 @@
     "debug": "^4.4.1",
     "execa": "^9.6.0",
     "find-up-simple": "^1.0.1",
-    "form-data": "^4.0.3",
+    "form-data": "^4.0.4",
     "lodash-es": "^4.17.21",
     "normalize-url": "^8.0.2",
     "smol-toml": "^1.4.1",
