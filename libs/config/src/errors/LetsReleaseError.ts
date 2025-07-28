@@ -4,6 +4,5 @@ export abstract class LetsReleaseError extends Error {
 
   constructor() {
     super();
-    Error.captureStackTrace(this, this.constructor);
   }
 }

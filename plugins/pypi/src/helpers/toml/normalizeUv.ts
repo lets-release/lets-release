@@ -26,7 +26,7 @@ export function normalizeUv(
   const devDependencies = getMaybeValue(
     raw["dev-dependencies"],
     isArray,
-  )?.filter(isString);
+  )?.filter((element) => isString(element));
 
   return {
     index,

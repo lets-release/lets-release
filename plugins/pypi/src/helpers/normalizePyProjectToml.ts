@@ -21,10 +21,10 @@ export function normalizePyProjectToml(
   const name = getMaybeValue(project?.name, isString);
   const version = getMaybeValue(project?.version, isString);
   const classifiers = getMaybeValue(project?.classifiers, isArray)?.filter(
-    isString,
+    (element) => isString(element),
   );
   const dependencies = getMaybeValue(project?.dependencies, isArray)?.filter(
-    isString,
+    (element) => isString(element),
   );
   const optionalDependencies = Object.fromEntries(
     Object.entries(

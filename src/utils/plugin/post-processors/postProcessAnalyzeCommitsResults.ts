@@ -7,7 +7,7 @@ export const postProcessAnalyzeCommitsResults: StepPipelinePostProcessor<
 > = (context, results) => {
   let highest = -1;
 
-  const reversedReleaseTypes = [...RELEASE_TYPES].reverse();
+  const reversedReleaseTypes = RELEASE_TYPES.toReversed();
 
   for (const result of results) {
     const typeIndex = result ? reversedReleaseTypes.indexOf(result) : -1;
