@@ -54,6 +54,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
           check-latest: true
           cache: pnpm
+      - run: npm install -g corepack@latest
       - run: corepack enable
       - run: pnpm install
       - run: pnpm --recursive --workspace-concurrency=1 run test:cov run
