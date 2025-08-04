@@ -39,7 +39,7 @@ a CI build is triggered and runs the `lets-release` command to make releases if 
 
 ## Node version
 
-**lets-release** is only tested with node.js later than version 22.0.0, so the supported range is defined in the `engines.node` property of the `package.json` of our packages as `>=22.0.0`.
+**lets-release** is only tested with node.js later than version 22.12.0, so the supported range is defined in the `engines.node` property of the `package.json` of our packages as `>=22.12.0`.
 
 ## Git version
 
