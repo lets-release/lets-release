@@ -15,7 +15,11 @@ const getConfig = async (
 
   const value = stripAnsi(stdout).trim();
 
-  if (value === "undefined" || value === "null") {
+  if (
+    value === "undefined" ||
+    value === "null" ||
+    value.startsWith("ERR_PNPM")
+  ) {
     return "";
   }
 
