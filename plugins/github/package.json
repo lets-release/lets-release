@@ -40,11 +40,11 @@
     "mime": "^4.0.7",
     "p-filter": "^4.1.0",
     "read-pkg": "^9.0.1",
-    "zod": "^4.0.17"
+    "zod": "^4.1.1"
   },
   "devDependencies": {
     "@octokit/types": "^14.1.0",
-    "undici": "^7.14.0"
+    "undici": "^7.15.0"
   },
   "files": [
     "package.json",
