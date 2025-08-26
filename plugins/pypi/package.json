@@ -40,8 +40,8 @@
     "smol-toml": "^1.4.2",
     "strip-ansi": "^7.1.0",
     "tinyglobby": "^0.2.14",
-    "undici": "^7.14.0",
-    "zod": "^4.0.17"
+    "undici": "^7.15.0",
+    "zod": "^4.1.1"
   },
   "devDependencies": {
     "@lets-release/testing": "workspace:^",

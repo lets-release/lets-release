@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "lodash-es": "^4.17.21",
-    "zod": "^4.0.17"
+    "zod": "^4.1.1"
   },
   "files": [
     "package.json",
