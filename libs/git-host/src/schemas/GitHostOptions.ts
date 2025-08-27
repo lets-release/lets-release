@@ -1,10 +1,6 @@
 import { z } from "zod";
 
-import {
-  NonEmptyString,
-  PartialRequired,
-  createAsyncFunctionSchema,
-} from "@lets-release/config";
+import { NonEmptyString, PartialRequired } from "@lets-release/config";
 
 import { Asset } from "src/schemas/Asset";
 import { ProxyOptions } from "src/schemas/ProxyOptions";
@@ -66,12 +62,10 @@ export const GitHostOptions = z.object({
   commentOnSuccess: z
     .union([
       z.boolean(),
-      createAsyncFunctionSchema(
-        z.function({
-          input: z.any(),
-          output: z.union([z.boolean(), z.promise(z.boolean())]),
-        }),
-      ),
+      z.function({
+        input: z.any(),
+        output: z.union([z.boolean(), z.promise(z.boolean())]),
+      }),
     ])
     .default(true),
 
