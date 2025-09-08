@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
 import path from "node:path";
 
 import { globSync } from "tinyglobby";

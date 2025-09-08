@@ -1,20 +1,21 @@
 import eslintJs from "@eslint/js";
 import tsParser from "@typescript-eslint/parser";
 import { TSESLint } from "@typescript-eslint/utils";
+import { defineConfig } from "eslint/config";
 import { createTypeScriptImportResolver } from "eslint-import-resolver-typescript";
 import { flatConfigs } from "eslint-plugin-import-x";
 import prettierPluginRecommended from "eslint-plugin-prettier/recommended";
 import unicornPlugin from "eslint-plugin-unicorn";
 import unusedImportsPlugin from "eslint-plugin-unused-imports";
 import globals from "globals";
-import { config, configs } from "typescript-eslint";
+import { configs } from "typescript-eslint";
 
-const eslintConfig: TSESLint.FlatConfig.ConfigArray = config(
+const eslintConfig: TSESLint.FlatConfig.ConfigArray = defineConfig(
   eslintJs.configs.recommended,
   ...configs.recommendedTypeChecked,
   ...configs.stylisticTypeChecked,
-  flatConfigs.recommended,
-  flatConfigs.typescript,
+  flatConfigs.recommended as never, // FIXME: https://github.com/un-ts/eslint-plugin-import-x/issues/421
+  flatConfigs.typescript as never, // FIXME: https://github.com/un-ts/eslint-plugin-import-x/issues/421
   unicornPlugin.configs.recommended,
   prettierPluginRecommended,
   // global ignores

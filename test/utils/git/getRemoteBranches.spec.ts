@@ -29,6 +29,6 @@ describe("getRemoteBranches", () => {
 
     const branches = await getRemoteBranches(url, { cwd });
 
-    expect(branches.sort()).toEqual(["dev", "main", "other"]);
+    expect(branches.toSorted()).toEqual(["dev", "main", "other"]);
   });
 });

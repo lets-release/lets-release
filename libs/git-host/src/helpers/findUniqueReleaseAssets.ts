@@ -27,7 +27,7 @@ export async function findUniqueReleaseAssets<
     list
       .flat()
       // Sort with Object first, to prioritize Object definition over Strings in deduplication
-      .sort((asset) => (!isArray(asset) && !isString(asset) ? -1 : 1)),
+      .toSorted((asset) => (!isArray(asset) && !isString(asset) ? -1 : 1)),
     // Compare `path` property if Object definition, value itself if String
     (a, b) =>
       path.resolve(repositoryRoot, isString(a) ? a : a.path) ===

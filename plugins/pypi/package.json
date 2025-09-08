@@ -39,7 +39,7 @@
     "normalize-url": "^8.0.2",
     "smol-toml": "^1.4.2",
     "strip-ansi": "^7.1.0",
-    "tinyglobby": "^0.2.14",
+    "tinyglobby": "^0.2.15",
     "undici": "^7.15.0",
     "zod": "^4.1.5"
   },

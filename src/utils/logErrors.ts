@@ -12,7 +12,7 @@ export async function logErrors(
   { stderr, logger }: Pick<BaseContext, "stderr" | "logger">,
   error: unknown,
 ) {
-  const errors = extractErrors(error).sort((a, b) => {
+  const errors = extractErrors(error).toSorted((a, b) => {
     if (a instanceof LetsReleaseError && b instanceof LetsReleaseError) {
       return 0;
     }

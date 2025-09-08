@@ -35,7 +35,7 @@
     "issue-parser": "^7.0.1",
     "lodash-es": "^4.17.21",
     "read-pkg": "^9.0.1",
-    "tinyglobby": "^0.2.14",
+    "tinyglobby": "^0.2.15",
     "undici": "^7.15.0",
     "zod": "^4.1.5"
   },

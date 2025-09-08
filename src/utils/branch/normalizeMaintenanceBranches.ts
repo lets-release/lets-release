@@ -70,7 +70,7 @@ export function normalizeMaintenanceBranches(
               ranges: Record<string, ParsedCalVerXRange | ParsedSemVerXRange>;
             } => !!branch.ranges?.[pkg.uniqueName],
         )
-        .sort((a, b) => {
+        .toSorted((a, b) => {
           if (pkg.versioning.scheme === VersioningScheme.CalVer) {
             return compareCalVers(
               pkg.versioning.format,
