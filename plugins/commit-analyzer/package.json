@@ -31,7 +31,7 @@
   "dependencies": {
     "@lets-release/config": "workspace:^",
     "@lets-release/conventional-changelog": "workspace:^",
-    "debug": "^4.4.1",
+    "debug": "^4.4.2",
     "lodash-es": "^4.17.21",
     "micromatch": "^4.0.8",
     "read-pkg": "^9.0.1",

@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@lets-release/config": "workspace:^",
-    "debug": "^4.4.1",
+    "debug": "^4.4.2",
     "dir-glob": "^3.0.1",
     "issue-parser": "^7.0.1",
     "lodash-es": "^4.17.21",

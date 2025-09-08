@@ -34,7 +34,7 @@
     "conventional-changelog-writer": "^8.2.0",
     "conventional-commits-filter": "^5.0.0",
     "conventional-commits-parser": "^6.2.0",
-    "debug": "^4.4.1",
+    "debug": "^4.4.2",
     "read-pkg": "^9.0.1",
     "zod": "^4.1.5"
   },
