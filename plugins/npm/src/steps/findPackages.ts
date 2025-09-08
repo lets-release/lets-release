@@ -40,6 +40,7 @@ export const findPackages: StepFunction<Step.findPackages, NpmOptions> = async (
 
   for (const folder of folders.toSorted()) {
     const pkgRoot = path.resolve(repositoryRoot, folder);
+    const relativePkgRoot = `./${path.relative(repositoryRoot, pkgRoot)}`;
 
     try {
       const pkgContext = await getNpmPackageContext({
@@ -49,15 +50,13 @@ export const findPackages: StepFunction<Step.findPackages, NpmOptions> = async (
 
       if (!pkgContext) {
         logger.warn(
-          `Skipping package at ${pkgRoot}: Unsupported npm package manager`,
+          `Skipping package at ${relativePkgRoot}: Unsupported npm package manager`,
         );
 
         continue;
       }
 
-      logger.info(
-        `Found package ${pkgContext.pkg.name} at ./${path.relative(repositoryRoot, pkgRoot)}`,
-      );
+      logger.info(`Found package ${pkgContext.pkg.name} at ${relativePkgRoot}`);
 
       const letsRelease = pkgContext.pkg["lets-release"] as
         | Record<string, unknown>
@@ -84,7 +83,7 @@ export const findPackages: StepFunction<Step.findPackages, NpmOptions> = async (
       );
     } catch (error) {
       if (error instanceof Error) {
-        logger.warn(`Skipping package at ${pkgRoot}: ${error.message}`);
+        logger.warn(`Skipping package at ${relativePkgRoot}: ${error.message}`);
       }
 
       debug(name)(error);

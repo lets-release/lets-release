@@ -47,6 +47,7 @@ export const findPackages: StepFunction<
 
   for (const folder of folders.toSorted()) {
     const pkgRoot = path.resolve(repositoryRoot, folder);
+    const relativePkgRoot = `./${path.relative(repositoryRoot, pkgRoot)}`;
 
     try {
       const pkgContext = await getPyPIPackageContext({
@@ -56,14 +57,14 @@ export const findPackages: StepFunction<
 
       if (!pkgContext) {
         logger.warn(
-          `Skipping package at ${pkgRoot}: Unsupported PyPI package manager`,
+          `Skipping package at ${relativePkgRoot}: Unsupported PyPI package manager`,
         );
 
         continue;
       }
 
       logger.info(
-        `Found package ${pkgContext.pkg.project.name} at ./${path.relative(repositoryRoot, pkgRoot)}`,
+        `Found package ${pkgContext.pkg.project.name} at ${relativePkgRoot}`,
       );
 
       pkgs.push({
@@ -80,7 +81,7 @@ export const findPackages: StepFunction<
       );
     } catch (error) {
       if (error instanceof Error) {
-        logger.warn(`Skipping package at ${pkgRoot}: ${error.message}`);
+        logger.warn(`Skipping package at ${relativePkgRoot}: ${error.message}`);
       }
 
       debug(name)(error);
