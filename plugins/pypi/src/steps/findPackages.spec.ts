@@ -100,7 +100,7 @@ describe("findPackages", () => {
 
     expect(result).toEqual([]);
     expect(warn).toHaveBeenCalledWith(
-      `Skipping package at ${path.resolve("/repo", "packages/pkg1")}: Unsupported PyPI package manager`,
+      `Skipping package at ./packages/pkg1: Unsupported PyPI package manager`,
     );
   });
 
@@ -113,7 +113,7 @@ describe("findPackages", () => {
     expect(result).toEqual([]);
     expect(warn).toHaveBeenCalledWith(
       expect.stringContaining(
-        `Skipping package at ${path.resolve("/repo", "packages/pkg1")}: Test error`,
+        `Skipping package at ./packages/pkg1: Test error`,
       ),
     );
   });

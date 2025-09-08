@@ -148,7 +148,7 @@ describe("findPackages", () => {
     ).resolves.toEqual([]);
 
     expect(warn).toHaveBeenCalledWith(
-      `Skipping package at ${path.resolve(repositoryRoot, errorPackage)}: Failed to process package`,
+      `Skipping package at ./${errorPackage}: Failed to process package`,
     );
   });
 });
