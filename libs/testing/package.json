@@ -33,7 +33,7 @@
     "postbuild": "pnpm run copy-pypi-server-config && pnpm run copy-verdaccio-config"
   },
   "dependencies": {
-    "dockerode": "^4.0.7",
+    "dockerode": "^4.0.8",
     "p-retry": "^7.0.0",
     "undici": "^7.15.0"
   },
