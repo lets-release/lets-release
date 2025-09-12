@@ -64,13 +64,6 @@ export const GitLabOptions = GitHostOptions.extend({
   assets: z.array(GitLabAsset).optional(),
 
   /**
-   * The [assignees][] to add to the issue created when a release fails.
-   *
-   * [assignees]: https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#assignee
-   */
-  failureIssueAssignees: z.array(NonEmptyString).max(1).optional(),
-
-  /**
    * An array of milestone titles to associate to the release.
    */
   milestones: z.array(NonEmptyString).optional(),

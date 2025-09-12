@@ -41,7 +41,6 @@ const options = {
   successLabels: ["released"],
   positionOfOtherArtifacts: "top",
   reportOnFailure: true,
-  failureIssueLabels: ["bug"],
 } as unknown as ResolvedGitLabOptions;
 const allIssuesClosed = vi.fn();
 const edit = vi.fn();

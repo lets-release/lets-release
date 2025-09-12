@@ -29,10 +29,6 @@ describe("GitLabOptions schema", () => {
       commentOnSuccess: true,
       successComment: "Release successful!",
       reportOnFailure: false,
-      failureIssueTitle: "Release failed",
-      failureIssueContent: "The release has failed.",
-      failureIssueLabels: ["bug"],
-      failureIssueAssignees: ["user1"],
     };
     expect(() => GitLabOptions.parse(validData)).not.toThrow();
   });
@@ -45,13 +41,6 @@ describe("GitLabOptions schema", () => {
           type: "invalid-type",
         },
       ],
-    };
-    expect(() => GitLabOptions.parse(invalidData)).toThrow();
-  });
-
-  it("should fail validation with more than one failureIssueAssignees", () => {
-    const invalidData = {
-      failureIssueAssignees: ["user1", "user2"],
     };
     expect(() => GitLabOptions.parse(invalidData)).toThrow();
   });
