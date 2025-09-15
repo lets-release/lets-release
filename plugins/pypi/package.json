@@ -31,17 +31,17 @@
   },
   "dependencies": {
     "@lets-release/config": "workspace:^",
-    "debug": "^4.4.1",
+    "debug": "^4.4.3",
     "execa": "^9.6.0",
     "find-up-simple": "^1.0.1",
     "form-data": "^4.0.4",
     "lodash-es": "^4.17.21",
-    "normalize-url": "^8.0.2",
+    "normalize-url": "^8.1.0",
     "smol-toml": "^1.4.2",
     "strip-ansi": "^7.1.2",
     "tinyglobby": "^0.2.15",
-    "undici": "^7.15.0",
-    "zod": "^4.1.5"
+    "undici": "^7.16.0",
+    "zod": "^4.1.8"
   },
   "devDependencies": {
     "@lets-release/testing": "workspace:^",
