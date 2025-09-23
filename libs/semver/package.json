@@ -31,7 +31,7 @@
   "dependencies": {
     "@lets-release/versioning": "workspace:^",
     "lodash-es": "^4.17.21",
-    "zod": "^4.1.8"
+    "zod": "^4.1.11"
   },
   "files": [
     "package.json",
