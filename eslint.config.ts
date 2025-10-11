@@ -115,6 +115,14 @@ const eslintConfig: TSESLint.FlatConfig.ConfigArray = defineConfig(
       "@typescript-eslint/class-literal-property-style": ["error", "getters"],
       "@typescript-eslint/no-deprecated": "error",
       "@typescript-eslint/no-unused-vars": "off",
+      "@typescript-eslint/prefer-nullish-coalescing": [
+        "error",
+        {
+          ignorePrimitives: {
+            string: true,
+          },
+        },
+      ],
       "unused-imports/no-unused-imports": "error",
       "unused-imports/no-unused-vars": [
         "warn",

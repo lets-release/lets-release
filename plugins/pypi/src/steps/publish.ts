@@ -61,7 +61,6 @@ export const publish: StepFunction<Step.publish, PyPIOptions> = async (
       case PyPIPackageManagerName.poetry: {
         result = $(
           execaOptions,
-          // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
         )`poetry publish --repository ${registry.name} --username ${token ? DEFAULT_PYPI_USERNAME : username} --password ${token || password!} --dist-dir ${path.resolve(pkgRoot, distDir)} --skip-existing`;
         break;
       }
