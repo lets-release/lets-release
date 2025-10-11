@@ -38,10 +38,10 @@
     "preferred-pm": "^4.1.1",
     "read-pkg": "^9.0.1",
     "resolve-workspace-root": "^2.0.0",
-    "semver": "^7.7.2",
+    "semver": "^7.7.3",
     "strip-ansi": "^7.1.2",
     "tinyglobby": "^0.2.15",
-    "zod": "^4.1.11"
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@lets-release/testing": "workspace:^",
