@@ -81,6 +81,7 @@ describe("getDistTagVersion", () => {
         getPluginPackageContext,
         setPluginPackageContext,
         cwd,
+        ciEnv: {},
         env: process.env,
         repositoryRoot: cwd,
         options: {},
@@ -127,6 +128,7 @@ describe("getDistTagVersion", () => {
       await expect(
         getDistTagVersion(
           {
+            ciEnv: {},
             package: { name: "get-dist-tag-version" },
           } as unknown as VerifyReleaseContext,
           pkgContext,
@@ -177,6 +179,7 @@ describe("getDistTagVersion", () => {
       await expect(
         getDistTagVersion(
           {
+            ciEnv: {},
             package: { name: "get-dist-tag-version" },
           } as unknown as VerifyReleaseContext,
           pkgContext,
@@ -186,6 +189,7 @@ describe("getDistTagVersion", () => {
       await expect(
         getDistTagVersion(
           {
+            ciEnv: {},
             package: { name: "get-dist-tag-version" },
           } as unknown as VerifyReleaseContext,
           pkgContext,
@@ -227,6 +231,7 @@ describe("getDistTagVersion", () => {
       await expect(
         getDistTagVersion(
           {
+            ciEnv: {},
             package: { name: "get-dist-tag-version" },
           } as unknown as VerifyReleaseContext,
           pkgContext,

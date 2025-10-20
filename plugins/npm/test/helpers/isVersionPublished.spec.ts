@@ -68,6 +68,7 @@ describe("isVersionPublished", () => {
       getPluginPackageContext,
       setPluginPackageContext,
       cwd,
+      ciEnv: {},
       env: process.env,
       repositoryRoot: cwd,
       options: {},
@@ -112,6 +113,7 @@ describe("isVersionPublished", () => {
       await expect(
         isVersionPublished(
           {
+            ciEnv: {},
             package: pkg,
             nextRelease: { version: "1.0.0" },
           } as unknown as VerifyReleaseContext,
@@ -124,6 +126,7 @@ describe("isVersionPublished", () => {
       await expect(
         isVersionPublished(
           {
+            ciEnv: {},
             package: pkg,
             nextRelease: { version: "2.0.0" },
           } as unknown as VerifyReleaseContext,
@@ -164,6 +167,7 @@ describe("isVersionPublished", () => {
       await expect(
         isVersionPublished(
           {
+            ciEnv: {},
             package: pkg,
             nextRelease: { version: "1.0.0" },
           } as unknown as VerifyReleaseContext,
@@ -176,6 +180,7 @@ describe("isVersionPublished", () => {
       await expect(
         isVersionPublished(
           {
+            ciEnv: {},
             package: pkg,
             nextRelease: { version: "2.0.0" },
           } as unknown as VerifyReleaseContext,
@@ -216,6 +221,7 @@ describe("isVersionPublished", () => {
       await expect(
         isVersionPublished(
           {
+            ciEnv: {},
             package: pkg,
             nextRelease: { version: "1.0.0" },
           } as unknown as VerifyReleaseContext,
@@ -228,6 +234,7 @@ describe("isVersionPublished", () => {
       await expect(
         isVersionPublished(
           {
+            ciEnv: {},
             package: pkg,
             nextRelease: { version: "2.0.0" },
           } as unknown as VerifyReleaseContext,

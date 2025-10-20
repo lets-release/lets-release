@@ -59,6 +59,7 @@ describe("verifyConditions", () => {
           getPluginPackageContext,
           setPluginPackageContext,
           cwd,
+          ciEnv: {},
           env: process.env,
           repositoryRoot: cwd,
           packages: [
@@ -106,6 +107,7 @@ describe("verifyConditions", () => {
           getPluginPackageContext,
           setPluginPackageContext,
           cwd,
+          ciEnv: {},
           env: process.env,
           repositoryRoot: cwd,
           packages: [
@@ -152,6 +154,7 @@ describe("verifyConditions", () => {
           getPluginPackageContext,
           setPluginPackageContext,
           cwd,
+          ciEnv: {},
           env: process.env,
           repositoryRoot: cwd,
           packages: [
@@ -230,6 +233,7 @@ describe("verifyConditions", () => {
             getPluginPackageContext,
             setPluginPackageContext,
             cwd,
+            ciEnv: {},
             env: process.env,
             repositoryRoot: cwd,
             packages,
@@ -305,6 +309,7 @@ describe("verifyConditions", () => {
             getPluginPackageContext,
             setPluginPackageContext,
             cwd,
+            ciEnv: {},
             env: process.env,
             repositoryRoot: cwd,
             packages,
@@ -380,6 +385,7 @@ describe("verifyConditions", () => {
             getPluginPackageContext,
             setPluginPackageContext,
             cwd,
+            ciEnv: {},
             env: process.env,
             repositoryRoot: cwd,
             packages,

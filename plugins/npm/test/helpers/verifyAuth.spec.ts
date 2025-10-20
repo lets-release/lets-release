@@ -46,7 +46,10 @@ describe("verifyAuth", () => {
 
       await expect(
         verifyAuth(
-          { package: { path: cwd } } as AnalyzeCommitsContext,
+          {
+            ciEnv: {},
+            package: { path: cwd },
+          } as AnalyzeCommitsContext,
           {
             pm: { name: "pnpm", root: cwd },
             registry,
@@ -80,7 +83,10 @@ describe("verifyAuth", () => {
 
       await expect(
         verifyAuth(
-          { package: { path: cwd } } as AnalyzeCommitsContext,
+          {
+            ciEnv: {},
+            package: { path: cwd },
+          } as AnalyzeCommitsContext,
           {
             pm: { name: "yarn", root: cwd },
             registry,
@@ -114,7 +120,10 @@ describe("verifyAuth", () => {
 
       await expect(
         verifyAuth(
-          { package: { path: cwd } } as AnalyzeCommitsContext,
+          {
+            ciEnv: {},
+            package: { path: cwd },
+          } as AnalyzeCommitsContext,
           {
             pm: { name: "npm", root: cwd },
             registry,

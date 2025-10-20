@@ -4,15 +4,36 @@ import { AnalyzeCommitsContext } from "@lets-release/config";
 
 import { NpmPackageManagerName } from "src/enums/NpmPackageManagerName";
 import { NeedAuthError } from "src/errors/NeedAuthError";
+import { exchangeTrustedPublisherIdToken } from "src/helpers/exchangeTrustedPublisherIdToken";
+import { getTrustedPublisherIdToken } from "src/helpers/getTrustedPublisherIdToken";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
 
 export async function verifyAuth(
   {
+    ciEnv,
     env,
-    package: { path: pkgRoot },
-  }: Pick<AnalyzeCommitsContext, "env" | "package">,
+    logger,
+    package: pkg,
+  }: Pick<AnalyzeCommitsContext, "ciEnv" | "env" | "logger" | "package">,
   { pm, scope, registry }: NpmPackageContext,
 ) {
+  const idToken = await getTrustedPublisherIdToken(
+    { ciEnv, logger, package: pkg },
+    { registry },
+  );
+
+  if (idToken) {
+    const exchangedIdToken = await exchangeTrustedPublisherIdToken(
+      { logger, package: pkg },
+      { registry },
+      idToken,
+    );
+
+    if (exchangedIdToken) {
+      return;
+    }
+  }
+
   const options = {
     cwd: pm.root,
     env,
@@ -35,7 +56,7 @@ export async function verifyAuth(
       await verify(
         $({
           ...options,
-          cwd: pkgRoot,
+          cwd: pkg.path,
         })`pnpm whoami --registry ${registry}`,
       ).catch(
         async () =>

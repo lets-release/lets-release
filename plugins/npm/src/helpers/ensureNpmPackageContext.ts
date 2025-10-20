@@ -10,7 +10,9 @@ import { NpmPackageContext } from "src/types/NpmPackageContext";
 export async function ensureNpmPackageContext(
   context: Pick<
     AnalyzeCommitsContext,
+    | "ciEnv"
     | "env"
+    | "logger"
     | "repositoryRoot"
     | "package"
     | "getPluginPackageContext"
