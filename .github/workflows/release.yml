@@ -42,6 +42,7 @@ jobs:
           node-version: latest
           check-latest: true
           cache: pnpm
+      - run: npm install -g corepack@latest
       - run: corepack enable
       - run: npm config set scope lets-release --global
       - run: npm config set "//registry.npmjs.org/:_authToken" "${NPM_TOKEN}" # pnpm config set is broken

@@ -23,6 +23,7 @@ jobs:
           node-version: latest
           check-latest: true
           cache: pnpm
+      - run: npm install -g corepack@latest
       - run: corepack enable
       - run: pnpm install
       - run: pnpm run knip
