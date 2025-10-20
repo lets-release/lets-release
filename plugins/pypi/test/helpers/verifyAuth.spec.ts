@@ -13,6 +13,7 @@ const pypiUsername = inject("pypiUsername");
 const pypiPassword = inject("pypiPassword");
 
 const context = {
+  ciEnv: {},
   env: {},
   package: {},
 } as AnalyzeCommitsContext;

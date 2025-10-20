@@ -11,7 +11,9 @@ import { PyPIPackageContext } from "src/types/PyPIPackageContext";
 export async function ensurePyPIPackageContext(
   context: Pick<
     AnalyzeCommitsContext,
+    | "ciEnv"
     | "env"
+    | "logger"
     | "repositoryRoot"
     | "package"
     | "getPluginPackageContext"
