@@ -3,7 +3,7 @@ import { Interceptable, MockAgent, setGlobalDispatcher } from "undici";
 
 import { AnalyzeCommitsContext } from "@lets-release/config";
 
-import { exchangeTrustedPublisherIdToken } from "src/helpers/exchangeTrustedPublisherIdToken";
+import { exchangeTrustedPublisherToken } from "src/helpers/exchangeTrustedPublisherToken";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
 
 vi.mock("debug");
@@ -12,7 +12,7 @@ const mockDebug = vi.fn();
 
 vi.mocked(debug).mockReturnValue(mockDebug as unknown as debug.Debugger);
 
-describe("exchangeTrustedPublisherIdToken", () => {
+describe("exchangeTrustedPublisherToken", () => {
   const registryUrl = "https://registry.npmjs.org";
   const registry = `${registryUrl}/`;
   const pkgName = "test-package";
@@ -62,7 +62,7 @@ describe("exchangeTrustedPublisherIdToken", () => {
         { headers: { "Content-Type": "application/json" } },
       );
 
-    const result = await exchangeTrustedPublisherIdToken(
+    const result = await exchangeTrustedPublisherToken(
       context,
       npmPackageContext,
       idToken,
@@ -87,7 +87,7 @@ describe("exchangeTrustedPublisherIdToken", () => {
         { headers: { "Content-Type": "application/json" } },
       );
 
-    const result = await exchangeTrustedPublisherIdToken(
+    const result = await exchangeTrustedPublisherToken(
       context,
       npmPackageContext,
       idToken,
@@ -126,7 +126,7 @@ describe("exchangeTrustedPublisherIdToken", () => {
         { headers: { "Content-Type": "application/json" } },
       );
 
-    const result = await exchangeTrustedPublisherIdToken(
+    const result = await exchangeTrustedPublisherToken(
       specialContext,
       npmPackageContext,
       idToken,
@@ -149,7 +149,7 @@ describe("exchangeTrustedPublisherIdToken", () => {
         { headers: { "Content-Type": "application/json" } },
       );
 
-    const result = await exchangeTrustedPublisherIdToken(
+    const result = await exchangeTrustedPublisherToken(
       context,
       npmPackageContext,
       idToken,
@@ -173,7 +173,7 @@ describe("exchangeTrustedPublisherIdToken", () => {
         { headers: { "Content-Type": "application/json" } },
       );
 
-    const result = await exchangeTrustedPublisherIdToken(
+    const result = await exchangeTrustedPublisherToken(
       context,
       npmPackageContext,
       idToken,
@@ -203,7 +203,7 @@ describe("exchangeTrustedPublisherIdToken", () => {
         { headers: { "Content-Type": "application/json" } },
       );
 
-    const result = await exchangeTrustedPublisherIdToken(
+    const result = await exchangeTrustedPublisherToken(
       context,
       npmPackageContext,
       idToken,

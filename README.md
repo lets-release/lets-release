@@ -123,11 +123,6 @@ Options configured this way will be passed only to that specific plugin.
 
 See [Options][].
 
-## TODO
-
-- [ ] 实现主程序和插件的 tagging only 功能 (含 add channels 功能)
-- [ ] 实现主程序和插件的 publish only 功能 (指定 tag，tag需要在 HEAD commit 上)
-
 [@lets-release/commit-analyzer]: ./plugins/commit-analyzer
 [@lets-release/release-notes-generator]: ./plugins/release-notes-generator
 [@lets-release/npm]: ./plugins/npm

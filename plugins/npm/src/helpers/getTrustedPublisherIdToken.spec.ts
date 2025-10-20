@@ -34,7 +34,7 @@ describe("getTrustedPublisherIdToken", () => {
   it("should return GitHub Actions OIDC token when successful", async () => {
     const expectedToken = "github-actions-token-12345";
     const context = {
-      ciEnv: { name: TrustedPublisher.GitHub_Actions },
+      ciEnv: { name: TrustedPublisher.GITHUB_ACTIONS },
       logger,
       package: { uniqueName },
     } as unknown as Pick<AnalyzeCommitsContext, "ciEnv" | "logger" | "package">;
@@ -52,7 +52,7 @@ describe("getTrustedPublisherIdToken", () => {
   it("should handle GitHub Actions OIDC token retrieval failure", async () => {
     const error = new Error("Failed to get ID token");
     const context = {
-      ciEnv: { name: TrustedPublisher.GitHub_Actions },
+      ciEnv: { name: TrustedPublisher.GITHUB_ACTIONS },
       logger,
       package: { uniqueName },
     } as unknown as Pick<AnalyzeCommitsContext, "ciEnv" | "logger" | "package">;
@@ -67,7 +67,7 @@ describe("getTrustedPublisherIdToken", () => {
     expect(logger.warn).toHaveBeenCalledWith({
       prefix: `[${uniqueName}]`,
       message:
-        "Failed to retrieve GitHub Actions OIDC token for registry.npmjs.org",
+        "Failed to retrieve GitHub Actions OIDC token for https://registry.npmjs.org/",
     });
   });
 
@@ -76,7 +76,7 @@ describe("getTrustedPublisherIdToken", () => {
     process.env.NPM_ID_TOKEN = expectedToken;
 
     const context = {
-      ciEnv: { name: TrustedPublisher.GitLab_CI_CD_PIPELINES },
+      ciEnv: { name: TrustedPublisher.GITLAB_CI_CD_PIPELINES },
       logger,
       package: { uniqueName },
     } as unknown as Pick<AnalyzeCommitsContext, "ciEnv" | "logger" | "package">;
@@ -91,7 +91,7 @@ describe("getTrustedPublisherIdToken", () => {
 
   it("should return undefined for GitLab CI/CD when NPM_ID_TOKEN is not set", async () => {
     const context = {
-      ciEnv: { name: TrustedPublisher.GitLab_CI_CD_PIPELINES },
+      ciEnv: { name: TrustedPublisher.GITLAB_CI_CD_PIPELINES },
       logger,
       package: { uniqueName },
     } as unknown as Pick<AnalyzeCommitsContext, "ciEnv" | "logger" | "package">;
@@ -142,7 +142,7 @@ describe("getTrustedPublisherIdToken", () => {
     } as Pick<NpmPackageContext, "registry">;
 
     const context = {
-      ciEnv: { name: TrustedPublisher.GitHub_Actions },
+      ciEnv: { name: TrustedPublisher.GITHUB_ACTIONS },
       logger,
       package: { uniqueName },
     } as unknown as Pick<AnalyzeCommitsContext, "ciEnv" | "logger" | "package">;
@@ -166,7 +166,7 @@ describe("getTrustedPublisherIdToken", () => {
     } as Pick<NpmPackageContext, "registry">;
 
     const context = {
-      ciEnv: { name: TrustedPublisher.GitHub_Actions },
+      ciEnv: { name: TrustedPublisher.GITHUB_ACTIONS },
       logger,
       package: { uniqueName },
     } as unknown as Pick<AnalyzeCommitsContext, "ciEnv" | "logger" | "package">;

@@ -19,8 +19,10 @@ export async function getTrustedPublisherIdToken(
   const { name: publisher } = ciEnv as { name?: string };
   const host = new URL(registry).host;
 
+  // audience claim format (npm:your.registry.hostname)
+  // see: https://github.com/npm/cli/pull/8336#issue-3101152098
   switch (publisher) {
-    case TrustedPublisher.GitHub_Actions: {
+    case TrustedPublisher.GITHUB_ACTIONS: {
       try {
         return await getIDToken(`npm:${host}`);
       } catch (error) {
@@ -28,14 +30,14 @@ export async function getTrustedPublisherIdToken(
 
         logger.warn({
           prefix: `[${uniqueName}]`,
-          message: `Failed to retrieve GitHub Actions OIDC token for ${host}`,
+          message: `Failed to retrieve GitHub Actions OIDC token for ${registry}`,
         });
       }
 
       return;
     }
 
-    case TrustedPublisher.GitLab_CI_CD_PIPELINES: {
+    case TrustedPublisher.GITLAB_CI_CD_PIPELINES: {
       return process.env.NPM_ID_TOKEN;
     }
   }

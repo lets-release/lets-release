@@ -7,7 +7,7 @@ import { name } from "src/plugin";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
 
 // inspired by https://github.com/semantic-release/npm/issues/958
-export async function exchangeTrustedPublisherIdToken(
+export async function exchangeTrustedPublisherToken(
   {
     logger,
     package: { name: pkgName, uniqueName },
@@ -16,7 +16,7 @@ export async function exchangeTrustedPublisherIdToken(
   idToken: string,
 ) {
   const response = await fetch(
-    `${registry}-/npm/v1/oidc/token/exchange/package/${encodeURIComponent(pkgName)}`,
+    `${new URL(registry).origin}/-/npm/v1/oidc/token/exchange/package/${encodeURIComponent(pkgName)}`,
     {
       method: "POST",
       headers: { Authorization: `Bearer ${idToken}` },

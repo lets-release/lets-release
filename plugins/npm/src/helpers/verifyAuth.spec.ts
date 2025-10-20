@@ -4,18 +4,18 @@ import { $ } from "execa";
 import { AnalyzeCommitsContext } from "@lets-release/config";
 
 import { NpmPackageManagerName } from "src/enums/NpmPackageManagerName";
-import { exchangeTrustedPublisherIdToken } from "src/helpers/exchangeTrustedPublisherIdToken";
+import { exchangeTrustedPublisherToken } from "src/helpers/exchangeTrustedPublisherToken";
 import { getTrustedPublisherIdToken } from "src/helpers/getTrustedPublisherIdToken";
 import { verifyAuth } from "src/helpers/verifyAuth";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
 
 vi.mock("execa");
 vi.mock("src/helpers/getTrustedPublisherIdToken");
-vi.mock("src/helpers/exchangeTrustedPublisherIdToken");
+vi.mock("src/helpers/exchangeTrustedPublisherToken");
 
 const mockGetTrustedPublisherIdToken = vi.mocked(getTrustedPublisherIdToken);
-const mockExchangeTrustedPublisherIdToken = vi.mocked(
-  exchangeTrustedPublisherIdToken,
+const mockExchangeTrustedPublisherToken = vi.mocked(
+  exchangeTrustedPublisherToken,
 );
 
 const scope = "@scope";
@@ -45,7 +45,7 @@ describe("verifyAuth", () => {
   describe("with trusted publisher authentication", () => {
     it("should return early when trusted publisher token exchange succeeds", async () => {
       mockGetTrustedPublisherIdToken.mockResolvedValue("id-token");
-      mockExchangeTrustedPublisherIdToken.mockResolvedValue("npm-token");
+      mockExchangeTrustedPublisherToken.mockResolvedValue("npm-token");
 
       await verifyAuth(baseContext, {
         pm: {
@@ -60,7 +60,7 @@ describe("verifyAuth", () => {
         { ciEnv: baseContext.ciEnv, logger, package: pkg },
         { registry },
       );
-      expect(mockExchangeTrustedPublisherIdToken).toHaveBeenCalledWith(
+      expect(mockExchangeTrustedPublisherToken).toHaveBeenCalledWith(
         { logger, package: pkg },
         { registry },
         "id-token",
@@ -84,7 +84,7 @@ describe("verifyAuth", () => {
       } as NpmPackageContext);
 
       expect(mockGetTrustedPublisherIdToken).toHaveBeenCalled();
-      expect(mockExchangeTrustedPublisherIdToken).not.toHaveBeenCalled();
+      expect(mockExchangeTrustedPublisherToken).not.toHaveBeenCalled();
       expect(vi.mocked($)).toHaveBeenCalledWith({
         cwd: "/root",
         env: {},
@@ -94,7 +94,7 @@ describe("verifyAuth", () => {
 
     it("should fallback to traditional auth when token exchange fails", async () => {
       mockGetTrustedPublisherIdToken.mockResolvedValue("id-token");
-      mockExchangeTrustedPublisherIdToken.mockResolvedValue(undefined);
+      mockExchangeTrustedPublisherToken.mockResolvedValue(undefined);
 
       const mockExecFunction = vi.fn().mockResolvedValue(undefined);
       vi.mocked($).mockReturnValue(mockExecFunction as never);
@@ -109,7 +109,7 @@ describe("verifyAuth", () => {
       } as NpmPackageContext);
 
       expect(mockGetTrustedPublisherIdToken).toHaveBeenCalled();
-      expect(mockExchangeTrustedPublisherIdToken).toHaveBeenCalled();
+      expect(mockExchangeTrustedPublisherToken).toHaveBeenCalled();
       expect(vi.mocked($)).toHaveBeenCalled();
     });
   });

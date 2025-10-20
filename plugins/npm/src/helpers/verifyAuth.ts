@@ -4,7 +4,7 @@ import { AnalyzeCommitsContext } from "@lets-release/config";
 
 import { NpmPackageManagerName } from "src/enums/NpmPackageManagerName";
 import { NeedAuthError } from "src/errors/NeedAuthError";
-import { exchangeTrustedPublisherIdToken } from "src/helpers/exchangeTrustedPublisherIdToken";
+import { exchangeTrustedPublisherToken } from "src/helpers/exchangeTrustedPublisherToken";
 import { getTrustedPublisherIdToken } from "src/helpers/getTrustedPublisherIdToken";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
 
@@ -23,13 +23,13 @@ export async function verifyAuth(
   );
 
   if (idToken) {
-    const exchangedIdToken = await exchangeTrustedPublisherIdToken(
+    const token = await exchangeTrustedPublisherToken(
       { logger, package: pkg },
       { registry },
       idToken,
     );
 
-    if (exchangedIdToken) {
+    if (token) {
       return;
     }
   }
