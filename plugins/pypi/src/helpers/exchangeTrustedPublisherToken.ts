@@ -15,24 +15,33 @@ export async function exchangeTrustedPublisherToken(
   { registry }: Pick<PyPIPackageContext, "registry">,
   idToken: string,
 ) {
-  const response = await fetch(
-    `${new URL(registry.publishUrl).origin}/_/oidc/mint-token`,
-    {
-      method: "POST",
-      body: JSON.stringify({
-        token: idToken,
-      }),
-    },
-  );
-  const json = await response.json();
+  const namespace = `${name}:${uniqueName}`;
 
-  if (response.ok) {
-    return (json as { token: string }).token;
+  try {
+    const response = await fetch(
+      `${new URL(registry.publishUrl).origin}/_/oidc/mint-token`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          token: idToken,
+        }),
+      },
+    );
+    const json = await response.json();
+
+    if (response.ok) {
+      return (json as { token: string }).token;
+    }
+
+    debug(namespace)(
+      `Failed to exchange OIDC token with ${registry.publishUrl}: ${response.status} ${(json as { message: string }).message}`,
+    );
+  } catch (error) {
+    debug(namespace)(
+      `Failed to exchange OIDC token with ${registry.publishUrl}`,
+    );
+    debug(namespace)(error);
   }
-
-  debug(`${name}:${uniqueName}`)(
-    `Failed to exchange OIDC token with ${registry.publishUrl}: ${response.status} ${(json as { message: string }).message}`,
-  );
 
   logger.warn({
     prefix: `[${uniqueName}]`,

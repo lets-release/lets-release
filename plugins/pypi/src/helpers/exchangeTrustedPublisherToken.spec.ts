@@ -198,9 +198,23 @@ describe("exchangeTrustedPublisherToken", () => {
       })
       .replyWithError(new Error("Network error"));
 
-    await expect(
-      exchangeTrustedPublisherToken(context, pypiPackageContext, idToken),
-    ).rejects.toThrow("fetch failed");
+    const result = await exchangeTrustedPublisherToken(
+      context,
+      pypiPackageContext,
+      idToken,
+    );
+
+    expect(result).toBeUndefined();
+
+    expect(mockDebug).toHaveBeenCalledWith(
+      `Failed to exchange OIDC token with ${publishUrl}`,
+    );
+    expect(mockDebug).toHaveBeenCalledWith(expect.any(Error));
+
+    expect(logger.warn).toHaveBeenCalledWith({
+      prefix: `[${uniqueName}]`,
+      message: `Failed to exchange OIDC token with ${publishUrl}`,
+    });
   });
 
   it("should handle invalid JSON responses", async () => {
@@ -214,9 +228,23 @@ describe("exchangeTrustedPublisherToken", () => {
         headers: { "Content-Type": "application/json" },
       });
 
-    await expect(
-      exchangeTrustedPublisherToken(context, pypiPackageContext, idToken),
-    ).rejects.toThrow();
+    const result = await exchangeTrustedPublisherToken(
+      context,
+      pypiPackageContext,
+      idToken,
+    );
+
+    expect(result).toBeUndefined();
+
+    expect(mockDebug).toHaveBeenCalledWith(
+      `Failed to exchange OIDC token with ${publishUrl}`,
+    );
+    expect(mockDebug).toHaveBeenCalledWith(expect.any(Error));
+
+    expect(logger.warn).toHaveBeenCalledWith({
+      prefix: `[${uniqueName}]`,
+      message: `Failed to exchange OIDC token with ${publishUrl}`,
+    });
   });
 
   it("should handle successful response with missing token field", async () => {
