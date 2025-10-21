@@ -215,4 +215,87 @@ describe("exchangeTrustedPublisherToken", () => {
       `Failed to exchange OIDC token with ${registry}: 401 undefined`,
     );
   });
+
+  it("should handle network errors during token exchange", async () => {
+    mockPool
+      .intercept({
+        method: "POST",
+        path: `/-/npm/v1/oidc/token/exchange/package/${encodeURIComponent(pkgName)}`,
+      })
+      .replyWithError(new Error("Network connection failed"));
+
+    const result = await exchangeTrustedPublisherToken(
+      context,
+      npmPackageContext,
+      idToken,
+    );
+
+    expect(result).toBeUndefined();
+
+    expect(mockDebug).toHaveBeenCalledWith(
+      `Failed to exchange OIDC token with ${registry}`,
+    );
+    expect(mockDebug).toHaveBeenCalledWith(expect.any(Error));
+
+    expect(logger.warn).toHaveBeenCalledWith({
+      prefix: `[${uniqueName}]`,
+      message: `Failed to exchange OIDC token with ${registry}`,
+    });
+  });
+
+  it("should handle fetch errors like connection refused", async () => {
+    mockPool
+      .intercept({
+        method: "POST",
+        path: `/-/npm/v1/oidc/token/exchange/package/${encodeURIComponent(pkgName)}`,
+      })
+      .replyWithError(new Error("ECONNREFUSED"));
+
+    const result = await exchangeTrustedPublisherToken(
+      context,
+      npmPackageContext,
+      idToken,
+    );
+
+    expect(result).toBeUndefined();
+
+    expect(mockDebug).toHaveBeenCalledWith(
+      `Failed to exchange OIDC token with ${registry}`,
+    );
+    expect(mockDebug).toHaveBeenCalledWith(expect.any(Error));
+
+    expect(logger.warn).toHaveBeenCalledWith({
+      prefix: `[${uniqueName}]`,
+      message: `Failed to exchange OIDC token with ${registry}`,
+    });
+  });
+
+  it("should handle invalid JSON response errors", async () => {
+    mockPool
+      .intercept({
+        method: "POST",
+        path: `/-/npm/v1/oidc/token/exchange/package/${encodeURIComponent(pkgName)}`,
+      })
+      .reply(200, "invalid json", {
+        headers: { "Content-Type": "text/plain" },
+      });
+
+    const result = await exchangeTrustedPublisherToken(
+      context,
+      npmPackageContext,
+      idToken,
+    );
+
+    expect(result).toBeUndefined();
+
+    expect(mockDebug).toHaveBeenCalledWith(
+      `Failed to exchange OIDC token with ${registry}`,
+    );
+    expect(mockDebug).toHaveBeenCalledWith(expect.any(Error));
+
+    expect(logger.warn).toHaveBeenCalledWith({
+      prefix: `[${uniqueName}]`,
+      message: `Failed to exchange OIDC token with ${registry}`,
+    });
+  });
 });

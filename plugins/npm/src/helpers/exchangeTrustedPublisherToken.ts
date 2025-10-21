@@ -15,22 +15,29 @@ export async function exchangeTrustedPublisherToken(
   { registry }: Pick<NpmPackageContext, "registry">,
   idToken: string,
 ) {
-  const response = await fetch(
-    `${new URL(registry).origin}/-/npm/v1/oidc/token/exchange/package/${encodeURIComponent(pkgName)}`,
-    {
-      method: "POST",
-      headers: { Authorization: `Bearer ${idToken}` },
-    },
-  );
-  const json = await response.json();
+  const namespace = `${name}:${uniqueName}`;
 
-  if (response.ok) {
-    return (json as { token: string }).token;
+  try {
+    const response = await fetch(
+      `${new URL(registry).origin}/-/npm/v1/oidc/token/exchange/package/${encodeURIComponent(pkgName)}`,
+      {
+        method: "POST",
+        headers: { Authorization: `Bearer ${idToken}` },
+      },
+    );
+    const json = await response.json();
+
+    if (response.ok) {
+      return (json as { token: string }).token;
+    }
+
+    debug(namespace)(
+      `Failed to exchange OIDC token with ${registry}: ${response.status} ${(json as { message: string }).message}`,
+    );
+  } catch (error) {
+    debug(namespace)(`Failed to exchange OIDC token with ${registry}`);
+    debug(namespace)(error);
   }
-
-  debug(`${name}:${uniqueName}`)(
-    `Failed to exchange OIDC token with ${registry}: ${response.status} ${(json as { message: string }).message}`,
-  );
 
   logger.warn({
     prefix: `[${uniqueName}]`,
