@@ -53,6 +53,7 @@ const pkgContext = {
 describe("ensureNpmPackageContext", () => {
   beforeEach(() => {
     vi.mocked(getNpmPackageContext).mockReset();
+    vi.mocked(verifyNpmPackageManagerVersion).mockReset();
     getPluginPackageContext.mockReset();
     setPluginPackageContext.mockClear();
   });
@@ -81,6 +82,48 @@ describe("ensureNpmPackageContext", () => {
     vi.mocked(verifyNpmPackageManagerVersion).mockResolvedValue("10.11.0");
 
     await expect(ensureNpmPackageContext(context, {})).resolves.toEqual({
+      ...pkgContext,
+      pm: {
+        ...pkgContext.pm,
+        version: "10.11.0",
+      },
+      verified: true,
+    });
+    expect(setPluginPackageContext).toHaveBeenNthCalledWith(1, {
+      ...pkgContext,
+      pm: {
+        ...pkgContext.pm,
+        version: "10.11.0",
+      },
+      verified: true,
+    });
+  });
+
+  it("should preserve original package manager details when context is already verified", async () => {
+    const verifiedPkgContext = {
+      ...pkgContext,
+      verified: true,
+    };
+    vi.mocked(getNpmPackageContext).mockResolvedValue(verifiedPkgContext);
+
+    await expect(ensureNpmPackageContext(context, {})).resolves.toEqual({
+      ...verifiedPkgContext,
+      verified: true,
+    });
+    expect(setPluginPackageContext).toHaveBeenNthCalledWith(1, {
+      ...verifiedPkgContext,
+      verified: true,
+    });
+    expect(verifyNpmPackageManagerVersion).not.toHaveBeenCalled();
+  });
+
+  it("should skip auth verification when skipPublishing is true", async () => {
+    vi.mocked(getNpmPackageContext).mockResolvedValue(pkgContext);
+    vi.mocked(verifyNpmPackageManagerVersion).mockResolvedValue("10.11.0");
+
+    await expect(
+      ensureNpmPackageContext(context, { skipPublishing: true }),
+    ).resolves.toEqual({
       ...pkgContext,
       pm: {
         ...pkgContext.pm,

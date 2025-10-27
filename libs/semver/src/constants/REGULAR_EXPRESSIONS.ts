@@ -10,12 +10,12 @@ const NUMERIC_IDENTIFIER_LOOSE = String.raw`\d+`;
 // ## Non-numeric Identifier
 // Zero or more digits, followed by a letter or hyphen, and then zero or
 // more letters, digits, or hyphens.
-const NON_NUMERIC_IDENTIFIER = `\\d*[a-zA-Z-]${LETTER_DASH_NUMBER}*`;
+const NON_NUMERIC_IDENTIFIER = String.raw`\d*[a-zA-Z-]${LETTER_DASH_NUMBER}*`;
 
 // ## Main Version
 // Three dot-separated numeric identifiers.
-const MAIN_VERSION = `(${NUMERIC_IDENTIFIER})\\.(${NUMERIC_IDENTIFIER})\\.(${NUMERIC_IDENTIFIER})`;
-const MAIN_VERSION_LOOSE = `(${NUMERIC_IDENTIFIER_LOOSE})\\.(${NUMERIC_IDENTIFIER_LOOSE})\\.(${NUMERIC_IDENTIFIER_LOOSE})`;
+const MAIN_VERSION = String.raw`(${NUMERIC_IDENTIFIER})\.(${NUMERIC_IDENTIFIER})\.(${NUMERIC_IDENTIFIER})`;
+const MAIN_VERSION_LOOSE = String.raw`(${NUMERIC_IDENTIFIER_LOOSE})\.(${NUMERIC_IDENTIFIER_LOOSE})\.(${NUMERIC_IDENTIFIER_LOOSE})`;
 
 // ## Pre-release Version Identifier
 // A numeric identifier, or a non-numeric identifier.
@@ -25,10 +25,10 @@ const PRERELEASE_IDENTIFIER_LOOSE = `(?:${NUMERIC_IDENTIFIER_LOOSE}|${NON_NUMERI
 // ## Pre-release Version
 // Hyphen, followed by one or more dot-separated pre-release version
 // identifiers.
-const PRERELEASE = `(?:-(${PRERELEASE_IDENTIFIER}(?:\\.${PRERELEASE_IDENTIFIER})*))`;
-const PRERELEASE_LOOSE = `(?:-?(${
+const PRERELEASE = String.raw`(?:-(${PRERELEASE_IDENTIFIER}(?:\.${PRERELEASE_IDENTIFIER})*))`;
+const PRERELEASE_LOOSE = String.raw`(?:-?(${
   PRERELEASE_IDENTIFIER_LOOSE
-}(?:\\.${PRERELEASE_IDENTIFIER_LOOSE})*))`;
+}(?:\.${PRERELEASE_IDENTIFIER_LOOSE})*))`;
 
 // ## Build Metadata Identifier
 // Any combination of digits, letters, or hyphens.
@@ -37,7 +37,7 @@ const BUILD_IDENTIFIER = `${LETTER_DASH_NUMBER}+`;
 // ## Build Metadata
 // Plus sign, followed by one or more period-separated build metadata
 // identifiers.
-const BUILD = `(?:\\+(${BUILD_IDENTIFIER}(?:\\.${BUILD_IDENTIFIER})*))`;
+const BUILD = String.raw`(?:\+(${BUILD_IDENTIFIER}(?:\.${BUILD_IDENTIFIER})*))`;
 
 // ## Full Version String
 // A main version, followed optionally by a pre-release version and
@@ -53,7 +53,7 @@ const FULL = `^${FULL_PLAIN}$`;
 // like full, but allows v1.2.3 and =1.2.3, which people do sometimes.
 // also, 1.0.0alpha1 (prerelease without the hyphen) which is pretty
 // common in the npm registry.
-const LOOSE_PLAIN = `[v=\\s]*${MAIN_VERSION_LOOSE}${PRERELEASE_LOOSE}?${
+const LOOSE_PLAIN = String.raw`[v=\s]*${MAIN_VERSION_LOOSE}${PRERELEASE_LOOSE}?${
   BUILD
 }?`;
 const LOOSE = `^${LOOSE_PLAIN}$`;

@@ -152,6 +152,23 @@ describe("success", () => {
     });
   });
 
+  it("should skip comment processing when commentOnSuccess is false", async () => {
+    const noCommentOptions = { ...options, commentOnSuccess: false };
+    vi.mocked(ensureGitLabContext).mockResolvedValue({
+      gitlab,
+      owner: "owner",
+      repo: "repo",
+      projectId: "owner/repo",
+      options: noCommentOptions,
+    });
+
+    await success(context, noCommentOptions);
+
+    expect(getAssociatedMergeRequests).not.toHaveBeenCalled();
+    expect(findIssues).not.toHaveBeenCalled();
+    expect(addComment).not.toHaveBeenCalled();
+  });
+
   it("should throw an AggregateError if there are errors", async () => {
     vi.mocked(getAssociatedMergeRequests).mockResolvedValueOnce([
       { iid: 1, project_id: 1 },

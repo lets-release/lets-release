@@ -14,7 +14,11 @@ const docker = {
   },
 };
 
-vi.mocked(Docker).mockReturnValue(docker as unknown as Docker);
+const MockedDocker = vi.mocked(Docker);
+MockedDocker.prototype.pull = docker.pull;
+MockedDocker.prototype.createContainer = docker.createContainer;
+MockedDocker.prototype.getContainer = docker.getContainer;
+MockedDocker.prototype.modem = docker.modem as never;
 
 const image = "test-image";
 const name = "test";

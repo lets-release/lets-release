@@ -117,4 +117,14 @@ describe("findPackages", () => {
       ),
     );
   });
+
+  it("should handle non-Error exceptions without warning message", async () => {
+    vi.mocked(globSync).mockReturnValue(["packages/pkg1"]);
+    vi.mocked(getPyPIPackageContext).mockRejectedValue("string error");
+
+    const result = await findPackages(context, options);
+
+    expect(result).toEqual([]);
+    expect(warn).not.toHaveBeenCalled();
+  });
 });

@@ -1,7 +1,9 @@
 import { getAuthUrl } from "src/utils/git/getAuthUrl";
 import { verifyAuth } from "src/utils/git/verifyAuth";
+import { verifyAuthUrl } from "src/utils/git/verifyAuthUrl";
 
 vi.mock("src/utils/git/verifyAuth");
+vi.mock("src/utils/git/verifyAuthUrl");
 
 describe("getAuthUrl", () => {
   beforeEach(() => {
@@ -51,8 +53,11 @@ describe("getAuthUrl", () => {
     ).toBe("https://x-access-token:token@github.com/owner/repo.git");
   });
 
-  it("should return first formatted url if ssh key auth failed", async () => {
+  it("should return first valid authenticated url when multiple credentials exist", async () => {
     vi.mocked(verifyAuth).mockRejectedValueOnce(new Error("Auth failed"));
+    vi.mocked(verifyAuthUrl)
+      .mockResolvedValueOnce("https://token@github.com/owner/repo.git")
+      .mockResolvedValueOnce(null);
 
     expect(
       await getAuthUrl("git@github.com:owner/repo.git", "main", {
@@ -63,5 +68,29 @@ describe("getAuthUrl", () => {
         },
       }),
     ).toBe("https://token@github.com/owner/repo.git");
+  });
+
+  it("should return normalized url when no auth environment variables are found", async () => {
+    vi.mocked(verifyAuth).mockRejectedValue(new Error("Auth failed"));
+
+    expect(
+      await getAuthUrl("git@github.com:owner/repo.git", "main", {
+        env: {},
+      }),
+    ).toBe("git@github.com:owner/repo.git");
+  });
+
+  it("should return normalized url when all authentication methods fail", async () => {
+    vi.mocked(verifyAuth).mockRejectedValue(new Error("Auth failed"));
+    vi.mocked(verifyAuthUrl).mockResolvedValue(null);
+
+    expect(
+      await getAuthUrl("git@github.com:owner/repo.git", "main", {
+        env: {
+          GH_TOKEN: "invalid-token-1",
+          GL_TOKEN: "invalid-token-2",
+        },
+      }),
+    ).toBe("git@github.com:owner/repo.git");
   });
 });

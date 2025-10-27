@@ -1,4 +1,4 @@
-import { FailContext, Step } from "@lets-release/config";
+import { FailContext, LetsReleaseError, Step } from "@lets-release/config";
 
 import { NoGitRepoError } from "src/errors/NoGitRepoError";
 import { NoPluginStepSpecsError } from "src/errors/NoPluginStepSpecsError";
@@ -101,5 +101,29 @@ describe("logErrors", () => {
         error,
       ],
     });
+  });
+
+  it("should log LetsReleaseError without details", async () => {
+    class TestLetsReleaseErrorWithoutDetails extends LetsReleaseError {
+      get message() {
+        return "Test error without details";
+      }
+      get details() {
+        return undefined;
+      }
+    }
+
+    const error = new TestLetsReleaseErrorWithoutDetails();
+    await logErrors(
+      { stderr, logger } as unknown as FailContext,
+      new AggregateError([error], "test"),
+    );
+
+    expect(logger.error).toHaveBeenCalledTimes(1);
+    expect(logger.error).toHaveBeenNthCalledWith(1, {
+      prefix: undefined,
+      message: `${error.name}: ${error.message}`,
+    });
+    expect(stderr.write).not.toHaveBeenCalled();
   });
 });

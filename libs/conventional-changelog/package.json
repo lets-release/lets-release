@@ -33,7 +33,7 @@
     "conventional-changelog-conventionalcommits": "^9.1.0",
     "conventional-changelog-writer": "^8.2.0",
     "conventional-commits-filter": "^5.0.0",
-    "conventional-commits-parser": "^6.2.0",
+    "conventional-commits-parser": "^6.2.1",
     "debug": "^4.4.3",
     "read-pkg": "^9.0.1",
     "zod": "^4.1.12"

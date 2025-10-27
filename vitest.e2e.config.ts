@@ -11,6 +11,9 @@ export default mergeConfig(
       teardownTimeout: 30_000,
       globalSetup: "./test/__global__/setup.ts",
       include: ["test/**/*.spec.ts"],
+      // when using default "forks"
+      // Error: [vitest-pool]: Timeout starting forks runner.
+      pool: "threads",
     },
   }),
 );

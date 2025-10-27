@@ -82,6 +82,11 @@ vi.mocked(getNpmPackageContext).mockImplementation(
 );
 
 describe("findPackages", () => {
+  beforeEach(() => {
+    info.mockClear();
+    warn.mockClear();
+  });
+
   it("should find packages", async () => {
     await expect(
       findPackages(
@@ -150,5 +155,26 @@ describe("findPackages", () => {
     expect(warn).toHaveBeenCalledWith(
       `Skipping package at ./${errorPackage}: Failed to process package`,
     );
+  });
+
+  it("should handle non-Error type exceptions during package processing", async () => {
+    const errorPackage = "error-pkg";
+    vi.mocked(globSync).mockReturnValueOnce([errorPackage]);
+    vi.mocked(getNpmPackageContext).mockRejectedValueOnce("String error");
+
+    await expect(
+      findPackages(
+        {
+          logger: { info, warn },
+          repositoryRoot,
+          packageOptions: { paths: ["packages/*"] },
+          getPluginPackageContext,
+          setPluginPackageContext,
+        } as unknown as FindPackagesContext,
+        {},
+      ),
+    ).resolves.toEqual([]);
+
+    expect(warn).not.toHaveBeenCalled();
   });
 });

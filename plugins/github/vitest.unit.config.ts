@@ -1,13 +1,14 @@
 import { defineConfig, mergeConfig } from "vitest/config";
 
 // eslint-disable-next-line import-x/no-relative-parent-imports
-import config from "../../vitest.unit.config";
+import viteConfig from "../../vite.config";
 
 export default mergeConfig(
-  config,
+  viteConfig,
   defineConfig({
     test: {
       name: "github.unit",
+      include: ["src/**/*.spec.ts"],
       exclude: ["src/queries/*.ts"],
     },
   }),

@@ -40,7 +40,7 @@
     "read-pkg": "^9.0.1"
   },
   "devDependencies": {
-    "conventional-changelog-angular": "^8.0.0",
+    "conventional-changelog-angular": "^8.1.0",
     "conventional-changelog-atom": "^5.0.0",
     "conventional-changelog-conventionalcommits": "^9.1.0",
     "conventional-changelog-ember": "^5.0.0",

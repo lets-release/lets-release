@@ -33,4 +33,10 @@ describe("parseCalVer", () => {
       }
     }
   });
+
+  it("should not reset prefix when options.prefix is empty string", () => {
+    const result = parseCalVer("YYYY", "2001zeta", { prefix: "" });
+    expect(result.prereleaseOptions.prefix).toBe("");
+    expect(result.prereleaseName).toBe("zeta");
+  });
 });

@@ -92,6 +92,27 @@ describe("getRegistry", () => {
       });
     });
 
+    it("should continue search when config does not match registry.publishUrl", async () => {
+      const context = {
+        env: {},
+        package: pkg,
+      };
+      const pkgContext = {
+        pm: poetry,
+        pkg: {
+          tool: {
+            letsRelease: {
+              registry: { publishUrl: "https://nonexistent.example.com" },
+            },
+          },
+        },
+      } as PyPIPackageContext;
+
+      const result = await getRegistry(context, pkgContext);
+
+      expect(result).toEqual(DEFAULT_PYPI_REGISTRY);
+    });
+
     it("should return registry from env if it matches registry.name", async () => {
       const context = {
         env: {
@@ -249,6 +270,30 @@ describe("getRegistry", () => {
         url: "https://registry.example.com",
         publishUrl: "https://registry.example.com",
       });
+    });
+
+    it("should return default registry when UV_PUBLISH_INDEX does not match any config", async () => {
+      const context = {
+        env: {
+          UV_PUBLISH_CHECK_URL: "https://registry.example.com",
+          UV_PUBLISH_INDEX: "nonexistent.repo",
+        },
+        package: pkg,
+      };
+      const pkgContext = {
+        pm: uv,
+        pkg: {
+          tool: {
+            letsRelease: {
+              registry: {},
+            },
+          },
+        },
+      } as PyPIPackageContext;
+
+      const result = await getRegistry(context, pkgContext);
+
+      expect(result).toEqual(DEFAULT_PYPI_REGISTRY);
     });
 
     it("should return default registry if no match found", async () => {

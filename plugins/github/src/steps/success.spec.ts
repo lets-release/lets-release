@@ -198,6 +198,116 @@ describe("success", () => {
     );
   });
 
+  it("should skip commenting when commentOnSuccess is false", async () => {
+    vi.mocked(ensureGitHubContext)
+      .mockReset()
+      .mockResolvedValue({
+        octokit,
+        owner: "owner",
+        repo: "repo",
+        options: { ...options, commentOnSuccess: false },
+      } as unknown as GitHubContext);
+
+    await success(
+      {
+        ...context,
+        commits: [{ hash: "commit1", message: "fix: some fix" }],
+      } as unknown as SuccessContext,
+      {},
+    );
+
+    expect(getAssociatedPullRequests).not.toHaveBeenCalled();
+    expect(addComment).not.toHaveBeenCalled();
+  });
+
+  it("should handle case when no issues are found", async () => {
+    vi.mocked(parseIssues).mockReset().mockReturnValue([]);
+    graphql.mockReset().mockResolvedValue({ repository: {} });
+
+    await success(
+      {
+        ...context,
+        commits: [{ hash: "commit1", message: "fix: some fix" }],
+      } as unknown as SuccessContext,
+      {},
+    );
+
+    expect(getAssociatedPullRequests).toHaveBeenCalledTimes(1);
+    expect(addComment).toHaveBeenCalledTimes(2); // Only for PRs, not issues
+  });
+
+  it("should skip updating release when positionOfOtherArtifacts is not set", async () => {
+    vi.mocked(ensureGitHubContext)
+      .mockReset()
+      .mockResolvedValue({
+        octokit,
+        owner: "owner",
+        repo: "repo",
+        options: { ...options, positionOfOtherArtifacts: undefined },
+      } as unknown as GitHubContext);
+
+    request.mockReset();
+
+    await success(context, {});
+
+    expect(request).not.toHaveBeenCalled();
+  });
+
+  it("should skip updating release when there are errors", async () => {
+    vi.mocked(addComment).mockResolvedValue([new Error("Comment error")]);
+    request.mockReset();
+
+    const contextWithCommits = {
+      ...context,
+      commits: [{ hash: "commit1", message: "fix: some fix" }],
+    } as unknown as SuccessContext;
+
+    await expect(success(contextWithCommits, {})).rejects.toThrow(
+      "AggregateError",
+    );
+
+    expect(request).not.toHaveBeenCalled();
+  });
+
+  it("should skip updating release when github artifact has no id", async () => {
+    request.mockReset();
+
+    const contextWithoutArtifactId = {
+      ...context,
+      releases: [
+        {
+          tag,
+          artifacts: [
+            { name: GITHUB_ARTIFACT_NAME, id: undefined },
+            { name: "other", id: 2 },
+          ],
+        },
+      ],
+    } as unknown as SuccessContext;
+
+    await success(contextWithoutArtifactId, {});
+
+    expect(request).not.toHaveBeenCalled();
+  });
+
+  it("should skip updating release when no additional artifacts exist", async () => {
+    request.mockReset();
+
+    const contextWithoutAdditionalArtifacts = {
+      ...context,
+      releases: [
+        {
+          tag,
+          artifacts: [{ name: GITHUB_ARTIFACT_NAME, id: 1 }],
+        },
+      ],
+    } as unknown as SuccessContext;
+
+    await success(contextWithoutAdditionalArtifacts, {});
+
+    expect(request).not.toHaveBeenCalled();
+  });
+
   it("should throw an error if there are errors", async () => {
     vi.mocked(addComment).mockResolvedValue([new Error("Comment error")]);
 

@@ -157,6 +157,34 @@ describe("addComment", () => {
     expect(errors).toEqual([]);
   });
 
+  it("should add comment without labels when successLabels is empty", async () => {
+    const commentOnSuccess = vi.fn().mockReturnValue(true);
+    const successComment = "Success!";
+    const successLabels: string[] = [];
+
+    request.mockResolvedValueOnce({ data: { html_url: "http://example.com" } });
+
+    const errors = await addComment(
+      context,
+      octokit,
+      { commentOnSuccess, successComment, successLabels },
+      "owner",
+      "repo",
+      issue,
+    );
+
+    expect(request).toHaveBeenCalledTimes(1);
+    expect(request).toHaveBeenCalledWith(
+      "POST /repos/{owner}/{repo}/issues/{issue_number}/comments",
+      { owner: "owner", repo: "repo", issue_number: 1, body: "Success!" },
+    );
+    expect(log).toHaveBeenCalledWith({
+      prefix: "[npm/pkg]",
+      message: "Added comment to issue #1: http://example.com",
+    });
+    expect(errors).toEqual([]);
+  });
+
   it("should handle RequestError with status 403", async () => {
     const commentOnSuccess = vi.fn().mockReturnValue(true);
     const successComment = "Success!";

@@ -46,7 +46,9 @@ const options = {
 const show = vi.fn();
 const gitlab = { Projects: { show } } as unknown as TypeGitlab;
 
-vi.mocked(Gitlab).mockReturnValue(gitlab);
+vi.mocked(Gitlab).mockImplementation(function () {
+  return gitlab;
+});
 
 describe("ensureGitLabContext", () => {
   beforeEach(() => {

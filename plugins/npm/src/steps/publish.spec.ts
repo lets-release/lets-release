@@ -99,6 +99,28 @@ describe("publish", () => {
     expect(log).toHaveBeenCalledTimes(1);
   });
 
+  it("should skip publishing when both skipPublishing is true and package is private", async () => {
+    vi.mocked(ensureNpmPackageContext)
+      .mockReset()
+      .mockResolvedValue({
+        pm: { name: "npm", version: "*", root: "cwd" },
+        pkg: { private: true },
+        registry,
+      } as NpmPackageContext);
+
+    await expect(
+      publish(
+        {
+          logger,
+          package: pkg,
+          nextRelease: {},
+        } as unknown as PublishContext,
+        { skipPublishing: true },
+      ),
+    ).resolves.toBeUndefined();
+    expect(log).toHaveBeenCalledTimes(1);
+  });
+
   it("should skip publishing if version is already published", async () => {
     vi.mocked(isVersionPublished).mockResolvedValue(true);
 
@@ -191,5 +213,34 @@ describe("publish", () => {
     ).resolves.toBe(artifact);
     expect(log).toHaveBeenCalledTimes(2);
     expect(preparePackage).toHaveBeenCalledTimes(1);
+  });
+
+  it("should skip preparation when package is already prepared", async () => {
+    vi.mocked(ensureNpmPackageContext).mockResolvedValue({
+      pm: {
+        name: "npm",
+        version: "1",
+        root: "cwd",
+      },
+      pkg: {},
+      registry,
+      prepared: true,
+    } as NpmPackageContext);
+
+    await expect(
+      publish(
+        {
+          logger,
+          package: pkg,
+          nextRelease: {
+            version: "1.0.0",
+            channels: [null],
+          },
+        } as unknown as PublishContext,
+        {},
+      ),
+    ).resolves.toBe(artifact);
+    expect(log).toHaveBeenCalledTimes(2);
+    expect(preparePackage).not.toHaveBeenCalled();
   });
 });

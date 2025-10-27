@@ -1,3 +1,4 @@
+import FormData from "form-data";
 import { Interceptable, MockAgent, setGlobalDispatcher } from "undici";
 
 import { AnalyzeCommitsContext } from "@lets-release/config";
@@ -10,26 +11,34 @@ import { getTrustedPublisherIdToken } from "src/helpers/getTrustedPublisherIdTok
 import { verifyAuth } from "src/helpers/verifyAuth";
 import { PyPIPackageContext } from "src/types/PyPIPackageContext";
 
-// Mock FormData
-const mockAppend = vi.hoisted(() => vi.fn());
-const mockGetHeaders = vi.hoisted(() =>
-  vi.fn().mockReturnValue({
-    "content-type": "multipart/form-data; boundary=test-boundary",
-  }),
-);
-
 // Use vi.mock for form-data
-vi.mock("form-data", () => ({
-  default: vi.fn().mockImplementation(() => ({
-    append: mockAppend,
-    getHeaders: mockGetHeaders,
-  })),
-}));
+vi.mock("form-data", () => {
+  class FormData {
+    append() {
+      //
+    }
+    getHeaders() {
+      //
+    }
+  }
+
+  return {
+    default: FormData,
+  };
+});
 
 // Mock dependencies
 vi.mock("src/helpers/getTrustedPublisherIdToken");
 vi.mock("src/helpers/exchangeTrustedPublisherToken");
 vi.mock("src/helpers/getAuth");
+
+// Mock FormData
+const mockAppend = vi.fn();
+const mockGetHeaders = vi.fn().mockReturnValue({
+  "content-type": "multipart/form-data; boundary=test-boundary",
+});
+FormData.prototype.append = mockAppend;
+FormData.prototype.getHeaders = mockGetHeaders;
 
 const mockGetTrustedPublisherIdToken = vi.mocked(getTrustedPublisherIdToken);
 const mockExchangeTrustedPublisherToken = vi.mocked(

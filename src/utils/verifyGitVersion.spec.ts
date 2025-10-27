@@ -23,7 +23,7 @@ describe("verifyGitVersion", () => {
     await expect(verifyGitVersion()).rejects.toThrowError(AggregateError);
   });
 
-  it("should throw error if git binary not found", async () => {
+  it("should throw error if git version is too old", async () => {
     fn.mockResolvedValue({
       stdout: "git version 2.7.0",
     } as never);
@@ -31,5 +31,21 @@ describe("verifyGitVersion", () => {
     await expect(verifyGitVersion()).rejects.toThrowError(
       UnsupportedGitVersionError,
     );
+  });
+
+  it("should not throw error if git version meets minimum requirement", async () => {
+    fn.mockResolvedValue({
+      stdout: "git version 2.7.1",
+    } as never);
+
+    await expect(verifyGitVersion()).resolves.toBeUndefined();
+  });
+
+  it("should not throw error if git version is newer than minimum requirement", async () => {
+    fn.mockResolvedValue({
+      stdout: "git version 2.30.0",
+    } as never);
+
+    await expect(verifyGitVersion()).resolves.toBeUndefined();
   });
 });

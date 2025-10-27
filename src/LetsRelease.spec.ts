@@ -42,7 +42,21 @@ import { loadConfig } from "src/utils/loadConfig";
 import { parseMarkdown } from "src/utils/parseMarkdown";
 import { getStepPipelinesList } from "src/utils/plugin/getStepPipelinesList";
 
-const Signale = vi.hoisted(() => vi.fn());
+const Signale = vi.hoisted(() => {
+  class Signale {
+    log() {
+      //
+    }
+    warn() {
+      //
+    }
+    success() {
+      //
+    }
+  }
+
+  return Signale;
+});
 
 vi.mock("signale", () => ({ default: { Signale } }));
 vi.mock("env-ci");
@@ -79,11 +93,13 @@ vi.mock("src/utils/plugin/getStepPipelinesList");
 
 const write = vi.spyOn(process.stdout, "write");
 
-const logger = {
-  log: vi.fn(),
-  warn: vi.fn(),
-  success: vi.fn(),
-};
+const loggerLog = vi.fn();
+const loggerWarn = vi.fn();
+const loggerSuccess = vi.fn();
+
+Signale.prototype.log = loggerLog;
+Signale.prototype.warn = loggerWarn;
+Signale.prototype.success = loggerSuccess;
 
 const repositoryRoot = "/path/to/pkg";
 const files = ["/path/to/pkg/a", "/path/to/pkg/b"];
@@ -248,7 +264,9 @@ describe("LetsRelease", () => {
     publish.mockReset().mockResolvedValue(artifacts);
     success.mockReset();
     write.mockReset().mockImplementation(() => true);
-    Signale.mockReset().mockReturnValue(logger);
+    loggerLog.mockReset();
+    loggerWarn.mockReset();
+    loggerSuccess.mockReset();
     vi.mocked(getMatchFiles).mockReset().mockReturnValue(files);
     vi.mocked(envCi)
       .mockReset()
@@ -1151,6 +1169,38 @@ describe("LetsRelease", () => {
           },
         ],
       } as NormalizedOptions);
+
+    await expect(letsRelease.run()).resolves.toEqual([
+      {
+        hash: "headhash",
+        notes,
+        artifacts: [],
+        channels: { default: [null] },
+        tag: "v2.0.1",
+        version: "2.0.1",
+      },
+    ]);
+  });
+
+  it("should not commit when assets are specified but no files match asset patterns", async () => {
+    publish.mockResolvedValue(undefined);
+    vi.mocked(loadConfig)
+      .mockReset()
+      .mockResolvedValue({
+        tagFormat: "v${version}",
+        refSeparator: "/",
+        releaseCommit: {
+          assets: ["!CHANGELOG.md"],
+          message:
+            "chore(release): [skip ci]\n\n${releases.map(x => x.tag).join('\\n')}",
+        },
+        packages: [
+          {
+            paths: ["/path/to"],
+          },
+        ],
+      } as NormalizedOptions);
+    vi.mocked(getMatchFiles).mockReturnValue([]);
 
     await expect(letsRelease.run()).resolves.toEqual([
       {

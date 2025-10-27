@@ -39,7 +39,27 @@ import { pushBranch } from "test/__helpers__/git/pushBranch";
 import { rebaseBranch } from "test/__helpers__/git/rebaseBranch";
 import { writeFile } from "test/__helpers__/writeFile";
 
-const Signale = vi.hoisted(() => vi.fn());
+const Signale = vi.hoisted(() => {
+  class Signale {
+    log() {
+      //
+    }
+    warn() {
+      //
+    }
+    success() {
+      //
+    }
+    error() {
+      //
+    }
+    scope() {
+      //
+    }
+  }
+
+  return Signale;
+});
 
 vi.mock("env-ci");
 vi.mock("signale", () => ({ default: { Signale } }));
@@ -51,6 +71,12 @@ const logger = {
   warn: vi.fn(),
   scope: vi.fn(() => logger),
 };
+
+Signale.prototype.log = logger.log;
+Signale.prototype.warn = logger.warn;
+Signale.prototype.success = logger.success;
+Signale.prototype.error = logger.error;
+Signale.prototype.scope = logger.scope;
 
 async function testAddChannels(
   fn: (cwd: string, ref: string) => Promise<void>,
@@ -151,7 +177,7 @@ async function testAddChannels(
         expect.objectContaining({
           ...release1,
           channels: [null],
-          pluginName: "[Function: spy]",
+          pluginName: "[Function: Mock]",
         }),
       ]),
     }),
@@ -163,10 +189,6 @@ async function testAddChannels(
 }
 
 describe("LetsRelease", () => {
-  beforeAll(() => {
-    Signale.mockReturnValue(logger as never);
-  });
-
   beforeEach(() => {
     logger.log.mockClear();
     logger.error.mockClear();
@@ -275,7 +297,7 @@ describe("LetsRelease", () => {
         artifacts: [
           {
             ...release1,
-            pluginName: "[Function: spy]",
+            pluginName: "[Function: Mock]",
             channels: [null],
           },
         ],
@@ -287,7 +309,7 @@ describe("LetsRelease", () => {
         artifacts: [
           {
             ...release2,
-            pluginName: "[Function: spy]",
+            pluginName: "[Function: Mock]",
             channels: [null],
           },
         ],
@@ -493,7 +515,7 @@ describe("LetsRelease", () => {
     const newArtifact = {
       ...release1,
       channels: [null],
-      pluginName: "[Function: spy]",
+      pluginName: "[Function: Mock]",
     };
     const updatedArtifacts = [...lastRelease.artifacts, newArtifact];
     const updatedMainBranch = {
@@ -637,7 +659,7 @@ describe("LetsRelease", () => {
     const artifact = {
       ...release2,
       channels: [null],
-      pluginName: "[Function: spy]",
+      pluginName: "[Function: Mock]",
     };
 
     expect(success).toHaveBeenNthCalledWith(
@@ -911,7 +933,7 @@ describe("LetsRelease", () => {
       {
         name: "npm package",
         channels: [null, "1.0.x"],
-        pluginName: "[Function: spy]",
+        pluginName: "[Function: Mock]",
       },
     ]);
 
@@ -924,7 +946,7 @@ describe("LetsRelease", () => {
       {
         name: "npm package",
         channels: ["1.0.x"],
-        pluginName: "[Function: spy]",
+        pluginName: "[Function: Mock]",
       },
     ]);
     await pushBranch(cwd, url, "1.0.x");
@@ -1282,7 +1304,7 @@ describe("LetsRelease", () => {
               expect.objectContaining({
                 ...release,
                 channels: [null],
-                pluginName: "[Function: spy]",
+                pluginName: "[Function: Mock]",
               }),
             ],
           }),
@@ -1304,7 +1326,7 @@ describe("LetsRelease", () => {
               expect.objectContaining({
                 ...release,
                 channels: [null],
-                pluginName: "[Function: spy]",
+                pluginName: "[Function: Mock]",
               }),
             ],
           }),
@@ -1699,7 +1721,7 @@ describe("LetsRelease", () => {
           expect.objectContaining({
             artifacts: expect.arrayContaining([
               expect.objectContaining({
-                pluginName: "[Function: spy]",
+                pluginName: "[Function: Mock]",
               }),
             ]),
           }),
@@ -1714,7 +1736,7 @@ describe("LetsRelease", () => {
           expect.objectContaining({
             artifacts: expect.arrayContaining([
               expect.objectContaining({
-                pluginName: "[Function: spy]",
+                pluginName: "[Function: Mock]",
               }),
             ]),
           }),
@@ -1776,7 +1798,7 @@ describe("LetsRelease", () => {
       {
         name: "npm package",
         channels: [null, "1.x"],
-        pluginName: "[Function: spy]",
+        pluginName: "[Function: Mock]",
       },
     ]);
 
@@ -1790,7 +1812,7 @@ describe("LetsRelease", () => {
     await commit(cwd, "feat: new feature on main");
     await addTag(cwd, "v1.1.0");
     await addNote(cwd, "v1.1.0", [
-      { name: "npm package", channels: [null], pluginName: "[Function: spy]" },
+      { name: "npm package", channels: [null], pluginName: "[Function: Mock]" },
     ]);
     await pushBranch(cwd, url, "main");
 
@@ -1859,7 +1881,7 @@ describe("LetsRelease", () => {
       {
         name: "npm package",
         channels: [null],
-        pluginName: "[Function: spy]",
+        pluginName: "[Function: Mock]",
       },
     ]);
     await pushBranch(cwd, url, "next");
@@ -1933,7 +1955,7 @@ describe("LetsRelease", () => {
       {
         name: "npm package",
         channels: [null, "1.1.x"],
-        pluginName: "[Function: spy]",
+        pluginName: "[Function: Mock]",
       },
     ]);
     await commit(cwd, "second");
@@ -1942,7 +1964,7 @@ describe("LetsRelease", () => {
       {
         name: "npm package",
         channels: [null, "1.1.x"],
-        pluginName: "[Function: spy]",
+        pluginName: "[Function: Mock]",
       },
     ]);
 
@@ -1956,7 +1978,7 @@ describe("LetsRelease", () => {
       {
         name: "npm package",
         channels: [null],
-        pluginName: "[Function: spy]",
+        pluginName: "[Function: Mock]",
       },
     ]);
     await commit(cwd, "fourth");
@@ -1965,7 +1987,7 @@ describe("LetsRelease", () => {
       {
         name: "npm package",
         channels: [null],
-        pluginName: "[Function: spy]",
+        pluginName: "[Function: Mock]",
       },
     ]);
     await pushBranch(cwd, url, "main");

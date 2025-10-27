@@ -41,4 +41,14 @@ describe("normalizePrereleaseNameSpec", () => {
     );
     expect(result).toEqual({ foo: "bar", baz: "alpha", default: "alpha" });
   });
+
+  it("should normalize when spec is an object with non-string and non-boolean values", () => {
+    const spec = { foo: "bar", invalid: 123, baz: true as const };
+    const result = normalizePrereleaseNameSpec(
+      "alpha",
+      VersioningScheme.SemVer,
+      spec as unknown as string,
+    );
+    expect(result).toEqual({ foo: "bar", baz: "alpha", default: "alpha" });
+  });
 });

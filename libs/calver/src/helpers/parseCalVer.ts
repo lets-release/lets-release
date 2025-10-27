@@ -24,7 +24,7 @@ export function parseCalVer(
 
   const { tokens, regex: mainRegex } = parseCalVerFormat(trimmedFormat);
   const { SEPARATOR, PRERELEASE, BUILD } = REGULAR_EXPRESSIONS;
-  const regex = `^${mainRegex}${SEPARATOR}?(?<prerelease>${PRERELEASE})?(\\+(?<build>${BUILD}))?$`;
+  const regex = String.raw`^${mainRegex}${SEPARATOR}?(?<prerelease>${PRERELEASE})?(\+(?<build>${BUILD}))?$`;
 
   const { prerelease, build, ...rest } =
     trimmedVersion.match(regex)?.groups ?? {};

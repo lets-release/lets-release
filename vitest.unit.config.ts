@@ -8,6 +8,9 @@ export default mergeConfig(
     test: {
       name: "unit",
       include: ["src/**/*.spec.ts"],
+      coverage: {
+        exclude: ["libs/**/*.ts", "plugins/**/*.ts"],
+      },
     },
   }),
 );

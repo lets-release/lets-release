@@ -235,4 +235,67 @@ describe("flatMapParsedBranch", () => {
       },
     ]);
   });
+
+  it("should filter out invalid ranges for maintenance branches", () => {
+    expect(
+      flatMapParsedBranch(
+        [
+          {
+            main: true,
+            name: "a",
+            uniqueName: "npm/a",
+            versioning: {
+              scheme: "SemVer",
+            },
+          },
+          {
+            name: "b",
+            uniqueName: "npm/b",
+            versioning: {
+              scheme: "CalVer",
+              format: "YYYY.MINOR.MICRO",
+            },
+          },
+        ] as Package[],
+        BranchType.maintenance,
+        {
+          name: "test",
+          ranges: {
+            "npm/a": "invalid-semver-range",
+            "npm/b": "invalid-calver-range",
+          },
+        } as unknown as BranchObject<BranchType.maintenance>,
+        {
+          name: "test",
+        },
+      ),
+    ).toEqual([]);
+  });
+
+  it("should filter out packages with unknown versioning scheme", () => {
+    expect(
+      flatMapParsedBranch(
+        [
+          {
+            main: true,
+            name: "unknown",
+            uniqueName: "npm/unknown",
+            versioning: {
+              scheme: "UnknownScheme" as unknown as "SemVer",
+            },
+          },
+        ] as Package[],
+        BranchType.maintenance,
+        {
+          name: "test",
+          ranges: {
+            "npm/unknown": "1.x.x",
+          },
+        } as unknown as BranchObject<BranchType.maintenance>,
+        {
+          name: "test",
+        },
+      ),
+    ).toEqual([]);
+  });
 });

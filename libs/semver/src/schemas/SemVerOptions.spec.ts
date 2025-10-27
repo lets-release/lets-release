@@ -22,6 +22,24 @@ describe("SemVerOptions", () => {
     });
   });
 
+  it("should accept valid non-prerelease initial version", async () => {
+    await expect(
+      SemVerOptions.parseAsync({
+        scheme: VersioningScheme.SemVer,
+        initialVersion: "2.1.3",
+      }),
+    ).resolves.toEqual({
+      scheme: VersioningScheme.SemVer,
+      initialVersion: "2.1.3",
+      prerelease: {
+        initialNumber: 1,
+        ignoreZeroNumber: true,
+        prefix: "-",
+        suffix: ".",
+      },
+    });
+  });
+
   it("should throw for invalid semver options", async () => {
     await expect(
       SemVerOptions.parseAsync({

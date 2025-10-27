@@ -15,19 +15,17 @@ export function normalizeMainBranch(
     type: BranchType.main,
     branch: main,
     getFirstNextSemVer: (pkg) => {
-      if (main) {
-        const nextMajorSemVer = nextMajor
-          ? getFirstVersion(pkg, nextMajor, {
-              lowerBranches: [main],
-            })
-          : undefined;
+      const nextMajorSemVer = nextMajor
+        ? getFirstVersion(pkg, nextMajor, {
+            lowerBranches: [main],
+          })
+        : undefined;
 
-        return next
-          ? (getFirstVersion(pkg, next, {
-              lowerBranches: [main],
-            }) ?? nextMajorSemVer)
-          : nextMajorSemVer;
-      }
+      return next
+        ? (getFirstVersion(pkg, next, {
+            lowerBranches: [main],
+          }) ?? nextMajorSemVer)
+        : nextMajorSemVer;
     },
     getUpperBound: (latest) =>
       next && nextMajor

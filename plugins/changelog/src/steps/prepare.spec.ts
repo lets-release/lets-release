@@ -98,4 +98,23 @@ describe("prepare", () => {
       `${changelogTitle}\n\nsome notes\n\nsome content\n`,
     );
   });
+
+  it("should skip when notes is empty", async () => {
+    const nextReleaseWithoutNotes = { notes: "" };
+
+    await prepare(
+      {
+        logger,
+        package: {
+          path: repositoryRoot,
+          uniqueName: "npm/pkg",
+        },
+        nextRelease: nextReleaseWithoutNotes,
+      } as unknown as PrepareContext,
+      options,
+    );
+
+    expect(writeFile).not.toHaveBeenCalled();
+    expect(readFile).not.toHaveBeenCalled();
+  });
 });

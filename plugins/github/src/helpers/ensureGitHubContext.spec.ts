@@ -33,7 +33,9 @@ const options = {
 const request = vi.fn();
 const octokit = { request } as unknown as LetsReleaseOctokit;
 
-vi.mocked(LetsReleaseOctokit).mockReturnValue(octokit);
+vi.mocked(LetsReleaseOctokit).mockImplementation(function () {
+  return octokit;
+});
 
 describe("ensureGitHubContext", () => {
   beforeEach(() => {

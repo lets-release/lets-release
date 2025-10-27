@@ -75,7 +75,46 @@ describe("preparePackage", () => {
     });
 
     it("should prepare package if uv version command is successful (uv>0.7.0)", async () => {
-      vi.mocked($).mockReturnValue((() => promise) as never);
+      const successPromise = new ExtendedPromise((resolve) => {
+        resolve({ stdout: ["pkg 1.0.0 => 2.0.0"] });
+      });
+      vi.mocked($).mockReturnValue((() => successPromise) as never);
+
+      await preparePackage(
+        {
+          cwd,
+          logger,
+          setPluginPackageContext,
+          repositoryRoot: "/root",
+          package: {
+            path: "/root/a",
+            type: "pypi",
+            name: "pkg",
+            uniqueName: "pypi/pkg",
+          },
+          nextRelease: {
+            version,
+          },
+        } as unknown as PrepareContext,
+        { pm: { name: "uv", version: "1", root: cwd } } as PyPIPackageContext,
+        { distDir: "dist" },
+      );
+
+      expect(log).toHaveBeenCalledTimes(2);
+      expect(setPluginPackageContext).toHaveBeenCalledWith(
+        expect.objectContaining({
+          prepared: true,
+        }),
+      );
+    });
+
+    it("should handle uv version command with unexpected output format", async () => {
+      const unexpectedPromise = new ExtendedPromise((resolve) => {
+        resolve({ stdout: ["unexpected output format"] });
+      });
+      vi.mocked($)
+        .mockReturnValueOnce((() => unexpectedPromise) as never)
+        .mockReturnValue((() => promise) as never);
 
       await preparePackage(
         {

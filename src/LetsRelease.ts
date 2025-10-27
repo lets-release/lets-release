@@ -521,7 +521,7 @@ export class LetsRelease {
   ): Promise<T[]> {
     const result: T[] = [];
     const errors: unknown[] = [];
-    const handledPackages = new Set<string>([]);
+    const handledPackages = new Set<string>();
 
     while (true) {
       const unhandledPackages: Package[][] = packages.map((list) =>

@@ -214,4 +214,39 @@ describe("preparePackage", () => {
 
     expect(log).toHaveBeenCalledTimes(2);
   });
+
+  it("should skip moving tarball when tarball directory equals package root", async () => {
+    const promise = new ExtendedPromise((resolve) => {
+      resolve({
+        stdout: [tgz],
+      });
+    });
+    vi.mocked($)
+      .mockReset()
+      .mockReturnValue((() => promise) as never);
+
+    await expect(
+      preparePackage(
+        {
+          cwd: "/root/a",
+          logger,
+          setPluginPackageContext,
+          repositoryRoot: "/root",
+          package: {
+            path: "/root/a",
+            type: "npm",
+            name: "pkg",
+            uniqueName: "npm/pkg",
+          },
+          nextRelease: {},
+        } as unknown as PrepareContext,
+        {
+          pm: { name: "npm", root: "/root/a" },
+        } as NpmPackageContext,
+        { tarballDir: "." },
+      ),
+    ).resolves.toBe(undefined);
+
+    expect(log).toHaveBeenCalledTimes(2);
+  });
 });

@@ -28,7 +28,8 @@ const docker = {
   getContainer: vi.fn().mockReturnValue(container),
 };
 
-vi.mocked(Docker).mockReturnValue(docker as unknown as Docker);
+const MockedDocker = vi.mocked(Docker);
+MockedDocker.prototype.getContainer = docker.getContainer;
 
 describe("createRepo", () => {
   beforeEach(() => {
