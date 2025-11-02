@@ -6,6 +6,7 @@ import {
 } from "@lets-release/config";
 
 import { NormalizedStepContext } from "src/types/NormalizedStepContext";
+import { StepPipeline } from "src/types/StepPipeline";
 import { getStepPipeline } from "src/utils/plugin/getStepPipeline";
 import { getStepPipelinesList } from "src/utils/plugin/getStepPipelinesList";
 
@@ -81,7 +82,7 @@ describe("getStepPipelinesList", () => {
             .mockRejectedValue(new Error("Failed to run step pipeline"));
         }
 
-        return vi.fn();
+        return vi.fn() as StepPipeline;
       });
 
     const stepPipelinesList = await getStepPipelinesList(context);

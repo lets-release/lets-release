@@ -67,7 +67,7 @@
     "@aliser/ts-transformer-append-js-extension": "^1.0.7",
     "@commitlint/cli": "^20.1.0",
     "@commitlint/config-conventional": "^20.0.0",
-    "@eslint/js": "^9.38.0",
+    "@eslint/js": "^9.39.0",
     "@lets-release/testing": "workspace:^",
     "@types/debug": "^4.1.12",
     "@types/dir-glob": "^2.0.3",
@@ -76,15 +76,15 @@
     "@types/lodash-es": "^4.17.12",
     "@types/marked-terminal": "^6.1.1",
     "@types/micromatch": "^4.0.10",
-    "@types/node": "^24.9.1",
+    "@types/node": "^24.9.2",
     "@types/semver": "^7.7.1",
     "@types/signale": "^1.4.7",
     "@types/stream-buffers": "^3.0.8",
     "@types/stream-to-array": "^2.3.3",
     "@typescript-eslint/parser": "^8.46.2",
     "@typescript-eslint/utils": "^8.46.2",
-    "@vitest/coverage-v8": "^4.0.4",
-    "eslint": "^9.38.0",
+    "@vitest/coverage-v8": "^4.0.6",
+    "eslint": "^9.39.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import-x": "^4.16.1",
@@ -92,16 +92,16 @@
     "eslint-plugin-unicorn": "^62.0.0",
     "eslint-plugin-unused-imports": "^4.3.0",
     "file-url": "^4.0.0",
-    "globals": "^16.4.0",
+    "globals": "^16.5.0",
     "husky": "^9.1.7",
     "jiti": "^2.6.1",
-    "knip": "^5.66.3",
+    "knip": "^5.66.4",
     "lint-staged": "^16.2.6",
     "ncp": "^2.0.0",
     "p-retry": "^7.1.0",
     "prettier": "^3.6.2",
     "prettier-eslint": "^16.4.2",
-    "rimraf": "^6.0.1",
+    "rimraf": "^6.1.0",
     "stream-buffers": "^3.0.3",
     "tempy": "^3.1.0",
     "ts-patch": "^3.3.0",
@@ -111,7 +111,7 @@
     "vite": "^7.1.12",
     "vite-node": "^3.2.4",
     "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^4.0.4"
+    "vitest": "^4.0.6"
   },
   "overrides": {
     "conventional-changelog-conventionalcommits": ">= 9.0.0"
@@ -162,5 +162,5 @@
       ]
     }
   },
-  "packageManager": "pnpm@10.18.3+sha512.bbd16e6d7286fd7e01f6b3c0b3c932cda2965c06a908328f74663f10a9aea51f1129eea615134bf992831b009eabe167ecb7008b597f40ff9bc75946aadfb08d"
+  "packageManager": "pnpm@10.20.0+sha512.cf9998222162dd85864d0a8102e7892e7ba4ceadebbf5a31f9c2fce48dfce317a9c53b9f6464d1ef9042cba2e02ae02a9f7c143a2b438cd93c91840f0192b9dd"
 }
