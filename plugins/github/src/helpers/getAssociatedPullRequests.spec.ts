@@ -11,7 +11,9 @@ const owner = "test-owner";
 const repo = "test-repo";
 const shas = ["sha1", "sha2"];
 
-vi.mocked(LetsReleaseOctokit).mockReturnValue(octokit);
+vi.mocked(LetsReleaseOctokit).mockImplementation(function () {
+  return octokit;
+});
 
 describe("getAssociatedPullRequests", () => {
   beforeEach(() => {

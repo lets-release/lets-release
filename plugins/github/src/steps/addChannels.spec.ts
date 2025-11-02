@@ -25,7 +25,9 @@ const context = {
   },
 } as unknown as AddChannelsContext;
 
-vi.mocked(LetsReleaseOctokit).mockReturnValue(octokit);
+vi.mocked(LetsReleaseOctokit).mockImplementation(function () {
+  return octokit;
+});
 
 describe("addChannels", () => {
   beforeEach(() => {
