@@ -51,7 +51,7 @@ export async function verifyAuth(
     body: form,
   });
 
-  if (response.status == 403) {
+  if (response.status >= 400) {
     throw new NeedAuthError(publishUrl);
   }
 }
