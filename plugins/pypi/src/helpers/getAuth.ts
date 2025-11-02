@@ -19,7 +19,6 @@ export async function getAuth(
   } = pkgContext;
 
   switch (pm.name) {
-    // https://python-poetry.org/docs/repositories/#configuring-credentials
     case PyPIPackageManagerName.poetry: {
       const name = registry.name.toUpperCase().replaceAll(/[.-]/g, "_");
 
@@ -55,7 +54,7 @@ export async function getAuth(
       };
     }
 
-    // https://docs.astral.sh/uv/guides/package/#publishing-your-package
+    // uv
     default: {
       const token = letsRelease.token || env.UV_PUBLISH_TOKEN;
       const username =
