@@ -346,7 +346,9 @@ describe("verifyAuth", () => {
         })
         .reply(200);
 
-      await verifyAuth(baseContext, pkgContext);
+      await expect(
+        verifyAuth(baseContext, pkgContext),
+      ).resolves.toBeUndefined();
     });
 
     it("should create correct authorization header with username and password", async () => {
@@ -372,7 +374,9 @@ describe("verifyAuth", () => {
         })
         .reply(200);
 
-      await verifyAuth(baseContext, pkgContext);
+      await expect(
+        verifyAuth(baseContext, pkgContext),
+      ).resolves.toBeUndefined();
     });
   });
 });

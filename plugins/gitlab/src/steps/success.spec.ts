@@ -73,6 +73,11 @@ describe("success", () => {
     const noCommitsContext = { ...context, commits: [] };
 
     await success(noCommitsContext, options);
+
+    expect(getAssociatedMergeRequests).not.toHaveBeenCalled();
+    expect(allIssuesClosed).not.toHaveBeenCalled();
+    expect(findIssues).not.toHaveBeenCalled();
+    expect(addComment).not.toHaveBeenCalled();
   });
 
   it("should handle associated merge requests and issues", async () => {

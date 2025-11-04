@@ -1218,16 +1218,19 @@ describe("LetsRelease", () => {
     expect(addChannels).not.toHaveBeenCalled();
   });
 
+  // eslint-disable-next-line vitest/expect-expect
   it("should add version to channels after a fast-forward merge", async () =>
     await testAddChannels(
       async (cwd, ref) => await mergeBranch(cwd, ref, true),
     ));
 
+  // eslint-disable-next-line vitest/expect-expect
   it("should add version to channels after a non fast-forward merge", async () =>
     await testAddChannels(
       async (cwd, ref) => await mergeBranch(cwd, ref, false),
     ));
 
+  // eslint-disable-next-line vitest/expect-expect
   it("should add version to channels after a rebase", async () =>
     await testAddChannels(async (cwd, ref) => await rebaseBranch(cwd, ref)));
 

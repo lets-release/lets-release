@@ -84,6 +84,7 @@
     "@typescript-eslint/parser": "^8.46.2",
     "@typescript-eslint/utils": "^8.46.2",
     "@vitest/coverage-v8": "^4.0.6",
+    "@vitest/eslint-plugin": "^1.4.0",
     "eslint": "^9.39.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.4",

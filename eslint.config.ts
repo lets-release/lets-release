@@ -1,6 +1,6 @@
 import eslintJs from "@eslint/js";
 import tsParser from "@typescript-eslint/parser";
-import { TSESLint } from "@typescript-eslint/utils";
+import vitestPlugin from "@vitest/eslint-plugin";
 import { defineConfig } from "eslint/config";
 import { createTypeScriptImportResolver } from "eslint-import-resolver-typescript";
 import { flatConfigs } from "eslint-plugin-import-x";
@@ -10,7 +10,7 @@ import unusedImportsPlugin from "eslint-plugin-unused-imports";
 import globals from "globals";
 import { configs } from "typescript-eslint";
 
-const eslintConfig: TSESLint.FlatConfig.ConfigArray = defineConfig(
+export default defineConfig(
   eslintJs.configs.recommended,
   ...configs.recommendedTypeChecked,
   ...configs.stylisticTypeChecked,
@@ -18,6 +18,7 @@ const eslintConfig: TSESLint.FlatConfig.ConfigArray = defineConfig(
   flatConfigs.typescript as never, // FIXME: https://github.com/un-ts/eslint-plugin-import-x/issues/421
   unicornPlugin.configs.recommended,
   prettierPluginRecommended,
+  vitestPlugin.configs.recommended,
   // global ignores
   { ignores: ["**/coverage", "**/dist"] },
   {
@@ -139,8 +140,12 @@ const eslintConfig: TSESLint.FlatConfig.ConfigArray = defineConfig(
       "unicorn/no-null": "off",
       "unicorn/no-useless-undefined": "off",
       "unicorn/no-array-reduce": "off",
+      "vitest/valid-expect": [
+        "error",
+        {
+          maxArgs: 2,
+        },
+      ],
     },
   },
 );
-
-export default eslintConfig;
