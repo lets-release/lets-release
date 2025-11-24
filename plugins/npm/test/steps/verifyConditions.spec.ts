@@ -64,6 +64,7 @@ describe("verifyConditions", () => {
           repositoryRoot: cwd,
           packages: [
             {
+              type: "npm",
               ...pkg,
               path: cwd,
             },
@@ -112,6 +113,7 @@ describe("verifyConditions", () => {
           repositoryRoot: cwd,
           packages: [
             {
+              type: "npm",
               ...pkg,
               path: cwd,
             },
@@ -159,6 +161,7 @@ describe("verifyConditions", () => {
           repositoryRoot: cwd,
           packages: [
             {
+              type: "npm",
               ...pkg,
               path: cwd,
             },
@@ -181,18 +184,21 @@ describe("verifyConditions", () => {
 
       const packages = [
         {
+          type: "npm",
           name: `verify-conditions-pnpm-${version}`,
           version: "0.0.0-dev",
           publishConfig: { registry },
           path: cwd,
         },
         {
+          type: "npm",
           name: `@verify-conditions-pnpm-${version}/a`,
           version: "0.0.0-dev",
           publishConfig: { registry },
           path: path.resolve(cwd, "packages/a"),
         },
         {
+          type: "npm",
           name: `@verify-conditions-pnpm-${version}/b`,
           version: "0.0.0-dev",
           publishConfig: { registry },
@@ -251,6 +257,7 @@ describe("verifyConditions", () => {
 
       const packages = [
         {
+          type: "npm",
           name: `verify-conditions-yarn-${version}`,
           version: "0.0.0-dev",
           publishConfig: { registry },
@@ -258,12 +265,14 @@ describe("verifyConditions", () => {
           path: cwd,
         },
         {
+          type: "npm",
           name: `@verify-conditions-yarn-${version}/a`,
           version: "0.0.0-dev",
           publishConfig: { registry },
           path: path.resolve(cwd, "packages/a"),
         },
         {
+          type: "npm",
           name: `@verify-conditions-yarn-${version}/b`,
           version: "0.0.0-dev",
           publishConfig: { registry },
@@ -332,6 +341,7 @@ describe("verifyConditions", () => {
 
       const packages = [
         {
+          type: "npm",
           name: `verify-conditions-npm-${version}`,
           version: "0.0.0-dev",
           publishConfig: { registry },
@@ -339,12 +349,14 @@ describe("verifyConditions", () => {
           path: cwd,
         },
         {
+          type: "npm",
           name: `@verify-conditions-npm-${version}/a`,
           version: "0.0.0-dev",
           publishConfig: { registry },
           path: path.resolve(cwd, "packages/a"),
         },
         {
+          type: "npm",
           name: `@verify-conditions-npm-${version}/b`,
           version: "0.0.0-dev",
           publishConfig: { registry },

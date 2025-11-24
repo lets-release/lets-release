@@ -17,6 +17,7 @@ const log = vi.fn();
 const logger = { log };
 const registry = "https://test.org";
 const pkg = {
+  type: "npm",
   name: "pkg",
   uniqueName: "npm/pkg",
 };
@@ -48,6 +49,24 @@ describe("addChannels", () => {
       .mockReset()
       .mockResolvedValue({ pkg: {} } as NpmPackageContext);
     vi.mocked(getArtifactInfo).mockClear();
+  });
+
+  it("should skip if package type is not npm", async () => {
+    await expect(
+      addChannels(
+        {
+          logger,
+          package: {
+            type: "python",
+            name: "pkg",
+            uniqueName: "python/pkg",
+          },
+          nextRelease: {},
+        } as unknown as AddChannelsContext,
+        {},
+      ),
+    ).resolves.toBeUndefined();
+    expect(vi.mocked(ensureNpmPackageContext)).not.toHaveBeenCalled();
   });
 
   it("should skip adding channels if skipPublishing is true", async () => {

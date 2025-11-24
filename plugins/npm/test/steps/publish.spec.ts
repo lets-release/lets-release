@@ -63,6 +63,7 @@ describe("publish", () => {
         repositoryRoot: cwd,
         options: {},
         package: {
+          type: "npm",
           ...pkg,
           path: cwd,
         },
@@ -128,6 +129,7 @@ describe("publish", () => {
         repositoryRoot: cwd,
         options: {},
         package: {
+          type: "npm",
           ...pkg,
           path: cwd,
         },
@@ -197,6 +199,7 @@ describe("publish", () => {
         repositoryRoot: cwd,
         options: {},
         package: {
+          type: "npm",
           ...pkg,
           path: cwd,
         },
@@ -215,6 +218,7 @@ describe("publish", () => {
         repositoryRoot: cwd,
         options: {},
         package: {
+          type: "npm",
           ...pkg,
           path: cwd,
         },
@@ -316,7 +320,7 @@ describe("publish", () => {
             env: process.env,
             repositoryRoot: cwd,
             options: {},
-            package: { ...pkg, path: pkgRoot },
+            package: { type: "npm", ...pkg, path: pkgRoot },
             nextRelease: {
               version: "1.0.0",
               channels: [null, "latest-1"],
@@ -431,7 +435,7 @@ describe("publish", () => {
             env: process.env,
             repositoryRoot: cwd,
             options: {},
-            package: { ...pkg, path: pkgRoot },
+            package: { type: "npm", ...pkg, path: pkgRoot },
             nextRelease: {
               version: "1.0.0",
               channels: [null, "latest-1"],
@@ -542,7 +546,7 @@ describe("publish", () => {
             env: process.env,
             repositoryRoot: cwd,
             options: {},
-            package: { ...pkg, path: pkgRoot },
+            package: { type: "npm", ...pkg, path: pkgRoot },
             nextRelease: {
               version: "1.0.0",
               channels: [null, "latest-1"],

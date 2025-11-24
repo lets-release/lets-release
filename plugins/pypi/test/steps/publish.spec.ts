@@ -99,6 +99,7 @@ describe("publish", () => {
         options: {},
         package: {
           ...pkg.project,
+          type: "pypi",
           path: cwd,
         },
         nextRelease: { channels: [null], version: "1.0.0" },
@@ -193,6 +194,7 @@ describe("publish", () => {
         options: {},
         package: {
           ...pkg.project,
+          type: "pypi",
           path: cwd,
         },
         nextRelease: { channels: [null], version: "1.0.0" },
@@ -302,7 +304,7 @@ describe("publish", () => {
           env,
           repositoryRoot: cwd,
           options: {},
-          package: { ...pkg.project, path: cwd },
+          package: { ...pkg.project, type: "pypi", path: cwd },
           nextRelease: {
             version: "1.0.0",
             channels: [null, "latest-1"],
@@ -453,7 +455,7 @@ describe("publish", () => {
             env,
             repositoryRoot: cwd,
             options: {},
-            package: pkg.project,
+            package: { ...pkg.project, type: "pypi" },
             nextRelease: {
               version: "1.0.0",
               channels: [null, "latest-1"],

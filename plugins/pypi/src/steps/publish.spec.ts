@@ -20,6 +20,7 @@ const context = {
   env: {},
   logger: { log },
   package: {
+    type: "pypi",
     path: "/path/to/package",
     name: "test-package",
     uniqueName: "test-package",
@@ -52,6 +53,19 @@ const promise = new ExtendedPromise((resolve) => {
 vi.mocked(getArtifactInfo).mockReturnValue(artifact);
 
 describe("publish", () => {
+  it("should skip if package type is not pypi", async () => {
+    const nonPypiContext = {
+      ...context,
+      package: {
+        ...context.package,
+        type: "npm",
+      },
+    } as unknown as PublishContext;
+
+    await expect(publish(nonPypiContext, {})).resolves.toBe(undefined);
+    expect(ensurePyPIPackageContext).not.toHaveBeenCalled();
+  });
+
   beforeEach(() => {
     vi.mocked($)
       .mockReset()

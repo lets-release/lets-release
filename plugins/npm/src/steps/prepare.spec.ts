@@ -8,6 +8,24 @@ vi.mock("src/helpers/ensureNpmPackageContext");
 vi.mock("src/helpers/preparePackage");
 
 describe("prepare", () => {
+  it("should skip if package type is not npm", async () => {
+    await expect(
+      prepare(
+        {
+          package: {
+            path: "/root/a",
+            type: "python",
+            name: "pkg",
+            uniqueName: "python/pkg",
+          },
+        } as PrepareContext,
+        {},
+      ),
+    ).resolves.toBe(undefined);
+    expect(vi.mocked(ensureNpmPackageContext)).not.toHaveBeenCalled();
+    expect(vi.mocked(preparePackage)).not.toHaveBeenCalled();
+  });
+
   it("should prepare", async () => {
     await expect(
       prepare(

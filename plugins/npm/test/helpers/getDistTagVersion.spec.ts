@@ -24,6 +24,7 @@ const log = vi.fn();
 const warn = vi.fn();
 const logger = { log, warn };
 const pkg = {
+  type: "npm",
   name: "get-dist-tag-version",
   version: "0.0.0-dev",
   publishConfig: { registry },

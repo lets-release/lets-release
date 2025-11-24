@@ -106,7 +106,7 @@ describe("prepare", () => {
           env,
           repositoryRoot: cwd,
           options: {},
-          package: { ...pkg.project, path: cwd },
+          package: { ...pkg.project, type: "pypi", path: cwd },
           nextRelease: { version: "1.0.0", channels: { default: [null] } },
         } as unknown as PrepareContext,
         { distDir: "dist" },
@@ -249,7 +249,7 @@ describe("prepare", () => {
             env,
             repositoryRoot: cwd,
             options: {},
-            package: pkg.project,
+            package: { ...pkg.project, type: "pypi" },
             nextRelease: { version: "1.0.0", channels: { default: [null] } },
           } as unknown as PrepareContext,
           { distDir: "dist" },
@@ -286,4 +286,35 @@ describe("prepare", () => {
       }
     },
   );
+
+  it("should skip prepare for non-pypi packages", async () => {
+    const cwd = temporaryDirectory();
+    const env = process.env;
+
+    let pkgContext: PyPIPackageContext | undefined;
+
+    const getPluginPackageContext = () => pkgContext;
+    const setPluginPackageContext = (context: PyPIPackageContext) => {
+      pkgContext = context;
+    };
+
+    const result = await prepare(
+      {
+        ...context,
+        getPluginPackageContext,
+        setPluginPackageContext,
+        ciEnv: {},
+        cwd,
+        env,
+        repositoryRoot: cwd,
+        options: {},
+        package: { name: "test", version: "1.0.0", type: "npm", path: cwd },
+        nextRelease: { version: "2.0.0", channels: { default: [null] } },
+      } as unknown as PrepareContext,
+      { distDir: "dist" },
+    );
+
+    expect(result).toBeUndefined();
+    expect(pkgContext).toBeUndefined();
+  });
 });

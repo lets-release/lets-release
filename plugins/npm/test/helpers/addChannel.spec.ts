@@ -25,6 +25,7 @@ const log = vi.fn();
 const warn = vi.fn();
 const logger = { log, warn };
 const pkg = {
+  type: "npm",
   name: "add-channel-helper-npm",
   version: "2.0.0",
   publishConfig: { registry },
@@ -169,6 +170,7 @@ describe("addChannel", () => {
     );
 
     const pkg = {
+      type: "npm",
       name: `add-channel-helper-npm-8`,
       version: "2.0.0",
       publishConfig: { registry },
@@ -243,6 +245,7 @@ describe("addChannel", () => {
       );
 
       const pkg = {
+        type: "npm",
         name: `add-channel-helper-pnpm-${version}`,
         version: "2.0.0",
         publishConfig: { registry },
@@ -311,6 +314,7 @@ describe("addChannel", () => {
       const cwd = temporaryDirectory();
 
       const pkg = {
+        type: "npm",
         name: `add-channel-helper-yarn-${version}`,
         version: "2.0.0",
         publishConfig: { registry },

@@ -63,6 +63,25 @@ describe("publish", () => {
     vi.mocked(preparePackage).mockClear();
   });
 
+  it("should skip if package type is not npm", async () => {
+    await expect(
+      publish(
+        {
+          logger,
+          package: {
+            path: "/root/a",
+            type: "python",
+            name: "pkg",
+            uniqueName: "python/pkg",
+          },
+          nextRelease: {},
+        } as unknown as PublishContext,
+        {},
+      ),
+    ).resolves.toBeUndefined();
+    expect(vi.mocked(ensureNpmPackageContext)).not.toHaveBeenCalled();
+  });
+
   it("should skip publishing if skipPublishing is true", async () => {
     await expect(
       publish(

@@ -98,6 +98,7 @@ describe("verifyConditions", () => {
           packages: [
             {
               ...pkg.project,
+              type: "pypi",
               path: cwd,
             },
           ],
@@ -168,6 +169,7 @@ describe("verifyConditions", () => {
           packages: [
             {
               ...pkg.project,
+              type: "pypi",
               path: cwd,
             },
           ],
@@ -237,6 +239,7 @@ describe("verifyConditions", () => {
           packages: [
             {
               ...pkg.project,
+              type: "pypi",
               path: cwd,
             },
           ],
@@ -325,6 +328,7 @@ describe("verifyConditions", () => {
             packages: [
               {
                 ...pkg.project,
+                type: "pypi",
                 path: cwd,
               },
             ],
@@ -448,11 +452,121 @@ describe("verifyConditions", () => {
             cwd,
             env,
             repositoryRoot: cwd,
-            packages: packages.map(({ project }) => project),
+            packages: packages.map(({ project }) => ({
+              ...project,
+              type: "pypi",
+            })),
           } as unknown as VerifyConditionsContext,
           {},
         ),
       ).resolves.toBeUndefined();
     },
   );
+
+  it("should skip verifyConditions for non-pypi packages", async () => {
+    const cwd = temporaryDirectory();
+
+    let pkgContext: PyPIPackageContext | undefined;
+
+    const getPluginPackageContext = () => pkgContext;
+    const setPluginPackageContext = (
+      type: string,
+      name: string,
+      context: PyPIPackageContext,
+    ) => {
+      pkgContext = context;
+    };
+
+    await expect(
+      verifyConditions(
+        {
+          ...context,
+          getPluginPackageContext,
+          setPluginPackageContext,
+          ciEnv: {},
+          cwd,
+          env,
+          repositoryRoot: cwd,
+          packages: [
+            { name: "test", version: "1.0.0", type: "npm", path: cwd },
+          ],
+        } as unknown as VerifyConditionsContext,
+        {},
+      ),
+    ).resolves.toBeUndefined();
+
+    expect(pkgContext).toBeUndefined();
+  });
+
+  it("should process only pypi packages in mixed package types", async () => {
+    const cwd = temporaryDirectory();
+    const pkg = {
+      project: {
+        name: "verify-conditions-mixed",
+        version: "1.0.0",
+      },
+      tool: {
+        "lets-release": {
+          registry: {
+            "publish-url": pypiPublishUrl,
+          },
+          token: pypiToken,
+        },
+      },
+    };
+
+    await $({ cwd, env })`uv init --lib --name ${pkg.project.name}`;
+    await $({ cwd, env })`uv sync`;
+
+    const tomlFile = path.resolve(cwd, "pyproject.toml");
+    const toml = await readTomlFile(tomlFile);
+
+    await writeFile(
+      tomlFile,
+      stringify({
+        ...toml,
+        project: {
+          ...(toml.project as object),
+          ...pkg.project,
+        },
+        tool: {
+          ...(toml.tool as object),
+          ...pkg.tool,
+        },
+      }),
+    );
+
+    let pkgContext: PyPIPackageContext | undefined;
+
+    const getPluginPackageContext = () => pkgContext;
+    const setPluginPackageContext = (
+      type: string,
+      name: string,
+      context: PyPIPackageContext,
+    ) => {
+      pkgContext = context;
+    };
+
+    await expect(
+      verifyConditions(
+        {
+          ...context,
+          getPluginPackageContext,
+          setPluginPackageContext,
+          ciEnv: {},
+          cwd,
+          env,
+          repositoryRoot: cwd,
+          packages: [
+            { name: "npm-pkg", version: "1.0.0", type: "npm", path: cwd },
+            { ...pkg.project, type: "pypi", path: cwd },
+            { name: "another-npm", version: "1.0.0", type: "npm", path: cwd },
+          ],
+        } as unknown as VerifyConditionsContext,
+        {},
+      ),
+    ).resolves.toBeUndefined();
+
+    expect(pkgContext).toBeDefined();
+  });
 });

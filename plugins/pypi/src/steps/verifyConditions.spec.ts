@@ -20,6 +20,8 @@ const context = {
 
 describe("verifyConditions", () => {
   beforeEach(() => {
+    getPluginPackageContext.mockClear();
+    setPluginPackageContext.mockClear();
     vi.mocked(ensurePyPIPackageContext)
       .mockReset()
       .mockImplementation(
@@ -31,6 +33,30 @@ describe("verifyConditions", () => {
           return {} as PyPIPackageContext;
         },
       );
+  });
+
+  it("should skip non-pypi packages", async () => {
+    const mixedContext = {
+      ...context,
+      packages: [
+        { type: "pypi", name: "package1" },
+        { type: "npm", name: "package2" },
+      ],
+    } as unknown as VerifyConditionsContext;
+
+    const options = { skipPublishing: false };
+
+    await verifyConditions(mixedContext, options);
+
+    expect(ensurePyPIPackageContext).toHaveBeenCalledTimes(1);
+    expect(getPluginPackageContext).toHaveBeenCalledTimes(1);
+    expect(getPluginPackageContext).toHaveBeenCalledWith("pypi", "package1");
+    expect(setPluginPackageContext).toHaveBeenCalledTimes(1);
+    expect(setPluginPackageContext).toHaveBeenCalledWith(
+      "pypi",
+      "package1",
+      undefined,
+    );
   });
 
   it("should ensure package context for each package", async () => {

@@ -12,6 +12,9 @@ vi.mock("src/schemas/PyPIOptions");
 
 const context = {
   cwd: "/path/to/cwd",
+  package: {
+    type: "pypi",
+  },
 } as PrepareContext;
 const options = {
   foo: "bar",
@@ -30,6 +33,19 @@ const pkgContext = {
 const parseAsync = vi.spyOn(PyPIOptions, "parseAsync");
 
 describe("prepare", () => {
+  it("should skip if package type is not pypi", async () => {
+    const nonPypiContext = {
+      ...context,
+      package: {
+        type: "npm",
+      },
+    } as PrepareContext;
+
+    await expect(prepare(nonPypiContext, options)).resolves.toBe(undefined);
+    expect(ensurePyPIPackageContext).not.toHaveBeenCalled();
+    expect(preparePackage).not.toHaveBeenCalled();
+  });
+
   it("should call ensurePyPIPackageContext and preparePackage with correct arguments", async () => {
     parseAsync.mockResolvedValue(parsedOptions);
     vi.mocked(ensurePyPIPackageContext).mockResolvedValue(pkgContext);

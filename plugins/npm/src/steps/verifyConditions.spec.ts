@@ -42,6 +42,36 @@ describe("verifyConditions", () => {
   beforeEach(() => {
     getPluginPackageContext.mockClear();
     setPluginPackageContext.mockClear();
+    vi.mocked(ensureNpmPackageContext).mockClear();
+  });
+
+  it("should skip non-npm packages", async () => {
+    const contextWithMixedPackages = {
+      ...context,
+      packages: [
+        {
+          path: "/root/a",
+          type: "npm",
+          name: "a",
+          uniqueName: "npm/a",
+        },
+        {
+          path: "/root/b",
+          type: "python",
+          name: "b",
+          uniqueName: "python/b",
+        },
+      ],
+    } as unknown as VerifyConditionsContext;
+
+    await expect(
+      verifyConditions(contextWithMixedPackages, options),
+    ).resolves.toBe(undefined);
+    expect(getPluginPackageContext).toHaveBeenCalledTimes(1);
+    expect(getPluginPackageContext).toHaveBeenNthCalledWith(1, "npm", "a");
+    expect(setPluginPackageContext).toHaveBeenCalledTimes(1);
+    expect(setPluginPackageContext).toHaveBeenNthCalledWith(1, "npm", "a", {});
+    expect(vi.mocked(ensureNpmPackageContext)).toHaveBeenCalledTimes(1);
   });
 
   it("should verify conditions", async () => {
