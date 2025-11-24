@@ -64,12 +64,12 @@ Alternatively the Git authentication can be set up via [SSH][].
 
 ## Git environment variables
 
-| Variable              | Description                                                                                     | Default                          |
-| --------------------- | ----------------------------------------------------------------------------------------------- | -------------------------------- |
-| `GIT_AUTHOR_NAME`     | The author name associated with the [Git release tag][]. See [Git environment variables][].     | @lets-release-bot.               |
-| `GIT_AUTHOR_EMAIL`    | The author email associated with the [Git release tag][]. See [Git environment variables][].    | @lets-release-bot email address. |
-| `GIT_COMMITTER_NAME`  | The committer name associated with the [Git release tag][]. See [Git environment variables][].  | @lets-release-bot.               |
-| `GIT_COMMITTER_EMAIL` | The committer email associated with the [Git release tag][]. See [Git environment variables][]. | @lets-release-bot email address. |
+| Variable              | Description                                                                                     | Default                                |
+| --------------------- | ----------------------------------------------------------------------------------------------- | -------------------------------------- |
+| `GIT_AUTHOR_NAME`     | The author name associated with the [Git release tag][]. See [Git environment variables][].     | [lets-release\[bot\]][].               |
+| `GIT_AUTHOR_EMAIL`    | The author email associated with the [Git release tag][]. See [Git environment variables][].    | [lets-release\[bot\]][] email address. |
+| `GIT_COMMITTER_NAME`  | The committer name associated with the [Git release tag][]. See [Git environment variables][].  | [lets-release\[bot\]][].               |
+| `GIT_COMMITTER_EMAIL` | The committer email associated with the [Git release tag][]. See [Git environment variables][]. | [lets-release\[bot\]][] email address. |
 
 ## Plugins
 
@@ -148,6 +148,7 @@ See [Options][].
 [SuccessContext]: ./libs/config/src/types/SuccessContext.ts
 [FailContext]: ./libs/config/src/types/FailContext.ts
 
+[lets-release\[bot\]]: https://github.com/apps/lets-release
 [semantic-release]: https://github.com/semantic-release/semantic-release
 [Semantic Versioning]: https://smever.org
 [Calendar Versioning]: https://calver.org
