@@ -1,5 +1,6 @@
 import { Step, StepFunction } from "@lets-release/config";
 
+import { NPM_PACKAGE_TYPE } from "src/constants/NPM_PACKAGE_TYPE";
 import { addChannel } from "src/helpers/addChannel";
 import { channelsToDistTags } from "src/helpers/channelsToDistTags";
 import { ensureNpmPackageContext } from "src/helpers/ensureNpmPackageContext";
@@ -10,12 +11,17 @@ export const addChannels: StepFunction<Step.addChannels, NpmOptions> = async (
   context,
   options,
 ) => {
-  const { skipPublishing } = await NpmOptions.parseAsync(options);
   const {
     logger,
-    package: { uniqueName },
+    package: { type, uniqueName },
     nextRelease: { channels },
   } = context;
+
+  if (type !== NPM_PACKAGE_TYPE) {
+    return;
+  }
+
+  const { skipPublishing } = await NpmOptions.parseAsync(options);
   const pkgContext = await ensureNpmPackageContext(context, {
     skipPublishing,
   });

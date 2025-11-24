@@ -2,6 +2,7 @@ import { $, ResultPromise } from "execa";
 
 import { Step, StepFunction } from "@lets-release/config";
 
+import { NPM_PACKAGE_TYPE } from "src/constants/NPM_PACKAGE_TYPE";
 import { NpmPackageManagerName } from "src/enums/NpmPackageManagerName";
 import { addChannel } from "src/helpers/addChannel";
 import { channelsToDistTags } from "src/helpers/channelsToDistTags";
@@ -15,15 +16,20 @@ export const publish: StepFunction<Step.publish, NpmOptions> = async (
   context,
   options,
 ) => {
-  const { skipPublishing, tarballDir } = await NpmOptions.parseAsync(options);
   const {
     env,
     stdout,
     stderr,
     logger,
-    package: { path: pkgRoot, name, uniqueName },
+    package: { type, path: pkgRoot, name, uniqueName },
     nextRelease: { version, channels },
   } = context;
+
+  if (type !== NPM_PACKAGE_TYPE) {
+    return;
+  }
+
+  const { skipPublishing, tarballDir } = await NpmOptions.parseAsync(options);
   const pkgContext = await ensureNpmPackageContext(context, {
     skipPublishing,
   });
