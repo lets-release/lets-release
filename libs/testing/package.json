@@ -38,7 +38,7 @@
     "undici": "^7.16.0"
   },
   "devDependencies": {
-    "@types/dockerode": "^3.3.46"
+    "@types/dockerode": "^3.3.47"
   },
   "files": [
     "package.json",
