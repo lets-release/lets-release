@@ -1,6 +1,6 @@
 {
   "name": "@lets-release/git-host",
-  "version": "5.0.0",
+  "version": "6.0.0",
   "description": "Let's Release git-host library",
   "author": "Sean Tu <manlao@gmail.com> (https://github.com/manlao)",
   "license": "MIT",
