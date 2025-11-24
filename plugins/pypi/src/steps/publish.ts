@@ -5,6 +5,7 @@ import { $, ResultPromise } from "execa";
 import { Step, StepFunction } from "@lets-release/config";
 
 import { DEFAULT_PYPI_USERNAME } from "src/constants/DEFAULT_PYPI_USERNAME";
+import { PYPI_PACKAGE_TYPE } from "src/constants/PYPI_PACKAGE_TYPE";
 import { PYPI_PRIVATE_CLASSIFIER_PREFIX } from "src/constants/PYPI_PRIVATE_CLASSIFIER_PREFIX";
 import { PyPIPackageManagerName } from "src/enums/PyPIPackageManagerName";
 import { ensurePyPIPackageContext } from "src/helpers/ensurePyPIPackageContext";
@@ -17,15 +18,20 @@ export const publish: StepFunction<Step.publish, PyPIOptions> = async (
   context,
   options,
 ) => {
-  const { skipPublishing, distDir } = await PyPIOptions.parseAsync(options);
   const {
     env,
     stdout,
     stderr,
     logger,
-    package: { path: pkgRoot, name, uniqueName },
+    package: { type, path: pkgRoot, name, uniqueName },
     nextRelease: { version },
   } = context;
+
+  if (type !== PYPI_PACKAGE_TYPE) {
+    return;
+  }
+
+  const { skipPublishing, distDir } = await PyPIOptions.parseAsync(options);
   const pkgContext = await ensurePyPIPackageContext(context, {
     skipPublishing,
   });
