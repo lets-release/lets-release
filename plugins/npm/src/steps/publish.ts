@@ -41,12 +41,12 @@ export const publish: StepFunction<Step.publish, NpmOptions> = async (
   if (!skipPublishing && !pkgContext.pkg.private) {
     const { pm, registry } = pkgContext;
     const distTags = channelsToDistTags(channels);
-    const isPublish = await isVersionPublished(context, pkgContext);
+    const isPublished = await isVersionPublished(context, pkgContext);
 
     const tag = distTags.find((tag) => tag === "latest") ?? distTags[0];
     const rest = distTags.filter((t) => t !== tag);
 
-    if (isPublish) {
+    if (isPublished) {
       logger.warn({
         prefix: `[${uniqueName}]`,
         message: `Skip publishing as version ${version} is already published`,
