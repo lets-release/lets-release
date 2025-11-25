@@ -60,7 +60,7 @@ export async function preparePackage(
         versionPromise = $({
           ...options,
           cwd: pm.root,
-        })`uv version --project ${pkgRoot} ${version}`;
+        })`uv version --project ${pkgRoot} ${version} --frozen`;
 
         versionPromise.stdout?.pipe(stdout, { end: false });
         versionPromise.stderr?.pipe(stderr, { end: false });
