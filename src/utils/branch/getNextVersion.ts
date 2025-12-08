@@ -2,8 +2,10 @@ import debug from "debug";
 
 import {
   CalVerPrereleaseOptions,
+  DEFAULT_CALVER_PRERELEASE_OPTIONS,
   compareCalVers,
   formatCalVer,
+  getCalVerTokenValues,
   getLatestCalVer,
   increaseCalVer,
   isCalVerSatisfiedRange,
@@ -323,34 +325,36 @@ export function getNextVersion(
       });
     } else {
       const initialVersion =
-        branch.type === BranchType.prerelease
+        (branch.type === BranchType.prerelease
           ? branches.main?.ranges[uniqueName]?.min
-          : branch.ranges[uniqueName]?.min;
-
-      if (initialVersion) {
-        version =
-          branch.type === BranchType.prerelease || prerelease
-            ? formatCalVer(
-                versioning.format,
-                {
-                  ...parseCalVer(versioning.format, initialVersion, options),
-                  prereleaseName: options.prereleaseName,
-                  prereleaseNumber: options.initialNumber,
-                  build: options.build,
-                },
-                options,
-              )
-            : initialVersion;
-
-        logger.log({
-          prefix: `[${uniqueName}]`,
-          message: `There is no previous release, the next release version is ${version}`,
-        });
-      } else {
-        debug(namespace)(
-          `Skip package ${uniqueName} because there is no initial version`,
+          : branch.ranges[uniqueName]?.min) ??
+        formatCalVer(
+          versioning.format,
+          {
+            tokenValues: getCalVerTokenValues(versioning.format),
+            prereleaseOptions: DEFAULT_CALVER_PRERELEASE_OPTIONS,
+          },
+          options,
         );
-      }
+
+      version =
+        branch.type === BranchType.prerelease || prerelease
+          ? formatCalVer(
+              versioning.format,
+              {
+                ...parseCalVer(versioning.format, initialVersion, options),
+                prereleaseName: options.prereleaseName,
+                prereleaseNumber: options.initialNumber,
+                build: options.build,
+              },
+              options,
+            )
+          : initialVersion;
+
+      logger.log({
+        prefix: `[${uniqueName}]`,
+        message: `There is no previous release, the next release version is ${version}`,
+      });
     }
   }
 

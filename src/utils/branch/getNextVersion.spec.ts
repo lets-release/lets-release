@@ -764,17 +764,28 @@ describe("getNextVersion", () => {
       ).toThrow(InvalidNextVersionError);
     });
 
-    it("should return undefined if there is no initial version", () => {
+    it("should generate default version if there is no initial version", () => {
+      const year = new Date().getFullYear() - 2000;
+      const releaseBranchCtxWithoutPrerelease = {
+        ...releaseBranchCtx,
+        package: {
+          ...pkg,
+          versioning: {
+            scheme: VersioningScheme.CalVer,
+            format,
+            prerelease: undefined,
+            build: undefined,
+          },
+        },
+        branch: { ...branches.main, ranges: {} },
+      };
       expect(
         getNextVersion(
-          {
-            ...releaseBranchCtx,
-            branch: { ...branches.main, ranges: {} },
-          } as unknown as NormalizedStepContext<Step.analyzeCommits>,
+          releaseBranchCtxWithoutPrerelease as unknown as NormalizedStepContext<Step.analyzeCommits>,
           ReleaseType.major,
           hash,
         ),
-      ).toBeUndefined();
+      ).toBe(`${year}.0.0`);
     });
   });
 });
