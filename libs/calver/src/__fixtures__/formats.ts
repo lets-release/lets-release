@@ -35,6 +35,20 @@ export const validFormats: Record<string, ParsedCalVerFormat> = {
     },
     regex: String.raw`(?<year>0<?!\d>|[1-9]\d*)`,
   },
+  "YY.0W": {
+    tokens: {
+      year: CalVerToken.Y,
+      week: CalVerToken.WW,
+    },
+    regex: String.raw`(?<year>0<?!\d>|[1-9]\d*)\.(?<week>\d{2})`,
+  },
+  "YY.0M": {
+    tokens: {
+      year: CalVerToken.Y,
+      month: CalVerToken.MM,
+    },
+    regex: String.raw`(?<year>0<?!\d>|[1-9]\d*)\.(?<month>\d{2})`,
+  },
   "YYYY.0W": {
     tokens: {
       year: CalVerToken.YYYY,

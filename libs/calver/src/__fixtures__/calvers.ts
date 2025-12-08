@@ -312,6 +312,44 @@ export const calvers: Record<
       },
     ],
   },
+  "YY.0W": {
+    tokens: validFormats["YY.0W"].tokens,
+    tokenValues: { year, week },
+    values: [
+      {
+        value: `${year}.${week}`,
+      },
+      {
+        value: `${year}${paddedWeek}`,
+      },
+      {
+        value: `${year}.00`,
+      },
+      {
+        value: `${year}.54`,
+      },
+      {
+        value: `${year}.${paddedWeek}`,
+        parsed,
+      },
+    ],
+  },
+  "YY.0M": {
+    tokens: validFormats["YY.0M"].tokens,
+    tokenValues: { year, month },
+    values: [
+      {
+        value: `${year}.${month}`,
+      },
+      {
+        value: `${year}.13`,
+      },
+      {
+        value: `${year}.${paddedMonth}`,
+        parsed,
+      },
+    ],
+  },
   "YYYY.0W": {
     tokens: validFormats["YYYY.0W"].tokens,
     tokenValues: { year: fullYear, week },

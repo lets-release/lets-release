@@ -3,8 +3,7 @@ import { escapeRegExp, isNil } from "lodash-es";
 
 import { DEFAULT_CALVER_PRERELEASE_OPTIONS } from "src/constants/DEFAULT_CALVER_PRERELEASE_OPTIONS";
 import { REGULAR_EXPRESSIONS } from "src/constants/REGULAR_EXPRESSIONS";
-import { getCalendarYearFormat } from "src/helpers/getCalendarYearFormat";
-import { getIOSWeekNumberingYearFormat } from "src/helpers/getIOSWeekNumberingYearFormat";
+import { CalVerToken } from "src/enums/CalVerToken";
 import { parseCalVerFormat } from "src/helpers/parseCalVerFormat";
 import {
   CalVerPrereleaseOptions,
@@ -30,7 +29,7 @@ export function parseCalVer(
     trimmedVersion.match(regex)?.groups ?? {};
 
   if (!rest.year) {
-    throw new TypeError(`${errorMessage}: invalid year: ${rest.year}`);
+    throw new TypeError(errorMessage);
   }
 
   const tokenValues = Object.fromEntries(
@@ -38,7 +37,7 @@ export function parseCalVer(
       const number = +value;
 
       if (number > Number.MAX_SAFE_INTEGER) {
-        throw new TypeError(`${errorMessage}: invalid ${key}: ${number}`);
+        throw new TypeError(errorMessage);
       }
 
       return [key, number];
@@ -50,28 +49,26 @@ export function parseCalVer(
     !isNil(week) &&
     !isValid(
       parse(
-        `${year}-${week}`,
-        `${getIOSWeekNumberingYearFormat(tokens.year)}-I`,
+        `${tokens.year === CalVerToken.YYYY ? year : year + 2000}-${week}`,
+        `R-I`,
         new Date(),
       ),
     )
   ) {
-    throw new TypeError(`${errorMessage}: invalid week: ${year}-${week}`);
+    throw new TypeError(errorMessage);
   }
 
   if (
     !isNil(month) &&
     !isValid(
       parse(
-        `${year}-${month}-${day ?? 1}`,
-        `${getCalendarYearFormat(tokens.year)}-M-d`,
+        `${tokens.year === CalVerToken.YYYY ? year : year + 2000}-${month}-${day ?? 1}`,
+        `y-M-d`,
         new Date(),
       ),
     )
   ) {
-    throw new TypeError(
-      `${errorMessage}: invalid ${day ? "date" : "month"}: ${year}-${month}${day ? `-${day}` : ""}`,
-    );
+    throw new TypeError(errorMessage);
   }
 
   const prereleaseOptions = {

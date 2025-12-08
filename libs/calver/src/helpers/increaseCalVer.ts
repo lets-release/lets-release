@@ -1,9 +1,8 @@
 import { add, formatDate, parse } from "date-fns";
 import { cloneDeep, isEqual, isNil, pick, pickBy } from "lodash-es";
 
+import { CalVerToken } from "src/enums/CalVerToken";
 import { formatCalVer } from "src/helpers/formatCalVer";
-import { getCalendarYearFormat } from "src/helpers/getCalendarYearFormat";
-import { getIOSWeekNumberingYearFormat } from "src/helpers/getIOSWeekNumberingYearFormat";
 import { parseCalVer } from "src/helpers/parseCalVer";
 import { CalVerPrereleaseOptions } from "src/schemas/CalVerPrereleaseOptions";
 
@@ -71,16 +70,18 @@ export function increaseCalVer(
     !!calver.prereleaseName || !isNil(calver.prereleaseNumber);
 
   const increaseMajorVersion = () => {
-    const yearFormat = calver.tokens.week
-      ? getIOSWeekNumberingYearFormat(calver.tokens.year)
-      : getCalendarYearFormat(calver.tokens.year);
+    const yearFormat = calver.tokens.week ? "R" : "y";
     const weekFormat = "I";
     const monthFormat = "M";
     const dayFormat = "d";
     const monthDayFormat = `${calver.tokens.month ? monthFormat : ""}${calver.tokens.day ? `-${dayFormat}` : ""}`;
     const format = `${yearFormat}${calver.tokens.week ? `-${weekFormat}` : monthDayFormat ? `-${monthDayFormat}` : ""}`;
     const monthDay = `${calver.tokenValues.month ?? ""}${calver.tokenValues.day ? `-${calver.tokenValues.day}` : ""}`;
-    const currentDate = `${calver.tokenValues.year}${calver.tokens.week ? `-${calver.tokenValues.week}` : monthDay ? `-${monthDay}` : ""}`;
+    const currentYear =
+      calver.tokens.year === CalVerToken.YYYY
+        ? calver.tokenValues.year
+        : calver.tokenValues.year + 2000;
+    const currentDate = `${currentYear}${calver.tokens.week ? `-${calver.tokenValues.week}` : monthDay ? `-${monthDay}` : ""}`;
 
     const date = majorIncrement
       ? add(parse(currentDate, format, new Date()), {
@@ -99,7 +100,9 @@ export function increaseCalVer(
 
     const tokenValues = cloneDeep(calver.tokenValues);
 
-    calver.tokenValues.year = Number(formatDate(date, yearFormat));
+    calver.tokenValues.year =
+      Number(formatDate(date, yearFormat)) -
+      (calver.tokens.year === CalVerToken.YYYY ? 0 : 2000);
     calver.tokenValues.week = Number(formatDate(date, "I"));
     calver.tokenValues.month = Number(formatDate(date, "M"));
     calver.tokenValues.day = Number(formatDate(date, "d"));
