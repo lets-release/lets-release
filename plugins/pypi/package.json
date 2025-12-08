@@ -33,7 +33,7 @@
     "@actions/core": "^1.11.1",
     "@lets-release/config": "workspace:^",
     "debug": "^4.4.3",
-    "execa": "^9.6.0",
+    "execa": "^9.6.1",
     "find-up-simple": "^1.0.1",
     "form-data": "^4.0.5",
     "lodash-es": "^4.17.21",

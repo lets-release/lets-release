@@ -46,7 +46,7 @@
     "debug": "^4.4.3",
     "dir-glob": "^3.0.1",
     "env-ci": "^11.2.0",
-    "execa": "^9.6.0",
+    "execa": "^9.6.1",
     "figures": "^6.1.0",
     "find-versions": "^6.0.0",
     "git-log-parser": "^1.2.1",
@@ -65,8 +65,8 @@
   },
   "devDependencies": {
     "@aliser/ts-transformer-append-js-extension": "^1.0.7",
-    "@commitlint/cli": "^20.1.0",
-    "@commitlint/config-conventional": "^20.0.0",
+    "@commitlint/cli": "^20.2.0",
+    "@commitlint/config-conventional": "^20.2.0",
     "@eslint/js": "^9.39.1",
     "@lets-release/testing": "workspace:^",
     "@types/debug": "^4.1.12",
@@ -81,10 +81,10 @@
     "@types/signale": "^1.4.7",
     "@types/stream-buffers": "^3.0.8",
     "@types/stream-to-array": "^2.3.3",
-    "@typescript-eslint/parser": "^8.47.0",
-    "@typescript-eslint/utils": "^8.47.0",
-    "@vitest/coverage-v8": "^4.0.13",
-    "@vitest/eslint-plugin": "^1.4.4",
+    "@typescript-eslint/parser": "^8.48.1",
+    "@typescript-eslint/utils": "^8.48.1",
+    "@vitest/coverage-v8": "^4.0.15",
+    "@vitest/eslint-plugin": "^1.5.2",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.4",
@@ -96,23 +96,23 @@
     "globals": "^16.5.0",
     "husky": "^9.1.7",
     "jiti": "^2.6.1",
-    "knip": "^5.70.1",
+    "knip": "^5.72.0",
     "lint-staged": "^16.2.7",
     "ncp": "^2.0.0",
     "p-retry": "^7.1.0",
-    "prettier": "^3.6.2",
+    "prettier": "^3.7.4",
     "prettier-eslint": "^16.4.2",
     "rimraf": "^6.1.2",
     "stream-buffers": "^3.0.3",
     "tempy": "^3.1.0",
     "ts-patch": "^3.3.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.47.0",
+    "typescript-eslint": "^8.48.1",
     "typescript-transform-paths": "^3.5.5",
-    "vite": "^7.2.4",
+    "vite": "^7.2.7",
     "vite-node": "^5.2.0",
     "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^4.0.13"
+    "vitest": "^4.0.15"
   },
   "overrides": {
     "conventional-changelog-conventionalcommits": ">= 9.0.0"
@@ -163,5 +163,5 @@
       ]
     }
   },
-  "packageManager": "pnpm@10.23.0+sha512.21c4e5698002ade97e4efe8b8b4a89a8de3c85a37919f957e7a0f30f38fbc5bbdd05980ffe29179b2fb6e6e691242e098d945d1601772cad0fef5fb6411e2a4b"
+  "packageManager": "pnpm@10.24.0+sha512.01ff8ae71b4419903b65c60fb2dc9d34cf8bb6e06d03bde112ef38f7a34d6904c424ba66bea5cdcf12890230bf39f9580473140ed9c946fef328b6e5238a345a"
 }
