@@ -5,6 +5,7 @@ export * from "src/enums/CalVerToken";
 
 export * from "src/helpers/compareCalVers";
 export * from "src/helpers/formatCalVer";
+export * from "src/helpers/getCalVerTokenValues";
 export * from "src/helpers/getEarliestCalVer";
 export * from "src/helpers/getLatestCalVer";
 export * from "src/helpers/increaseCalVer";
