@@ -7,29 +7,35 @@ import {
 import { SemVerPrereleaseName } from "src/schemas/SemVerPrereleaseName";
 
 describe("SemVerPrereleaseName", () => {
-  it("should return valid semver prerelease name", async () => {
-    for (const { value, isValid } of prereleaseNames) {
-      if (value && isValid) {
-        await expect(
-          SemVerPrereleaseName.parseAsync(value),
-          value,
-        ).resolves.toBe(value);
-      }
-    }
+  const validPrereleaseNames = prereleaseNames.filter(
+    (pr) => pr.isValid && pr.value,
+  );
+  const invalidPrereleaseNames = prereleaseNames.filter(
+    (pr) => !pr.isValid || !pr.value,
+  );
 
+  it("should return valida semver prerelease name with variable", async () => {
     await expect(
       SemVerPrereleaseName.parseAsync(prereleaseNameWithVariable),
     ).resolves.toBe(prereleaseNameWithVariable);
   });
 
-  it("should throw for invalid semver prerelease name", async () => {
-    for (const { value, isValid } of prereleaseNames) {
-      if (!value || !isValid) {
-        await expect(
-          SemVerPrereleaseName.parseAsync(value),
-          value,
-        ).rejects.toThrow(ZodError);
-      }
-    }
-  });
+  it.each(validPrereleaseNames)(
+    "should return valid semver prerelease name: $value",
+    async ({ value }) => {
+      await expect(SemVerPrereleaseName.parseAsync(value), value).resolves.toBe(
+        value,
+      );
+    },
+  );
+
+  it.each(invalidPrereleaseNames)(
+    "should throw for invalid semver prerelease name: $value",
+    async ({ value }) => {
+      await expect(
+        SemVerPrereleaseName.parseAsync(value),
+        value,
+      ).rejects.toThrow(ZodError);
+    },
+  );
 });

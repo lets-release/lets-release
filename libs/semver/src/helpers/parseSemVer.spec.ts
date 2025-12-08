@@ -2,19 +2,20 @@ import { semvers } from "src/__fixtures__/semvers";
 import { parseSemVer } from "src/helpers/parseSemVer";
 
 describe("parseSemVer", () => {
-  it("should parse valid semver", () => {
-    for (const { value, options, parsed } of semvers) {
-      if (parsed) {
-        expect(parseSemVer(value, options), value).toEqual(parsed);
-      }
-    }
-  });
+  const validSemvers = semvers.filter((sv) => sv.parsed);
+  const invalidSemvers = semvers.filter((sv) => !sv.parsed);
 
-  it("should throw error for invalid semver", () => {
-    for (const { value, options, parsed } of semvers) {
-      if (!parsed) {
-        expect(() => parseSemVer(value, options), value).toThrow(TypeError);
-      }
-    }
-  });
+  it.each(validSemvers)(
+    "should parse valid semver: $value",
+    ({ value, options, parsed }) => {
+      expect(parseSemVer(value, options), value).toEqual(parsed);
+    },
+  );
+
+  it.each(invalidSemvers)(
+    "should throw error for invalid semver: $value",
+    ({ value, options }) => {
+      expect(() => parseSemVer(value, options), value).toThrow(TypeError);
+    },
+  );
 });

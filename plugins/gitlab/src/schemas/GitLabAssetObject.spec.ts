@@ -17,11 +17,9 @@ describe("GitLabAssetObject", () => {
   it("should fail validation if neither path nor url is set", () => {
     const result = GitLabAssetObject.safeParse({});
     expect(result.success).toBe(false);
-    if (!result.success) {
-      expect(result.error.issues[0].message).toBe(
-        "Either `path` or `url` must be set.",
-      );
-    }
+    expect(result.error?.issues[0].message).toBe(
+      "Either `path` or `url` must be set.",
+    );
   });
 
   it("should default type to AssetType.Other", () => {

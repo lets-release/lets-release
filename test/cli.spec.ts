@@ -169,34 +169,32 @@ describe("cli", () => {
         }),
       );
 
-      if (mergedChannel === undefined) {
-        const hash = await $({
-          cwd,
-          preferLocal: true,
-        })`git rev-parse HEAD`;
-        const tagHash = await $({
-          cwd,
-          preferLocal: true,
-        })`git rev-list -1 v${version}`;
-        const remoteTagHash = await getRemoteTagHash(
-          cwd,
-          authUrl,
-          `v${version}`,
-        );
-        const note = await getNote(`v${version}`, { cwd });
-
-        expect(tagHash.stdout?.trim(), context).toBe(hash.stdout?.trim());
-        expect(remoteTagHash, context).toBe(hash.stdout?.trim());
-        expect(note, context).toEqual(
-          expect.objectContaining({
-            artifacts: [
-              expect.objectContaining({
-                channels: [channel],
-              }),
-            ],
-          }),
-        );
+      if (mergedChannel !== undefined) {
+        return;
       }
+
+      const hash = await $({
+        cwd,
+        preferLocal: true,
+      })`git rev-parse HEAD`;
+      const tagHash = await $({
+        cwd,
+        preferLocal: true,
+      })`git rev-list -1 v${version}`;
+      const remoteTagHash = await getRemoteTagHash(cwd, authUrl, `v${version}`);
+      const note = await getNote(`v${version}`, { cwd });
+
+      expect(tagHash.stdout?.trim(), context).toBe(hash.stdout?.trim());
+      expect(remoteTagHash, context).toBe(hash.stdout?.trim());
+      expect(note, context).toEqual(
+        expect.objectContaining({
+          artifacts: [
+            expect.objectContaining({
+              channels: [channel],
+            }),
+          ],
+        }),
+      );
     };
 
     /* Initial release */
@@ -354,34 +352,32 @@ describe("cli", () => {
         }),
       );
 
-      if (mergedChannel === undefined) {
-        const hash = await $({
-          cwd,
-          preferLocal: true,
-        })`git rev-parse HEAD`;
-        const tagHash = await $({
-          cwd,
-          preferLocal: true,
-        })`git rev-list -1 v${version}`;
-        const remoteTagHash = await getRemoteTagHash(
-          cwd,
-          authUrl,
-          `v${version}`,
-        );
-        const note = await getNote(`v${version}`, { cwd });
-
-        expect(tagHash.stdout?.trim(), context).toBe(hash.stdout?.trim());
-        expect(remoteTagHash, context).toBe(hash.stdout?.trim());
-        expect(note, context).toEqual(
-          expect.objectContaining({
-            artifacts: [
-              expect.objectContaining({
-                channels: [channel],
-              }),
-            ],
-          }),
-        );
+      if (mergedChannel !== undefined) {
+        return;
       }
+
+      const hash = await $({
+        cwd,
+        preferLocal: true,
+      })`git rev-parse HEAD`;
+      const tagHash = await $({
+        cwd,
+        preferLocal: true,
+      })`git rev-list -1 v${version}`;
+      const remoteTagHash = await getRemoteTagHash(cwd, authUrl, `v${version}`);
+      const note = await getNote(`v${version}`, { cwd });
+
+      expect(tagHash.stdout?.trim(), context).toBe(hash.stdout?.trim());
+      expect(remoteTagHash, context).toBe(hash.stdout?.trim());
+      expect(note, context).toEqual(
+        expect.objectContaining({
+          artifacts: [
+            expect.objectContaining({
+              channels: [channel],
+            }),
+          ],
+        }),
+      );
     };
 
     /* Initial release */

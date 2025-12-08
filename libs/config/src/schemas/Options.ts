@@ -172,11 +172,10 @@ export interface Options extends CliOptions {
 /**
  * Normalized lets-release options in context.
  */
-export interface NormalizedOptions
-  extends PartialRequired<
-    Options,
-    "repositoryUrl" | "tagFormat" | "refSeparator"
-  > {
+export interface NormalizedOptions extends PartialRequired<
+  Options,
+  "repositoryUrl" | "tagFormat" | "refSeparator"
+> {
   bumpMinorVersionCommit: NormalizedBumpVersionCommit;
   bumpMajorVersionCommit: NormalizedBumpVersionCommit;
   releaseCommit?: NormalizedReleaseCommit;

@@ -4,32 +4,32 @@ import { semvers } from "src/__fixtures__/semvers";
 import { isValidPrereleaseSemVer } from "src/helpers/isValidPrereleaseSemVer";
 
 describe("isValidPrereleaseSemVer", () => {
-  it("should return true for valid prerelease semver", () => {
-    for (const { value, options, parsed } of semvers) {
-      if (
-        parsed &&
-        (parsed.prereleaseName || !isNil(parsed.prereleaseNumber))
-      ) {
-        expect(
-          isValidPrereleaseSemVer(value, {
-            ...options,
-            prereleaseName: parsed.prereleaseName,
-          }),
-          value,
-        ).toBe(true);
-      }
-    }
-  });
+  const validPrereleaseSemvers = semvers.filter(
+    ({ parsed }) =>
+      parsed && (parsed.prereleaseName || !isNil(parsed.prereleaseNumber)),
+  );
+  const invalidPrereleaseSemvers = semvers.filter(
+    ({ parsed }) =>
+      !parsed || (!parsed.prereleaseName && isNil(parsed.prereleaseNumber)),
+  );
 
-  it("should return false for invalid prerelease semver", () => {
-    for (const { value, options, parsed } of semvers) {
-      if (parsed) {
-        if (!parsed.prereleaseName && isNil(parsed.prereleaseNumber)) {
-          expect(isValidPrereleaseSemVer(value, options), value).toBe(false);
-        }
-      } else {
-        expect(isValidPrereleaseSemVer(value, options), value).toBe(false);
-      }
-    }
-  });
+  it.each(validPrereleaseSemvers)(
+    "should return true for valid prerelease semver: $value",
+    ({ value, options, parsed }) => {
+      expect(
+        isValidPrereleaseSemVer(value, {
+          ...options,
+          prereleaseName: parsed?.prereleaseName,
+        }),
+        value,
+      ).toBe(true);
+    },
+  );
+
+  it.each(invalidPrereleaseSemvers)(
+    "should return false for invalid prerelease semver: $value",
+    ({ value, options }) => {
+      expect(isValidPrereleaseSemVer(value, options), value).toBe(false);
+    },
+  );
 });

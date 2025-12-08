@@ -144,7 +144,9 @@ export interface PackageOptions {
 /**
  * Normalized package options.
  */
-export interface NormalizedPackageOptions
-  extends PartialRequired<PackageOptions, "plugins"> {
+export interface NormalizedPackageOptions extends PartialRequired<
+  PackageOptions,
+  "plugins"
+> {
   versioning: NormalizedSemVerOptions | NormalizedCalVerOptions;
 }

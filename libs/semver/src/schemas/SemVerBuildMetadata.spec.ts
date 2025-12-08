@@ -4,29 +4,31 @@ import { buildWithVariable, builds } from "src/__fixtures__/builds";
 import { SemVerBuildMetadata } from "src/schemas/SemVerBuildMetadata";
 
 describe("SemVerBuildMetadata", () => {
-  it("should return valid build metadata", async () => {
-    for (const { value, isValid } of builds) {
-      if (isValid) {
-        await expect(
-          SemVerBuildMetadata.parseAsync(value),
-          value,
-        ).resolves.toBe(value);
-      }
-    }
+  const validBuilds = builds.filter((b) => b.isValid);
+  const invalidBuilds = builds.filter((b) => !b.isValid);
 
+  it("should return valida semver build metadata with variable", async () => {
     await expect(
       SemVerBuildMetadata.parseAsync(buildWithVariable),
     ).resolves.toBe(buildWithVariable);
   });
 
-  it("should throw for invalid build metadata", async () => {
-    for (const { value, isValid } of builds) {
-      if (!isValid) {
-        await expect(
-          SemVerBuildMetadata.parseAsync(value),
-          value,
-        ).rejects.toThrow(ZodError);
-      }
-    }
-  });
+  it.each(validBuilds)(
+    "should return valid build metadata: $value",
+    async ({ value }) => {
+      await expect(SemVerBuildMetadata.parseAsync(value), value).resolves.toBe(
+        value,
+      );
+    },
+  );
+
+  it.each(invalidBuilds)(
+    "should throw for invalid build metadata: $value",
+    async ({ value }) => {
+      await expect(
+        SemVerBuildMetadata.parseAsync(value),
+        value,
+      ).rejects.toThrow(ZodError);
+    },
+  );
 });

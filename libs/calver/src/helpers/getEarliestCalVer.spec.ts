@@ -14,48 +14,42 @@ describe("getEarliestCalVer", () => {
   });
 
   it("should get earliest prerelease calver", () => {
-    for (const [
-      format,
-      { min, minPrerelease, minAlpha, minBeta, versions },
-    ] of Object.entries(comparisons)) {
-      if (format === "YYYY.MINOR.MICRO") {
-        const list = shuffle([
-          min,
-          minPrerelease,
-          minAlpha,
-          minBeta,
-          ...versions,
-        ]) as string[];
+    const format = "YYYY.MINOR.MICRO";
+    const { min, minPrerelease, minAlpha, minBeta, versions } =
+      comparisons[format];
 
-        expect(getEarliestCalVer(format, list, { withPrerelease: true })).toBe(
-          minPrerelease,
-        );
-      }
-    }
+    const list = shuffle([
+      min,
+      minPrerelease,
+      minAlpha,
+      minBeta,
+      ...versions,
+    ]) as string[];
+
+    expect(getEarliestCalVer(format, list, { withPrerelease: true })).toBe(
+      minPrerelease,
+    );
   });
 
   it("should get earliest prerelease calver with specific prerelease name", () => {
-    for (const [
-      format,
-      { min, minPrerelease, minAlpha, minBeta, versions },
-    ] of Object.entries(comparisons)) {
-      if (format === "YYYY.MINOR.MICRO") {
-        const list = shuffle([
-          min,
-          minPrerelease,
-          minAlpha,
-          minBeta,
-          ...versions,
-        ]) as string[];
+    const format = "YYYY.MINOR.MICRO";
+    const { min, minPrerelease, minAlpha, minBeta, versions } =
+      comparisons[format];
 
-        expect(
-          getEarliestCalVer(format, list, { prereleaseName: "alpha" }),
-        ).toBe(minAlpha);
+    const list = shuffle([
+      min,
+      minPrerelease,
+      minAlpha,
+      minBeta,
+      ...versions,
+    ]) as string[];
 
-        expect(
-          getEarliestCalVer(format, list, { prereleaseName: "beta" }),
-        ).toBe(minBeta);
-      }
-    }
+    expect(getEarliestCalVer(format, list, { prereleaseName: "alpha" })).toBe(
+      minAlpha,
+    );
+
+    expect(getEarliestCalVer(format, list, { prereleaseName: "beta" })).toBe(
+      minBeta,
+    );
   });
 });
