@@ -1,6 +1,6 @@
 {
   "name": "@lets-release/release-notes-generator",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "description": "Let's Release release-notes-generator plugin",
   "author": "Sean Tu <manlao@gmail.com> (https://github.com/manlao)",
   "license": "MIT",
