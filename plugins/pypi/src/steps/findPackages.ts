@@ -14,9 +14,15 @@ import { PyPIPackageContext } from "src/types/PyPIPackageContext";
 
 const getDependencies = (deps: string[]) =>
   deps.flatMap((dep) => {
-    const name = /^([A-Z0-9]|[A-Z0-9][A-Z0-9._-]*[A-Z0-9])/i.exec(dep)?.[1];
+    const regExp =
+      /^\s*(?<name>[A-Za-z0-9._-]+)(?<extras>\[[^\]]+\])?(?<versions>\s*(?:~=|===|==|!=|<=|>=|<|>)[^\s,;]+(?:\s*,\s*(?:~=|===|==|!=|<=|>=|<|>)[^\s,;]+)*)?(?<url>\s*@\s*[^;]+)?(?<marker>\s*;\s*.*)?\s*$/;
+    const match = regExp.exec(dep);
 
-    return name ? [name] : [];
+    if (match?.groups) {
+      return [match.groups.name];
+    }
+
+    return [];
   });
 
 export const findPackages: StepFunction<

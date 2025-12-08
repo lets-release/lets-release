@@ -127,4 +127,40 @@ describe("findPackages", () => {
     expect(result).toEqual([]);
     expect(warn).not.toHaveBeenCalled();
   });
+
+  it("should handle invalid dependency format", async () => {
+    vi.mocked(globSync).mockReturnValue(["packages/pkg1", "packages/pkg2"]);
+    vi.mocked(getPyPIPackageContext)
+      .mockResolvedValueOnce({
+        pkg: { project: { name: "pkg1" } },
+      } as PyPIPackageContext)
+      .mockResolvedValueOnce({
+        pkg: { project: { name: "pkg2" } },
+      } as PyPIPackageContext);
+
+    getPluginPackageContext.mockReturnValue({
+      pkg: {
+        project: {
+          dependencies: ["valid-dep", "!!!invalid dependency format!!!"],
+        },
+      },
+    });
+
+    const result = await findPackages(context, options);
+
+    expect(result).toEqual([
+      {
+        path: path.resolve("/repo", "packages/pkg1"),
+        type: PYPI_PACKAGE_TYPE,
+        name: "pkg1",
+        dependencies: [],
+      },
+      {
+        path: path.resolve("/repo", "packages/pkg2"),
+        type: PYPI_PACKAGE_TYPE,
+        name: "pkg2",
+        dependencies: [],
+      },
+    ]);
+  });
 });
