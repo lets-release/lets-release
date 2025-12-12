@@ -1,4 +1,5 @@
 export * from "src/constants/DEFAULT_VERSIONING_PRERELEASE_OPTIONS";
+export * from "src/constants/REGULAR_EXPRESSIONS";
 
 export * from "src/enums/VersioningScheme";
 
