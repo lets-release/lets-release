@@ -1,11 +1,10 @@
 import { escapeRegExp } from "lodash-es";
 
-import { REGULAR_EXPRESSIONS } from "src/constants/REGULAR_EXPRESSIONS";
+import { SEPARATOR } from "src/constants/SEPARATOR";
 import { CalVerToken } from "src/enums/CalVerToken";
 import { CalVerFormatTokens } from "src/types/CalVerFormatTokens";
 import { ParsedCalVerFormat } from "src/types/ParsedCalVerFormat";
 
-const { SEPARATOR } = REGULAR_EXPRESSIONS;
 const year = `(?<year>${CalVerToken.YYYY}|${CalVerToken.YY}|${CalVerToken.Y})`;
 const week = `${SEPARATOR}?(?<week>${CalVerToken.WW}|(?<=${SEPARATOR})${CalVerToken.W})`;
 const month = `${SEPARATOR}?(?<month>${CalVerToken.MM}|(?<=${SEPARATOR})${CalVerToken.M})`;
@@ -33,7 +32,7 @@ export function parseCalVerFormat(format: string): ParsedCalVerFormat {
   const match = trimmed.match(formatRegex);
 
   if (!match) {
-    throw new TypeError(`Invalid format: ${trimmed}`);
+    throw new TypeError(`Invalid format: ${format}`);
   }
 
   const tokens = match.groups as unknown as CalVerFormatTokens;
@@ -48,7 +47,7 @@ export function parseCalVerFormat(format: string): ParsedCalVerFormat {
         `(?<${key}>${tokenRegexes[token]}${key === "year" && new RegExp(`^${token}(?=[0-9a-z])`, "i").test(trimmed) ? "?" : ""})`,
       );
     },
-    escapeRegExp(format),
+    escapeRegExp(trimmed),
   );
 
   return {

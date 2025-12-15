@@ -1,13 +1,12 @@
 import { parseCalVer } from "src/helpers/parseCalVer";
-import { CalVerPrereleaseOptions } from "src/schemas/CalVerPrereleaseOptions";
 
 export function isValidCalVer(
   format: string,
   version: string,
-  options?: CalVerPrereleaseOptions,
+  prereleaseName?: string,
 ): boolean {
   try {
-    parseCalVer(format, version, options);
+    parseCalVer(format, version, prereleaseName);
 
     return true;
   } catch {

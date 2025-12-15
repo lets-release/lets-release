@@ -1,3 +1,5 @@
+import { SEPARATOR } from "src/constants/SEPARATOR";
+import { CalVerToken } from "src/enums/CalVerToken";
 import { isValidCalVerXRange } from "src/helpers/isValidCalVerXRange";
 
 export function isValidCalVerMajorXRange(format: string, range: string) {
@@ -5,16 +7,27 @@ export function isValidCalVerMajorXRange(format: string, range: string) {
     return false;
   }
 
-  if (!/[._-]minor[._-]micro$/i.test(format)) {
+  const trimmedFormat = format.trim().toUpperCase();
+
+  if (
+    !new RegExp(
+      `${SEPARATOR}${CalVerToken.MINOR}${SEPARATOR}${CalVerToken.MICRO}$`,
+    ).test(trimmedFormat)
+  ) {
     return true;
   }
 
-  const tokens = format.split(/[._-]/);
-  const values = range.split(/[._-]/);
+  const trammedRange = range.trim().toLowerCase();
+
+  const separatorRegExp = new RegExp(SEPARATOR);
+  const tokens = trimmedFormat.split(separatorRegExp);
+  const values = trammedRange.split(separatorRegExp);
 
   if (tokens.length === values.length) {
-    return /^(\d+[._-])+x[._-]x$/i.test(range);
+    return new RegExp(String.raw`^(\d+${SEPARATOR})+x${SEPARATOR}x$`).test(
+      trammedRange,
+    );
   }
 
-  return /^(\d+[._-])+x$/i.test(range);
+  return new RegExp(String.raw`^(\d+${SEPARATOR})+x$`).test(trammedRange);
 }

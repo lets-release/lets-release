@@ -10,8 +10,11 @@ describe("parseCalVer", () => {
 
       it.each(validCalvers)(
         "should parse valid calver: $value",
-        ({ value, options, parsed }) => {
-          expect(parseCalVer(format, value, options), value).toEqual({
+        ({ value, parsed }) => {
+          expect(
+            parseCalVer(format, value, parsed?.prereleaseName),
+            value,
+          ).toEqual({
             ...parsed,
             tokens,
             tokenValues,
@@ -21,18 +24,13 @@ describe("parseCalVer", () => {
 
       it.each(invalidCalvers)(
         "should throw error for invalid calver: $value",
-        ({ value, options }) => {
-          expect(() => parseCalVer(format, value, options), value).toThrow(
-            TypeError,
-          );
+        ({ value, parsed }) => {
+          expect(
+            () => parseCalVer(format, value, parsed?.prereleaseName),
+            value,
+          ).toThrow(TypeError);
         },
       );
     },
   );
-
-  it("should not reset prefix when options.prefix is empty string", () => {
-    const result = parseCalVer("YYYY", "2001zeta", { prefix: "" });
-    expect(result.prereleaseOptions.prefix).toBe("");
-    expect(result.prereleaseName).toBe("zeta");
-  });
 });

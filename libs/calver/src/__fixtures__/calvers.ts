@@ -1,6 +1,6 @@
+import { VersioningPrereleaseOptions } from "@lets-release/versioning";
+
 import { validFormats } from "src/__fixtures__/formats";
-import { DEFAULT_CALVER_PRERELEASE_OPTIONS } from "src/constants/DEFAULT_CALVER_PRERELEASE_OPTIONS";
-import { CalVerPrereleaseOptions } from "src/schemas/CalVerPrereleaseOptions";
 import { CalVerFormatTokens } from "src/types/CalVerFormatTokens";
 import { CalVerTokenValues } from "src/types/CalVerTokenValues";
 import { ParsedCalVer } from "src/types/ParsedCalVer";
@@ -18,9 +18,8 @@ const minor = 1;
 const looseMinor = "01";
 const micro = 0;
 const looseMicro = "0";
-const build = "build-metadata_test.123";
+const build = "build-metadata-test.123";
 const parsed = {
-  prereleaseOptions: DEFAULT_CALVER_PRERELEASE_OPTIONS,
   build: undefined,
 };
 
@@ -32,7 +31,7 @@ export const calvers: Record<
     values: {
       value: string;
       formatted?: string;
-      options?: CalVerPrereleaseOptions;
+      options?: VersioningPrereleaseOptions;
       parsed?: Omit<ParsedCalVer, "tokens" | "tokenValues">;
     }[];
   }
@@ -60,59 +59,31 @@ export const calvers: Record<
       {
         value: `${fullYear}+${build}`,
         parsed: {
-          prereleaseOptions: DEFAULT_CALVER_PRERELEASE_OPTIONS,
           build,
         },
       },
       {
         value: `${fullYear}-0+build`,
         parsed: {
-          prereleaseName: "",
+          prereleaseName: undefined,
           prereleaseNumber: 0,
-          prereleaseOptions: {
-            ...DEFAULT_CALVER_PRERELEASE_OPTIONS,
-            initialNumber: 0,
-            ignoreZeroNumber: false,
-          },
           build: "build",
         },
       },
       {
         value: `${fullYear}-1`,
         parsed: {
-          prereleaseName: "",
+          prereleaseName: undefined,
           prereleaseNumber: 1,
-          prereleaseOptions: {
-            ...DEFAULT_CALVER_PRERELEASE_OPTIONS,
-            initialNumber: 1,
-            ignoreZeroNumber: false,
-          },
           build: undefined,
         },
       },
       {
         value: `${fullYear}-1.0`,
+        options: { initialNumber: 0 },
         parsed: {
           prereleaseName: "1",
           prereleaseNumber: 0,
-          prereleaseOptions: {
-            ...DEFAULT_CALVER_PRERELEASE_OPTIONS,
-            initialNumber: 0,
-            ignoreZeroNumber: false,
-          },
-          build: undefined,
-        },
-      },
-      {
-        value: `${fullYear}-1.0`,
-        parsed: {
-          prereleaseName: "1",
-          prereleaseNumber: 0,
-          prereleaseOptions: {
-            ...DEFAULT_CALVER_PRERELEASE_OPTIONS,
-            initialNumber: 0,
-            ignoreZeroNumber: false,
-          },
           build: undefined,
         },
       },
@@ -121,11 +92,6 @@ export const calvers: Record<
         parsed: {
           prereleaseName: "1",
           prereleaseNumber: 1,
-          prereleaseOptions: {
-            ...DEFAULT_CALVER_PRERELEASE_OPTIONS,
-            initialNumber: 1,
-            ignoreZeroNumber: false,
-          },
           build: undefined,
         },
       },
@@ -135,16 +101,11 @@ export const calvers: Record<
         parsed: {
           prereleaseName: "alpha",
           prereleaseNumber: undefined,
-          prereleaseOptions: {
-            ...DEFAULT_CALVER_PRERELEASE_OPTIONS,
-            initialNumber: 0,
-            ignoreZeroNumber: true,
-          },
           build: undefined,
         },
       },
       {
-        value: `${fullYear}.alpha`,
+        value: `${fullYear}-alpha`,
         options: {
           initialNumber: 0,
           ignoreZeroNumber: true,
@@ -152,26 +113,15 @@ export const calvers: Record<
         parsed: {
           prereleaseName: "alpha",
           prereleaseNumber: undefined,
-          prereleaseOptions: {
-            ...DEFAULT_CALVER_PRERELEASE_OPTIONS,
-            initialNumber: 0,
-            ignoreZeroNumber: true,
-            prefix: ".",
-          },
           build: undefined,
         },
       },
       {
-        value: `${fullYear}_alpha.0`,
+        value: `${fullYear}-alpha.0`,
+        options: { initialNumber: 0 },
         parsed: {
           prereleaseName: "alpha",
           prereleaseNumber: 0,
-          prereleaseOptions: {
-            ...DEFAULT_CALVER_PRERELEASE_OPTIONS,
-            initialNumber: 0,
-            ignoreZeroNumber: false,
-            prefix: "_",
-          },
           build: undefined,
         },
       },
@@ -180,43 +130,29 @@ export const calvers: Record<
         parsed: {
           prereleaseName: "alpha",
           prereleaseNumber: 1,
-          prereleaseOptions: {
-            ...DEFAULT_CALVER_PRERELEASE_OPTIONS,
-            initialNumber: 1,
-            ignoreZeroNumber: true,
-          },
           build: undefined,
         },
       },
       {
         value: `${fullYear}-alpha0`,
+        options: { initialNumber: 0, ignoreZeroNumber: true },
         parsed: {
-          prereleaseName: "alpha",
-          prereleaseNumber: 0,
-          prereleaseOptions: {
-            ...DEFAULT_CALVER_PRERELEASE_OPTIONS,
-            suffix: "",
-            initialNumber: 0,
-            ignoreZeroNumber: false,
-          },
+          prereleaseName: "alpha0",
+          prereleaseNumber: undefined,
           build: undefined,
         },
       },
       {
         value: `${fullYear}-alpha1`,
         formatted: `${fullYear}-alpha1.1`,
-        options: {
-          suffix: ".",
-        },
         parsed: {
           prereleaseName: "alpha1",
           prereleaseNumber: undefined,
-          prereleaseOptions: DEFAULT_CALVER_PRERELEASE_OPTIONS,
           build: undefined,
         },
       },
       {
-        value: `${fullYear}alpha`,
+        value: `${fullYear}-alpha`,
         options: {
           initialNumber: 0,
           ignoreZeroNumber: true,
@@ -224,31 +160,18 @@ export const calvers: Record<
         parsed: {
           prereleaseName: "alpha",
           prereleaseNumber: undefined,
-          prereleaseOptions: {
-            ...DEFAULT_CALVER_PRERELEASE_OPTIONS,
-            prefix: "",
-            initialNumber: 0,
-            ignoreZeroNumber: true,
-          },
           build: undefined,
         },
       },
       {
-        value: `${fullYear}alpha1`,
+        value: `${fullYear}-alpha1`,
         options: {
-          suffix: ".",
           initialNumber: 0,
           ignoreZeroNumber: true,
         },
         parsed: {
           prereleaseName: "alpha1",
           prereleaseNumber: undefined,
-          prereleaseOptions: {
-            ...DEFAULT_CALVER_PRERELEASE_OPTIONS,
-            prefix: "",
-            initialNumber: 0,
-            ignoreZeroNumber: true,
-          },
           build: undefined,
         },
       },

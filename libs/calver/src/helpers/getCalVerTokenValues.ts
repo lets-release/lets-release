@@ -1,3 +1,4 @@
+import { TZDateMini } from "@date-fns/tz";
 import { formatDate } from "date-fns";
 
 import { CalVerToken } from "src/enums/CalVerToken";
@@ -6,19 +7,20 @@ import { CalVerTokenValues } from "src/types/CalVerTokenValues";
 
 export function getCalVerTokenValues(
   format: string,
-  date: Date = new Date(),
+  date: string = formatDate(TZDateMini.tz("Etc/UTC"), "yyyy-MM-dd"),
 ): CalVerTokenValues {
   const { tokens } = parseCalVerFormat(format);
+  const dateInTZ = new TZDateMini(date, "Etc/UTC");
 
   return {
     year:
       (tokens.week
-        ? Number(formatDate(date, "R"))
-        : Number(formatDate(date, "y"))) -
+        ? Number(formatDate(dateInTZ, "R"))
+        : Number(formatDate(dateInTZ, "y"))) -
       (tokens.year === CalVerToken.YYYY ? 0 : 2000),
-    week: Number(formatDate(date, "I")),
-    month: Number(formatDate(date, "M")),
-    day: Number(formatDate(date, "d")),
+    week: Number(formatDate(dateInTZ, "I")),
+    month: Number(formatDate(dateInTZ, "M")),
+    day: Number(formatDate(dateInTZ, "d")),
     minor: 0,
     micro: 0,
   };

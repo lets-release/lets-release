@@ -29,6 +29,7 @@
     "build": "rimraf ./dist && tspc --build tsconfig.build.json"
   },
   "dependencies": {
+    "@date-fns/tz": "^1.4.1",
     "@lets-release/versioning": "workspace:^",
     "date-fns": "^4.1.0",
     "lodash-es": "^4.17.21",

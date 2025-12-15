@@ -16,12 +16,9 @@ describe("isValidPrereleaseCalVer", () => {
 
     it.each(validPrereleaseCalvers)(
       "should return true for valid prerelease calver: $value",
-      ({ value, options, parsed }) => {
+      ({ value, parsed }) => {
         expect(
-          isValidPrereleaseCalVer(format, value, {
-            ...options,
-            prereleaseName: parsed?.prereleaseName,
-          }),
+          isValidPrereleaseCalVer(format, value, parsed?.prereleaseName),
           value,
         ).toBe(true);
       },
@@ -29,10 +26,11 @@ describe("isValidPrereleaseCalVer", () => {
 
     it.each(invalidPrereleaseCalvers)(
       "should return false for invalid prerelease calver: $value",
-      ({ value, options }) => {
-        expect(isValidPrereleaseCalVer(format, value, options), value).toBe(
-          false,
-        );
+      ({ value, parsed }) => {
+        expect(
+          isValidPrereleaseCalVer(format, value, parsed?.prereleaseName),
+          value,
+        ).toBe(false);
       },
     );
   });

@@ -1,6 +1,7 @@
-import { DEFAULT_CALVER_PRERELEASE_OPTIONS } from "src/constants/DEFAULT_CALVER_PRERELEASE_OPTIONS";
+import { SEPARATOR } from "src/constants/SEPARATOR";
+import { CalVerToken } from "src/enums/CalVerToken";
 import { formatCalVer } from "src/helpers/formatCalVer";
-import { increaseCalVer } from "src/helpers/increaseCalVer";
+import { getNextCalVerMajorVersion } from "src/helpers/getNextCalVerMajorVersion";
 import { isValidCalVerXRange } from "src/helpers/isValidCalVerXRange";
 import { parseCalVer } from "src/helpers/parseCalVer";
 import { ParsedCalVerXRange } from "src/types/ParsedCalVerXRange";
@@ -13,18 +14,31 @@ export function parseCalVerXRange(
     throw new TypeError(`Invalid CalVer X range ${range} of format ${format}`);
   }
 
-  const hasMinorToken = /[._-]minor[._-]micro$/i.test(format);
-  const tokens = format.split(/[._-]/);
-  const values = range.split(/[._-]/);
+  const trimmedFormat = format.trim().toUpperCase();
+  const trimmedRange = range.trim().toLowerCase();
+  const hasMinorToken = new RegExp(
+    `${SEPARATOR}${CalVerToken.MINOR}${SEPARATOR}${CalVerToken.MICRO}$`,
+  ).test(trimmedFormat);
+  const separatorRegExp = new RegExp(SEPARATOR);
+  const tokens = trimmedFormat.split(separatorRegExp);
+  const values = trimmedRange.split(separatorRegExp);
   const isFullRange = tokens.length === values.length;
-  const majorFormat = format.replace(/([._-]minor)?[._-]micro$/i, "");
+  const majorFormat = trimmedFormat.replace(
+    new RegExp(
+      `(${SEPARATOR}${CalVerToken.MINOR})?${SEPARATOR}${CalVerToken.MICRO}$`,
+    ),
+    "",
+  );
   const major =
     !hasMinorToken || !isFullRange
-      ? range.replace(/[._-]x$/i, "")
-      : range.replace(/(([._-]x){2}|[._-]\d+[._-]x)$/i, "");
-  const nextMajor = increaseCalVer("major", majorFormat, major, {
-    majorIncrement: 1,
-  });
+      ? trimmedRange.replace(new RegExp(`${SEPARATOR}x$`), "")
+      : trimmedRange.replace(
+          new RegExp(
+            String.raw`((${SEPARATOR}x){2}|${SEPARATOR}\d+${SEPARATOR}x)$`,
+          ),
+          "",
+        );
+  const nextMajor = getNextCalVerMajorVersion(majorFormat, major);
   const { tokenValues: majorTokenValues } = parseCalVer(majorFormat, major);
   const { tokenValues: nextMajorTokenValues } = parseCalVer(
     majorFormat,
@@ -46,7 +60,6 @@ export function parseCalVerXRange(
             minor: minor === "*" ? 0 : minor,
             micro: 0,
           },
-          prereleaseOptions: DEFAULT_CALVER_PRERELEASE_OPTIONS,
         }),
         max: formatCalVer(format, {
           tokenValues: {
@@ -54,7 +67,6 @@ export function parseCalVerXRange(
             minor: minor === "*" ? 0 : minor + 1,
             micro: 0,
           },
-          prereleaseOptions: DEFAULT_CALVER_PRERELEASE_OPTIONS,
         }),
       };
     }
@@ -68,7 +80,6 @@ export function parseCalVerXRange(
           minor: 0,
           micro: 0,
         },
-        prereleaseOptions: DEFAULT_CALVER_PRERELEASE_OPTIONS,
       }),
       max: formatCalVer(format, {
         tokenValues: {
@@ -76,7 +87,6 @@ export function parseCalVerXRange(
           minor: 0,
           micro: 0,
         },
-        prereleaseOptions: DEFAULT_CALVER_PRERELEASE_OPTIONS,
       }),
     };
   }
@@ -89,14 +99,12 @@ export function parseCalVerXRange(
         ...majorTokenValues,
         micro: 0,
       },
-      prereleaseOptions: DEFAULT_CALVER_PRERELEASE_OPTIONS,
     }),
     max: formatCalVer(format, {
       tokenValues: {
         ...nextMajorTokenValues,
         micro: 0,
       },
-      prereleaseOptions: DEFAULT_CALVER_PRERELEASE_OPTIONS,
     }),
   };
 }

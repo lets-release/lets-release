@@ -3,8 +3,7 @@ import { getCalVerTokenValues } from "src/helpers/getCalVerTokenValues";
 describe("getCalVerTokenValues", () => {
   describe("calendar year formats", () => {
     it("should return correct values for YYYY format", () => {
-      const date = new Date("2025-03-15T10:30:00Z");
-      const result = getCalVerTokenValues("YYYY", date);
+      const result = getCalVerTokenValues("YYYY", "2025-03-15");
 
       expect(result).toEqual({
         year: 2025,
@@ -17,8 +16,7 @@ describe("getCalVerTokenValues", () => {
     });
 
     it("should return correct values for YY format", () => {
-      const date = new Date("2025-03-15T10:30:00Z");
-      const result = getCalVerTokenValues("0Y", date);
+      const result = getCalVerTokenValues("0Y", "2025-03-15");
 
       expect(result).toEqual({
         year: 25,
@@ -31,8 +29,7 @@ describe("getCalVerTokenValues", () => {
     });
 
     it("should return correct values for Y format", () => {
-      const date = new Date("2025-03-15T10:30:00Z");
-      const result = getCalVerTokenValues("YY", date);
+      const result = getCalVerTokenValues("YY", "2025-03-15");
 
       expect(result).toEqual({
         year: 25,
@@ -45,8 +42,7 @@ describe("getCalVerTokenValues", () => {
     });
 
     it("should return correct values for YYYY.MM format", () => {
-      const date = new Date("2025-03-15T10:30:00Z");
-      const result = getCalVerTokenValues("YYYY.0M", date);
+      const result = getCalVerTokenValues("YYYY.0M", "2025-03-15");
 
       expect(result).toEqual({
         year: 2025,
@@ -59,8 +55,7 @@ describe("getCalVerTokenValues", () => {
     });
 
     it("should return correct values for YYYY.MM.DD format", () => {
-      const date = new Date("2025-03-15T10:30:00Z");
-      const result = getCalVerTokenValues("YYYY.0M.0D", date);
+      const result = getCalVerTokenValues("YYYY.0M.0D", "2025-03-15");
 
       expect(result).toEqual({
         year: 2025,
@@ -76,8 +71,7 @@ describe("getCalVerTokenValues", () => {
   describe("ISO week numbering year formats", () => {
     it("should return correct ISO week year for YYYY.WW format", () => {
       // Date in week 1 of 2025 (ISO week year 2025)
-      const date = new Date("2025-01-06T10:30:00Z");
-      const result = getCalVerTokenValues("YYYY.0W", date);
+      const result = getCalVerTokenValues("YYYY.0W", "2025-01-06");
 
       expect(result).toEqual({
         year: 2025,
@@ -90,8 +84,7 @@ describe("getCalVerTokenValues", () => {
     });
 
     it("should return correct ISO week year for YY.WW format", () => {
-      const date = new Date("2025-01-06T10:30:00Z");
-      const result = getCalVerTokenValues("0Y.0W", date);
+      const result = getCalVerTokenValues("0Y.0W", "2025-01-06");
 
       expect(result).toEqual({
         year: 25,
@@ -104,8 +97,7 @@ describe("getCalVerTokenValues", () => {
     });
 
     it("should return correct ISO week year for Y.WW format", () => {
-      const date = new Date("2025-01-06T10:30:00Z");
-      const result = getCalVerTokenValues("YY.0W", date);
+      const result = getCalVerTokenValues("YY.0W", "2025-01-06");
 
       expect(result).toEqual({
         year: 25,
@@ -119,8 +111,7 @@ describe("getCalVerTokenValues", () => {
 
     it("should handle edge case where calendar year differs from ISO week year", () => {
       // December 29, 2025 is in ISO week 1 of 2026
-      const date = new Date("2025-12-29T10:30:00Z");
-      const result = getCalVerTokenValues("YYYY.0W", date);
+      const result = getCalVerTokenValues("YYYY.0W", "2025-12-29");
 
       // ISO week numbering year should be 2026
       expect(result.year).toBe(2026);
@@ -129,8 +120,7 @@ describe("getCalVerTokenValues", () => {
 
     it("should handle early January dates in ISO week year", () => {
       // January 1, 2024 is in ISO week 1 of 2024
-      const date = new Date("2024-01-01T10:30:00Z");
-      const result = getCalVerTokenValues("YYYY.0W", date);
+      const result = getCalVerTokenValues("YYYY.0W", "2024-01-01");
 
       // ISO week numbering year should be 2024
       expect(result.year).toBe(2024);
@@ -161,16 +151,14 @@ describe("getCalVerTokenValues", () => {
 
   describe("various formats", () => {
     it("should handle format with single digit month (M)", () => {
-      const date = new Date("2025-09-05T10:30:00Z");
-      const result = getCalVerTokenValues("YYYY.MM", date);
+      const result = getCalVerTokenValues("YYYY.MM", "2025-09-05");
 
       expect(result.year).toBe(2025);
       expect(result.month).toBe(9);
     });
 
     it("should handle format with single digit day (D)", () => {
-      const date = new Date("2025-09-05T10:30:00Z");
-      const result = getCalVerTokenValues("YYYY.0M.DD", date);
+      const result = getCalVerTokenValues("YYYY.0M.DD", "2025-09-05");
 
       expect(result.year).toBe(2025);
       expect(result.month).toBe(9);
@@ -178,8 +166,7 @@ describe("getCalVerTokenValues", () => {
     });
 
     it("should handle format with single digit week (W)", () => {
-      const date = new Date("2025-02-03T10:30:00Z");
-      const result = getCalVerTokenValues("YYYY.WW", date);
+      const result = getCalVerTokenValues("YYYY.WW", "2025-02-03");
 
       expect(result.year).toBe(2025);
       expect(result.week).toBe(6);
@@ -188,8 +175,7 @@ describe("getCalVerTokenValues", () => {
 
   describe("edge cases", () => {
     it("should handle leap year date", () => {
-      const date = new Date("2024-02-29T10:30:00Z");
-      const result = getCalVerTokenValues("YYYY.0M.0D", date);
+      const result = getCalVerTokenValues("YYYY.0M.0D", "2024-02-29");
 
       expect(result).toEqual({
         year: 2024,
@@ -202,8 +188,7 @@ describe("getCalVerTokenValues", () => {
     });
 
     it("should handle year 2000", () => {
-      const date = new Date("2000-01-01T10:30:00Z");
-      const result = getCalVerTokenValues("YYYY.0M.0D", date);
+      const result = getCalVerTokenValues("YYYY.0M.0D", "2000-01-01");
 
       expect(result.year).toBe(2000);
       expect(result.month).toBe(1);
@@ -211,8 +196,7 @@ describe("getCalVerTokenValues", () => {
     });
 
     it("should always return minor and micro as 0", () => {
-      const date = new Date("2025-12-31T23:59:59Z");
-      const result = getCalVerTokenValues("YYYY.0M.0D", date);
+      const result = getCalVerTokenValues("YYYY.0M.0D", "2025-12-31");
 
       expect(result.minor).toBe(0);
       expect(result.micro).toBe(0);
@@ -221,8 +205,7 @@ describe("getCalVerTokenValues", () => {
 
   describe("different separators", () => {
     it("should handle hyphen separator", () => {
-      const date = new Date("2025-03-15T10:30:00Z");
-      const result = getCalVerTokenValues("YYYY-0M-0D", date);
+      const result = getCalVerTokenValues("YYYY-0M-0D", "2025-03-15");
 
       expect(result.year).toBe(2025);
       expect(result.month).toBe(3);

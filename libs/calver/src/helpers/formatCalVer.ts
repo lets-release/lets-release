@@ -1,7 +1,11 @@
 import { isNil } from "lodash-es";
 
+import {
+  DEFAULT_VERSIONING_PRERELEASE_OPTIONS,
+  VersioningPrereleaseOptions,
+} from "@lets-release/versioning";
+
 import { parseCalVerFormat } from "src/helpers/parseCalVerFormat";
-import { CalVerPrereleaseOptions } from "src/schemas/CalVerPrereleaseOptions";
 import { CalVerTokenValues } from "src/types/CalVerTokenValues";
 import { ParsedCalVer } from "src/types/ParsedCalVer";
 
@@ -11,10 +15,9 @@ export function formatCalVer(
     tokenValues,
     prereleaseName,
     prereleaseNumber,
-    prereleaseOptions,
     build,
   }: Omit<ParsedCalVer, "tokens">,
-  options: CalVerPrereleaseOptions = {}, // not forced
+  options: VersioningPrereleaseOptions = DEFAULT_VERSIONING_PRERELEASE_OPTIONS,
 ) {
   const { tokens } = parseCalVerFormat(format);
   const main = (Object.entries(tokens) as [string, string][])
@@ -32,29 +35,17 @@ export function formatCalVer(
         token,
         token.startsWith("0") ? valueString.padStart(2, "0") : valueString,
       );
-    }, format);
+    }, format.trim().toUpperCase());
 
   const buildMetadata = build ? `+${build}` : "";
 
   if (prereleaseName) {
-    const mergeOptions = {
-      ...prereleaseOptions,
-      ...options,
-    };
-    const prefix =
-      mergeOptions.prefix === "" && /^\d/.test(prereleaseName)
-        ? "-"
-        : mergeOptions.prefix;
-    const suffix =
-      mergeOptions.suffix === "" && /\d$/.test(prereleaseName)
-        ? "."
-        : mergeOptions.suffix;
     const number = isNil(prereleaseNumber)
-      ? mergeOptions.initialNumber
+      ? options.initialNumber
       : prereleaseNumber;
-    const prerelease = `${prereleaseName}${number === 0 && mergeOptions.ignoreZeroNumber ? "" : `${suffix}${number}`}`;
+    const prerelease = `${prereleaseName}${number === 0 && options.ignoreZeroNumber ? "" : `.${number}`}`;
 
-    return `${main}${prefix}${prerelease}${buildMetadata}`;
+    return `${main}-${prerelease}${buildMetadata}`;
   } else if (isNil(prereleaseNumber)) {
     return `${main}${buildMetadata}`;
   } else {

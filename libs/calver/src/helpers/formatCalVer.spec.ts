@@ -1,6 +1,7 @@
+import { VersioningPrereleaseOptions } from "@lets-release/versioning";
+
 import { calvers } from "src/__fixtures__/calvers";
 import { formatCalVer } from "src/helpers/formatCalVer";
-import { CalVerPrereleaseOptions } from "src/schemas/CalVerPrereleaseOptions";
 import { ParsedCalVer } from "src/types/ParsedCalVer";
 
 describe("formatCalVer", () => {
@@ -13,7 +14,7 @@ describe("formatCalVer", () => {
         ): x is {
           value: string;
           formatted?: string;
-          options?: CalVerPrereleaseOptions;
+          options?: VersioningPrereleaseOptions;
           parsed: Omit<ParsedCalVer, "tokens" | "tokenValues">;
         } => !!x.parsed,
       );
@@ -49,7 +50,7 @@ describe("formatCalVer", () => {
                 ...parsed,
                 tokenValues,
               },
-              { ...options, prefix: "" },
+              options,
             ),
             `${format} ${value}`,
           ).toBe(formatted ?? value);
@@ -68,7 +69,7 @@ describe("formatCalVer", () => {
         ): x is {
           value: string;
           formatted?: string;
-          options?: CalVerPrereleaseOptions;
+          options?: VersioningPrereleaseOptions;
           parsed: Omit<ParsedCalVer, "tokens" | "tokenValues">;
         } => !!x.parsed,
       ),

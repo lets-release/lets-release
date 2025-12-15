@@ -19,8 +19,6 @@ describe("CalVerOptions", () => {
       prerelease: {
         initialNumber: 1,
         ignoreZeroNumber: true,
-        prefix: "-",
-        suffix: ".",
       },
     });
   });

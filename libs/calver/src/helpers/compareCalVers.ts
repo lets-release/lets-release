@@ -6,7 +6,6 @@ import {
 } from "@lets-release/versioning";
 
 import { parseCalVer } from "src/helpers/parseCalVer";
-import { CalVerPrereleaseOptions } from "src/schemas/CalVerPrereleaseOptions";
 
 /**
  * Compares two versions excluding build identifiers (the bit after `+` in the calendar version string).
@@ -18,13 +17,8 @@ import { CalVerPrereleaseOptions } from "src/schemas/CalVerPrereleaseOptions";
  * - `1` if `v1` is greater
  * - `-1` if `v2` is greater.
  */
-export function compareCalVers(
-  format: string,
-  a: string,
-  b: string,
-  options?: CalVerPrereleaseOptions,
-) {
-  const aCalVer = parseCalVer(format, a, options);
+export function compareCalVers(format: string, a: string, b: string) {
+  const aCalVer = parseCalVer(format, a);
   const aTokens = [
     aCalVer.tokenValues.year,
     aCalVer.tokenValues.week,
@@ -33,7 +27,7 @@ export function compareCalVers(
     aCalVer.tokenValues.minor,
     aCalVer.tokenValues.micro,
   ].filter((value) => !isNil(value));
-  const bCalVer = parseCalVer(format, b, options);
+  const bCalVer = parseCalVer(format, b);
   const bTokens = [
     bCalVer.tokenValues.year,
     bCalVer.tokenValues.week,
