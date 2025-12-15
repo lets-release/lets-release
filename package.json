@@ -62,7 +62,7 @@
     "signale": "^1.4.0",
     "stream-to-array": "^2.3.0",
     "strip-ansi": "^7.1.2",
-    "zod": "^4.1.13"
+    "zod": "^4.2.0"
   },
   "devDependencies": {
     "@aliser/ts-transformer-append-js-extension": "^1.0.7",
@@ -110,7 +110,7 @@
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.49.0",
     "typescript-transform-paths": "^3.5.5",
-    "vite": "^7.2.7",
+    "vite": "^7.3.0",
     "vite-node": "^5.2.0",
     "vite-tsconfig-paths": "^6.0.1",
     "vitest": "^4.0.15"
