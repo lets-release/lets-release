@@ -1,0 +1,1 @@
+{"artifacts":[{"name":"npm package","url":"https://www.npmjs.com/package/@lets-release/conventional-changelog/v/7.0.0","pluginName":"@lets-release/npm","channels":[null]},{"name":"GitHub release","url":"https://github.com/lets-release/lets-release/releases/tag/%40lets-release/conventional-changelog/v7.0.0","id":270280878,"pluginName":"@lets-release/github","channels":[null]}]}
