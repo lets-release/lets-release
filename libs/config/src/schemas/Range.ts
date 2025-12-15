@@ -7,7 +7,7 @@ import { NonEmptyString } from "@lets-release/versioning";
  * or `N.x` (`N` is a number).
  *
  * For [calendar versions][], the `range` must be formatted like
- * `(\\d+[._-])+(x[._-])?x` and satisfied the package's `versioning.format`.
+ * `(\d+[._-])+(x[._-])?x` and satisfied the package's `versioning.format`.
  *
  * [semantic versions]: https://semver.org/
  * [calendar versions]: https://calver.org/

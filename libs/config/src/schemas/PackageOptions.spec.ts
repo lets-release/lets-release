@@ -1,4 +1,4 @@
-import { DEFAULT_SEMVER_PRERELEASE_OPTIONS } from "@lets-release/semver";
+import { DEFAULT_VERSIONING_PRERELEASE_OPTIONS } from "@lets-release/versioning";
 
 import { PackageOptions } from "src/schemas/PackageOptions";
 
@@ -13,7 +13,7 @@ describe("PackageOptions", () => {
       versioning: {
         scheme: "SemVer",
         initialVersion: "1.0.0",
-        prerelease: DEFAULT_SEMVER_PRERELEASE_OPTIONS,
+        prerelease: DEFAULT_VERSIONING_PRERELEASE_OPTIONS,
       },
       plugins: [
         "@lets-release/commit-analyzer",

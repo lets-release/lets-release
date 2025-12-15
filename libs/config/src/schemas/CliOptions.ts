@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { SemVerPrereleaseName } from "@lets-release/semver";
+import { PrereleaseName } from "@lets-release/versioning";
 
 /**
  * lets-release cli options.
@@ -11,7 +11,7 @@ export const CliOptions = z.object({
    *
    * It is use for making a pre-release from a release or maintenance branch.
    */
-  prerelease: SemVerPrereleaseName.optional(),
+  prerelease: PrereleaseName.optional(),
 
   /**
    * Dry-run mode, skip publishing, print next versions and release notes.

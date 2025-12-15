@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { SemVerPrereleaseName } from "@lets-release/semver";
+import { PrereleaseName } from "@lets-release/versioning";
 
 import {
   NormalizedPrereleaseOptions,
@@ -13,7 +13,7 @@ import {
  * The key will be use to find the prerelease options.
  */
 export const Prereleases = z.record(
-  SemVerPrereleaseName,
+  PrereleaseName,
   PrereleaseOptions.optional(),
 );
 

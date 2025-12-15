@@ -17,21 +17,6 @@ describe("Prereleases", () => {
           b: "test-${name}",
         },
       },
-      pre: {
-        names: {
-          SemVer: true,
-          CalVer: "test-${name}",
-        },
-      },
-      test: {
-        names: {
-          SemVer: true,
-          CalVer: {
-            a: true,
-            b: "test-${name}",
-          },
-        },
-      },
       key: undefined,
     };
 
@@ -42,10 +27,7 @@ describe("Prereleases", () => {
     await expect(
       Prereleases.parseAsync({
         test: {
-          names: {
-            SemVer: "feat test",
-            CalVer: "feat test",
-          },
+          name: "feat test",
         },
       }),
     ).rejects.toThrow(ZodError);
