@@ -964,6 +964,7 @@ export class LetsRelease {
           stepPipelines,
           normalizedContext,
         );
+        const originalReleaseType = releaseType;
 
         const depCommits: Commit[] = [];
 
@@ -982,12 +983,12 @@ export class LetsRelease {
             // Set release type if dependency release type is higher
             if (
               depRelease &&
-              compareReleaseTypes(depRelease.type, releaseType)
+              compareReleaseTypes(depRelease.type, originalReleaseType)
             ) {
               releaseType = depRelease.type;
 
               const commit =
-                releaseType === ReleaseType.major
+                depRelease.type === ReleaseType.major
                   ? bumpMajorVersionCommit
                   : bumpMinorVersionCommit;
               const values = {
