@@ -42,8 +42,6 @@ const packages: Package[] = [
       prerelease: {
         initialNumber: 1,
         ignoreZeroNumber: true,
-        prefix: "-",
-        suffix: ".",
       },
     },
   },

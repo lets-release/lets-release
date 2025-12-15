@@ -9,7 +9,7 @@ import {
   VersionTag,
   VersioningScheme,
 } from "@lets-release/config";
-import { NormalizedSemVerPrereleaseOptions } from "@lets-release/semver";
+import { NormalizedVersioningPrereleaseOptions } from "@lets-release/versioning";
 
 import { getMergingContexts } from "src/utils/branch/getMergingContexts";
 import { getReleases } from "src/utils/branch/getReleases";
@@ -27,11 +27,9 @@ const context = {
   repositoryRoot: "/path/to/repo",
   options: {},
 } as BaseContext;
-const prerelease: NormalizedSemVerPrereleaseOptions = {
+const prerelease: NormalizedVersioningPrereleaseOptions = {
   initialNumber: 1,
   ignoreZeroNumber: true,
-  prefix: "-",
-  suffix: ".",
 };
 const packages: Package[] = [
   {

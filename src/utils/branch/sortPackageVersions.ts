@@ -13,12 +13,10 @@ export function sortPackageVersions<T extends string | VersionTag>(
           pkg.versioning.format,
           typeof a === "string" ? a : a.version,
           typeof b === "string" ? b : b.version,
-          pkg.versioning.prerelease,
         )
       : { asc: compareSemVers, desc: reverseCompareSemVers }[direction](
           typeof a === "string" ? a : a.version,
           typeof b === "string" ? b : b.version,
-          pkg.versioning.prerelease,
         ),
   );
 }

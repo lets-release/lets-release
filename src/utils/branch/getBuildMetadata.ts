@@ -1,11 +1,9 @@
 import { isBoolean, template } from "lodash-es";
 
-import { CalVerBuildMetadataSpec } from "@lets-release/calver";
-import { SemVerBuildMetadataSpec } from "@lets-release/semver";
+import { BuildMetadataSpec } from "@lets-release/versioning";
 
 export function getBuildMetadata(
-  // eslint-disable-next-line @typescript-eslint/no-duplicate-type-constituents
-  build: SemVerBuildMetadataSpec | CalVerBuildMetadataSpec,
+  build: BuildMetadataSpec,
   hash: string,
   pluginName?: string,
 ) {

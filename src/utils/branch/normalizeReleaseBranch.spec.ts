@@ -1,14 +1,12 @@
 import { BranchType, Package, VersioningScheme } from "@lets-release/config";
-import { NormalizedSemVerPrereleaseOptions } from "@lets-release/semver";
+import { NormalizedVersioningPrereleaseOptions } from "@lets-release/versioning";
 
 import { MatchBranchWithTags } from "src/types/MatchBranchWithTags";
 import { normalizeReleaseBranch } from "src/utils/branch/normalizeReleaseBranch";
 
-const prerelease: NormalizedSemVerPrereleaseOptions = {
+const prerelease: NormalizedVersioningPrereleaseOptions = {
   initialNumber: 1,
   ignoreZeroNumber: true,
-  prefix: "-",
-  suffix: ".",
 };
 const pkgs: Package[] = [
   {

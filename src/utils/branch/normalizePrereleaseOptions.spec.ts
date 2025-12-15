@@ -1,5 +1,3 @@
-import { VersioningScheme } from "@lets-release/config";
-
 import { normalizeChannels } from "src/utils/branch/normalizeChannels";
 import { normalizePrereleaseName } from "src/utils/branch/normalizePrereleaseName";
 import { normalizePrereleaseNameSpec } from "src/utils/branch/normalizePrereleaseNameSpec";
@@ -47,46 +45,6 @@ describe("normalizePrereleaseOptions", () => {
 
     expect(normalizePrereleaseOptions("test", { name: "name" })).toEqual({
       name: { default: "defaultName" },
-      channels,
-    });
-  });
-
-  it("should return undefined if options.names does not contain valid normalized names", () => {
-    vi.mocked(normalizePrereleaseNameSpec)
-      .mockRejectedValueOnce({ default: "defaultName" })
-      .mockReturnValue({});
-
-    expect(
-      normalizePrereleaseOptions("test", {
-        names: { SemVer: "semver", CalVer: "calver" },
-      }),
-    ).toBeUndefined();
-  });
-
-  it("should return normalized options if options.names contain valid normalized names", () => {
-    vi.mocked(normalizePrereleaseNameSpec).mockImplementation(
-      (name, scheme) => {
-        if (scheme === VersioningScheme.SemVer) {
-          return { default: "semverDefault" };
-        }
-
-        if (scheme === VersioningScheme.CalVer) {
-          return { default: "calverDefault" };
-        }
-
-        return {};
-      },
-    );
-
-    expect(
-      normalizePrereleaseOptions("test", {
-        names: { SemVer: "semver", CalVer: "calver" },
-      }),
-    ).toEqual({
-      names: {
-        SemVer: { default: "semverDefault" },
-        CalVer: { default: "calverDefault" },
-      },
       channels,
     });
   });

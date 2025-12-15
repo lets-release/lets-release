@@ -1,8 +1,6 @@
 import debug from "debug";
 
 import {
-  CalVerPrereleaseOptions,
-  DEFAULT_CALVER_PRERELEASE_OPTIONS,
   compareCalVers,
   formatCalVer,
   getCalVerTokenValues,
@@ -20,7 +18,6 @@ import {
   VersioningScheme,
 } from "@lets-release/config";
 import {
-  SemVerPrereleaseOptions,
   compareSemVers,
   formatSemVer,
   getLatestSemVer,
@@ -29,6 +26,7 @@ import {
   isValidPrereleaseSemVer,
   parseSemVer,
 } from "@lets-release/semver";
+import { VersioningPrereleaseOptions } from "@lets-release/versioning";
 
 import { InvalidNextVersionError } from "src/errors/InvalidNextVersionError";
 import { name } from "src/program";
@@ -36,7 +34,6 @@ import { NormalizedStepContext } from "src/types/NormalizedStepContext";
 import { getBuildMetadata } from "src/utils/branch/getBuildMetadata";
 import { getLatestVersion } from "src/utils/branch/getLatestVersion";
 import { getPluginPrereleaseName } from "src/utils/branch/getPluginPrereleaseName";
-import { getCalVerReleaseType } from "src/utils/getCalVerReleaseType";
 
 const namespace = `${name}:utils.branch.getNextVersion`;
 
@@ -111,20 +108,24 @@ export function getNextVersion(
     ...versioning.prerelease,
     prereleaseName:
       branch.type === BranchType.prerelease
-        ? getPluginPrereleaseName(branch, pkg)
-        : getPluginPrereleaseName(branch, pkg, prerelease!),
+        ? getPluginPrereleaseName(branch)
+        : getPluginPrereleaseName(branch, prerelease!),
     build: versioning.build
       ? getBuildMetadata(versioning.build, hash)
       : undefined,
-  } as SemVerPrereleaseOptions &
-    CalVerPrereleaseOptions & { prereleaseName?: string; build?: string };
+  } as VersioningPrereleaseOptions & {
+    prereleaseName?: string;
+    build?: string;
+  };
 
   let version: string | undefined;
 
   if (versioning.scheme === VersioningScheme.SemVer) {
     if (lastRelease) {
       if (branch.type === BranchType.prerelease || prerelease) {
-        if (isValidPrereleaseSemVer(lastRelease.version, options)) {
+        if (
+          isValidPrereleaseSemVer(lastRelease.version, options.prereleaseName)
+        ) {
           const latestVersion =
             getLatestVersion(pkg, branch) ?? lastRelease.version;
 
@@ -200,7 +201,7 @@ export function getNextVersion(
           branch.type === BranchType.prerelease || prerelease
             ? formatSemVer(
                 {
-                  ...parseSemVer(initialVersion, options),
+                  ...parseSemVer(initialVersion, options.prereleaseName),
                   prereleaseName: options.prereleaseName,
                   prereleaseNumber: options.initialNumber,
                   build: options.build,
@@ -222,15 +223,13 @@ export function getNextVersion(
   }
 
   if (versioning.scheme === VersioningScheme.CalVer) {
-    const calVerType = getCalVerReleaseType(versioning.format, type);
-
     if (lastRelease) {
       if (branch.type === BranchType.prerelease || prerelease) {
         if (
           isValidPrereleaseCalVer(
             versioning.format,
             lastRelease.version,
-            options,
+            options.prereleaseName,
           )
         ) {
           const latestVersion =
@@ -240,7 +239,9 @@ export function getNextVersion(
             versioning.format,
             [
               increaseCalVer(
-                "prerelease",
+                branch.type === BranchType.maintenance
+                  ? "prerelease:maintenance"
+                  : "prerelease",
                 versioning.format,
                 lastRelease.version,
                 options,
@@ -251,7 +252,9 @@ export function getNextVersion(
                   ...parseCalVer(
                     versioning.format,
                     increaseCalVer(
-                      calVerType,
+                      branch.type === BranchType.maintenance
+                        ? `${type}:maintenance`
+                        : type,
                       versioning.format,
                       latestVersion,
                       options,
@@ -268,7 +271,9 @@ export function getNextVersion(
           );
         } else {
           version = increaseCalVer(
-            `${calVerType}-prerelease`,
+            branch.type === BranchType.maintenance
+              ? `${type}-prerelease:maintenance`
+              : `${type}-prerelease`,
             versioning.format,
             lastRelease.version,
             options,
@@ -276,7 +281,7 @@ export function getNextVersion(
         }
       } else {
         version = increaseCalVer(
-          calVerType,
+          branch.type === BranchType.maintenance ? `${type}:maintenance` : type,
           versioning.format,
           lastRelease.version,
           versioning.prerelease,
@@ -287,6 +292,7 @@ export function getNextVersion(
         const range = branch.ranges[uniqueName];
 
         if (
+          branch.type === BranchType.maintenance &&
           version &&
           range &&
           !isCalVerSatisfiedRange(
@@ -302,19 +308,15 @@ export function getNextVersion(
             version,
             branch,
             commits,
-            branch.type === BranchType.main
-              ? ([branches.next ?? branches.nextMajor].filter(
-                  Boolean,
-                ) as ReleaseBranch[])
-              : branches.maintenance?.filter(
-                  ({ ranges }) =>
-                    ranges[uniqueName] &&
-                    compareCalVers(
-                      versioning.format,
-                      version!,
-                      ranges[uniqueName].min,
-                    ) > 0,
-                ),
+            branches.maintenance?.filter(
+              ({ ranges }) =>
+                ranges[uniqueName] &&
+                compareCalVers(
+                  versioning.format,
+                  version!,
+                  ranges[uniqueName].min,
+                ) > 0,
+            ),
           );
         }
       }
@@ -325,14 +327,13 @@ export function getNextVersion(
       });
     } else {
       const initialVersion =
-        (branch.type === BranchType.prerelease
-          ? branches.main?.ranges[uniqueName]?.min
-          : branch.ranges[uniqueName]?.min) ??
+        (branch.type === BranchType.maintenance
+          ? branch.ranges[uniqueName]?.min
+          : undefined) ??
         formatCalVer(
           versioning.format,
           {
             tokenValues: getCalVerTokenValues(versioning.format),
-            prereleaseOptions: DEFAULT_CALVER_PRERELEASE_OPTIONS,
           },
           options,
         );
@@ -342,7 +343,11 @@ export function getNextVersion(
           ? formatCalVer(
               versioning.format,
               {
-                ...parseCalVer(versioning.format, initialVersion, options),
+                ...parseCalVer(
+                  versioning.format,
+                  initialVersion,
+                  options.prereleaseName,
+                ),
                 prereleaseName: options.prereleaseName,
                 prereleaseNumber: options.initialNumber,
                 build: options.build,

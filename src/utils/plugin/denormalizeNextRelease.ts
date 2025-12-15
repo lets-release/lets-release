@@ -30,11 +30,7 @@ export function denormalizeNextRelease<T extends Step = Step>(
     : undefined;
 
   if (pkg.versioning.scheme === VersioningScheme.CalVer) {
-    const calver = parseCalVer(
-      pkg.versioning.format,
-      version,
-      pkg.versioning.prerelease,
-    );
+    const calver = parseCalVer(pkg.versioning.format, version);
 
     return {
       ...rest,
@@ -48,7 +44,7 @@ export function denormalizeNextRelease<T extends Step = Step>(
     };
   }
 
-  const semver = parseSemVer(version, pkg.versioning.prerelease);
+  const semver = parseSemVer(version);
 
   return {
     ...rest,

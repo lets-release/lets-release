@@ -1,4 +1,3 @@
-import { DEFAULT_CALVER_PRERELEASE_OPTIONS } from "@lets-release/calver";
 import {
   Artifact,
   BaseContext,
@@ -8,7 +7,7 @@ import {
   PrereleaseBranch,
   VersioningScheme,
 } from "@lets-release/config";
-import { DEFAULT_SEMVER_PRERELEASE_OPTIONS } from "@lets-release/semver";
+import { DEFAULT_VERSIONING_PRERELEASE_OPTIONS } from "@lets-release/versioning";
 
 import { filterTag } from "src/utils/branch/filterTag";
 import { getPluginChannels } from "src/utils/branch/getPluginChannels";
@@ -37,7 +36,7 @@ describe("filterTag", () => {
     const pkg = {
       versioning: {
         scheme: VersioningScheme.SemVer,
-        prerelease: DEFAULT_SEMVER_PRERELEASE_OPTIONS,
+        prerelease: DEFAULT_VERSIONING_PRERELEASE_OPTIONS,
       },
     } as Package;
 
@@ -112,7 +111,7 @@ describe("filterTag", () => {
       versioning: {
         scheme: VersioningScheme.CalVer,
         format: "YY.MINOR.MICRO",
-        prerelease: DEFAULT_CALVER_PRERELEASE_OPTIONS,
+        prerelease: DEFAULT_VERSIONING_PRERELEASE_OPTIONS,
       },
     } as Package;
 

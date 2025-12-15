@@ -34,17 +34,8 @@ export function getFirstVersion(
     return getAscendingVersions(pkg, branch, { withPrerelease }).find(
       (version) =>
         (pkg?.versioning.scheme === VersioningScheme.CalVer
-          ? compareCalVers(
-              pkg.versioning.format,
-              version,
-              lowerVersions[0],
-              pkg.versioning.prerelease,
-            )
-          : compareSemVers(
-              version,
-              lowerVersions[0],
-              pkg.versioning.prerelease,
-            )) > 0,
+          ? compareCalVers(pkg.versioning.format, version, lowerVersions[0])
+          : compareSemVers(version, lowerVersions[0])) > 0,
     );
   }
 

@@ -4,7 +4,7 @@ import {
   Step,
   VersioningScheme,
 } from "@lets-release/config";
-import { NormalizedSemVerPrereleaseOptions } from "@lets-release/semver";
+import { NormalizedVersioningPrereleaseOptions } from "@lets-release/versioning";
 
 import { InvalidNextVersionError } from "src/errors/InvalidNextVersionError";
 import { NormalizedStepContext } from "src/types/NormalizedStepContext";
@@ -15,11 +15,9 @@ import { getPluginPrereleaseName } from "src/utils/branch/getPluginPrereleaseNam
 vi.mock("src/utils/branch/getBuildMetadata");
 vi.mock("src/utils/branch/getPluginPrereleaseName");
 
-const prerelease: NormalizedSemVerPrereleaseOptions = {
+const prerelease: NormalizedVersioningPrereleaseOptions = {
   initialNumber: 1,
   ignoreZeroNumber: true,
-  prefix: "-",
-  suffix: ".",
 };
 const prereleaseBranch = {
   type: BranchType.prerelease,
@@ -42,12 +40,15 @@ const branches = {
   },
   maintenance: [
     {
+      type: BranchType.maintenance,
       ranges: {
         "npm/semver": {
           min: "1.1.0",
+          max: "2.0.0",
         },
         "npm/calver": {
           min: "1.1.0",
+          max: "2.0.0",
         },
       },
       tags: {},
@@ -62,11 +63,24 @@ const context = {
 const hash = "abc123";
 const alpha = "alpha";
 const build = "build";
+const date = new Date();
+const year = date.getFullYear() - 2000;
 
 vi.mocked(getPluginPrereleaseName).mockReturnValue(alpha);
 vi.mocked(getBuildMetadata).mockReturnValue(build);
 
 describe("getNextVersion", () => {
+  beforeAll(() => {
+    // tell vitest we use mocked time
+    vi.useFakeTimers();
+    vi.setSystemTime(date);
+  });
+
+  afterAll(() => {
+    // restoring date after each test run
+    vi.useRealTimers();
+  });
+
   describe("semver", () => {
     const versioning = {
       scheme: VersioningScheme.SemVer,
@@ -434,27 +448,39 @@ describe("getNextVersion", () => {
       branch: branches.main,
       package: pkg,
     };
+    const maintenanceBranchCtx = {
+      ...context,
+      options: {},
+      branch: branches.maintenance[0],
+      package: pkg,
+    };
     const prereleasePatchVersionsWithoutBuild = [
-      [undefined, "2.0.0-alpha.1"],
-      ["2.0.0-alpha.1", "2.0.0-alpha.2"],
-      ["2.0.0", "2.0.1-alpha.1"],
+      [undefined, `${year}.0.0-alpha.1`],
+      ["2.0.0-alpha.1", `${year}.0.0-alpha.1`],
+      ["2.0.0", `${year}.0.0-alpha.1`],
+      [`${year}.0.0-alpha.1`, `${year}.0.0-alpha.2`],
+      [`${year}.0.0`, `${year}.0.1-alpha.1`],
     ];
     const prereleasePatchVersions = [
-      [undefined, "2.0.0-alpha.1+build"],
-      ["2.0.0-alpha.1", "2.0.0-alpha.2+build"],
-      ["2.0.0", "2.0.1-alpha.1+build"],
+      [undefined, `${year}.0.0-alpha.1+build`],
+      ["2.0.0-alpha.1", `${year}.0.0-alpha.1+build`],
+      ["2.0.0", `${year}.0.0-alpha.1+build`],
+      [`${year}.0.0-alpha.1`, `${year}.0.0-alpha.2+build`],
+      [`${year}.0.0`, `${year}.0.1-alpha.1+build`],
     ];
     const prereleaseMinorVersions = [
-      [undefined, "2.0.0-alpha.1+build"],
-      ["2.0.0-alpha.1", "2.0.0-alpha.2+build"],
-      ["2.0.1-alpha.1", "2.1.0-alpha.1+build"],
-      ["2.0.0", "2.1.0-alpha.1+build"],
+      [undefined, `${year}.0.0-alpha.1+build`],
+      ["2.0.0-alpha.1", `${year}.0.0-alpha.1+build`],
+      ["2.0.0", `${year}.0.0-alpha.1+build`],
+      [`${year}.0.0-alpha.1`, `${year}.0.0-alpha.2+build`],
+      [`${year}.0.0`, `${year}.1.0-alpha.1+build`],
     ];
     const prereleaseMajorVersions = [
-      [undefined, "2.0.0-alpha.1+build"],
-      ["2.0.0-alpha.1", "2.0.0-alpha.2+build"],
-      ["2.0.1-alpha.1", `${new Date().getFullYear() - 2000}.0.0-alpha.1+build`],
-      ["2.0.0", `${new Date().getFullYear() - 2000}.0.0-alpha.1+build`],
+      [undefined, `${year}.0.0-alpha.1+build`],
+      ["2.0.0-alpha.1", `${year}.0.0-alpha.1+build`],
+      ["2.0.0", `${year}.0.0-alpha.1+build`],
+      [`${year}.0.0-alpha.1`, `${year}.0.0-alpha.2+build`],
+      [`${year}.0.0`, `${year}.1.0-alpha.1+build`],
     ];
 
     it("should return undefined if no version range on maintenance branch", () => {
@@ -638,7 +664,17 @@ describe("getNextVersion", () => {
           ReleaseType.patch,
           hash,
         ),
-      ).toBe("2.0.0");
+      ).toBe(`${year}.0.0`);
+    });
+
+    it("should get new maintenance version for release branch if no last release found for patch release type", () => {
+      expect(
+        getNextVersion(
+          maintenanceBranchCtx as unknown as NormalizedStepContext<Step.analyzeCommits>,
+          ReleaseType.patch,
+          hash,
+        ),
+      ).toBe("1.1.0");
     });
 
     it("should get next patch version for release branch if last release found", () => {
@@ -651,7 +687,20 @@ describe("getNextVersion", () => {
           ReleaseType.patch,
           hash,
         ),
-      ).toBe("2.0.1");
+      ).toBe(`${year}.0.0`);
+    });
+
+    it("should get new maintenance version for release branch if last release found for patch release type", () => {
+      expect(
+        getNextVersion(
+          {
+            ...maintenanceBranchCtx,
+            lastRelease: { version: "1.1.0" },
+          } as unknown as NormalizedStepContext<Step.analyzeCommits>,
+          ReleaseType.patch,
+          hash,
+        ),
+      ).toBe("1.1.1");
     });
 
     it("should get next patch version for release branch if last release is prerelease", () => {
@@ -664,7 +713,20 @@ describe("getNextVersion", () => {
           ReleaseType.patch,
           hash,
         ),
-      ).toBe("2.0.0");
+      ).toBe(`${year}.0.0`);
+    });
+
+    it("should get new maintenance version for release branch if last release is prerelease for patch release type", () => {
+      expect(
+        getNextVersion(
+          {
+            ...maintenanceBranchCtx,
+            lastRelease: { version: "1.1.1-alpha.1" },
+          } as unknown as NormalizedStepContext<Step.analyzeCommits>,
+          ReleaseType.patch,
+          hash,
+        ),
+      ).toBe("1.1.1");
     });
 
     it("should get next minor version for release branch if no last release found", () => {
@@ -674,7 +736,17 @@ describe("getNextVersion", () => {
           ReleaseType.minor,
           hash,
         ),
-      ).toBe("2.0.0");
+      ).toBe(`${year}.0.0`);
+    });
+
+    it("should get new maintenance version for release branch if no last release found for minor release type", () => {
+      expect(
+        getNextVersion(
+          maintenanceBranchCtx as unknown as NormalizedStepContext<Step.analyzeCommits>,
+          ReleaseType.minor,
+          hash,
+        ),
+      ).toBe("1.1.0");
     });
 
     it("should get next minor version for release branch if last release found", () => {
@@ -687,7 +759,20 @@ describe("getNextVersion", () => {
           ReleaseType.minor,
           hash,
         ),
-      ).toBe("2.1.0");
+      ).toBe(`${year}.0.0`);
+    });
+
+    it("should get new maintenance version for release branch if last release found for minor release type", () => {
+      expect(
+        getNextVersion(
+          {
+            ...maintenanceBranchCtx,
+            lastRelease: { version: "1.1.0" },
+          } as unknown as NormalizedStepContext<Step.analyzeCommits>,
+          ReleaseType.minor,
+          hash,
+        ),
+      ).toBe(`1.2.0`);
     });
 
     it("should get next minor version for release branch if last release is prerelease", () => {
@@ -700,7 +785,20 @@ describe("getNextVersion", () => {
           ReleaseType.minor,
           hash,
         ),
-      ).toBe("2.0.0");
+      ).toBe(`${year}.0.0`);
+    });
+
+    it("should get new maintenance version for release branch if last release is prerelease for minor release type", () => {
+      expect(
+        getNextVersion(
+          {
+            ...maintenanceBranchCtx,
+            lastRelease: { version: "1.2.0-alpha.1" },
+          } as unknown as NormalizedStepContext<Step.analyzeCommits>,
+          ReleaseType.minor,
+          hash,
+        ),
+      ).toBe(`1.2.0`);
     });
 
     it("should get next major version for release branch if no last release found", () => {
@@ -710,7 +808,17 @@ describe("getNextVersion", () => {
           ReleaseType.major,
           hash,
         ),
-      ).toBe("2.0.0");
+      ).toBe(`${year}.0.0`);
+    });
+
+    it("should get new maintenance version for release branch if no last release found for major release type", () => {
+      expect(
+        getNextVersion(
+          maintenanceBranchCtx as unknown as NormalizedStepContext<Step.analyzeCommits>,
+          ReleaseType.major,
+          hash,
+        ),
+      ).toBe(`1.1.0`);
     });
 
     it("should get next major version for release branch if last release found", () => {
@@ -723,10 +831,10 @@ describe("getNextVersion", () => {
           ReleaseType.major,
           hash,
         ),
-      ).toBe(`${new Date().getFullYear() - 2000}.0.0`);
+      ).toBe(`${year}.0.0`);
     });
 
-    it("should get next major version for release branch if last release is prerelease", () => {
+    it("should get new major version for release branch if last release is prerelease", () => {
       expect(
         getNextVersion(
           {
@@ -736,15 +844,28 @@ describe("getNextVersion", () => {
           ReleaseType.major,
           hash,
         ),
-      ).toBe("2.0.0");
+      ).toBe(`${year}.0.0`);
+    });
+
+    it("should get new maintenance version for release branch if last release is prerelease for major release type", () => {
+      expect(
+        getNextVersion(
+          {
+            ...maintenanceBranchCtx,
+            lastRelease: { version: "1.2.0-alpha.1" },
+          } as unknown as NormalizedStepContext<Step.analyzeCommits>,
+          ReleaseType.major,
+          hash,
+        ),
+      ).toBe("1.2.0");
     });
 
     it("should throw error if version is not in range", () => {
       expect(() =>
         getNextVersion(
           {
-            ...releaseBranchCtx,
-            lastRelease: { version: "1.0.0" },
+            ...maintenanceBranchCtx,
+            lastRelease: { version: "2.0.0" },
           } as unknown as NormalizedStepContext<Step.analyzeCommits>,
           ReleaseType.minor,
           hash,
@@ -765,7 +886,6 @@ describe("getNextVersion", () => {
     });
 
     it("should generate default version if there is no initial version", () => {
-      const year = new Date().getFullYear() - 2000;
       const releaseBranchCtxWithoutPrerelease = {
         ...releaseBranchCtx,
         package: {
@@ -786,6 +906,88 @@ describe("getNextVersion", () => {
           hash,
         ),
       ).toBe(`${year}.0.0`);
+    });
+
+    it("should get next patch prerelease version for maintenance branch when prerelease option is set and last release is valid prerelease", () => {
+      expect(
+        getNextVersion(
+          {
+            ...maintenanceBranchCtx,
+            options: { prerelease: alpha },
+            lastRelease: { version: "1.1.0-alpha.1" },
+          } as unknown as NormalizedStepContext<Step.analyzeCommits>,
+          ReleaseType.patch,
+          hash,
+        ),
+      ).toBe("1.1.0-alpha.2+build");
+    });
+
+    it("should get next minor prerelease version for maintenance branch when prerelease option is set and last release is valid prerelease", () => {
+      expect(
+        getNextVersion(
+          {
+            ...maintenanceBranchCtx,
+            options: { prerelease: alpha },
+            lastRelease: { version: "1.1.0-alpha.1" },
+          } as unknown as NormalizedStepContext<Step.analyzeCommits>,
+          ReleaseType.minor,
+          hash,
+        ),
+      ).toBe("1.1.0-alpha.2+build");
+    });
+
+    it("should get next major prerelease version for maintenance branch when prerelease option is set and last release is valid prerelease", () => {
+      expect(
+        getNextVersion(
+          {
+            ...maintenanceBranchCtx,
+            options: { prerelease: alpha },
+            lastRelease: { version: "1.1.0-alpha.1" },
+          } as unknown as NormalizedStepContext<Step.analyzeCommits>,
+          ReleaseType.major,
+          hash,
+        ),
+      ).toBe("1.1.0-alpha.2+build");
+    });
+
+    it("should get next prerelease version for release branch when last release is not valid prerelease", () => {
+      expect(
+        getNextVersion(
+          {
+            ...releaseBranchPrereleaseCtx,
+            lastRelease: { version: "2.0.0" },
+          } as unknown as NormalizedStepContext<Step.analyzeCommits>,
+          ReleaseType.patch,
+          hash,
+        ),
+      ).toBe(`${year}.0.0-alpha.1+build`);
+    });
+
+    it("should get next prerelease version for prerelease branch when last release is not valid prerelease", () => {
+      expect(
+        getNextVersion(
+          {
+            ...prereleaseBranchCtx,
+            lastRelease: { version: "2.0.0" },
+          } as unknown as NormalizedStepContext<Step.analyzeCommits>,
+          ReleaseType.patch,
+          hash,
+        ),
+      ).toBe(`${year}.0.0-alpha.1+build`);
+    });
+
+    it("should get next prerelease version for maintenance branch when last release is not valid prerelease and prerelease option is set", () => {
+      expect(
+        getNextVersion(
+          {
+            ...maintenanceBranchCtx,
+            options: { prerelease: alpha },
+            lastRelease: { version: "1.1.0" },
+          } as unknown as NormalizedStepContext<Step.analyzeCommits>,
+          ReleaseType.patch,
+          hash,
+        ),
+      ).toBe("1.1.1-alpha.1+build");
     });
   });
 });

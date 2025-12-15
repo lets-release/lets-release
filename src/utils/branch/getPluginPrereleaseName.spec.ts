@@ -1,9 +1,7 @@
 import {
   BranchType,
-  Package,
   PrereleaseBranch,
   ReleaseBranch,
-  VersioningScheme,
 } from "@lets-release/config";
 
 import { getPluginPrereleaseName } from "src/utils/branch/getPluginPrereleaseName";
@@ -12,18 +10,13 @@ describe("getPluginPrereleaseName", () => {
   describe("prerelease branch", () => {
     it("should return prerelease.name if prerelease.name is string", () => {
       expect(
-        getPluginPrereleaseName(
-          {
-            type: BranchType.prerelease,
-            name: "alpha",
-            prerelease: {
-              name: { default: "alpha" },
-            },
-          } as unknown as PrereleaseBranch,
-          {
-            versioning: { scheme: VersioningScheme.SemVer },
-          } as unknown as Package,
-        ),
+        getPluginPrereleaseName({
+          type: BranchType.prerelease,
+          name: "alpha",
+          prerelease: {
+            name: { default: "alpha" },
+          },
+        } as unknown as PrereleaseBranch),
       ).toBe("alpha");
     });
 
@@ -37,9 +30,6 @@ describe("getPluginPrereleaseName", () => {
               name: { default: "alpha", npm: "npm-alpha" },
             },
           } as unknown as PrereleaseBranch,
-          {
-            versioning: { scheme: VersioningScheme.SemVer },
-          } as unknown as Package,
           "npm",
         ),
       ).toBe("npm-alpha");
@@ -55,9 +45,6 @@ describe("getPluginPrereleaseName", () => {
               name: { default: "alpha", npm: "npm-alpha" },
             },
           } as unknown as PrereleaseBranch,
-          {
-            versioning: { scheme: VersioningScheme.SemVer },
-          } as unknown as Package,
           "python",
         ),
       ).toBe("alpha");
@@ -67,15 +54,10 @@ describe("getPluginPrereleaseName", () => {
   describe("release branch", () => {
     it("should return undefined if prerelease key is not provided", () => {
       expect(
-        getPluginPrereleaseName(
-          {
-            type: BranchType.main,
-            name: "main",
-          } as never,
-          {
-            versioning: { scheme: VersioningScheme.SemVer },
-          } as unknown as Package,
-        ),
+        getPluginPrereleaseName({
+          type: BranchType.main,
+          name: "main",
+        } as never),
       ).toBeUndefined();
     });
 
@@ -86,9 +68,6 @@ describe("getPluginPrereleaseName", () => {
             type: BranchType.main,
             name: "main",
           } as unknown as ReleaseBranch,
-          {
-            versioning: { scheme: VersioningScheme.SemVer },
-          } as unknown as Package,
           "alpha",
           "npm",
         ),
@@ -100,9 +79,6 @@ describe("getPluginPrereleaseName", () => {
             type: BranchType.main,
             name: "main",
           } as unknown as ReleaseBranch,
-          {
-            versioning: { scheme: VersioningScheme.CalVer },
-          } as unknown as Package,
           "alpha",
           "npm",
         ),
@@ -116,9 +92,6 @@ describe("getPluginPrereleaseName", () => {
             type: BranchType.main,
             name: "main",
           } as unknown as ReleaseBranch,
-          {
-            versioning: { scheme: VersioningScheme.SemVer },
-          } as unknown as Package,
           "alpha test",
           "npm",
         ),
@@ -130,9 +103,6 @@ describe("getPluginPrereleaseName", () => {
             type: BranchType.main,
             name: "main",
           } as unknown as ReleaseBranch,
-          {
-            versioning: { scheme: VersioningScheme.CalVer },
-          } as unknown as Package,
           "alpha test",
           "npm",
         ),
@@ -151,9 +121,6 @@ describe("getPluginPrereleaseName", () => {
               },
             },
           } as unknown as ReleaseBranch,
-          {
-            versioning: { scheme: VersioningScheme.SemVer },
-          } as unknown as Package,
           "alpha",
           "npm",
         ),

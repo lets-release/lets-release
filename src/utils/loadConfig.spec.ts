@@ -1,7 +1,7 @@
 import { PublicExplorer, cosmiconfig } from "cosmiconfig";
 import { ZodError } from "zod";
 
-import { DEFAULT_SEMVER_PRERELEASE_OPTIONS } from "@lets-release/semver";
+import { DEFAULT_VERSIONING_PRERELEASE_OPTIONS } from "@lets-release/versioning";
 
 import { getRemoteUrl } from "src/utils/git/getRemoteUrl";
 import { loadConfig } from "src/utils/loadConfig";
@@ -74,7 +74,7 @@ describe("loadConfig", () => {
           versioning: {
             scheme: "SemVer",
             initialVersion: "1.0.0",
-            prerelease: DEFAULT_SEMVER_PRERELEASE_OPTIONS,
+            prerelease: DEFAULT_VERSIONING_PRERELEASE_OPTIONS,
           },
           plugins: [
             "@lets-release/commit-analyzer",

@@ -1,5 +1,5 @@
 import { BaseContext, Package, VersioningScheme } from "@lets-release/config";
-import { NormalizedSemVerPrereleaseOptions } from "@lets-release/semver";
+import { NormalizedVersioningPrereleaseOptions } from "@lets-release/versioning";
 
 import { MatchBranch } from "src/types/MatchBranch";
 import { mapMatchBranch } from "src/utils/branch/mapMatchBranch";
@@ -25,11 +25,9 @@ const tags = [
 vi.mocked(getBranchTags).mockResolvedValue(tags);
 vi.mocked(getNote).mockResolvedValue({});
 
-const prerelease: NormalizedSemVerPrereleaseOptions = {
+const prerelease: NormalizedVersioningPrereleaseOptions = {
   initialNumber: 1,
   ignoreZeroNumber: true,
-  prefix: "-",
-  suffix: ".",
 };
 
 describe("mapMatchBranch", () => {

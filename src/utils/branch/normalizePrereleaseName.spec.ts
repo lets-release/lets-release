@@ -1,5 +1,3 @@
-import { VersioningScheme } from "@lets-release/config";
-
 import { normalizePrereleaseName } from "src/utils/branch/normalizePrereleaseName";
 
 describe("normalizePrereleaseName", () => {
@@ -16,22 +14,14 @@ describe("normalizePrereleaseName", () => {
   });
 
   it("should return the name if it is a valid CalVer prerelease name", () => {
-    const name = "2021.01.01-alpha.1";
-    const result = normalizePrereleaseName(
-      name,
-      undefined,
-      VersioningScheme.CalVer,
-    );
+    const name = "2021.1.01-alpha.1";
+    const result = normalizePrereleaseName(name, undefined);
     expect(result).toBe(name);
   });
 
   it("should return undefined if the name is not a valid CalVer prerelease name", () => {
     const name = "invalid prerelease";
-    const result = normalizePrereleaseName(
-      name,
-      undefined,
-      VersioningScheme.CalVer,
-    );
+    const result = normalizePrereleaseName(name, undefined);
     expect(result).toBeUndefined();
   });
 

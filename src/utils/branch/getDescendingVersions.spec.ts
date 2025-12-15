@@ -1,14 +1,12 @@
 import { Package } from "@lets-release/config";
-import { NormalizedSemVerPrereleaseOptions } from "@lets-release/semver";
+import { NormalizedVersioningPrereleaseOptions } from "@lets-release/versioning";
 
 import { MatchBranchWithTags } from "src/types/MatchBranchWithTags";
 import { getDescendingVersions } from "src/utils/branch/getDescendingVersions";
 
-const prerelease: NormalizedSemVerPrereleaseOptions = {
+const prerelease: NormalizedVersioningPrereleaseOptions = {
   initialNumber: 1,
   ignoreZeroNumber: true,
-  prefix: "-",
-  suffix: ".",
 };
 const pkgA = {
   name: "a",

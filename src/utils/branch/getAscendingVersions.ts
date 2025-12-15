@@ -24,12 +24,8 @@ export function getAscendingVersions(
       }
 
       return pkg.versioning.scheme === VersioningScheme.CalVer
-        ? !isValidPrereleaseCalVer(
-            pkg.versioning.format,
-            version,
-            pkg.versioning.prerelease,
-          )
-        : !isValidPrereleaseSemVer(version, pkg.versioning.prerelease);
+        ? !isValidPrereleaseCalVer(pkg.versioning.format, version)
+        : !isValidPrereleaseSemVer(version);
     }),
   ).map(({ version }) => version);
 }

@@ -42,30 +42,16 @@ export function filterTag(
   if (pkg.versioning.scheme === VersioningScheme.CalVer) {
     if (
       !isNil(before) &&
-      compareCalVers(
-        pkg.versioning.format,
-        version,
-        before,
-        pkg.versioning.prerelease,
-      ) >= 0
+      compareCalVers(pkg.versioning.format, version, before) >= 0
     ) {
       return false;
     }
 
-    if (
-      !isValidPrereleaseCalVer(
-        pkg.versioning.format,
-        version,
-        pkg.versioning.prerelease,
-      )
-    ) {
+    if (!isValidPrereleaseCalVer(pkg.versioning.format, version)) {
       return true;
     }
   } else {
-    if (
-      !isNil(before) &&
-      compareSemVers(version, before, pkg.versioning.prerelease) >= 0
-    ) {
+    if (!isNil(before) && compareSemVers(version, before) >= 0) {
       return false;
     }
 
@@ -76,9 +62,8 @@ export function filterTag(
 
   const prereleaseName =
     pkg.versioning.scheme === VersioningScheme.CalVer
-      ? parseCalVer(pkg.versioning.format, version, pkg.versioning.prerelease)
-          .prereleaseName
-      : parseSemVer(version, pkg.versioning.prerelease).prereleaseName;
+      ? parseCalVer(pkg.versioning.format, version).prereleaseName
+      : parseSemVer(version).prereleaseName;
 
   const verify = (
     artifactChannels: Channel[],
@@ -104,7 +89,7 @@ export function filterTag(
       verify(
         channels,
         getPluginChannels(branch, pluginName),
-        getPluginPrereleaseName(branch, pkg, pluginName),
+        getPluginPrereleaseName(branch, pluginName),
       ),
     );
   }
@@ -116,7 +101,7 @@ export function filterTag(
       verify(
         channels,
         getPluginChannels(branch, pluginName, prerelease),
-        getPluginPrereleaseName(branch, pkg, prerelease, pluginName),
+        getPluginPrereleaseName(branch, prerelease, pluginName),
       ),
     );
   }

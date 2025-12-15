@@ -52,18 +52,14 @@ export async function mapMatchBranch<T extends BranchType = BranchType>(
 
       if (
         pkg.versioning.scheme === VersioningScheme.SemVer &&
-        !isValidSemVer(cleanVersion, pkg.versioning.prerelease)
+        !isValidSemVer(cleanVersion)
       ) {
         return [];
       }
 
       if (
         pkg.versioning.scheme === VersioningScheme.CalVer &&
-        !isValidCalVer(
-          pkg.versioning.format,
-          cleanVersion,
-          pkg.versioning.prerelease,
-        )
+        !isValidCalVer(pkg.versioning.format, cleanVersion)
       ) {
         return [];
       }

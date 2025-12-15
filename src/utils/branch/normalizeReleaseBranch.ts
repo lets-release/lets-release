@@ -52,13 +52,10 @@ export function normalizeReleaseBranch<
     packages.map(({ uniqueName, versioning }) => [
       uniqueName,
       versioning.scheme === VersioningScheme.SemVer
-        ? getLatestSemVer(
-            [
-              ...(branch.tags[uniqueName]?.map(({ version }) => version) ?? []),
-              ...(lowerSemVers?.[uniqueName] ? [lowerSemVers[uniqueName]] : []),
-            ],
-            versioning.prerelease,
-          )
+        ? getLatestSemVer([
+            ...(branch.tags[uniqueName]?.map(({ version }) => version) ?? []),
+            ...(lowerSemVers?.[uniqueName] ? [lowerSemVers[uniqueName]] : []),
+          ])
         : undefined,
     ]),
   );
@@ -84,24 +81,18 @@ export function normalizeReleaseBranch<
                   pkg.versioning.prerelease,
                 ));
           const min = latestSemVer
-            ? getLatestSemVer(
-                [
-                  increaseSemVer(
-                    "patch",
-                    latestSemVer,
-                    pkg.versioning.prerelease,
-                  ),
-                  lowerBound,
-                ],
-                pkg.versioning.prerelease,
-              )!
+            ? getLatestSemVer([
+                increaseSemVer(
+                  "patch",
+                  latestSemVer,
+                  pkg.versioning.prerelease,
+                ),
+                lowerBound,
+              ])!
             : lowerBound;
           const firstNextSemVer = getFirstNextSemVer?.(pkg);
 
-          if (
-            firstNextSemVer &&
-            compareSemVers(min, firstNextSemVer, pkg.versioning.prerelease) >= 0
-          ) {
+          if (firstNextSemVer && compareSemVers(min, firstNextSemVer) >= 0) {
             debug(`${name}:utils.branch.normalizeReleaseBranch`)(
               `Invalid range for ${pkg.uniqueName} on branch ${branch.name}`,
             );
@@ -112,10 +103,7 @@ export function normalizeReleaseBranch<
           const upperBound = getUpperBound?.(min);
           const max =
             firstNextSemVer && upperBound
-              ? getEarliestSemVer(
-                  [firstNextSemVer, upperBound],
-                  pkg.versioning.prerelease,
-                )
+              ? getEarliestSemVer([firstNextSemVer, upperBound])
               : (firstNextSemVer ?? upperBound);
 
           return [

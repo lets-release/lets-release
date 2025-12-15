@@ -8,7 +8,7 @@ import {
   VerifyConditionsContext,
   VersioningScheme,
 } from "@lets-release/config";
-import { NormalizedSemVerPrereleaseOptions } from "@lets-release/semver";
+import { NormalizedVersioningPrereleaseOptions } from "@lets-release/versioning";
 
 import { getCommits } from "src/utils/branch/getCommits";
 import { getCommittedFiles } from "src/utils/git/getCommittedFiles";
@@ -17,11 +17,9 @@ import { getLogs } from "src/utils/git/getLogs";
 vi.mock("src/utils/git/getCommittedFiles");
 vi.mock("src/utils/git/getLogs");
 
-const prerelease: NormalizedSemVerPrereleaseOptions = {
+const prerelease: NormalizedVersioningPrereleaseOptions = {
   initialNumber: 1,
   ignoreZeroNumber: true,
-  prefix: "-",
-  suffix: ".",
 };
 const root = temporaryDirectory();
 const packages: Package[] = [

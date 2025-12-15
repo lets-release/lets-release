@@ -15,8 +15,6 @@ describe("getEarliestVersion", () => {
             prerelease: {
               initialNumber: 1,
               ignoreZeroNumber: true,
-              prefix: "-",
-              suffix: ".",
             },
           },
         } as Package,

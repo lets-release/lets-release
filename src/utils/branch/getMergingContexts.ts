@@ -60,13 +60,8 @@ export async function getMergingContexts(
                   pkg.versioning.format,
                   maintenanceRange.min,
                   range.min,
-                  pkg.versioning.prerelease,
                 )
-              : compareSemVers(
-                  maintenanceRange.min,
-                  range.min,
-                  pkg.versioning.prerelease,
-                )) > 0
+              : compareSemVers(maintenanceRange.min, range.min)) > 0
           );
         }),
         main,
@@ -109,12 +104,10 @@ export async function getMergingContexts(
                       pkg.versioning.format,
                       version,
                       (range as MaintenanceVersionRange).mergeMin,
-                      pkg.versioning.prerelease,
                     )
                   : compareSemVers(
                       version,
                       (range as MaintenanceVersionRange).mergeMin,
-                      pkg.versioning.prerelease,
                     )) >= 0
               );
             }
@@ -140,14 +133,8 @@ export async function getMergingContexts(
       if (
         last &&
         (pkg.versioning.scheme === VersioningScheme.CalVer
-          ? compareCalVers(
-              pkg.versioning.format,
-              last.version,
-              version,
-              pkg.versioning.prerelease,
-            )
-          : compareSemVers(last.version, version, pkg.versioning.prerelease)) >
-          0
+          ? compareCalVers(pkg.versioning.format, last.version, version)
+          : compareSemVers(last.version, version)) > 0
       ) {
         return [];
       }

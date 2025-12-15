@@ -76,14 +76,12 @@ export function normalizeMaintenanceBranches(
               pkg.versioning.format,
               a.ranges[pkg.uniqueName].max,
               b.ranges[pkg.uniqueName].max,
-              pkg.versioning.prerelease,
             );
           }
 
           return compareSemVers(
             a.ranges[pkg.uniqueName].max,
             b.ranges[pkg.uniqueName].max,
-            pkg.versioning.prerelease,
           );
         })
         .reduce(
@@ -163,11 +161,10 @@ export function normalizeMaintenanceBranches(
 
         if (pkg.versioning.scheme === VersioningScheme.CalVer) {
           // The max is the lowest version between the `base` version and the upper bound of the current branch range
-          const max = getEarliestCalVer(
-            pkg.versioning.format,
-            [...(base ? [base] : []), range.max],
-            pkg.versioning.prerelease,
-          );
+          const max = getEarliestCalVer(pkg.versioning.format, [
+            ...(base ? [base] : []),
+            range.max,
+          ]);
 
           const latestCalVer = getLatestCalVer(
             pkg.versioning.format,
@@ -176,7 +173,7 @@ export function normalizeMaintenanceBranches(
           );
           const nextCalVer = latestCalVer
             ? increaseCalVer(
-                "micro",
+                "patch:maintenance",
                 pkg.versioning.format,
                 latestCalVer,
                 pkg.versioning.prerelease,
@@ -184,21 +181,12 @@ export function normalizeMaintenanceBranches(
             : mergeMin;
 
           // The actual lower bound is the highest version between the current branch last release and `mergeMin`
-          const min = getLatestCalVer(
-            pkg.versioning.format,
-            [nextCalVer, mergeMin],
-            pkg.versioning.prerelease,
-          )!;
+          const min = getLatestCalVer(pkg.versioning.format, [
+            nextCalVer,
+            mergeMin,
+          ])!;
 
-          if (
-            base &&
-            compareCalVers(
-              pkg.versioning.format,
-              min,
-              base,
-              pkg.versioning.prerelease,
-            ) >= 0
-          ) {
+          if (base && compareCalVers(pkg.versioning.format, min, base) >= 0) {
             debug(namespace)(
               `Invalid maintenance range for ${pkg.uniqueName} on branch ${name}`,
             );
@@ -217,10 +205,7 @@ export function normalizeMaintenanceBranches(
           ];
         } else {
           // The max is the lowest version between the `base` version and the upper bound of the current branch range
-          const max = getEarliestSemVer(
-            [...(base ? [base] : []), range.max],
-            pkg.versioning.prerelease,
-          );
+          const max = getEarliestSemVer([...(base ? [base] : []), range.max]);
 
           const latestSemVer = getLatestSemVer(versions, {
             ...pkg.versioning.prerelease,
@@ -231,18 +216,9 @@ export function normalizeMaintenanceBranches(
             : mergeMin;
 
           // The actual lower bound is the highest version between the current branch last release and `mergeMin`
-          const min = getLatestSemVer(
-            [nextSemVer, mergeMin],
-            pkg.versioning.prerelease,
-          )!;
+          const min = getLatestSemVer([nextSemVer, mergeMin])!;
 
-          if (
-            compareSemVers(
-              min,
-              base ?? pkg.versioning.initialVersion,
-              pkg.versioning.prerelease,
-            ) >= 0
-          ) {
+          if (compareSemVers(min, base ?? pkg.versioning.initialVersion) >= 0) {
             debug(namespace)(
               `Invalid maintenance range for ${pkg.uniqueName} on branch ${name}`,
             );
