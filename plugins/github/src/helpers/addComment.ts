@@ -50,6 +50,7 @@ export async function addComment(
     ? template(successComment)({ ...context, issue })
     : getSuccessComment(
         issueOrPR,
+        pkg,
         nextRelease,
         releases
           .find(({ tag }) => tag === nextRelease.tag)

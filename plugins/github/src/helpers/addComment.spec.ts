@@ -27,6 +27,7 @@ const context = {
     },
   ],
   package: {
+    name: "pkg",
     uniqueName: "npm/pkg",
   },
 } as unknown as SuccessContext;
@@ -132,7 +133,7 @@ describe("addComment", () => {
         repo: "repo",
         issue_number: 1,
         body: expect.stringContaining(
-          ":tada: This PR is included in version 1.0.0 :tada:",
+          ":tada: This PR is included in pkg version 1.0.0 :tada:",
         ),
       },
     );

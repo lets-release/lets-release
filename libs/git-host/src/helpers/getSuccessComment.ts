@@ -1,18 +1,20 @@
 import {
   ArtifactInfo,
   NextRelease,
+  Package,
   PartialRequired,
 } from "@lets-release/config";
 import { getArtifactMarkdown } from "@lets-release/git-host";
 
 export function getSuccessComment(
   type: string,
+  pkg: Pick<Package, "name">,
   nextRelease: NextRelease,
   artifacts?: PartialRequired<ArtifactInfo, "name">[],
 ) {
   return `:tada: This ${
     type === "issue" ? "issue has been resolved" : `${type} is included`
-  } in version ${nextRelease.version} :tada:${
+  } in ${pkg.name} version ${nextRelease.version} :tada:${
     artifacts?.length
       ? `\n\nThe release is available on${
           artifacts.length === 1
