@@ -1,12 +1,11 @@
 import { parseSemVer } from "src/helpers/parseSemVer";
-import { SemVerPrereleaseOptions } from "src/schemas/SemVerPrereleaseOptions";
 
 export function isValidSemVer(
   version: string,
-  options?: SemVerPrereleaseOptions,
+  prereleaseName?: string,
 ): boolean {
   try {
-    parseSemVer(version, options);
+    parseSemVer(version, prereleaseName);
 
     return true;
   } catch {

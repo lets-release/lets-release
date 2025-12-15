@@ -1,4 +1,4 @@
-import { SemVerPrereleaseOptions } from "src/schemas/SemVerPrereleaseOptions";
+import { VersioningPrereleaseOptions } from "@lets-release/versioning";
 
 export const increments: Record<
   | "major"
@@ -12,25 +12,13 @@ export const increments: Record<
   {
     current: string;
     next: string;
-    options?: SemVerPrereleaseOptions & {
+    options?: VersioningPrereleaseOptions & {
       prereleaseName?: string;
       build?: string;
     };
   }[]
 > = {
   major: [
-    {
-      current: "1.0.0-0",
-      next: "1.0.0",
-    },
-    {
-      current: "1.0.0-alpha",
-      next: "1.0.0",
-    },
-    {
-      current: "1.0.0",
-      next: "2.0.0",
-    },
     {
       current: "1.0.2-alpha",
       next: "2.0.0",
@@ -44,8 +32,16 @@ export const increments: Record<
       next: "2.0.0",
     },
     {
-      current: "1.2.3+build",
+      current: "1.0.0",
       next: "2.0.0",
+    },
+    {
+      current: "1.0.0-0",
+      next: "1.0.0",
+    },
+    {
+      current: "1.0.0-alpha",
+      next: "1.0.0",
     },
     {
       current: "1.2.3+build",
@@ -53,6 +49,52 @@ export const increments: Record<
       options: {
         build: "new-build",
       },
+    },
+  ],
+  "major-prerelease": [
+    {
+      current: "1.0.0-0",
+      next: "2.0.0-1",
+    },
+    {
+      current: "1.0.0-alpha",
+      next: "2.0.0-1",
+    },
+    {
+      current: "1.0.0-alpha",
+      next: "2.0.0-0",
+      options: {
+        initialNumber: 0,
+        ignoreZeroNumber: false,
+      },
+    },
+    {
+      current: "1.0.0-alpha",
+      next: "2.0.0-beta",
+      options: {
+        prereleaseName: "beta",
+        initialNumber: 0,
+      },
+    },
+    {
+      current: "1.0.0-alpha",
+      next: "2.0.0-beta.0",
+      options: {
+        prereleaseName: "beta",
+        initialNumber: 0,
+        ignoreZeroNumber: false,
+      },
+    },
+    {
+      current: "1.0.0-alpha",
+      next: "2.0.0-beta.1",
+      options: {
+        prereleaseName: "beta",
+      },
+    },
+    {
+      current: "1.0.0",
+      next: "2.0.0-1",
     },
   ],
   minor: [
@@ -92,6 +134,56 @@ export const increments: Record<
       },
     },
   ],
+  "minor-prerelease": [
+    {
+      current: "1.0.0-0",
+      next: "1.1.0-1",
+    },
+    {
+      current: "1.0.0-1",
+      next: "1.1.0-1",
+    },
+    {
+      current: "1.0.0-alpha",
+      next: "1.1.0-1",
+    },
+    {
+      current: "1.0.0-alpha",
+      next: "1.1.0-0",
+      options: {
+        initialNumber: 0,
+        ignoreZeroNumber: false,
+      },
+    },
+    {
+      current: "1.0.0-alpha",
+      next: "1.1.0-beta",
+      options: {
+        prereleaseName: "beta",
+        initialNumber: 0,
+      },
+    },
+    {
+      current: "1.0.0-alpha",
+      next: "1.1.0-beta.0",
+      options: {
+        prereleaseName: "beta",
+        initialNumber: 0,
+        ignoreZeroNumber: false,
+      },
+    },
+    {
+      current: "1.0.0-alpha",
+      next: "1.1.0-beta.1",
+      options: {
+        prereleaseName: "beta",
+      },
+    },
+    {
+      current: "1.0.0",
+      next: "1.1.0-1",
+    },
+  ],
   patch: [
     {
       current: "1.0.0-0",
@@ -121,169 +213,10 @@ export const increments: Record<
       },
     },
   ],
-  build: [
-    {
-      current: "1.2.3+build",
-      next: "1.2.3+new-build",
-      options: {
-        build: "new-build",
-      },
-    },
-  ],
-  "major-prerelease": [
-    {
-      current: "1.0.0-0",
-      next: "2.0.0-0",
-    },
-    {
-      current: "1.0.0-1",
-      next: "2.0.0-1",
-    },
-    {
-      current: "1.0.0-alpha",
-      next: "2.0.0-1",
-    },
-    {
-      current: "1.0.0-alpha",
-      next: "2.0.0-0",
-      options: {
-        initialNumber: 0,
-        ignoreZeroNumber: false,
-        prefix: "",
-      },
-    },
-    {
-      current: "1.0.0-alpha",
-      next: "2.0.0-beta",
-      options: {
-        prereleaseName: "beta",
-        initialNumber: 0,
-      },
-    },
-    {
-      current: "1.0.0-alpha",
-      next: "2.0.0-beta.0",
-      options: {
-        prereleaseName: "beta",
-        initialNumber: 0,
-        ignoreZeroNumber: false,
-      },
-    },
-    {
-      current: "1.0.0-alpha",
-      next: "2.0.0-beta.1",
-      options: {
-        prereleaseName: "beta",
-      },
-    },
-    {
-      current: "1.0.0-alpha",
-      next: "2.0.0beta.1",
-      options: {
-        prereleaseName: "beta",
-        prefix: "",
-      },
-    },
-    {
-      current: "1.0.0-alpha",
-      next: "2.0.0-beta1",
-      options: {
-        prereleaseName: "beta",
-        suffix: "",
-      },
-    },
-    {
-      current: "1.0.0-alpha",
-      next: "2.0.0-1.1",
-      options: {
-        prereleaseName: "1",
-        suffix: "",
-      },
-    },
-    {
-      current: "1.0.0",
-      next: "2.0.0-1",
-    },
-  ],
-  "minor-prerelease": [
-    {
-      current: "1.0.0-0",
-      next: "1.1.0-0",
-    },
-    {
-      current: "1.0.0-1",
-      next: "1.1.0-1",
-    },
-    {
-      current: "1.0.0-alpha",
-      next: "1.1.0-1",
-    },
-    {
-      current: "1.0.0-alpha",
-      next: "1.1.0-0",
-      options: {
-        initialNumber: 0,
-        ignoreZeroNumber: false,
-        prefix: "",
-      },
-    },
-    {
-      current: "1.0.0-alpha",
-      next: "1.1.0-beta",
-      options: {
-        prereleaseName: "beta",
-        initialNumber: 0,
-      },
-    },
-    {
-      current: "1.0.0-alpha",
-      next: "1.1.0-beta.0",
-      options: {
-        prereleaseName: "beta",
-        initialNumber: 0,
-        ignoreZeroNumber: false,
-      },
-    },
-    {
-      current: "1.0.0-alpha",
-      next: "1.1.0-beta.1",
-      options: {
-        prereleaseName: "beta",
-      },
-    },
-    {
-      current: "1.0.0-alpha",
-      next: "1.1.0beta.1",
-      options: {
-        prereleaseName: "beta",
-        prefix: "",
-      },
-    },
-    {
-      current: "1.0.0-alpha",
-      next: "1.1.0-beta1",
-      options: {
-        prereleaseName: "beta",
-        suffix: "",
-      },
-    },
-    {
-      current: "1.0.0-alpha",
-      next: "1.1.0-1.1",
-      options: {
-        prereleaseName: "1",
-        suffix: "",
-      },
-    },
-    {
-      current: "1.0.0",
-      next: "1.1.0-1",
-    },
-  ],
   "patch-prerelease": [
     {
       current: "1.0.0-0",
-      next: "1.0.1-0",
+      next: "1.0.1-1",
     },
     {
       current: "1.0.0-1",
@@ -299,7 +232,6 @@ export const increments: Record<
       options: {
         initialNumber: 0,
         ignoreZeroNumber: false,
-        prefix: "",
       },
     },
     {
@@ -327,32 +259,17 @@ export const increments: Record<
       },
     },
     {
-      current: "1.0.0-alpha",
-      next: "1.0.1beta.1",
-      options: {
-        prereleaseName: "beta",
-        prefix: "",
-      },
-    },
-    {
-      current: "1.0.0-alpha",
-      next: "1.0.1-beta1",
-      options: {
-        prereleaseName: "beta",
-        suffix: "",
-      },
-    },
-    {
-      current: "1.0.0-alpha",
-      next: "1.0.1-1.1",
-      options: {
-        prereleaseName: "1",
-        suffix: "",
-      },
-    },
-    {
       current: "1.0.0",
       next: "1.0.1-1",
+    },
+  ],
+  build: [
+    {
+      current: "1.2.3+build",
+      next: "1.2.3+new-build",
+      options: {
+        build: "new-build",
+      },
     },
   ],
   prerelease: [
@@ -363,9 +280,6 @@ export const increments: Record<
     {
       current: "1.0.0-1",
       next: "1.0.0-2",
-      options: {
-        prefix: "",
-      },
     },
     {
       current: "1.0.0-alpha",
@@ -389,7 +303,7 @@ export const increments: Record<
     },
     {
       current: "1.0.0-alpha.0",
-      next: "1.0.0-0",
+      next: "1.0.0-1",
       options: {
         prereleaseName: "",
       },
@@ -403,7 +317,7 @@ export const increments: Record<
     },
     {
       current: "1.0.0-alpha.0",
-      next: "1.0.0-beta.0",
+      next: "1.0.0-beta.1",
       options: {
         prereleaseName: "beta",
       },
@@ -413,6 +327,7 @@ export const increments: Record<
       next: "1.0.0-beta",
       options: {
         prereleaseName: "beta",
+        initialNumber: 0,
         ignoreZeroNumber: true,
       },
     },
@@ -421,6 +336,14 @@ export const increments: Record<
       next: "1.0.0-beta",
       options: {
         prereleaseName: "beta",
+        initialNumber: 0,
+      },
+    },
+    {
+      current: "1.0.0-alpha",
+      next: "1.0.0-alpha.0",
+      options: {
+        prereleaseName: "alpha",
         initialNumber: 0,
       },
     },

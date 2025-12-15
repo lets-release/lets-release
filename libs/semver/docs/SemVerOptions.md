@@ -16,7 +16,7 @@ Initial version of the package.
 
 ## prerelease
 
-**Type**: `SemVerPrereleaseOptions`
+**Type**: `VersioningPrereleaseOptions`
 
 **Default**:
 
@@ -24,12 +24,10 @@ Initial version of the package.
 {
   initialNumber: 1,
   ignoreZeroNumber: true,
-  prefix: "-",
-  suffix: "",
 }
 ```
 
-[Pre-release options][].
+[VersioningPrereleaseOptions][].
 
 ## build
 
@@ -39,6 +37,5 @@ The semver build metadata spec.
 If set to `true`, the tag short hash is used as the build metadata.
 If set to a record, the key is the plugin name or `default`.
 
-[Pre-release options]: ./SemVerPrereleaseOptions.md
-
 [Versioning scheme]: ../../versioning/src/enums/VersioningScheme.ts
+[VersioningPrereleaseOptions]: ../../versioning/docs/VersioningPrereleaseOptions.md

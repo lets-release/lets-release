@@ -15,21 +15,15 @@ describe("isValidPrereleaseSemVer", () => {
 
   it.each(validPrereleaseSemvers)(
     "should return true for valid prerelease semver: $value",
-    ({ value, options, parsed }) => {
-      expect(
-        isValidPrereleaseSemVer(value, {
-          ...options,
-          prereleaseName: parsed?.prereleaseName,
-        }),
-        value,
-      ).toBe(true);
+    ({ value, prereleaseName }) => {
+      expect(isValidPrereleaseSemVer(value, prereleaseName), value).toBe(true);
     },
   );
 
   it.each(invalidPrereleaseSemvers)(
     "should return false for invalid prerelease semver: $value",
-    ({ value, options }) => {
-      expect(isValidPrereleaseSemVer(value, options), value).toBe(false);
+    ({ value, prereleaseName }) => {
+      expect(isValidPrereleaseSemVer(value, prereleaseName), value).toBe(false);
     },
   );
 });

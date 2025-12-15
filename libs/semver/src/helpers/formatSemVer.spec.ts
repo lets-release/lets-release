@@ -1,7 +1,7 @@
+import { VersioningPrereleaseOptions } from "@lets-release/versioning";
+
 import { semvers } from "src/__fixtures__/semvers";
-import { DEFAULT_SEMVER_PRERELEASE_OPTIONS } from "src/constants/DEFAULT_SEMVER_PRERELEASE_OPTIONS";
 import { formatSemVer } from "src/helpers/formatSemVer";
-import { SemVerPrereleaseOptions } from "src/schemas/SemVerPrereleaseOptions";
 import { ParsedSemVer } from "src/types/ParsedSemVer";
 
 describe("formatSemVer", () => {
@@ -11,47 +11,35 @@ describe("formatSemVer", () => {
         x,
       ): x is {
         value: string;
-        options?: SemVerPrereleaseOptions;
+        options?: VersioningPrereleaseOptions;
         parsed: ParsedSemVer;
       } => !!x.parsed,
     ),
-  )("should format semver: $value", ({ value, parsed }) => {
-    expect(formatSemVer(parsed), value).toBe(value);
+  )("should format semver: $value", ({ value, options, parsed }) => {
+    expect(formatSemVer(parsed, options), value).toBe(value);
   });
 
   it("should ignore prefix option if prerelease name is digits", () => {
     expect(
-      formatSemVer(
-        {
-          major: 1,
-          minor: 2,
-          patch: 3,
-          prereleaseName: "123",
-          prereleaseNumber: 123,
-          prereleaseOptions: DEFAULT_SEMVER_PRERELEASE_OPTIONS,
-        },
-        {
-          prefix: "",
-        },
-      ),
+      formatSemVer({
+        major: 1,
+        minor: 2,
+        patch: 3,
+        prereleaseName: "123",
+        prereleaseNumber: 123,
+      }),
     ).toBe(`1.2.3-123.123`);
   });
 
   it("should ignore suffix option if prerelease name is digits", () => {
     expect(
-      formatSemVer(
-        {
-          major: 1,
-          minor: 2,
-          patch: 3,
-          prereleaseName: "123",
-          prereleaseNumber: 123,
-          prereleaseOptions: DEFAULT_SEMVER_PRERELEASE_OPTIONS,
-        },
-        {
-          suffix: "",
-        },
-      ),
+      formatSemVer({
+        major: 1,
+        minor: 2,
+        patch: 3,
+        prereleaseName: "123",
+        prereleaseNumber: 123,
+      }),
     ).toBe(`1.2.3-123.123`);
   });
 });

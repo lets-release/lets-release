@@ -7,15 +7,17 @@ describe("parseSemVer", () => {
 
   it.each(validSemvers)(
     "should parse valid semver: $value",
-    ({ value, options, parsed }) => {
-      expect(parseSemVer(value, options), value).toEqual(parsed);
+    ({ value, prereleaseName, parsed }) => {
+      expect(parseSemVer(value, prereleaseName), value).toEqual(parsed);
     },
   );
 
   it.each(invalidSemvers)(
     "should throw error for invalid semver: $value",
-    ({ value, options }) => {
-      expect(() => parseSemVer(value, options), value).toThrow(TypeError);
+    ({ value, prereleaseName }) => {
+      expect(() => parseSemVer(value, prereleaseName), value).toThrow(
+        TypeError,
+      );
     },
   );
 });

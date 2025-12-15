@@ -16,8 +16,6 @@ describe("SemVerOptions", () => {
       prerelease: {
         initialNumber: 1,
         ignoreZeroNumber: true,
-        prefix: "-",
-        suffix: ".",
       },
     });
   });
@@ -34,8 +32,6 @@ describe("SemVerOptions", () => {
       prerelease: {
         initialNumber: 1,
         ignoreZeroNumber: true,
-        prefix: "-",
-        suffix: ".",
       },
     });
   });

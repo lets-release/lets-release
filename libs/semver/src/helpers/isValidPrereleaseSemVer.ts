@@ -1,20 +1,19 @@
 import { isNil } from "lodash-es";
 
 import { parseSemVer } from "src/helpers/parseSemVer";
-import { SemVerPrereleaseOptions } from "src/schemas/SemVerPrereleaseOptions";
 
 export function isValidPrereleaseSemVer(
   version: string,
-  options?: SemVerPrereleaseOptions & { prereleaseName?: string },
+  prereleaseName?: string,
 ): boolean {
   try {
-    const { prereleaseName, prereleaseNumber } = parseSemVer(version, options);
+    const semver = parseSemVer(version, prereleaseName);
 
-    if (options?.prereleaseName) {
-      return prereleaseName === options.prereleaseName;
+    if (prereleaseName) {
+      return prereleaseName === semver.prereleaseName;
     }
 
-    return !!prereleaseName || !isNil(prereleaseNumber);
+    return !!semver.prereleaseName || !isNil(semver.prereleaseNumber);
   } catch {
     return false;
   }

@@ -3,7 +3,6 @@ import { isNil } from "lodash-es";
 import { compareSemVers } from "src/helpers/compareSemVers";
 import { parseSemVer } from "src/helpers/parseSemVer";
 import { reverseCompareSemVers } from "src/helpers/reverseCompareSemVers";
-import { SemVerPrereleaseOptions } from "src/schemas/SemVerPrereleaseOptions";
 
 export function getLatestSemVer(
   versions: string[],
@@ -11,8 +10,7 @@ export function getLatestSemVer(
     withPrerelease,
     prereleaseName,
     before,
-    ...options
-  }: SemVerPrereleaseOptions & {
+  }: {
     withPrerelease?: boolean;
     prereleaseName?: string;
     before?: string;
@@ -21,21 +19,26 @@ export function getLatestSemVer(
   return versions
     .filter((version: string) => {
       const shouldBefore = !isNil(before);
-      const isBefore =
-        shouldBefore && compareSemVers(version, before, options) < 0;
+      const isBefore = shouldBefore && compareSemVers(version, before) < 0;
       const must = !shouldBefore || isBefore;
 
       if (withPrerelease && isNil(prereleaseName)) {
         return must;
       }
 
-      const semver = parseSemVer(version, options);
+      try {
+        const semver = parseSemVer(version, prereleaseName);
 
-      if (!withPrerelease && isNil(prereleaseName)) {
-        return must && !semver.prereleaseName && isNil(semver.prereleaseNumber);
+        if (!withPrerelease && isNil(prereleaseName)) {
+          return (
+            must && !semver.prereleaseName && isNil(semver.prereleaseNumber)
+          );
+        }
+
+        return must && semver.prereleaseName === prereleaseName;
+      } catch {
+        return false;
       }
-
-      return must && semver.prereleaseName === prereleaseName;
     })
-    .toSorted((a, b) => reverseCompareSemVers(a, b, options))[0];
+    .toSorted((a, b) => reverseCompareSemVers(a, b))[0];
 }

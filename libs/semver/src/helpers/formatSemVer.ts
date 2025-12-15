@@ -1,6 +1,10 @@
 import { isNil } from "lodash-es";
 
-import { SemVerPrereleaseOptions } from "src/schemas/SemVerPrereleaseOptions";
+import {
+  DEFAULT_VERSIONING_PRERELEASE_OPTIONS,
+  VersioningPrereleaseOptions,
+} from "@lets-release/versioning";
+
 import { ParsedSemVer } from "src/types/ParsedSemVer";
 
 export function formatSemVer(
@@ -10,32 +14,19 @@ export function formatSemVer(
     patch,
     prereleaseName,
     prereleaseNumber,
-    prereleaseOptions,
     build,
   }: ParsedSemVer,
-  options: SemVerPrereleaseOptions = {}, // not forced
+  options: VersioningPrereleaseOptions = DEFAULT_VERSIONING_PRERELEASE_OPTIONS,
 ) {
   const buildMetadata = build ? `+${build}` : "";
 
   if (prereleaseName) {
-    const mergeOptions = {
-      ...prereleaseOptions,
-      ...options,
-    };
-    const prefix =
-      mergeOptions.prefix === "" && /^\d/.test(prereleaseName)
-        ? "-"
-        : mergeOptions.prefix;
-    const suffix =
-      mergeOptions.suffix === "" && /\d$/.test(prereleaseName)
-        ? "."
-        : mergeOptions.suffix;
     const number = isNil(prereleaseNumber)
-      ? mergeOptions.initialNumber
+      ? options.initialNumber
       : prereleaseNumber;
-    const prerelease = `${prereleaseName}${number === 0 && mergeOptions.ignoreZeroNumber ? "" : `${suffix}${number}`}`;
+    const prerelease = `${prereleaseName}${number === 0 && options.ignoreZeroNumber ? "" : `.${number}`}`;
 
-    return `${major}.${minor}.${patch}${prefix}${prerelease}${buildMetadata}`;
+    return `${major}.${minor}.${patch}-${prerelease}${buildMetadata}`;
   } else if (isNil(prereleaseNumber)) {
     return `${major}.${minor}.${patch}${buildMetadata}`;
   } else {
