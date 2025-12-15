@@ -1,6 +1,6 @@
 {
   "name": "@lets-release/changelog",
-  "version": "5.0.0",
+  "version": "6.0.0",
   "description": "Let's Release changelog plugin",
   "author": "Sean Tu <manlao@gmail.com> (https://github.com/manlao)",
   "license": "MIT",
