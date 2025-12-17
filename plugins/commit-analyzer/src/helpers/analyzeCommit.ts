@@ -13,6 +13,8 @@ import { ParsedCommit } from "@lets-release/conventional-changelog";
 import { name } from "src/plugin";
 import { ReleaseRule } from "src/schemas/ReleaseRule";
 
+const HIGHEST_RELEASE_TYPE = RELEASE_TYPES[0];
+
 /**
  * Find all the rules matching and return the highest release type of the matching rules.
  */
@@ -48,7 +50,7 @@ export function analyzeCommit(
           match,
         );
 
-        if (releaseType === RELEASE_TYPES[0]) {
+        if (releaseType === HIGHEST_RELEASE_TYPE) {
           debug(namespace)(
             `Release type ${releaseType} is the highest possible. Stop analysis.`,
           );

@@ -16,6 +16,8 @@ import { loadReleaseRules } from "src/helpers/loadReleaseRules";
 import { name } from "src/plugin";
 import { CommitAnalyzerOptions } from "src/schemas/CommitAnalyzerOptions";
 
+const HIGHEST_RELEASE_TYPE = RELEASE_TYPES[0];
+
 export const analyzeCommits: StepFunction<
   Step.analyzeCommits,
   CommitAnalyzerOptions
@@ -48,6 +50,7 @@ export const analyzeCommits: StepFunction<
     }
 
     // If no custom releaseRules or none matched the commit, try with default releaseRules
+    // undefined (not null), null means "no release" rule matched
     if (isUndefined(commitReleaseType)) {
       debug(namespace)("Analyzing with default rules");
       commitReleaseType = analyzeCommit(pkg, commit, DEFAULT_RELEASE_RULES);
@@ -70,7 +73,7 @@ export const analyzeCommits: StepFunction<
     }
 
     // Break loop if releaseType is the highest
-    if (releaseType === RELEASE_TYPES[0]) {
+    if (releaseType === HIGHEST_RELEASE_TYPE) {
       break;
     }
   }
