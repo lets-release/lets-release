@@ -36,9 +36,9 @@
     "@types/signale": "^1.4.7",
     "execa": "^9.6.1",
     "hosted-git-info": "^9.0.2",
-    "lodash-es": "^4.17.21",
+    "lodash-es": "^4.17.22",
     "resolve-from": "^5.0.0",
-    "zod": "^4.2.0"
+    "zod": "^4.2.1"
   },
   "devDependencies": {
     "@types/hosted-git-info": "^3.0.5"

@@ -32,8 +32,8 @@
     "@date-fns/tz": "^1.4.1",
     "@lets-release/versioning": "workspace:^",
     "date-fns": "^4.1.0",
-    "lodash-es": "^4.17.21",
-    "zod": "^4.2.0"
+    "lodash-es": "^4.17.22",
+    "zod": "^4.2.1"
   },
   "files": [
     "package.json",
