@@ -55,7 +55,7 @@ export const analyzeCommits: StepFunction<
 
     if (commitReleaseType) {
       debug(namespace)(
-        "The release type for the commit is ${commitReleaseType}",
+        `The release type for the commit is ${commitReleaseType}`,
       );
     } else {
       debug(namespace)("The commit should not trigger a release");

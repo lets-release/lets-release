@@ -50,7 +50,7 @@ export function analyzeCommit(
 
         if (releaseType === RELEASE_TYPES[0]) {
           debug(namespace)(
-            "Release type ${releaseType} is the highest possible. Stop analysis.",
+            `Release type ${releaseType} is the highest possible. Stop analysis.`,
           );
 
           return false;
