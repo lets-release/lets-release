@@ -1,5 +1,4 @@
 import debug from "debug";
-import { isUndefined } from "lodash-es";
 
 import {
   RELEASE_TYPES,
@@ -33,7 +32,7 @@ export const analyzeCommits: StepFunction<
     [pkg.path, repositoryRoot],
     cwd,
   );
-  let releaseType: ReleaseType | undefined;
+  let releaseType: ReleaseType | undefined = undefined;
 
   const namespace = `${name}:${pkg.uniqueName}`;
   const parsedCommits = parseCommits(pkg, commits, preset.parser);
@@ -51,7 +50,7 @@ export const analyzeCommits: StepFunction<
 
     // If no custom releaseRules or none matched the commit, try with default releaseRules
     // undefined (not null), null means "no release" rule matched
-    if (isUndefined(commitReleaseType)) {
+    if (commitReleaseType === undefined) {
       debug(namespace)("Analyzing with default rules");
       commitReleaseType = analyzeCommit(pkg, commit, DEFAULT_RELEASE_RULES);
     }
