@@ -85,7 +85,7 @@
     "@typescript-eslint/parser": "^8.50.0",
     "@typescript-eslint/utils": "^8.50.0",
     "@vitest/coverage-v8": "^4.0.16",
-    "@vitest/eslint-plugin": "^1.5.2",
+    "@vitest/eslint-plugin": "^1.6.1",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.4",
@@ -97,7 +97,7 @@
     "globals": "^16.5.0",
     "husky": "^9.1.7",
     "jiti": "^2.6.1",
-    "knip": "^5.74.0",
+    "knip": "^5.76.3",
     "lint-staged": "^16.2.7",
     "ncp": "^2.0.0",
     "p-retry": "^7.1.1",
@@ -112,7 +112,7 @@
     "typescript-transform-paths": "^3.5.5",
     "vite": "^7.3.0",
     "vite-node": "^5.2.0",
-    "vite-tsconfig-paths": "^6.0.2",
+    "vite-tsconfig-paths": "^6.0.3",
     "vitest": "^4.0.16"
   },
   "overrides": {
