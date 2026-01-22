@@ -36,7 +36,7 @@
     "@types/signale": "^1.4.7",
     "execa": "^9.6.1",
     "hosted-git-info": "^9.0.2",
-    "lodash-es": "^4.17.22",
+    "lodash-es": "^4.17.23",
     "resolve-from": "^5.0.0",
     "zod": "^4.3.5"
   },
