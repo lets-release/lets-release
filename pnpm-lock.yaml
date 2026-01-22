@@ -54,8 +54,8 @@ importers:
         specifier: ^4.0.0
         version: 4.0.0
       lodash-es:
-        specifier: ^4.17.22
-        version: 4.17.22
+        specifier: ^4.17.23
+        version: 4.17.23
       marked:
         specifier: ^17.0.1
         version: 17.0.1
@@ -247,8 +247,8 @@ importers:
         specifier: ^4.1.0
         version: 4.1.0
       lodash-es:
-        specifier: ^4.17.22
-        version: 4.17.22
+        specifier: ^4.17.23
+        version: 4.17.23
       zod:
         specifier: ^4.3.5
         version: 4.3.5
@@ -277,8 +277,8 @@ importers:
         specifier: ^9.0.2
         version: 9.0.2
       lodash-es:
-        specifier: ^4.17.22
-        version: 4.17.22
+        specifier: ^4.17.23
+        version: 4.17.23
       resolve-from:
         specifier: ^5.0.0
         version: 5.0.0
@@ -332,8 +332,8 @@ importers:
         specifier: ^7.0.1
         version: 7.0.1
       lodash-es:
-        specifier: ^4.17.22
-        version: 4.17.22
+        specifier: ^4.17.23
+        version: 4.17.23
       read-pkg:
         specifier: ^10.0.0
         version: 10.0.0
@@ -341,8 +341,8 @@ importers:
         specifier: ^0.2.15
         version: 0.2.15
       undici:
-        specifier: ^7.18.2
-        version: 7.18.2
+        specifier: ^7.19.0
+        version: 7.19.0
       zod:
         specifier: ^4.3.5
         version: 4.3.5
@@ -357,8 +357,8 @@ importers:
         specifier: workspace:^
         version: link:../versioning
       lodash-es:
-        specifier: ^4.17.22
-        version: 4.17.22
+        specifier: ^4.17.23
+        version: 4.17.23
       zod:
         specifier: ^4.3.5
         version: 4.3.5
@@ -372,8 +372,8 @@ importers:
         specifier: ^7.1.1
         version: 7.1.1
       undici:
-        specifier: ^7.18.2
-        version: 7.18.2
+        specifier: ^7.19.0
+        version: 7.19.0
     devDependencies:
       '@types/dockerode':
         specifier: ^4.0.0
@@ -382,8 +382,8 @@ importers:
   libs/versioning:
     dependencies:
       lodash-es:
-        specifier: ^4.17.22
-        version: 4.17.22
+        specifier: ^4.17.23
+        version: 4.17.23
       zod:
         specifier: ^4.3.5
         version: 4.3.5
@@ -416,8 +416,8 @@ importers:
         specifier: ^4.4.3
         version: 4.4.3
       lodash-es:
-        specifier: ^4.17.22
-        version: 4.17.22
+        specifier: ^4.17.23
+        version: 4.17.23
       micromatch:
         specifier: ^4.0.8
         version: 4.0.8
@@ -508,8 +508,8 @@ importers:
         specifier: ^16.0.0
         version: 16.0.0
       undici:
-        specifier: ^7.18.2
-        version: 7.18.2
+        specifier: ^7.19.0
+        version: 7.19.0
 
   plugins/gitlab:
     dependencies:
@@ -536,8 +536,8 @@ importers:
         version: 5.0.0
     devDependencies:
       undici:
-        specifier: ^7.18.2
-        version: 7.18.2
+        specifier: ^7.19.0
+        version: 7.19.0
 
   plugins/npm:
     dependencies:
@@ -578,8 +578,8 @@ importers:
         specifier: ^0.2.15
         version: 0.2.15
       undici:
-        specifier: ^7.18.2
-        version: 7.18.2
+        specifier: ^7.19.0
+        version: 7.19.0
       zod:
         specifier: ^4.3.5
         version: 4.3.5
@@ -618,8 +618,8 @@ importers:
         specifier: ^4.0.5
         version: 4.0.5
       lodash-es:
-        specifier: ^4.17.22
-        version: 4.17.22
+        specifier: ^4.17.23
+        version: 4.17.23
       normalize-url:
         specifier: ^8.1.1
         version: 8.1.1
@@ -633,8 +633,8 @@ importers:
         specifier: ^0.2.15
         version: 0.2.15
       undici:
-        specifier: ^7.18.2
-        version: 7.18.2
+        specifier: ^7.19.0
+        version: 7.19.0
       zod:
         specifier: ^4.3.5
         version: 4.3.5
@@ -673,8 +673,8 @@ importers:
         specifier: ^9.0.0
         version: 9.0.0
       lodash-es:
-        specifier: ^4.17.22
-        version: 4.17.22
+        specifier: ^4.17.23
+        version: 4.17.23
       read-package-up:
         specifier: ^12.0.0
         version: 12.0.0
@@ -2965,8 +2965,8 @@ packages:
     resolution: {integrity: sha512-gvVijfZvn7R+2qyPX8mAuKcFGDf6Nc61GdvGafQsHL0sBIxfKzA+usWn4GFC/bk+QdwPUD4kWFJLhElipq+0VA==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
-  lodash-es@4.17.22:
-    resolution: {integrity: sha512-XEawp1t0gxSi9x01glktRZ5HDy0HXqrM0x5pXQM98EaI0NxO6jVM7omDOxsuEo5UIASAnm2bRp1Jt/e0a2XU8Q==}
+  lodash-es@4.17.23:
+    resolution: {integrity: sha512-kVI48u3PZr38HdYz98UmfPnXl2DXrpdctLrFLCd3kOx1xUkOmpFPx7gCWWM5MPkL/fD8zb+Ph0QzjGFs4+hHWg==}
 
   lodash.camelcase@4.3.0:
     resolution: {integrity: sha512-TwuEnCnxbc3rAvhf/LbG7tJUDzhqXyFnv3dtzLOPgCG/hODL7WFnsbwktkD7yUV0RrreP/l1PALq/YSg6VvjlA==}
@@ -3905,8 +3905,8 @@ packages:
     resolution: {integrity: sha512-raqeBD6NQK4SkWhQzeYKd1KmIG6dllBOTt55Rmkt4HtI9mwdWtJljnrXjAFUBLTSN67HWrOIZ3EPF4kjUw80Bg==}
     engines: {node: '>=14.0'}
 
-  undici@7.18.2:
-    resolution: {integrity: sha512-y+8YjDFzWdQlSE9N5nzKMT3g4a5UBX1HKowfdXh0uvAnTaqqwqB92Jt4UXBAeKekDs5IaDKyJFR4X1gYVCgXcw==}
+  undici@7.19.0:
+    resolution: {integrity: sha512-Heho1hJD81YChi+uS2RkSjcVO+EQLmLSyUlHyp7Y/wFbxQaGb4WXVKD073JytrjXJVkSZVzoE2MCSOKugFGtOQ==}
     engines: {node: '>=20.18.1'}
 
   unicode-emoji-modifier-base@1.0.0:
@@ -6383,7 +6383,7 @@ snapshots:
     dependencies:
       p-locate: 6.0.0
 
-  lodash-es@4.17.22: {}
+  lodash-es@4.17.23: {}
 
   lodash.camelcase@4.3.0: {}
 
@@ -7278,7 +7278,7 @@ snapshots:
     dependencies:
       '@fastify/busboy': 2.1.1
 
-  undici@7.18.2: {}
+  undici@7.19.0: {}
 
   unicode-emoji-modifier-base@1.0.0: {}
 

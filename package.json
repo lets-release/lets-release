@@ -52,7 +52,7 @@
     "find-versions": "^6.0.0",
     "git-log-parser": "^1.2.1",
     "hook-std": "^4.0.0",
-    "lodash-es": "^4.17.22",
+    "lodash-es": "^4.17.23",
     "marked": "^17.0.1",
     "marked-terminal": "^7.3.0",
     "micromatch": "^4.0.8",
