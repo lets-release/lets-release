@@ -38,7 +38,7 @@
     "hosted-git-info": "^9.0.2",
     "lodash-es": "^4.17.23",
     "resolve-from": "^5.0.0",
-    "zod": "^4.3.5"
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@types/hosted-git-info": "^3.0.5"
