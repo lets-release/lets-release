@@ -66,8 +66,8 @@
   },
   "devDependencies": {
     "@aliser/ts-transformer-append-js-extension": "^1.0.7",
-    "@commitlint/cli": "^20.3.1",
-    "@commitlint/config-conventional": "^20.3.1",
+    "@commitlint/cli": "^20.4.0",
+    "@commitlint/config-conventional": "^20.4.0",
     "@eslint/js": "^9.39.2",
     "@lets-release/testing": "workspace:^",
     "@types/debug": "^4.1.12",
@@ -77,13 +77,13 @@
     "@types/lodash-es": "^4.17.12",
     "@types/marked-terminal": "^6.1.1",
     "@types/micromatch": "^4.0.10",
-    "@types/node": "^25.0.10",
+    "@types/node": "^25.1.0",
     "@types/semver": "^7.7.1",
     "@types/signale": "^1.4.7",
     "@types/stream-buffers": "^3.0.8",
     "@types/stream-to-array": "^2.3.3",
-    "@typescript-eslint/parser": "^8.53.1",
-    "@typescript-eslint/utils": "^8.53.1",
+    "@typescript-eslint/parser": "^8.54.0",
+    "@typescript-eslint/utils": "^8.54.0",
     "@vitest/coverage-v8": "^4.0.18",
     "@vitest/eslint-plugin": "^1.6.6",
     "eslint": "^9.39.2",
@@ -94,7 +94,7 @@
     "eslint-plugin-unicorn": "^62.0.0",
     "eslint-plugin-unused-imports": "^4.3.0",
     "file-url": "^4.0.0",
-    "globals": "^17.1.0",
+    "globals": "^17.2.0",
     "husky": "^9.1.7",
     "jiti": "^2.6.1",
     "knip": "^5.82.1",
@@ -108,15 +108,12 @@
     "tempy": "^3.1.2",
     "ts-patch": "^3.3.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.53.1",
+    "typescript-eslint": "^8.54.0",
     "typescript-transform-paths": "^3.5.6",
     "vite": "^7.3.1",
     "vite-node": "^5.3.0",
     "vite-tsconfig-paths": "^6.0.5",
     "vitest": "^4.0.18"
-  },
-  "overrides": {
-    "conventional-changelog-conventionalcommits": ">= 9.0.0"
   },
   "engines": {
     "node": ">=22.12.0"
@@ -164,5 +161,5 @@
       ]
     }
   },
-  "packageManager": "pnpm@10.26.0+sha512.3b3f6c725ebe712506c0ab1ad4133cf86b1f4b687effce62a9b38b4d72e3954242e643190fc51fa1642949c735f403debd44f5cb0edd657abe63a8b6a7e1e402"
+  "packageManager": "pnpm@10.28.2+sha512.41872f037ad22f7348e3b1debbaf7e867cfd448f2726d9cf74c08f19507c31d2c8e7a11525b983febc2df640b5438dee6023ebb1f84ed43cc2d654d2bc326264"
 }

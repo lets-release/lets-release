@@ -11,7 +11,6 @@ vi.mock("strip-ansi");
 
 const exec = vi.fn();
 
-// eslint-disable-next-line @typescript-eslint/unbound-method
 vi.mocked(path.normalize).mockImplementation((value) => value);
 vi.mocked($).mockReturnValue(exec as never);
 vi.mocked(stripAnsi).mockImplementation((value) => value);

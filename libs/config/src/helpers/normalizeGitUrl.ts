@@ -9,7 +9,7 @@ export function normalizeGitUrl(url: string) {
   const info = fromUrl(url, { noGitPlus: true });
   const protocol = getUrlProtocol(url);
 
-  if (info && info.getDefaultRepresentation() === "shortcut") {
+  if (info?.getDefaultRepresentation() === "shortcut") {
     // Expand shorthand URLs (such as `owner/repo` or `gitlab:owner/repo`)
     return info.https();
   } else if (protocol?.includes("http")) {

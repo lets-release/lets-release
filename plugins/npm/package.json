@@ -30,7 +30,7 @@
     "build": "rimraf ./dist && tspc --build tsconfig.build.json"
   },
   "dependencies": {
-    "@actions/core": "^2.0.2",
+    "@actions/core": "^3.0.0",
     "@lets-release/config": "workspace:^",
     "debug": "^4.4.3",
     "execa": "^9.6.1",
@@ -42,7 +42,7 @@
     "semver": "^7.7.3",
     "strip-ansi": "^7.1.2",
     "tinyglobby": "^0.2.15",
-    "undici": "^7.19.1",
+    "undici": "^7.19.2",
     "zod": "^4.3.6"
   },
   "devDependencies": {
