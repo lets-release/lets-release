@@ -34,7 +34,7 @@
     "conventional-changelog-writer": "^8.2.0",
     "debug": "^4.4.3",
     "get-stream": "^9.0.1",
-    "into-stream": "^9.0.0",
+    "into-stream": "^9.1.0",
     "lodash-es": "^4.17.23",
     "read-package-up": "^12.0.0",
     "read-pkg": "^10.0.0"
