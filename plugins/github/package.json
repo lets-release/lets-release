@@ -39,12 +39,12 @@
     "@octokit/request-error": "^7.1.0",
     "mime": "^4.1.0",
     "p-filter": "^4.1.0",
-    "read-pkg": "^10.0.0",
+    "read-pkg": "^10.1.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {
     "@octokit/types": "^16.0.0",
-    "undici": "^7.20.0"
+    "undici": "^7.21.0"
   },
   "files": [
     "package.json",
