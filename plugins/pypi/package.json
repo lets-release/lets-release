@@ -1,6 +1,6 @@
 {
   "name": "@lets-release/pypi",
-  "version": "6.0.0",
+  "version": "6.1.0",
   "description": "Let's Release pypi plugin",
   "author": "Sean Tu <manlao@gmail.com> (https://github.com/manlao)",
   "license": "MIT",
