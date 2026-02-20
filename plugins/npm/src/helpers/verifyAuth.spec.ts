@@ -4,6 +4,7 @@ import { $ } from "execa";
 import { AnalyzeCommitsContext } from "@lets-release/config";
 
 import { NpmPackageManagerName } from "src/enums/NpmPackageManagerName";
+import { NeedAuthError } from "src/errors/NeedAuthError";
 import { exchangeTrustedPublisherToken } from "src/helpers/exchangeTrustedPublisherToken";
 import { getTrustedPublisherIdToken } from "src/helpers/getTrustedPublisherIdToken";
 import { verifyAuth } from "src/helpers/verifyAuth";
@@ -119,7 +120,7 @@ describe("verifyAuth", () => {
       mockGetTrustedPublisherIdToken.mockResolvedValue(undefined);
     });
 
-    it("should throw AggregateError with NeedAuthError when npm command fails", async () => {
+    it("should throw NeedAuthError when npm command fails", async () => {
       const originalError = new Error("Authentication failed");
       const mockExecFunction = vi.fn().mockRejectedValue(originalError);
       vi.mocked($).mockReturnValue(mockExecFunction as never);
@@ -133,7 +134,7 @@ describe("verifyAuth", () => {
           },
           registry,
         } as NpmPackageContext),
-      ).rejects.toThrow(AggregateError);
+      ).rejects.toThrow(NeedAuthError);
 
       expect(vi.mocked($)).toHaveBeenCalledWith({
         cwd: "/root",
@@ -195,7 +196,7 @@ describe("verifyAuth", () => {
       });
     });
 
-    it("should throw AggregateError when both pnpm commands fail", async () => {
+    it("should throw NeedAuthError when both pnpm commands fail", async () => {
       const error1 = new Error("First pnpm command failed");
       const error2 = new Error("Second pnpm command failed");
 
@@ -214,7 +215,7 @@ describe("verifyAuth", () => {
           },
           registry,
         } as NpmPackageContext),
-      ).rejects.toThrow(AggregateError);
+      ).rejects.toThrow(NeedAuthError);
 
       expect(vi.mocked($)).toHaveBeenCalledTimes(2);
     });
@@ -260,7 +261,7 @@ describe("verifyAuth", () => {
       });
     });
 
-    it("should throw AggregateError when yarn command fails", async () => {
+    it("should throw NeedAuthError when yarn command fails", async () => {
       const yarnError = new Error("Yarn authentication failed");
       const mockFailFunction = vi.fn().mockRejectedValue(yarnError);
       vi.mocked($).mockReturnValue(mockFailFunction as never);
@@ -274,7 +275,7 @@ describe("verifyAuth", () => {
           },
           registry,
         } as NpmPackageContext),
-      ).rejects.toThrow(AggregateError);
+      ).rejects.toThrow(NeedAuthError);
     });
 
     it("should handle unknown package manager as npm", async () => {

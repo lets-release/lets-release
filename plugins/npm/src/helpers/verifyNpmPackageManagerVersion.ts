@@ -20,13 +20,15 @@ export async function verifyNpmPackageManagerVersion(
     env,
     lines: false,
   })`${pm.name} --version`.catch((error) => {
-    throw new AggregateError(
-      [
-        new NoNpmPackageManagerBinaryError(pkg, pm, `>=${minRequiredVersion}`),
-        error,
-      ],
-      "AggregateError",
+    const e = new NoNpmPackageManagerBinaryError(
+      pkg,
+      pm,
+      `>=${minRequiredVersion}`,
     );
+
+    e.cause = error;
+
+    throw e;
   });
 
   const version = findVersions(stripAnsi(stdout), { loose: true })[0];
