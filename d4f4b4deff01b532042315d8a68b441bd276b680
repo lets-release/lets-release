@@ -1,0 +1,1 @@
+{"artifacts":[{"name":"npm package","url":"https://www.npmjs.com/package/lets-release/v/8.1.0","pluginName":"@lets-release/npm","channels":[null]},{"name":"GitHub release","url":"https://github.com/lets-release/lets-release/releases/tag/v8.1.0","id":288548434,"pluginName":"@lets-release/github","channels":[null]}]}
