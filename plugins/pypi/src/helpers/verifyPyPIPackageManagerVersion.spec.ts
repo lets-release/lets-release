@@ -30,14 +30,7 @@ describe("verifyPyPIPackageManagerVersion", () => {
         pm: { name: "poetry", version: "1", root: "/path/to/repo" },
         pkg,
       } as PyPIPackageContext),
-    ).rejects.toEqual(
-      expect.objectContaining({
-        errors: [
-          expect.any(NoPyPIPackageManagerBinaryError),
-          expect.any(Error),
-        ],
-      }),
-    );
+    ).rejects.toThrow(NoPyPIPackageManagerBinaryError);
   });
 
   it("should throw UnsupportedPyPIPackageManagerVersionError if version is less than required", async () => {
