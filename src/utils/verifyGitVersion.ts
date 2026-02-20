@@ -13,10 +13,11 @@ export async function verifyGitVersion(options: Partial<Options> = {}) {
     ...options,
     lines: false,
   })`git --version`.catch((error) => {
-    throw new AggregateError(
-      [new NoGitBinaryError(`>=${minRequiredVersion}`), error],
-      "AggregateError",
-    );
+    const e = new NoGitBinaryError(`>=${minRequiredVersion}`);
+
+    e.cause = error;
+
+    throw e;
   });
 
   const version = findVersions(stripAnsi(stdout), { loose: true })[0];

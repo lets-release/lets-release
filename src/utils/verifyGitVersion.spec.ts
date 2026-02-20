@@ -1,6 +1,7 @@
 import { $ } from "execa";
 import stripAnsi from "strip-ansi";
 
+import { NoGitBinaryError } from "src/errors/NoGitBinaryError";
 import { UnsupportedGitVersionError } from "src/errors/UnsupportedGitVersionError";
 import { verifyGitVersion } from "src/utils/verifyGitVersion";
 
@@ -20,7 +21,7 @@ describe("verifyGitVersion", () => {
   it("should throw error if git binary not found", async () => {
     fn.mockRejectedValue(new Error("Command not found"));
 
-    await expect(verifyGitVersion()).rejects.toThrowError(AggregateError);
+    await expect(verifyGitVersion()).rejects.toThrowError(NoGitBinaryError);
   });
 
   it("should throw error if git version is too old", async () => {

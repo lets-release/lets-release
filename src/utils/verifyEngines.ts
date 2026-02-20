@@ -4,7 +4,7 @@ import { UnsupportedNodeVersionError } from "src/errors/UnsupportedNodeVersionEr
 import { engines } from "src/program";
 
 export function verifyEngines() {
-  if (engines && !satisfies(process.version, engines.node)) {
+  if (engines?.node && !satisfies(process.version, engines.node)) {
     throw new UnsupportedNodeVersionError(engines.node, process.version);
   }
 }

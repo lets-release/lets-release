@@ -10,6 +10,7 @@ import { VerifyConditionsContext } from "@lets-release/config";
 
 import { MIN_REQUIRED_PM_VERSIONS } from "src/constants/MIN_REQUIRED_PM_VERSIONS";
 import { NpmPackageManagerName } from "src/enums/NpmPackageManagerName";
+import { NeedAuthError } from "src/errors/NeedAuthError";
 import { verifyConditions } from "src/steps/verifyConditions";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
 
@@ -169,7 +170,7 @@ describe("verifyConditions", () => {
         } as unknown as VerifyConditionsContext,
         {},
       ),
-    ).rejects.toThrow(AggregateError);
+    ).rejects.toThrow(NeedAuthError);
   });
 
   it.each([MIN_REQUIRED_PM_VERSIONS[NpmPackageManagerName.pnpm], "latest"])(

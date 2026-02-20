@@ -44,10 +44,11 @@ export async function verifyAuth(
     try {
       await promise;
     } catch (error) {
-      throw new AggregateError(
-        [new NeedAuthError(registry), error],
-        "AggregateError",
-      );
+      const e = new NeedAuthError(registry);
+
+      e.cause = error;
+
+      throw e;
     }
   };
 

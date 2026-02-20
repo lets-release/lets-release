@@ -804,6 +804,9 @@ export class LetsRelease {
                 throw new AggregateError(
                   [...extractErrors(error), ...extractErrors(failError)],
                   "AggregateError",
+                  {
+                    cause: failError,
+                  },
                 );
               }
 
@@ -1158,6 +1161,7 @@ export class LetsRelease {
                 throw new AggregateError(
                   [...extractErrors(error), ...extractErrors(failError)],
                   "AggregateError",
+                  { cause: failError },
                 );
               }
 

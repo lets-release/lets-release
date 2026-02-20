@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { $ } from "execa";
 import findVersions from "find-versions";
 import stripAnsi from "strip-ansi";
@@ -38,11 +37,7 @@ describe("verifyNpmPackageManagerVersion", () => {
         pm: { name: "npm" },
         pkg,
       } as unknown as NpmPackageContext),
-    ).rejects.toThrow(
-      expect.objectContaining({
-        errors: [expect.any(NoNpmPackageManagerBinaryError), error],
-      }),
-    );
+    ).rejects.toThrow(NoNpmPackageManagerBinaryError);
   });
 
   it("should throw UnsupportedNpmPackageManagerVersionError if version is less than required", async () => {

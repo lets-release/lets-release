@@ -35,21 +35,21 @@
     "debug": "^4.4.3",
     "execa": "^9.6.1",
     "find-versions": "^6.0.0",
-    "normalize-url": "^8.1.1",
+    "normalize-url": "^9.0.0",
     "preferred-pm": "^4.1.1",
-    "read-pkg": "^10.0.0",
+    "read-pkg": "^10.1.0",
     "resolve-workspace-root": "^2.0.1",
-    "semver": "^7.7.3",
+    "semver": "^7.7.4",
     "strip-ansi": "^7.1.2",
     "tinyglobby": "^0.2.15",
-    "undici": "^7.20.0",
+    "undici": "^7.22.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {
     "@lets-release/testing": "workspace:^",
     "@types/stream-buffers": "^3.0.8",
     "stream-buffers": "^3.0.3",
-    "tempy": "^3.1.2"
+    "tempy": "^3.2.0"
   },
   "files": [
     "package.json",

@@ -20,13 +20,15 @@ export async function verifyPyPIPackageManagerVersion(
     env,
     lines: false,
   })`${pm.name} --version`.catch((error) => {
-    throw new AggregateError(
-      [
-        new NoPyPIPackageManagerBinaryError(pkg, pm, `>=${minRequiredVersion}`),
-        error,
-      ],
-      "AggregateError",
+    const e = new NoPyPIPackageManagerBinaryError(
+      pkg,
+      pm,
+      `>=${minRequiredVersion}`,
     );
+
+    e.cause = error;
+
+    throw e;
   });
 
   const version = findVersions(stripAnsi(stdout), { loose: true })[0];

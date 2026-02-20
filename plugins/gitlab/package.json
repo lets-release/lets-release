@@ -35,11 +35,11 @@
     "@gitbeaker/rest": "^43.8.0",
     "@lets-release/config": "workspace:^",
     "@lets-release/git-host": "workspace:^",
-    "read-pkg": "^10.0.0",
+    "read-pkg": "^10.1.0",
     "url-join": "^5.0.0"
   },
   "devDependencies": {
-    "undici": "^7.20.0"
+    "undici": "^7.22.0"
   },
   "files": [
     "package.json",

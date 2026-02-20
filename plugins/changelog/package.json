@@ -31,11 +31,11 @@
   },
   "dependencies": {
     "@lets-release/config": "workspace:^",
-    "read-pkg": "^10.0.0",
+    "read-pkg": "^10.1.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "tempy": "^3.1.2"
+    "tempy": "^3.2.0"
   },
   "files": [
     "package.json",
