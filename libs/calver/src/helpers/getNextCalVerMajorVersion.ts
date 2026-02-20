@@ -23,7 +23,7 @@ export function getNextCalVerMajorVersion(
     tokenValues: { year, week, month, day },
   } = calver;
 
-  let date = new Date();
+  let date;
 
   if (!isNil(week)) {
     date = addWeeks(
