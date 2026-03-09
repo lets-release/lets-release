@@ -59,7 +59,7 @@ jobs:
       - run: corepack enable
       - run: pnpm install
       - run: pnpm --recursive --workspace-concurrency=1 run test:cov run
-      - uses: docker/login-action@v3
+      - uses: docker/login-action@v4
         with:
           username: letsrelease
           password: ${{ secrets.docker-token }}
