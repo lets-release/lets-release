@@ -31,7 +31,7 @@
   "dependencies": {
     "@lets-release/config": "workspace:^",
     "@lets-release/conventional-changelog": "workspace:^",
-    "conventional-changelog-writer": "^8.3.0",
+    "conventional-changelog-writer": "^8.4.0",
     "debug": "^4.4.3",
     "get-stream": "^9.0.1",
     "into-stream": "^9.1.0",
@@ -40,14 +40,14 @@
     "read-pkg": "^10.1.0"
   },
   "devDependencies": {
-    "conventional-changelog-angular": "^8.2.0",
-    "conventional-changelog-atom": "^5.0.0",
-    "conventional-changelog-conventionalcommits": "^9.2.0",
-    "conventional-changelog-ember": "^5.0.0",
-    "conventional-changelog-eslint": "^6.0.0",
-    "conventional-changelog-express": "^5.0.0",
-    "conventional-changelog-jquery": "^6.0.0",
-    "conventional-changelog-jshint": "^5.1.0",
+    "conventional-changelog-angular": "^8.3.0",
+    "conventional-changelog-atom": "^5.1.0",
+    "conventional-changelog-conventionalcommits": "^9.3.0",
+    "conventional-changelog-ember": "^5.1.0",
+    "conventional-changelog-eslint": "^6.1.0",
+    "conventional-changelog-express": "^5.1.0",
+    "conventional-changelog-jquery": "^6.1.0",
+    "conventional-changelog-jshint": "^5.2.0",
     "tempy": "^3.2.0"
   },
   "files": [
