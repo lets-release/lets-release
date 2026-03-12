@@ -14,8 +14,8 @@ export default defineConfig(
   eslintJs.configs.recommended,
   ...configs.recommendedTypeChecked,
   ...configs.stylisticTypeChecked,
-  flatConfigs.recommended as never, // FIXME: https://github.com/un-ts/eslint-plugin-import-x/issues/421
-  flatConfigs.typescript as never, // FIXME: https://github.com/un-ts/eslint-plugin-import-x/issues/421
+  flatConfigs.recommended,
+  flatConfigs.typescript,
   unicornPlugin.configs.recommended,
   prettierPluginRecommended,
   vitestPlugin.configs.recommended,

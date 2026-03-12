@@ -1,4 +1,4 @@
-import preferredPM from "preferred-pm";
+import { preferredPM } from "preferred-pm";
 import resolveWorkspaceRootPkg from "resolve-workspace-root";
 
 import { FindPackagesContext, PackageInfo } from "@lets-release/config";

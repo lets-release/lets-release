@@ -1,4 +1,4 @@
-import preferredPM from "preferred-pm";
+import { preferredPM } from "preferred-pm";
 import { NormalizedPackageJson } from "read-pkg";
 import { resolveWorkspaceRoot } from "resolve-workspace-root";
 
