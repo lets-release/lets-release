@@ -46,7 +46,7 @@ describe("Verdaccio", () => {
   it("should throw error if service not ready", async () => {
     vi.mocked(pRetry).mockReset().mockRejectedValue(new Error("timeout"));
 
-    await expect(verdaccio.start()).rejects.toThrowError(
+    await expect(verdaccio.start()).rejects.toThrow(
       "Couldn't start verdaccio after 2 min",
     );
     expect(setTimeout).toHaveBeenCalledWith(4000);

@@ -1292,7 +1292,7 @@ describe("LetsRelease", () => {
         stdout: new WritableStreamBuffer(),
         stderr: new WritableStreamBuffer(),
       } as unknown as Context),
-    ).rejects.toThrowError();
+    ).rejects.toThrow();
 
     expect(success1).toHaveBeenCalledTimes(1);
     expect(success1).toHaveBeenCalledWith(

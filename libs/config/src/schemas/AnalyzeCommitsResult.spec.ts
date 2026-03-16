@@ -11,6 +11,6 @@ describe("AnalyzeCommitsResult", () => {
   });
 
   it("should throw error for invalid analyze commits result", () => {
-    expect(() => AnalyzeCommitsResult.parse(null)).toThrowError();
+    expect(() => AnalyzeCommitsResult.parse(null)).toThrow();
   });
 });

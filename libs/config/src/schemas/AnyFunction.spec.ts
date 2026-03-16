@@ -11,6 +11,6 @@ describe("AnyFunction", () => {
   it("should validate any function", () => {
     expect(AnyFunction.parse(fn1)).toEqual(fn1);
     expect(AnyFunction.parse(fn2)).toEqual(fn2);
-    expect(() => AnyFunction.parse(null)).toThrowError();
+    expect(() => AnyFunction.parse(null)).toThrow();
   });
 });

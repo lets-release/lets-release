@@ -4,6 +4,9 @@ import { defineConfig as defineVitestConfig } from "vitest/config";
 
 export default mergeConfig(
   defineViteConfig({
+    resolve: {
+      tsconfigPaths: false,
+    },
     plugins: [tsconfigPaths()],
   }),
   defineVitestConfig({

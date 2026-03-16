@@ -991,7 +991,7 @@ describe("generateNotes", () => {
         } as GenerateNotesContext,
         { config: "unknown-config" },
       ),
-    ).rejects.toThrowError();
+    ).rejects.toThrow();
   });
 
   it('should re-throw error from "conventional-changelog"', async () => {

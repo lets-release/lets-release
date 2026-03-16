@@ -671,7 +671,7 @@ describe("analyzeCommits", () => {
           config: "unknown-config",
         },
       ),
-    ).rejects.toThrowError();
+    ).rejects.toThrow();
   });
 
   it('should throw error if "releaseRules" reference invalid commit type', async () => {
@@ -713,6 +713,6 @@ describe("analyzeCommits", () => {
           parserOptions: { headerPattern: "\\" },
         },
       ),
-    ).rejects.toThrowError();
+    ).rejects.toThrow();
   });
 });

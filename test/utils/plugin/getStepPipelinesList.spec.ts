@@ -132,7 +132,7 @@ describe("getStepPipelinesList", () => {
       packageOptions: normalizedPackageOptions,
     } as unknown as NormalizedStepContext<Step.findPackages>);
 
-    expect(findPackages).toBeCalledTimes(1);
+    expect(findPackages).toHaveBeenCalledTimes(1);
 
     await stepPipelines[Step.verifyConditions]?.(stepPipelines, {
       ...context,
@@ -140,6 +140,6 @@ describe("getStepPipelinesList", () => {
       packages: [],
     } as unknown as NormalizedStepContext<Step.verifyConditions>);
 
-    expect(verifyConditions).toBeCalledTimes(1);
+    expect(verifyConditions).toHaveBeenCalledTimes(1);
   });
 });

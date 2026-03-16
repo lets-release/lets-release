@@ -36,7 +36,7 @@ describe("PyPIServer", () => {
   it("should throw error if service not ready", async () => {
     vi.mocked(pRetry).mockReset().mockRejectedValue(new Error("timeout"));
 
-    await expect(pypiServer.start()).rejects.toThrowError(
+    await expect(pypiServer.start()).rejects.toThrow(
       "Couldn't start pypiserver after 2 min",
     );
     expect(setTimeout).toHaveBeenCalledWith(4000);

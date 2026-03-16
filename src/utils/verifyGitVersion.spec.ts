@@ -21,7 +21,7 @@ describe("verifyGitVersion", () => {
   it("should throw error if git binary not found", async () => {
     fn.mockRejectedValue(new Error("Command not found"));
 
-    await expect(verifyGitVersion()).rejects.toThrowError(NoGitBinaryError);
+    await expect(verifyGitVersion()).rejects.toThrow(NoGitBinaryError);
   });
 
   it("should throw error if git version is too old", async () => {
@@ -29,7 +29,7 @@ describe("verifyGitVersion", () => {
       stdout: "git version 2.7.0",
     } as never);
 
-    await expect(verifyGitVersion()).rejects.toThrowError(
+    await expect(verifyGitVersion()).rejects.toThrow(
       UnsupportedGitVersionError,
     );
   });

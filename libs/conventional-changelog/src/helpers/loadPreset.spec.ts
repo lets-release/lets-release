@@ -74,7 +74,7 @@ describe("loadPreset", () => {
 
     await expect(
       loadPreset({ preset, presetConfig, parserOptions, writerOptions }, [cwd]),
-    ).rejects.toThrowError();
+    ).rejects.toThrow();
     expect(loadModule).toHaveBeenCalledWith(
       presetPackage,
       [cwd],
