@@ -89,11 +89,7 @@ export function normalizeMaintenanceBranches(
             const range = ranges[pkg.uniqueName];
             const lowerRange = branches.at(-1)?.ranges[pkg.uniqueName];
 
-            if (
-              lowerRange &&
-              lowerRange.min === range.min &&
-              lowerRange.max === range.max
-            ) {
+            if (lowerRange?.min === range.min && lowerRange.max === range.max) {
               debug(namespace)(
                 `Conflict maintenance range for ${pkg.uniqueName} on ${rest.name} and ${branches.at(-1)?.name}`,
               );
