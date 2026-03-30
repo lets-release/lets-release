@@ -2,15 +2,15 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "paths": {
-      "src/*": ["src/*"],
-      "test/*": ["test/*"]
+      "src/*": ["./src/*"],
+      "test/*": ["./test/*"]
     }
   },
   "include": [
-    "src/**/*.ts",
-    "test/**/*.ts",
-    "vitest.e2e.config.ts",
-    "vitest.unit.config.ts"
+    "./src/**/*.ts",
+    "./test/**/*.ts",
+    "./vitest.e2e.config.ts",
+    "./vitest.unit.config.ts"
   ],
   "references": [
     {

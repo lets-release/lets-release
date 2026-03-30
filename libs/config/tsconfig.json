@@ -1,6 +1,6 @@
 {
   "extends": "./tsconfig.base.json",
-  "include": ["src/**/*.ts", "vitest.unit.config.ts"],
+  "include": ["./src/**/*.ts", "./vitest.unit.config.ts"],
   "references": [
     {
       "path": "../../tsconfig.eslint.json"

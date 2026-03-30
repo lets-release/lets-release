@@ -2,11 +2,11 @@
   "extends": "./tsconfig.base.root.json",
   "compilerOptions": {
     "paths": {
-      "src/*": ["src/*"],
-      "test/*": ["test/*"]
+      "src/*": ["./src/*"],
+      "test/*": ["./test/*"]
     }
   },
-  "include": ["src/**/*.ts", "test/**/*.ts"],
+  "include": ["./src/**/*.ts", "./test/**/*.ts"],
   "references": [
     {
       "path": "./libs/calver/tsconfig.json"
