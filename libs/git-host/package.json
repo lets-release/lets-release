@@ -36,7 +36,7 @@
     "lodash-es": "^4.18.1",
     "read-pkg": "^10.1.0",
     "tinyglobby": "^0.2.15",
-    "undici": "^7.24.6",
+    "undici": "^8.0.2",
     "zod": "^4.3.6"
   },
   "devDependencies": {
