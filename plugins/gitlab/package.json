@@ -39,7 +39,7 @@
     "url-join": "^5.0.0"
   },
   "devDependencies": {
-    "undici": "^7.24.6"
+    "undici": "^8.0.2"
   },
   "files": [
     "package.json",
