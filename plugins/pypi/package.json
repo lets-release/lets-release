@@ -40,8 +40,8 @@
     "normalize-url": "^9.0.0",
     "smol-toml": "^1.6.1",
     "strip-ansi": "^7.2.0",
-    "tinyglobby": "^0.2.15",
-    "undici": "^8.0.2",
+    "tinyglobby": "^0.2.16",
+    "undici": "^8.1.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {
