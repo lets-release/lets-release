@@ -1,5 +1,6 @@
 import { getIDToken } from "@actions/core";
 import debug from "debug";
+import { fetch } from "undici";
 
 import { AnalyzeCommitsContext } from "@lets-release/config";
 
