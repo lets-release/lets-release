@@ -32,12 +32,12 @@
     "@lets-release/config": "workspace:^",
     "debug": "^4.4.3",
     "dir-glob": "^3.0.1",
-    "issue-parser": "^7.0.1",
+    "issue-parser": "^7.0.2",
     "lodash-es": "^4.18.1",
     "read-pkg": "^10.1.0",
     "tinyglobby": "^0.2.16",
-    "undici": "^8.1.0",
-    "zod": "^4.3.6"
+    "undici": "^8.2.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/issue-parser": "^3.0.5"
