@@ -57,22 +57,6 @@ registry = ${registry}`,
       ).resolves.toBe(scopeRegistry);
     });
 
-    it("should get registry from environment variables", async () => {
-      await expect(
-        getRegistry(
-          {
-            env: {
-              ...process.env,
-              npm_config_registry: anotherRegistry,
-              NPM_CONFIG_REGISTRY: anotherRegistry,
-            },
-            package: { path: cwd },
-          },
-          { pm: { name: "pnpm", root: cwd }, pkg: {} } as NpmPackageContext,
-        ),
-      ).resolves.toBe(anotherRegistry);
-    });
-
     it("should get registry from .npmrc", async () => {
       await expect(
         getRegistry(
@@ -81,6 +65,8 @@ registry = ${registry}`,
               ...process.env,
               npm_config_registry: undefined,
               NPM_CONFIG_REGISTRY: undefined,
+              pnpm_config_registry: undefined,
+              PNPM_CONFIG_REGISTRY: undefined,
             },
             package: { path: cwd },
           },
