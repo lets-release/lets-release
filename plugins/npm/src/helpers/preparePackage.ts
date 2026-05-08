@@ -43,7 +43,7 @@ export async function preparePackage(
       versionPromise = $({
         ...options,
         cwd: pkgRoot,
-      })`pnpm version ${version} --no-git-tag-version --allow-same-version`;
+      })`pnpm version ${version} --no-git-tag-version --allow-same-version --no-git-checks`;
       break;
     }
 
