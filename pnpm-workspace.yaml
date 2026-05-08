@@ -1,11 +1,11 @@
 packages:
   - libs/*
   - plugins/*
-
-onlyBuiltDependencies:
-  - cpu-features
-  - esbuild
-  - oxc-resolver
-  - protobufjs
-  - ssh2
-  - unrs-resolver
+includeWorkspaceRoot: true
+allowBuilds:
+  cpu-features: true
+  esbuild: true
+  oxc-resolver: true
+  protobufjs: true
+  ssh2: true
+  unrs-resolver: true
