@@ -13,7 +13,11 @@ import { success } from "src/steps/success";
 import { GitHubContext } from "src/types/GitHubContext";
 import { PullRequest } from "src/types/PullRequest";
 
-vi.mock("@lets-release/git-host");
+vi.mock("@lets-release/git-host", async () => {
+  const origin = await vi.importActual("@lets-release/git-host");
+
+  return { ...origin, parseIssues: vi.fn() };
+});
 vi.mock("src/helpers/ensureGitHubContext");
 vi.mock("src/helpers/getRepoInfo");
 vi.mock("src/helpers/getAssociatedPullRequests");

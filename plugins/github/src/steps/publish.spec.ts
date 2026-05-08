@@ -10,7 +10,11 @@ import { LetsReleaseOctokit } from "src/LetsReleaseOctokit";
 import { publish } from "src/steps/publish";
 import { GitHubContext } from "src/types/GitHubContext";
 
-vi.mock("@lets-release/git-host");
+vi.mock("@lets-release/git-host", async () => {
+  const origin = await vi.importActual("@lets-release/git-host");
+
+  return { ...origin, findUniqueReleaseAssets: vi.fn() };
+});
 vi.mock("src/helpers/ensureGitHubContext");
 vi.mock("src/helpers/uploadReleaseAsset");
 
