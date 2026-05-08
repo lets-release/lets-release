@@ -10,27 +10,60 @@ export async function getPoetryRegistries(
     lines: true,
   })`poetry config --list`;
 
-  const names = stdout.flatMap((line) => {
-    const name = /^repositories\.(.+)\.url$/i.exec(
-      stripAnsi(line).trim().split(" = ")[0].trim(),
-    )?.[1];
+  const entries: { name: string; publishUrl?: string }[] = [];
 
-    if (name) {
-      return [name];
+  for (const line of stdout) {
+    const trimmed = stripAnsi(line).trim();
+    const [key = "", ...rest] = trimmed.split(" = ");
+    const keyTrimmed = key.trim();
+
+    // Format: repositories.<name>.url = "<url>"
+    const urlMatch = /^repositories\.(.+)\.url$/i.exec(keyTrimmed);
+
+    if (urlMatch) {
+      entries.push({ name: urlMatch[1] });
+      continue;
     }
 
-    return [];
-  });
+    // Format: repositories.<name> = {"url": "<url>"}
+    const nameMatch = /^repositories\.(.+)$/i.exec(keyTrimmed);
+
+    if (nameMatch) {
+      const value = rest.join(" = ").trim();
+
+      try {
+        const parsed: unknown = JSON.parse(value);
+
+        if (
+          typeof parsed === "object" &&
+          parsed !== null &&
+          "url" in parsed &&
+          typeof parsed.url === "string"
+        ) {
+          entries.push({
+            name: nameMatch[1],
+            publishUrl: normalizeUrl(parsed.url.trim()),
+          });
+        }
+      } catch {
+        // not valid JSON, skip
+      }
+    }
+  }
 
   return await Promise.all(
-    names.map(async (name) => {
+    entries.map(async (entry) => {
+      if (entry.publishUrl) {
+        return { name: entry.name, publishUrl: entry.publishUrl };
+      }
+
       const { stdout } = await $<{ lines: false }>({
         ...options,
         lines: false,
-      })`poetry config ${`repositories.${name}.url`}`;
+      })`poetry config ${`repositories.${entry.name}.url`}`;
 
       return {
-        name,
+        name: entry.name,
         publishUrl: normalizeUrl(stripAnsi(stdout).trim()),
       };
     }),
