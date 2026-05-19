@@ -31,7 +31,7 @@
   "dependencies": {
     "@date-fns/tz": "^1.4.1",
     "@lets-release/versioning": "workspace:^",
-    "date-fns": "^4.1.0",
+    "date-fns": "^4.2.1",
     "lodash-es": "^4.18.1",
     "zod": "^4.4.3"
   },
