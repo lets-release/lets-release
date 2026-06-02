@@ -41,7 +41,7 @@
     "resolve-workspace-root": "^2.0.1",
     "semver": "^7.8.1",
     "strip-ansi": "^7.2.0",
-    "tinyglobby": "^0.2.16",
+    "tinyglobby": "^0.2.17",
     "undici": "^8.3.0",
     "zod": "^4.4.3"
   },

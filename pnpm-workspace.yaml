@@ -9,3 +9,5 @@ allowBuilds:
   protobufjs: true
   ssh2: true
   unrs-resolver: true
+overrides:
+  "unrs-resolver": "1.11.1"
