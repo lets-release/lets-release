@@ -11,3 +11,4 @@ allowBuilds:
   unrs-resolver: true
 overrides:
   "unrs-resolver": "1.11.1"
+minimumReleaseAge: 0
