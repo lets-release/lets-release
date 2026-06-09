@@ -3,7 +3,7 @@ import * as program from "src/program";
 import { verifyEngines } from "src/utils/verifyEngines";
 
 vi.mock("src/program", () => {
-  const major = Number(process.version.replace(/^v/, "").split(".")[0]);
+  const major = Number(process.version.replace(/^v/, "").split(".", 1)[0]);
 
   return {
     engines: { node: `>=${major + 1}` },
@@ -21,7 +21,7 @@ describe("verifyEngines", () => {
   });
 
   it("should not throw when node version satisfies engines requirement", () => {
-    const major = Number(process.version.replace(/^v/, "").split(".")[0]);
+    const major = Number(process.version.replace(/^v/, "").split(".", 1)[0]);
     vi.mocked(program).engines = { node: `>=${major}` };
     expect(() => verifyEngines()).not.toThrow();
   });

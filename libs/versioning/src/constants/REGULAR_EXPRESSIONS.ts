@@ -8,12 +8,12 @@ const IDENTIFIER_CHARACTER = "[0-9a-zA-Z-]";
 
 // ## Numeric Identifier
 // A single `0`, or a non-zero digit followed by zero or more digits.
-const NUMERIC_IDENTIFIER = String.raw`0|${POSITIVE_DIGIT}${DIGIT}*`;
+const NUMERIC_IDENTIFIER = `0|${POSITIVE_DIGIT}${DIGIT}*`;
 
 // ## Alphanumeric Identifier
 // Zero or more digits, followed by a letter or hyphen, and then zero or
 // more letters, digits, or hyphens.
-const ALPHANUMERIC_IDENTIFIER = String.raw`${DIGIT}*${NON_DIGIT}${IDENTIFIER_CHARACTER}*`;
+const ALPHANUMERIC_IDENTIFIER = `${DIGIT}*${NON_DIGIT}${IDENTIFIER_CHARACTER}*`;
 
 // ## Prerelease Identifier
 // A numeric identifier, or a non-numeric identifier.

@@ -5,11 +5,11 @@ describe("paginate", () => {
     const mockFn = vi
       .fn()
       .mockResolvedValueOnce({
-        items: Array.from({ length: 10 }).fill(0),
+        items: Array.from({ length: 10 }, () => 0),
         hasNextPage: true,
       })
       .mockResolvedValueOnce({
-        items: Array.from({ length: 5 }).fill(0),
+        items: Array.from({ length: 5 }, () => 0),
         hasNextPage: false,
       });
 

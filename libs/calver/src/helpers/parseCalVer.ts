@@ -15,7 +15,7 @@ export function parseCalVer(
 ): ParsedCalVer {
   const { tokens, regex: VERSION_CORE } = parseCalVerFormat(format);
   const { PRERELEASE, BUILD } = REGULAR_EXPRESSIONS;
-  const regex = String.raw`^${VERSION_CORE}${PRERELEASE}?${BUILD}?$`;
+  const regex = `^${VERSION_CORE}${PRERELEASE}?${BUILD}?$`;
   const trimmedVersion = version.trim();
   const match = trimmedVersion.match(regex);
 

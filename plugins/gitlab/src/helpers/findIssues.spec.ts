@@ -10,8 +10,8 @@ const options = {};
 describe("findIssues", () => {
   it("should paginate through issues", async () => {
     all
-      .mockResolvedValueOnce(Array.from({ length: 100 }).fill({}))
-      .mockResolvedValueOnce(Array.from({ length: 50 }).fill({}));
+      .mockResolvedValueOnce(Array.from({ length: 100 }, () => ({})))
+      .mockResolvedValueOnce(Array.from({ length: 50 }, () => ({})));
 
     const result = await findIssues(gitlab, projectId, options);
 

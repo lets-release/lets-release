@@ -27,45 +27,43 @@ export function analyzeCommit(
 
   let releaseType: ReleaseType | null | undefined;
 
-  releaseRules
-    .filter(
-      ({ breaking, revert, release: _, ...rule }) =>
-        // If the rule is not `breaking` or the commit doesn't have a breaking change note
-        (!breaking || (commit.notes && commit.notes.length > 0)) &&
-        // If the rule is not `revert` or the commit is not a revert
-        (!revert || commit.revert) &&
-        // Otherwise match the regular rules
-        isMatchWith(commit, rule, (object, source) =>
-          isString(source) && isString(object)
-            ? micromatch.isMatch(object, source)
-            : undefined,
-        ),
-    )
-    .every((match) => {
-      if (compareReleaseTypes(match.release, releaseType)) {
-        releaseType = match.release;
+  const matches = releaseRules.filter(
+    ({ breaking, revert, release: _, ...rule }) =>
+      // If the rule is not `breaking` or the commit doesn't have a breaking change note
+      (!breaking || (commit.notes && commit.notes.length > 0)) &&
+      // If the rule is not `revert` or the commit is not a revert
+      (!revert || commit.revert) &&
+      // Otherwise match the regular rules
+      isMatchWith(commit, rule, (object, source) =>
+        isString(source) && isString(object)
+          ? micromatch.isMatch(object, source)
+          : undefined,
+      ),
+  );
 
+  for (const match of matches) {
+    if (compareReleaseTypes(match.release, releaseType)) {
+      releaseType = match.release;
+
+      debug(namespace)(
+        `The rule %o match commit with release type ${releaseType}`,
+        match,
+      );
+
+      if (releaseType === HIGHEST_RELEASE_TYPE) {
         debug(namespace)(
-          `The rule %o match commit with release type ${releaseType}`,
-          match,
+          `Release type ${releaseType} is the highest possible. Stop analysis.`,
         );
 
-        if (releaseType === HIGHEST_RELEASE_TYPE) {
-          debug(namespace)(
-            `Release type ${releaseType} is the highest possible. Stop analysis.`,
-          );
-
-          return false;
-        }
-      } else {
-        debug(namespace)(
-          `The rule %o match commit with release type ${match.release} but the higher release type ${releaseType} has already been found for this commit`,
-          match,
-        );
+        break;
       }
-
-      return true;
-    });
+    } else {
+      debug(namespace)(
+        `The rule %o match commit with release type ${match.release} but the higher release type ${releaseType} has already been found for this commit`,
+        match,
+      );
+    }
+  }
 
   return releaseType;
 }

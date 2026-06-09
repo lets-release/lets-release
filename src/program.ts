@@ -11,7 +11,7 @@ const {
 }: NormalizedPackageJson = readPackageSync({
   cwd: path.resolve(import.meta.dirname, "../"),
 });
-const defaultGitUserName = `${name}[bot]`;
+const defaultGitUsername = `${name}[bot]`;
 const defaultGitUserEmail = `245835403+${name}[bot]@users.noreply.github.com`;
 const [homepagePath] = homepage.split("#");
 
@@ -21,6 +21,6 @@ export {
   version,
   engines,
   homepagePath as homepage,
-  defaultGitUserName,
+  defaultGitUsername,
   defaultGitUserEmail,
 };

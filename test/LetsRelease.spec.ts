@@ -21,7 +21,7 @@ import { InvalidMaintenanceMergeError } from "src/errors/InvalidMaintenanceMerge
 import { InvalidNextVersionError } from "src/errors/InvalidNextVersionError";
 import { InvalidStepResultError } from "src/errors/InvalidStepResultError";
 import { LetsRelease } from "src/LetsRelease";
-import { defaultGitUserEmail, defaultGitUserName, name } from "src/program";
+import { defaultGitUserEmail, defaultGitUsername, name } from "src/program";
 import { getCommits } from "src/utils/branch/getCommits";
 import { getNote } from "src/utils/git/getNote";
 import { getTagHash } from "src/utils/git/getTagHash";
@@ -349,9 +349,9 @@ describe("LetsRelease", () => {
       env: {
         GIT_ASKPASS: "echo",
         GIT_AUTHOR_EMAIL: defaultGitUserEmail,
-        GIT_AUTHOR_NAME: defaultGitUserName,
+        GIT_AUTHOR_NAME: defaultGitUsername,
         GIT_COMMITTER_EMAIL: defaultGitUserEmail,
-        GIT_COMMITTER_NAME: defaultGitUserName,
+        GIT_COMMITTER_NAME: defaultGitUsername,
         GIT_TERMINAL_PROMPT: 0,
       },
       logger,

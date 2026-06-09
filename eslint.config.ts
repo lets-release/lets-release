@@ -140,6 +140,7 @@ export default defineConfig(
       "unicorn/no-null": "off",
       "unicorn/no-useless-undefined": "off",
       "unicorn/no-array-reduce": "off",
+      "unicorn/prefer-https": "off",
       "vitest/valid-expect": [
         "error",
         {

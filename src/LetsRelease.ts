@@ -33,7 +33,7 @@ import { NoGitRepoPermissionError } from "src/errors/NoGitRepoPermissionError";
 import { WorkflowsError } from "src/errors/WorkflowsError";
 import {
   defaultGitUserEmail,
-  defaultGitUserName,
+  defaultGitUsername,
   name,
   version,
 } from "src/program";
@@ -97,9 +97,9 @@ export class LetsRelease {
   async run(options: Partial<Options> = {}, context: Context = {}) {
     const { cwd = process.cwd(), env = process.env } = context;
     const extendedEnv = {
-      GIT_AUTHOR_NAME: defaultGitUserName,
+      GIT_AUTHOR_NAME: defaultGitUsername,
       GIT_AUTHOR_EMAIL: defaultGitUserEmail,
-      GIT_COMMITTER_NAME: defaultGitUserName,
+      GIT_COMMITTER_NAME: defaultGitUsername,
       GIT_COMMITTER_EMAIL: defaultGitUserEmail,
       ...env,
       GIT_ASKPASS: "echo",
