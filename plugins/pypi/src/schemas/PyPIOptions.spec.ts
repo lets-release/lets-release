@@ -9,7 +9,7 @@ describe("PyPIOptions", () => {
         skipPublishing: "xxx",
         distDir: "",
         pkgRoot: "",
-      } as unknown as PyPIOptions),
+      }),
     ).toThrow(ZodError);
   });
 });

@@ -2,11 +2,7 @@ import { RequestError } from "@octokit/request-error";
 import debug from "debug";
 import { template } from "lodash-es";
 
-import {
-  Artifact,
-  PartialRequired,
-  SuccessContext,
-} from "@lets-release/config";
+import { SuccessContext } from "@lets-release/config";
 import { getSuccessComment } from "@lets-release/git-host";
 
 import { LetsReleaseOctokit } from "src/LetsReleaseOctokit";
@@ -54,10 +50,7 @@ export async function addComment(
         nextRelease,
         releases
           .find(({ tag }) => tag === nextRelease.tag)
-          ?.artifacts.filter(({ name }) => !!name) as PartialRequired<
-          Artifact,
-          "name"
-        >[],
+          ?.artifacts.filter(({ name }) => !!name),
       );
 
   try {

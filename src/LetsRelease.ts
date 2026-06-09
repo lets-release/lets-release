@@ -703,7 +703,7 @@ export class LetsRelease {
           packageName,
           value,
         ),
-    } as NormalizedStepContext<T>;
+    };
   };
 
   private async handleMergedReleases(
@@ -799,7 +799,7 @@ export class LetsRelease {
                 await stepPipelines.fail?.(stepPipelines, {
                   ...addChannelsContext,
                   error,
-                } as NormalizedStepContext<Step.fail>);
+                });
               } catch (failError) {
                 throw new AggregateError(
                   [...extractErrors(error), ...extractErrors(failError)],

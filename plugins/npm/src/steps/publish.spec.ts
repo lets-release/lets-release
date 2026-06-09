@@ -42,9 +42,7 @@ const promise = new ExtendedPromise((resolve) => {
 });
 
 vi.mocked($).mockReturnValue((() => promise) as never);
-vi.mocked(getArtifactInfo).mockReturnValue(
-  artifact as ReturnType<typeof getArtifactInfo>,
-);
+vi.mocked(getArtifactInfo).mockReturnValue(artifact);
 
 describe("publish", () => {
   beforeEach(() => {

@@ -12,7 +12,7 @@ export function parsePluginStepSpec<
   if (isArray(spec)) {
     [plugin, options] = spec;
   } else {
-    plugin = spec as StepFunction<T, U>;
+    plugin = spec;
   }
 
   return [plugin, options ?? ({} as U)];

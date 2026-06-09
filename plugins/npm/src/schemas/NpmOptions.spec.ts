@@ -9,7 +9,7 @@ describe("NpmOptions", () => {
         skipPublishing: "xxx",
         tarballDir: "",
         pkgRoot: "",
-      } as unknown as NpmOptions),
+      }),
     ).toThrow(ZodError);
   });
 });

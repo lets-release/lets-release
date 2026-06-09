@@ -27,7 +27,7 @@ describe("verifyGitVersion", () => {
   it("should throw error if git version is too old", async () => {
     fn.mockResolvedValue({
       stdout: "git version 2.7.0",
-    } as never);
+    });
 
     await expect(verifyGitVersion()).rejects.toThrow(
       UnsupportedGitVersionError,
@@ -37,7 +37,7 @@ describe("verifyGitVersion", () => {
   it("should not throw error if git version meets minimum requirement", async () => {
     fn.mockResolvedValue({
       stdout: "git version 2.7.1",
-    } as never);
+    });
 
     await expect(verifyGitVersion()).resolves.toBeUndefined();
   });
@@ -45,7 +45,7 @@ describe("verifyGitVersion", () => {
   it("should not throw error if git version is newer than minimum requirement", async () => {
     fn.mockResolvedValue({
       stdout: "git version 2.30.0",
-    } as never);
+    });
 
     await expect(verifyGitVersion()).resolves.toBeUndefined();
   });

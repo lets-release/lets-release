@@ -60,7 +60,7 @@ describe("publish", () => {
         ...context.package,
         type: "npm",
       },
-    } as unknown as PublishContext;
+    };
 
     await expect(publish(nonPypiContext, {})).resolves.toBe(undefined);
     expect(ensurePyPIPackageContext).not.toHaveBeenCalled();

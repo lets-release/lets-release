@@ -29,7 +29,7 @@ describe("flatMapParsedBranch", () => {
         {
           name: "alpha/1.x.x",
           prerelease: undefined,
-        } as unknown as BranchObject<BranchType.prerelease>,
+        },
         {
           name: "alpha/1.x.x",
         },
@@ -45,7 +45,7 @@ describe("flatMapParsedBranch", () => {
         {
           name: "alpha",
           prerelease: undefined,
-        } as unknown as BranchObject<BranchType.prerelease>,
+        },
         {
           name: "alpha",
         },
@@ -100,7 +100,7 @@ describe("flatMapParsedBranch", () => {
               channels: ["alpha"],
             },
           },
-        } as unknown as BranchObject<BranchType.main>,
+        },
         {
           name: "main",
         },
@@ -127,7 +127,7 @@ describe("flatMapParsedBranch", () => {
         BranchType.next,
         {
           name: "next",
-        } as unknown as BranchObject<BranchType.next>,
+        },
         {
           name: "next",
         },
@@ -149,7 +149,7 @@ describe("flatMapParsedBranch", () => {
         BranchType.maintenance,
         {
           name: "+([0-9])?(.{+([0-9]),x}).x",
-        } as unknown as BranchObject<BranchType.maintenance>,
+        },
         {
           name: "c/1.x.x",
           package: "c",
@@ -164,7 +164,7 @@ describe("flatMapParsedBranch", () => {
         BranchType.maintenance,
         {
           name: "+([0-9])?(.{+([0-9]),x}).x",
-        } as unknown as BranchObject<BranchType.maintenance>,
+        },
         {
           name: "c/1.x.x",
         },
@@ -179,7 +179,7 @@ describe("flatMapParsedBranch", () => {
         BranchType.maintenance,
         {
           name: "+([0-9])?(.{+([0-9]),x}).x",
-        } as unknown as BranchObject<BranchType.maintenance>,
+        },
         {
           name: "npm/a/1.x.x",
           package: "npm/a",
@@ -217,7 +217,7 @@ describe("flatMapParsedBranch", () => {
         {
           name: "+(+([0-9])[._-])?(x[._-])x",
           ranges: undefined,
-        } as unknown as BranchObject<BranchType.maintenance>,
+        },
         {
           name: "maintenance",
           range: "2023.x.x",
@@ -264,7 +264,7 @@ describe("flatMapParsedBranch", () => {
             "npm/a": "invalid-semver-range",
             "npm/b": "invalid-calver-range",
           },
-        } as unknown as BranchObject<BranchType.maintenance>,
+        },
         {
           name: "test",
         },
@@ -291,7 +291,7 @@ describe("flatMapParsedBranch", () => {
           ranges: {
             "npm/unknown": "1.x.x",
           },
-        } as unknown as BranchObject<BranchType.maintenance>,
+        },
         {
           name: "test",
         },

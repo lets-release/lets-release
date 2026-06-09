@@ -1,9 +1,4 @@
-import {
-  Commit,
-  Package,
-  ReleaseBranch,
-  ReleaseVersionRange,
-} from "@lets-release/config";
+import { Commit, Package, ReleaseBranch } from "@lets-release/config";
 
 import { InvalidNextVersionError } from "src/errors/InvalidNextVersionError";
 
@@ -16,7 +11,7 @@ describe("InvalidNextVersionError", () => {
       {
         min: "1.0.0",
         max: "2.0.0",
-      } as ReleaseVersionRange,
+      },
       "3.0.0",
       {
         name: "branch",
@@ -48,7 +43,7 @@ describe("InvalidNextVersionError", () => {
       {
         min: "1.0.0",
         max: "2.0.0",
-      } as ReleaseVersionRange,
+      },
       "3.0.0",
       {
         name: "branch",
@@ -70,7 +65,7 @@ describe("InvalidNextVersionError", () => {
       {
         min: "1.0.0",
         max: "2.0.0",
-      } as ReleaseVersionRange,
+      },
       "3.0.0",
       {
         name: "branch",

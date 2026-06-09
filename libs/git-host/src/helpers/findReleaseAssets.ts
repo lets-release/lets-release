@@ -87,9 +87,9 @@ export async function findReleaseAssets<
 
   if (items.length > 0) {
     // If asset is a String definition, output each files matched
-    return items as ReleaseAsset<T>[];
+    return items;
   }
 
   // If asset is a String definition but no match is found, output the elements of the original glob (each one will be considered as a missing file)
-  return patterns as ReleaseAsset<T>[];
+  return patterns;
 }

@@ -31,7 +31,7 @@ describe("getAscendingVersions", () => {
     expect(
       getAscendingVersions(pkgA, {
         tags: {},
-      } as MatchBranchWithTags),
+      }),
     ).toHaveLength(0);
   });
 

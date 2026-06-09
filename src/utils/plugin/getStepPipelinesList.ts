@@ -52,7 +52,7 @@ export async function getStepPipelinesList({
               continue;
             }
 
-            Reflect.defineProperty(pluginObject[step] as object, "pluginName", {
+            Reflect.defineProperty(pluginObject[step], "pluginName", {
               value: pluginName,
               writable: false,
               enumerable: true,

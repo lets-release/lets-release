@@ -2,11 +2,7 @@ import { Gitlab, IssueSchema, MergeRequestSchema } from "@gitbeaker/core";
 import { GitbeakerRequestError } from "@gitbeaker/requester-utils";
 import { template } from "lodash-es";
 
-import {
-  Artifact,
-  PartialRequired,
-  SuccessContext,
-} from "@lets-release/config";
+import { SuccessContext } from "@lets-release/config";
 import { getSuccessComment } from "@lets-release/git-host";
 
 import { ResolvedGitLabOptions } from "src/schemas/GitLabOptions";
@@ -49,10 +45,7 @@ export async function addComment(
         nextRelease,
         releases
           .find(({ tag }) => tag === nextRelease.tag)
-          ?.artifacts.filter(({ name }) => !!name) as PartialRequired<
-          Artifact,
-          "name"
-        >[],
+          ?.artifacts.filter(({ name }) => !!name),
       );
 
   try {
