@@ -23,13 +23,15 @@ export function parseCommits(
           return [];
         }
 
+        const parser = new CommitParser(parserOptions);
+
         return [
           {
             hash,
             rawMsg: message,
             message,
             ...rest,
-            ...new CommitParser(parserOptions).parse(message),
+            ...parser.parse(message),
           },
         ] as ParsedCommit[];
       }),

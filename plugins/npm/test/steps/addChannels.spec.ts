@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable unicorn/consistent-function-scoping */
+
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 

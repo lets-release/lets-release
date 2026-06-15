@@ -7,7 +7,7 @@ import stripAnsi from "strip-ansi";
  * @param branch The branch for which to retrieve the tags.
  * @param options Options to pass to `execa`.
  *
- * @return List of git tags.
+ * @return List of Git tags.
  * @throws If the `git` command fails.
  */
 export async function getBranchTags(

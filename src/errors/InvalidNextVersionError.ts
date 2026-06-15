@@ -9,6 +9,17 @@ import {
 import { getRange } from "src/utils/branch/getRange";
 
 export class InvalidNextVersionError extends LetsReleaseError {
+  constructor(
+    readonly pkg: Package,
+    private range: ReleaseVersionRange,
+    private version: string,
+    private branch: ReleaseBranch,
+    private commits: Commit[],
+    private validBranches?: ReleaseBranch[],
+  ) {
+    super();
+  }
+
   get message() {
     return `The release \`${this.version}\` of package \`${this.pkg.uniqueName}\` on branch \`${this.branch.name}\` cannot be published as it is out of range.`;
   }
@@ -36,16 +47,5 @@ ${
 [git cherry-pick]: https://git-scm.com/docs/git-cherry-pick
 [git revert]: https://git-scm.com/docs/git-revert
 [git reset]: https://git-scm.com/docs/git-reset`;
-  }
-
-  constructor(
-    readonly pkg: Package,
-    private range: ReleaseVersionRange,
-    private version: string,
-    private branch: ReleaseBranch,
-    private commits: Commit[],
-    private validBranches?: ReleaseBranch[],
-  ) {
-    super();
   }
 }

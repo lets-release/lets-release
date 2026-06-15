@@ -112,11 +112,9 @@ export const publish: StepFunction<Step.publish, GitHubOptions> = async (
     } = await octokit.request("POST /repos/{owner}/{repo}/releases", {
       ...release,
       // add discussion_category_name if discussionCategoryName is not undefined or false
-      ...(discussionCategoryName
-        ? {
-            discussion_category_name: discussionCategoryName,
-          }
-        : {}),
+      ...(discussionCategoryName && {
+        discussion_category_name: discussionCategoryName,
+      }),
     });
 
     logger.log({
@@ -135,7 +133,7 @@ export const publish: StepFunction<Step.publish, GitHubOptions> = async (
   }
 
   // We'll create a draft release, append the assets to it, and then publish it.
-  // This is so that the assets are available when we get a Github release event.
+  // This is so that the assets are available when we get a GitHub release event.
   const {
     data: { upload_url: uploadUrl, html_url: draftUrl, id: releaseId },
   } = await octokit.request(
@@ -179,9 +177,9 @@ export const publish: StepFunction<Step.publish, GitHubOptions> = async (
     {
       ...patchRelease,
       // add discussion_category_name if discussionCategoryName is not undefined or false
-      ...(discussionCategoryName
-        ? { discussion_category_name: discussionCategoryName }
-        : {}),
+      ...(discussionCategoryName && {
+        discussion_category_name: discussionCategoryName,
+      }),
     },
   );
 

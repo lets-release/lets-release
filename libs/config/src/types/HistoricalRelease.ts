@@ -5,7 +5,7 @@ import { VersionTag } from "src/types/VersionTag";
  */
 export interface HistoricalRelease extends Omit<VersionTag, "package"> {
   /**
-   * The git hash of the last commit of the release.
+   * The Git hash of the last commit of the release.
    */
   hash: string;
 }

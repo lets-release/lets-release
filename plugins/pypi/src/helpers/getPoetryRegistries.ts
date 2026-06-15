@@ -17,7 +17,7 @@ export async function getPoetryRegistries(
     const [key = "", ...rest] = trimmed.split(" = ");
     const keyTrimmed = key.trim();
 
-    // Format: repositories.<name>.url = "<url>"
+    // Format: repositories.<name>.URL = "<url>"
     const urlMatch = /^repositories\.(.+)\.url$/i.exec(keyTrimmed);
 
     if (urlMatch) {

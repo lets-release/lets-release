@@ -37,7 +37,7 @@ export function getNextCalVerMajorVersion(
   } else if (isNil(month)) {
     date = addYears(
       parse(
-        `${tokens.year === CalVerToken.YYYY ? year : year + 2000}`,
+        String(tokens.year === CalVerToken.YYYY ? year : year + 2000),
         `y`,
         new Date(),
       ),

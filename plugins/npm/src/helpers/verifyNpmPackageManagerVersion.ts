@@ -15,21 +15,25 @@ export async function verifyNpmPackageManagerVersion(
   { pm, pkg }: NpmPackageContext,
 ) {
   const minRequiredVersion = MIN_REQUIRED_PM_VERSIONS[pm.name];
-  const { stdout } = await $({
-    cwd: pm.root,
-    env,
-    lines: false,
-  })`${pm.name} --version`.catch((error) => {
-    const e = new NoNpmPackageManagerBinaryError(
-      pkg,
-      pm,
-      `>=${minRequiredVersion}`,
-    );
+  const { stdout } = await (async () => {
+    try {
+      return await $({
+        cwd: pm.root,
+        env,
+        lines: false,
+      })`${pm.name} --version`;
+    } catch (error) {
+      const e = new NoNpmPackageManagerBinaryError(
+        pkg,
+        pm,
+        `>=${minRequiredVersion}`,
+      );
 
-    e.cause = error;
+      e.cause = error;
 
-    throw e;
-  });
+      throw e;
+    }
+  })();
 
   const version = findVersions(stripAnsi(stdout), { loose: true })[0];
 

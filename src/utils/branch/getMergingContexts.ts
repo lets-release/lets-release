@@ -77,7 +77,7 @@ export async function getMergingContexts(
           artifacts.some(({ pluginName, channels }) => {
             const pluginChannels = getPluginChannels(branch, pluginName);
 
-            if (difference(pluginChannels, channels).length <= 0) {
+            if (difference(pluginChannels, channels).length === 0) {
               return false;
             }
 
@@ -93,7 +93,7 @@ export async function getMergingContexts(
               [],
             );
 
-            if (intersection(channels, higherChannels).length <= 0) {
+            if (intersection(channels, higherChannels).length === 0) {
               return false;
             }
 

@@ -53,7 +53,7 @@ export const calvers: Record<
         value: `${fullYear}&`,
       },
       {
-        value: `${fullYear}`,
+        value: String(fullYear),
         parsed,
       },
       {
@@ -230,7 +230,7 @@ export const calvers: Record<
         value: "02",
       },
       {
-        value: `${year}`,
+        value: String(year),
         parsed,
       },
     ],

@@ -54,6 +54,7 @@ export function normalizeReleaseBranch<
       versioning.scheme === VersioningScheme.SemVer
         ? getLatestSemVer([
             ...(branch.tags[uniqueName]?.map(({ version }) => version) ?? []),
+
             ...(lowerSemVers?.[uniqueName] ? [lowerSemVers[uniqueName]] : []),
           ])
         : undefined,

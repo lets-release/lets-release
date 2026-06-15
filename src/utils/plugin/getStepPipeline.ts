@@ -94,9 +94,9 @@ export async function getStepPipeline<T extends Step = Step>(
   if (!specs?.length) {
     if (required) {
       throw new NoPluginStepSpecsError(step);
-    } else {
-      return;
     }
+
+    return;
   }
 
   const funcs = await Promise.all(

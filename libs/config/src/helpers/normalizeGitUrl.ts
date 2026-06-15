@@ -7,18 +7,20 @@ const { fromUrl } = hostedGitInfo;
 
 export function normalizeGitUrl(url: string) {
   const info = fromUrl(url, { noGitPlus: true });
-  const protocol = getUrlProtocol(url);
 
   if (info?.getDefaultRepresentation() === "shortcut") {
     // Expand shorthand URLs (such as `owner/repo` or `gitlab:owner/repo`)
     return info.https();
-  } else if (protocol?.includes("http")) {
+  }
+
+  const protocol = getUrlProtocol(url);
+
+  if (protocol?.includes("http")) {
     // Replace `git+https` and `git+http` with `https` or `http`
-    return url.replace(
-      protocol,
+    return url.replace(protocol, () =>
       protocol.includes("https") ? "https:" : "http:",
     );
-  } else {
-    return url;
   }
+
+  return url;
 }

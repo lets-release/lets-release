@@ -32,9 +32,9 @@ export interface ConventionalChangelogOptions {
    *  - [codemirror][]
    *  - [conventionalcommits][]
    *  - [ember][]
-   *  - [eslint][]
+   *  - [ESLint][]
    *  - [express][]
-   *  - [jquery][]
+   *  - [jQuery][]
    *  - [jshint][]
    *
    * Default: ConventionalChangelogPreset.ConventionalCommits if both preset and config not set
@@ -44,9 +44,9 @@ export interface ConventionalChangelogOptions {
    * [codemirror]: https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-codemirror
    * [conventionalcommits]: https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-conventionalcommits
    * [ember]: https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-ember
-   * [eslint]: https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-eslint
+   * [ESLint]: https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-eslint
    * [express]: https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-express
-   * [jquery]: https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-jquery
+   * [jQuery]: https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-jquery
    * [jshint]: https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-jshint
    */
   preset?: ConventionalChangelogPreset;

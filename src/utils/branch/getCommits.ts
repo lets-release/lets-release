@@ -57,7 +57,8 @@ export async function getCommits(
     packages.map((pkg) => [
       pkg.uniqueName,
       commits.filter(({ message }, index) => {
-        const { affected } = new CommitParser().parse(message);
+        const parser = new CommitParser();
+        const { affected } = parser.parse(message);
 
         if (affected?.split("\n").some((name) => name.trim() === pkg.name)) {
           return true;

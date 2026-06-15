@@ -18,15 +18,13 @@ export async function exchangeTrustedPublisherToken(
   const namespace = `${name}:${uniqueName}`;
 
   try {
-    const response = await fetch(
-      `${new URL(registry.publishUrl).origin}/_/oidc/mint-token`,
-      {
-        method: "POST",
-        body: JSON.stringify({
-          token: idToken,
-        }),
-      },
-    );
+    const url = new URL(registry.publishUrl);
+    const response = await fetch(`${url.origin}/_/oidc/mint-token`, {
+      method: "POST",
+      body: JSON.stringify({
+        token: idToken,
+      }),
+    });
     const json = await response.json();
 
     if (response.ok) {

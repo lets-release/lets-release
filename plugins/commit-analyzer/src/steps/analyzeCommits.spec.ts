@@ -77,7 +77,7 @@ describe("analyzeCommits", () => {
 
     expect(log).toHaveBeenCalledWith({
       prefix: `[${pkg.uniqueName}]`,
-      message: `Analysis of ${2} commits complete: ${ReleaseType.minor} release`,
+      message: `Analysis of 2 commits complete: ${ReleaseType.minor} release`,
     });
   });
 
@@ -105,7 +105,7 @@ describe("analyzeCommits", () => {
 
     expect(log).toHaveBeenCalledWith({
       prefix: `[${pkg.uniqueName}]`,
-      message: `Analysis of ${2} commits complete: ${ReleaseType.minor} release`,
+      message: `Analysis of 2 commits complete: ${ReleaseType.minor} release`,
     });
   });
 
@@ -135,7 +135,7 @@ describe("analyzeCommits", () => {
 
     expect(log).toHaveBeenCalledWith({
       prefix: `[${pkg.uniqueName}]`,
-      message: `Analysis of ${2} commits complete: ${ReleaseType.minor} release`,
+      message: `Analysis of 2 commits complete: ${ReleaseType.minor} release`,
     });
   });
 
@@ -170,7 +170,7 @@ describe("analyzeCommits", () => {
 
     expect(log).toHaveBeenCalledWith({
       prefix: `[${pkg.uniqueName}]`,
-      message: `Analysis of ${2} commits complete: ${ReleaseType.minor} release`,
+      message: `Analysis of 2 commits complete: ${ReleaseType.minor} release`,
     });
   });
 
@@ -204,7 +204,7 @@ describe("analyzeCommits", () => {
 
     expect(log).toHaveBeenCalledWith({
       prefix: `[${pkg.uniqueName}]`,
-      message: `Analysis of ${2} commits complete: ${ReleaseType.patch} release`,
+      message: `Analysis of 2 commits complete: ${ReleaseType.patch} release`,
     });
   });
 
@@ -234,7 +234,7 @@ describe("analyzeCommits", () => {
 
     expect(log).toHaveBeenCalledWith({
       prefix: `[${pkg.uniqueName}]`,
-      message: `Analysis of ${3} commits complete: ${ReleaseType.patch} release`,
+      message: `Analysis of 3 commits complete: ${ReleaseType.patch} release`,
     });
   });
 
@@ -261,7 +261,7 @@ describe("analyzeCommits", () => {
 
     expect(log).toHaveBeenCalledWith({
       prefix: `[${pkg.uniqueName}]`,
-      message: `Analysis of ${2} commits complete: ${ReleaseType.minor} release`,
+      message: `Analysis of 2 commits complete: ${ReleaseType.minor} release`,
     });
   });
 
@@ -292,7 +292,7 @@ describe("analyzeCommits", () => {
 
     expect(log).toHaveBeenCalledWith({
       prefix: `[${pkg.uniqueName}]`,
-      message: `Analysis of ${2} commits complete: ${ReleaseType.major} release`,
+      message: `Analysis of 2 commits complete: ${ReleaseType.major} release`,
     });
   });
 
@@ -319,7 +319,7 @@ describe("analyzeCommits", () => {
 
     expect(log).toHaveBeenCalledWith({
       prefix: `[${pkg.uniqueName}]`,
-      message: `Analysis of ${2} commits complete: ${ReleaseType.major} release`,
+      message: `Analysis of 2 commits complete: ${ReleaseType.major} release`,
     });
   });
 
@@ -344,7 +344,7 @@ describe("analyzeCommits", () => {
 
     expect(log).toHaveBeenCalledWith({
       prefix: `[${pkg.uniqueName}]`,
-      message: `Analysis of ${2} commits complete: ${ReleaseType.patch} release`,
+      message: `Analysis of 2 commits complete: ${ReleaseType.patch} release`,
     });
   });
 
@@ -375,7 +375,7 @@ describe("analyzeCommits", () => {
 
     expect(log).toHaveBeenCalledWith({
       prefix: `[${pkg.uniqueName}]`,
-      message: `Analysis of ${2} commits complete: ${ReleaseType.minor} release`,
+      message: `Analysis of 2 commits complete: ${ReleaseType.minor} release`,
     });
   });
 
@@ -400,7 +400,7 @@ describe("analyzeCommits", () => {
 
     expect(log).toHaveBeenCalledWith({
       prefix: `[${pkg.uniqueName}]`,
-      message: `Analysis of ${2} commits complete: no release`,
+      message: `Analysis of 2 commits complete: no release`,
     });
   });
 
@@ -431,7 +431,7 @@ describe("analyzeCommits", () => {
 
     expect(log).toHaveBeenCalledWith({
       prefix: `[${pkg.uniqueName}]`,
-      message: `Analysis of ${2} commits complete: ${ReleaseType.minor} release`,
+      message: `Analysis of 2 commits complete: ${ReleaseType.minor} release`,
     });
   });
 
@@ -466,7 +466,7 @@ describe("analyzeCommits", () => {
 
     expect(log).toHaveBeenCalledWith({
       prefix: `[${pkg.uniqueName}]`,
-      message: `Analysis of ${2} commits complete: ${ReleaseType.minor} release`,
+      message: `Analysis of 2 commits complete: ${ReleaseType.minor} release`,
     });
   });
 
@@ -494,7 +494,7 @@ describe("analyzeCommits", () => {
 
     expect(log).toHaveBeenCalledWith({
       prefix: `[${pkg.uniqueName}]`,
-      message: `Analysis of ${2} commits complete: ${"no"} release`,
+      message: `Analysis of 2 commits complete: no release`,
     });
   });
 
@@ -525,7 +525,7 @@ describe("analyzeCommits", () => {
 
     expect(log).toHaveBeenCalledWith({
       prefix: `[${pkg.uniqueName}]`,
-      message: `Analysis of ${2} commits complete: ${ReleaseType.patch} release`,
+      message: `Analysis of 2 commits complete: ${ReleaseType.patch} release`,
     });
   });
 
@@ -553,7 +553,7 @@ describe("analyzeCommits", () => {
 
     expect(log).toHaveBeenCalledWith({
       prefix: `[${pkg.uniqueName}]`,
-      message: `Analysis of ${2} commits complete: ${ReleaseType.patch} release`,
+      message: `Analysis of 2 commits complete: ${ReleaseType.patch} release`,
     });
   });
 
@@ -581,7 +581,7 @@ describe("analyzeCommits", () => {
 
     expect(log).toHaveBeenCalledWith({
       prefix: `[${pkg.uniqueName}]`,
-      message: `Analysis of ${2} commits complete: ${ReleaseType.minor} release`,
+      message: `Analysis of 2 commits complete: ${ReleaseType.minor} release`,
     });
   });
 

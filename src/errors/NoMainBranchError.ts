@@ -1,6 +1,10 @@
 import { LetsReleaseError } from "@lets-release/config";
 
 export class NoMainBranchError extends LetsReleaseError {
+  constructor() {
+    super();
+  }
+
   get message() {
     return "No main branch found.";
   }
@@ -9,9 +13,5 @@ export class NoMainBranchError extends LetsReleaseError {
     return `A main branch is required and must exist on the remote repository.
 
 This may occur if your repository does not have a main branch, such as \`master\` or \`main\`.`;
-  }
-
-  constructor() {
-    super();
   }
 }

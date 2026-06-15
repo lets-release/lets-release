@@ -3,6 +3,14 @@ import { LetsReleaseError } from "@lets-release/config";
 import { stringify } from "src/utils/stringify";
 
 export class NoGitRepoPermissionError extends LetsReleaseError {
+  constructor(
+    private repositoryUrl: string,
+    private branch: string,
+    private error: unknown,
+  ) {
+    super();
+  }
+
   get message() {
     return "Cannot push to the Git repository.";
   }
@@ -17,13 +25,5 @@ This can be caused by:
 
 ${stringify(this.error)}
 `;
-  }
-
-  constructor(
-    private repositoryUrl: string,
-    private branch: string,
-    private error: unknown,
-  ) {
-    super();
   }
 }

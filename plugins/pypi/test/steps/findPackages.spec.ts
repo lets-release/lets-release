@@ -73,11 +73,15 @@ describe("findPackages", () => {
       .fn()
       .mockImplementation(
         (type: string, name: string, context: PyPIPackageContext) => {
-          contexts[`${type}/${name}`] = context;
+          const key = `${type}/${name}`;
+
+          contexts[key] = context;
         },
       );
     const getPluginPackageContext = vi.fn().mockImplementation((type, name) => {
-      return contexts[`${type}/${name}`];
+      const key = `${type}/${name}`;
+
+      return contexts[key];
     });
 
     await expect(

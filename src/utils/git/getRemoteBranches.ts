@@ -4,10 +4,10 @@ import stripAnsi from "strip-ansi";
 /**
  * Get all the repository branches.
  *
- * @param repositoryUrl The remote repository url.
+ * @param repositoryUrl The remote repository URL.
  * @param options Options to pass to `execa`.
  *
- * @return List of git branches.
+ * @return List of Git branches.
  * @throws {Error} If the `git` command fails.
  */
 export async function getRemoteBranches(

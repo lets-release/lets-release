@@ -23,7 +23,7 @@ export async function loadModule<T>(
 
   const { default: cjsExport, ...esmNamedExports } = (await import(
     pathToFileURL(file).toString()
-  )) as { default?: T } & T;
+  )) as T & { default?: T };
 
   if (cjsExport) {
     return cjsExport;

@@ -199,39 +199,39 @@ export function normalizeMaintenanceBranches(
               mergeMax: range.max,
             },
           ];
-        } else {
-          // The max is the lowest version between the `base` version and the upper bound of the current branch range
-          const max = getEarliestSemVer([...(base ? [base] : []), range.max]);
-
-          const latestSemVer = getLatestSemVer(versions, {
-            ...pkg.versioning.prerelease,
-            before: max,
-          });
-          const nextSemVer = latestSemVer
-            ? increaseSemVer("patch", latestSemVer, pkg.versioning.prerelease)
-            : mergeMin;
-
-          // The actual lower bound is the highest version between the current branch last release and `mergeMin`
-          const min = getLatestSemVer([nextSemVer, mergeMin])!;
-
-          if (compareSemVers(min, base ?? pkg.versioning.initialVersion) >= 0) {
-            debug(namespace)(
-              `Invalid maintenance range for ${pkg.uniqueName} on branch ${name}`,
-            );
-
-            return [pkg.uniqueName, undefined];
-          }
-
-          return [
-            pkg.uniqueName,
-            {
-              min,
-              max,
-              mergeMin,
-              mergeMax: range.max,
-            },
-          ];
         }
+
+        // The max is the lowest version between the `base` version and the upper bound of the current branch range
+        const max = getEarliestSemVer([...(base ? [base] : []), range.max]);
+
+        const latestSemVer = getLatestSemVer(versions, {
+          ...pkg.versioning.prerelease,
+          before: max,
+        });
+        const nextSemVer = latestSemVer
+          ? increaseSemVer("patch", latestSemVer, pkg.versioning.prerelease)
+          : mergeMin;
+
+        // The actual lower bound is the highest version between the current branch last release and `mergeMin`
+        const min = getLatestSemVer([nextSemVer, mergeMin])!;
+
+        if (compareSemVers(min, base ?? pkg.versioning.initialVersion) >= 0) {
+          debug(namespace)(
+            `Invalid maintenance range for ${pkg.uniqueName} on branch ${name}`,
+          );
+
+          return [pkg.uniqueName, undefined];
+        }
+
+        return [
+          pkg.uniqueName,
+          {
+            min,
+            max,
+            mergeMin,
+            mergeMax: range.max,
+          },
+        ];
       }),
     ),
   }));

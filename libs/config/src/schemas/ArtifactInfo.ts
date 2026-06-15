@@ -12,7 +12,7 @@ export const ArtifactInfo = z.object({
   name: NonEmptyString,
 
   /**
-   * The release url.
+   * The release URL.
    */
   url: NonEmptyString.optional(),
 });

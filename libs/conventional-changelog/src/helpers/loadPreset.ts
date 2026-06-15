@@ -26,19 +26,20 @@ export async function loadPreset(
       ? config
       : `conventional-changelog-${(preset ?? ConventionalChangelogPreset.ConventionalCommits).toLowerCase()}`;
 
-  const loader = await loadModule<PresetLoader>(presetModule, dirs, cwd).catch(
-    (error) => {
+  const loader = await (async () => {
+    try {
+      return await loadModule<PresetLoader>(presetModule, dirs, cwd);
+    } catch (error) {
       if (
         preset === ConventionalChangelogPreset.ConventionalCommits ||
         (!preset && !config)
       ) {
         return conventionalCommits;
-      } else {
-        throw error;
       }
-    },
-  );
 
+      throw error;
+    }
+  })();
   const loadedPreset = await loader(
     !preset && config ? undefined : presetConfig,
   );

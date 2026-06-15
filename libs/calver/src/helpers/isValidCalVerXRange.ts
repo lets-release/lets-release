@@ -8,23 +8,21 @@ export function isValidCalVerXRange(format: string, range: string) {
     return false;
   }
 
+  const formatRegExp = new RegExp(
+    `(${SEPARATOR}${CalVerToken.MINOR})?${SEPARATOR}${CalVerToken.MICRO}$`,
+  );
   const trimmedFormat = format.trim().toUpperCase();
 
-  if (
-    !new RegExp(
-      `(${SEPARATOR}${CalVerToken.MINOR})?${SEPARATOR}${CalVerToken.MICRO}$`,
-    ).test(trimmedFormat)
-  ) {
+  if (!formatRegExp.test(trimmedFormat)) {
     return false;
   }
 
+  const rangeRegExp = new RegExp(
+    String.raw`^(\d+${SEPARATOR})+(x${SEPARATOR})?x$`,
+  );
   const trimmedRange = range.trim().toLowerCase();
 
-  if (
-    !new RegExp(String.raw`^(\d+${SEPARATOR})+(x${SEPARATOR})?x$`).test(
-      trimmedRange,
-    )
-  ) {
+  if (!rangeRegExp.test(trimmedRange)) {
     return false;
   }
 
@@ -57,10 +55,9 @@ export function isValidCalVerXRange(format: string, range: string) {
       : isValidCalVer(majorFormat, trimmedRange.replace(xRegExp, ""));
   }
 
-  if (
-    tokens.length !== values.length ||
-    !new RegExp(String.raw`^(\d+${SEPARATOR})+x$`).test(trimmedRange)
-  ) {
+  const minorRangeRegExp = new RegExp(String.raw`^(\d+${SEPARATOR})+x$`);
+
+  if (tokens.length !== values.length || !minorRangeRegExp.test(trimmedRange)) {
     return false;
   }
 

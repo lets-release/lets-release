@@ -56,11 +56,10 @@ export async function uploadReleaseAsset(
       data: { browser_download_url: downloadUrl },
     } = (await octokit.request({
       ...upload,
-      ...(!isString(asset) && asset.label
-        ? {
-            label: template(asset.label)(context),
-          }
-        : {}),
+      ...(!isString(asset) &&
+        asset.label && {
+          label: template(asset.label)(context),
+        }),
     })) as { data: { browser_download_url: string } };
 
     logger.log({

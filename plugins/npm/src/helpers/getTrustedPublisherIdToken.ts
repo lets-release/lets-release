@@ -17,7 +17,8 @@ export async function getTrustedPublisherIdToken(
   { registry }: Pick<NpmPackageContext, "registry">,
 ) {
   const { name: publisher } = ciEnv as { name?: string };
-  const host = new URL(registry).host;
+  const url = new URL(registry);
+  const host = url.host;
 
   // audience claim format (npm:your.registry.hostname)
   // see: https://github.com/npm/cli/pull/8336#issue-3101152098

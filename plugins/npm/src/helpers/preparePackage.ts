@@ -103,7 +103,7 @@ export async function preparePackage(
 
       // npm
       default: {
-        // npm 8 returns wrong filename with "/" in json output
+        // npm 8 returns wrong filename with "/" in JSON output
         promise = $({
           ...options,
           cwd: pm.root,

@@ -140,7 +140,12 @@ export default defineConfig(
       "unicorn/no-null": "off",
       "unicorn/no-useless-undefined": "off",
       "unicorn/no-array-reduce": "off",
+      "unicorn/max-nested-calls": "off",
       "unicorn/prefer-https": "off",
+      "unicorn/no-computed-property-existence-check": "off",
+      "unicorn/no-unreadable-object-destructuring": "off",
+      "unicorn/no-unsafe-property-key": "off",
+      "unicorn/prefer-minimal-ternary": "off",
       "vitest/valid-expect": [
         "error",
         {

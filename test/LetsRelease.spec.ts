@@ -161,8 +161,10 @@ async function testAddChannels(
   const envCiResults = { branch: "main", isCi: true, isPr: false };
   vi.mocked(envCi).mockReturnValue(envCiResults as CiEnv);
 
+  const letsRelease = new LetsRelease();
+
   await expect(
-    new LetsRelease().run(options, {
+    letsRelease.run(options, {
       cwd,
       env,
       stdout: new WritableStreamBuffer(),
@@ -319,7 +321,8 @@ describe("LetsRelease", () => {
         notes: `${notes1}\n\n${notes2}\n\n${notes3}`,
       },
     ];
-    const result = await new LetsRelease().run(options, {
+    const letsRelease = new LetsRelease();
+    const result = await letsRelease.run(options, {
       cwd,
       env,
       stdout: new WritableStreamBuffer(),
@@ -749,8 +752,10 @@ describe("LetsRelease", () => {
     const envCiResults = { branch: "main", isCi: true, isPr: false };
     vi.mocked(envCi).mockReturnValue(envCiResults as CiEnv);
 
+    const letsRelease = new LetsRelease();
+
     await expect(
-      new LetsRelease().run(options, {
+      letsRelease.run(options, {
         cwd,
         env,
         stdout: new WritableStreamBuffer(),
@@ -842,8 +847,10 @@ describe("LetsRelease", () => {
     const envCiResults = { branch: "main", isCi: true, isPr: false };
     vi.mocked(envCi).mockReturnValue(envCiResults as CiEnv);
 
+    const letsRelease = new LetsRelease();
+
     await expect(
-      new LetsRelease().run(options, {
+      letsRelease.run(options, {
         cwd,
         env,
         stdout: new WritableStreamBuffer(),
@@ -995,8 +1002,10 @@ describe("LetsRelease", () => {
     const envCiResults = { branch: "main", isCi: true, isPr: false };
     vi.mocked(envCi).mockReturnValue(envCiResults as CiEnv);
 
+    const letsRelease = new LetsRelease();
+
     await expect(
-      new LetsRelease().run(options, {
+      letsRelease.run(options, {
         cwd,
         env,
         stdout: new WritableStreamBuffer(),
@@ -1079,8 +1088,10 @@ describe("LetsRelease", () => {
     const envCiResults = { branch: "beta", isCi: true, isPr: false };
     vi.mocked(envCi).mockReturnValue(envCiResults as CiEnv);
 
+    const letsRelease1 = new LetsRelease();
+
     await expect(
-      new LetsRelease().run(options, {
+      letsRelease1.run(options, {
         cwd,
         env,
         stdout: new WritableStreamBuffer(),
@@ -1106,8 +1117,10 @@ describe("LetsRelease", () => {
     await commit(cwd, "fix: a fix");
     await pushBranch(cwd, url, "beta");
 
+    const letsRelease2 = new LetsRelease();
+
     await expect(
-      new LetsRelease().run(options, {
+      letsRelease2.run(options, {
         cwd,
         env,
         stdout: new WritableStreamBuffer(),
@@ -1206,8 +1219,10 @@ describe("LetsRelease", () => {
     const envCiResults = { branch: "beta", isCi: true, isPr: false };
     vi.mocked(envCi).mockReturnValue(envCiResults as CiEnv);
 
+    const letsRelease = new LetsRelease();
+
     await expect(
-      new LetsRelease().run(options, {
+      letsRelease.run(options, {
         cwd,
         env,
         stdout: new WritableStreamBuffer(),
@@ -1285,8 +1300,10 @@ describe("LetsRelease", () => {
     const envCiResults = { branch: "main", isCi: true, isPr: false };
     vi.mocked(envCi).mockReturnValue(envCiResults as CiEnv);
 
+    const letsRelease = new LetsRelease();
+
     await expect(
-      new LetsRelease().run(options, {
+      letsRelease.run(options, {
         cwd,
         env,
         stdout: new WritableStreamBuffer(),
@@ -1394,8 +1411,10 @@ describe("LetsRelease", () => {
     const envCiResults = { branch: "main", isCi: true, isPr: false };
     vi.mocked(envCi).mockReturnValue(envCiResults as CiEnv);
 
+    const letsRelease = new LetsRelease();
+
     await expect(
-      new LetsRelease().run(options, {
+      letsRelease.run(options, {
         cwd,
         env,
         stdout: new WritableStreamBuffer(),
@@ -1477,8 +1496,10 @@ describe("LetsRelease", () => {
     const envCiResults = { branch: "main", isCi: false, isPr: false };
     vi.mocked(envCi).mockReturnValue(envCiResults as CiEnv);
 
+    const letsRelease = new LetsRelease();
+
     await expect(
-      new LetsRelease().run(options, {
+      letsRelease.run(options, {
         cwd,
         env,
         stdout: new WritableStreamBuffer(),
@@ -1536,8 +1557,10 @@ describe("LetsRelease", () => {
     const envCiResults = { branch: "main", isCi: true, isPr: false };
     vi.mocked(envCi).mockReturnValue(envCiResults as CiEnv);
 
+    const letsRelease = new LetsRelease();
+
     await expect(
-      new LetsRelease().run(options, {
+      letsRelease.run(options, {
         cwd,
         env,
         stdout: new WritableStreamBuffer(),
@@ -1599,8 +1622,10 @@ describe("LetsRelease", () => {
     const envCiResults = { branch: "main", isCi: false, isPr: false };
     vi.mocked(envCi).mockReturnValue(envCiResults as CiEnv);
 
+    const letsRelease = new LetsRelease();
+
     await expect(
-      new LetsRelease().run(options, {
+      letsRelease.run(options, {
         cwd,
         env,
         stdout: new WritableStreamBuffer(),
@@ -1688,8 +1713,10 @@ describe("LetsRelease", () => {
     const envCiResults = { branch: "main", isCi: true, isPr: false };
     vi.mocked(envCi).mockReturnValue(envCiResults as CiEnv);
 
+    const letsRelease = new LetsRelease();
+
     await expect(
-      new LetsRelease().run(options, {
+      letsRelease.run(options, {
         cwd,
         env,
         stdout: new WritableStreamBuffer(),
@@ -1776,8 +1803,10 @@ describe("LetsRelease", () => {
     };
     vi.mocked(envCi).mockReturnValue(envCiResults as CiEnv);
 
+    const letsRelease = new LetsRelease();
+
     await expect(
-      new LetsRelease().run(options, {
+      letsRelease.run(options, {
         cwd,
         env,
         stdout: new WritableStreamBuffer(),
@@ -1851,8 +1880,10 @@ describe("LetsRelease", () => {
     const envCiResults = { branch: "1.x", isCi: true, isPr: false };
     vi.mocked(envCi).mockReturnValue(envCiResults as CiEnv);
 
+    const letsRelease = new LetsRelease();
+
     await expect(
-      new LetsRelease().run(options, {
+      letsRelease.run(options, {
         cwd,
         env,
         stdout: new WritableStreamBuffer(),
@@ -1929,8 +1960,10 @@ describe("LetsRelease", () => {
     const envCiResults = { branch: "main", isCi: true, isPr: false };
     vi.mocked(envCi).mockReturnValue(envCiResults as CiEnv);
 
+    const letsRelease = new LetsRelease();
+
     await expect(
-      new LetsRelease().run(options, {
+      letsRelease.run(options, {
         cwd,
         env,
         stdout: new WritableStreamBuffer(),
@@ -2035,8 +2068,10 @@ describe("LetsRelease", () => {
     const envCiResults = { branch: "1.1.x", isCi: true, isPr: false };
     vi.mocked(envCi).mockReturnValue(envCiResults as CiEnv);
 
+    const letsRelease = new LetsRelease();
+
     await expect(
-      new LetsRelease().run(options, {
+      letsRelease.run(options, {
         cwd,
         env,
         stdout: new WritableStreamBuffer(),
@@ -2090,8 +2125,10 @@ describe("LetsRelease", () => {
     const envCiResults = { branch: "main", isCi: true, isPr: false };
     vi.mocked(envCi).mockReturnValue(envCiResults as CiEnv);
 
+    const letsRelease = new LetsRelease();
+
     await expect(
-      new LetsRelease().run(options, {
+      letsRelease.run(options, {
         cwd,
         env,
         stdout: new WritableStreamBuffer(),
@@ -2130,8 +2167,10 @@ describe("LetsRelease", () => {
     const envCiResults = { branch: "other-branch", isCi: true, isPr: false };
     vi.mocked(envCi).mockReturnValue(envCiResults as CiEnv);
 
+    const letsRelease = new LetsRelease();
+
     await expect(
-      new LetsRelease().run(options, {
+      letsRelease.run(options, {
         cwd,
         env,
         stdout: new WritableStreamBuffer(),
@@ -2188,8 +2227,10 @@ describe("LetsRelease", () => {
     const envCiResults = { branch: "main", isCi: true, isPr: false };
     vi.mocked(envCi).mockReturnValue(envCiResults as CiEnv);
 
+    const letsRelease = new LetsRelease();
+
     await expect(
-      new LetsRelease().run(options, {
+      letsRelease.run(options, {
         cwd,
         env,
         stdout: new WritableStreamBuffer(),
@@ -2268,8 +2309,10 @@ describe("LetsRelease", () => {
     const envCiResults = { branch: "main", isCi: true, isPr: false };
     vi.mocked(envCi).mockReturnValue(envCiResults as CiEnv);
 
+    const letsRelease = new LetsRelease();
+
     await expect(
-      new LetsRelease().run(options, {
+      letsRelease.run(options, {
         cwd,
         env,
         stdout: new WritableStreamBuffer(),
@@ -2349,8 +2392,10 @@ describe("LetsRelease", () => {
     const envCiResults = { branch: "main", isCi: true, isPr: false };
     vi.mocked(envCi).mockReturnValue(envCiResults as CiEnv);
 
+    const letsRelease = new LetsRelease();
+
     await expect(
-      new LetsRelease().run(options, {
+      letsRelease.run(options, {
         cwd,
         env,
         stdout: new WritableStreamBuffer(),
@@ -2415,8 +2460,10 @@ describe("LetsRelease", () => {
     const envCiResults = { branch: "main", isCi: true, isPr: false };
     vi.mocked(envCi).mockReturnValue(envCiResults as CiEnv);
 
+    const letsRelease = new LetsRelease();
+
     await expect(
-      new LetsRelease().run(options, {
+      letsRelease.run(options, {
         cwd,
         env,
         stdout: new WritableStreamBuffer(),
@@ -2461,8 +2508,10 @@ describe("LetsRelease", () => {
     const envCiResults = { branch: "main", isCi: true, isPr: false };
     vi.mocked(envCi).mockReturnValue(envCiResults as CiEnv);
 
+    const letsRelease = new LetsRelease();
+
     await expect(
-      new LetsRelease().run(options, {
+      letsRelease.run(options, {
         cwd,
         env,
         stdout: new WritableStreamBuffer(),
@@ -2518,8 +2567,10 @@ describe("LetsRelease", () => {
     const envCiResults = { branch: "main", isCi: true, isPr: false };
     vi.mocked(envCi).mockReturnValue(envCiResults as CiEnv);
 
+    const letsRelease = new LetsRelease();
+
     await expect(
-      new LetsRelease().run(options, {
+      letsRelease.run(options, {
         cwd,
         env,
         stdout: new WritableStreamBuffer(),
@@ -2591,8 +2642,10 @@ describe("LetsRelease", () => {
     const envCiResults = { branch: "main", isCi: true, isPr: false };
     vi.mocked(envCi).mockReturnValue(envCiResults as CiEnv);
 
+    const letsRelease = new LetsRelease();
+
     await expect(
-      new LetsRelease().run(options, {
+      letsRelease.run(options, {
         cwd,
         env,
         stdout: new WritableStreamBuffer(),
@@ -2676,8 +2729,10 @@ describe("LetsRelease", () => {
     const envCiResults = { branch: "main", isCi: true, isPr: false };
     vi.mocked(envCi).mockReturnValue(envCiResults as CiEnv);
 
+    const letsRelease = new LetsRelease();
+
     await expect(
-      new LetsRelease().run(options, {
+      letsRelease.run(options, {
         cwd: shallowCwd,
         env,
         stdout: new WritableStreamBuffer(),

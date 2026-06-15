@@ -27,7 +27,9 @@ async function command() {
     debug.enable(`${name}:*,@${name}/*`);
   }
 
-  await new LetsRelease().run(await CliOptions.parseAsync(options));
+  const letsRelease = new LetsRelease();
+
+  await letsRelease.run(await CliOptions.parseAsync(options));
 }
 
 await command();

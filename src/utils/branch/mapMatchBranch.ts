@@ -40,9 +40,13 @@ export async function mapMatchBranch<T extends BranchType = BranchType>(
   const matchTagsList: VersionTag[][] = await Promise.all(
     tags.map(async (tag) => {
       const [pkgName, version] = tag.match(tagRegExp)?.slice(2) ?? [];
-      const pkg = packages.find(({ uniqueName }) =>
-        pkgName ? pkgName === uniqueName : mainPkg?.uniqueName === uniqueName,
-      );
+      const pkg = packages.find(({ uniqueName }) => {
+        if (pkgName) {
+          return uniqueName === pkgName;
+        }
+
+        return mainPkg?.uniqueName === uniqueName;
+      });
 
       const cleanVersion = version?.trim().replace(/^[=v]+/, "");
 

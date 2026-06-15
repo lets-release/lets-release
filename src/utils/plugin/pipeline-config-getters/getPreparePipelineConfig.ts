@@ -9,7 +9,7 @@ export const getPreparePipelineConfig: StepPipelineConfigGetter<
   getNextContext: async (context) => {
     const hash = await getHeadHash({ cwd: context.repositoryRoot });
 
-    // If previous prepare plugin has created a commit (git head changed)
+    // If previous prepare plugin has created a commit (Git head changed)
     if (hash && context.nextRelease.hash !== hash) {
       return {
         ...context,

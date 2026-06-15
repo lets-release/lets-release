@@ -1,6 +1,7 @@
 import { VersioningPrereleaseOptions } from "@lets-release/versioning";
 
-const fullYear = new Date().getFullYear();
+const today = new Date();
+const fullYear = today.getFullYear();
 
 export const increments: Record<
   string,
@@ -36,19 +37,19 @@ export const increments: Record<
     major: [
       {
         current: `${fullYear}-0`,
-        next: `${fullYear}`,
+        next: String(fullYear),
       },
       {
         current: `${fullYear}-alpha`,
-        next: `${fullYear}`,
+        next: String(fullYear),
       },
       {
         current: "2001",
-        next: `${fullYear}`,
+        next: String(fullYear),
       },
       {
         current: "2001+build",
-        next: `${fullYear}`,
+        next: String(fullYear),
       },
       {
         current: "2001+build",
@@ -58,16 +59,16 @@ export const increments: Record<
         },
       },
       {
-        current: `${fullYear}`,
+        current: String(fullYear),
       },
       {
-        current: `${fullYear + 2}`,
+        current: String(fullYear + 2),
       },
     ],
     "major:maintenance": [
       {
         current: `${fullYear}-0`,
-        next: `${fullYear}`,
+        next: String(fullYear),
       },
       {
         current: `2001-0`,
@@ -77,7 +78,7 @@ export const increments: Record<
         current: "2001",
       },
       {
-        current: `${fullYear}`,
+        current: String(fullYear),
       },
     ],
     "major-prerelease": [
@@ -104,7 +105,7 @@ export const increments: Record<
         },
       },
       {
-        current: `${fullYear}`,
+        current: String(fullYear),
       },
     ],
     "major-prerelease:maintenance": [
@@ -125,20 +126,20 @@ export const increments: Record<
         next: `2001-1`,
       },
       {
-        current: `${fullYear}`,
+        current: String(fullYear),
       },
     ],
     minor: [
       {
         current: "2001",
-        next: `${fullYear}`,
+        next: String(fullYear),
       },
       {
         current: "2001-1",
-        next: `${fullYear}`,
+        next: String(fullYear),
       },
       {
-        current: `${fullYear}`,
+        current: String(fullYear),
       },
     ],
     "minor:maintenance": [
@@ -156,7 +157,7 @@ export const increments: Record<
         next: `${fullYear}-1`,
       },
       {
-        current: `${fullYear}`,
+        current: String(fullYear),
       },
     ],
     "minor-prerelease:maintenance": [
@@ -168,20 +169,20 @@ export const increments: Record<
         current: "2001",
       },
       {
-        current: `${fullYear}`,
+        current: String(fullYear),
       },
     ],
     patch: [
       {
         current: "2001",
-        next: `${fullYear}`,
+        next: String(fullYear),
       },
       {
         current: "2001-1",
-        next: `${fullYear}`,
+        next: String(fullYear),
       },
       {
-        current: `${fullYear}`,
+        current: String(fullYear),
       },
     ],
     "patch:maintenance": [
@@ -193,7 +194,7 @@ export const increments: Record<
         current: "2001",
       },
       {
-        current: `${fullYear}`,
+        current: String(fullYear),
       },
     ],
     "patch-prerelease": [
@@ -206,7 +207,7 @@ export const increments: Record<
         next: `${fullYear}-1`,
       },
       {
-        current: `${fullYear}`,
+        current: String(fullYear),
       },
     ],
     "patch-prerelease:maintenance": [
@@ -218,12 +219,12 @@ export const increments: Record<
         current: "2001",
       },
       {
-        current: `${fullYear}`,
+        current: String(fullYear),
       },
     ],
     build: [
       {
-        current: `${fullYear}`,
+        current: String(fullYear),
         next: `${fullYear}+new-build`,
         options: {
           build: "new-build",
@@ -323,7 +324,7 @@ export const increments: Record<
         next: `${fullYear}-1`,
       },
       {
-        current: `${fullYear}`,
+        current: String(fullYear),
       },
     ],
     "prerelease:maintenance": [
@@ -343,7 +344,7 @@ export const increments: Record<
         },
       },
       {
-        current: `${fullYear}`,
+        current: String(fullYear),
       },
     ],
   },

@@ -15,21 +15,25 @@ export async function verifyPyPIPackageManagerVersion(
   { pm, pkg }: PyPIPackageContext,
 ) {
   const minRequiredVersion = MIN_REQUIRED_PM_VERSIONS[pm.name];
-  const { stdout } = await $({
-    cwd: pm.root,
-    env,
-    lines: false,
-  })`${pm.name} --version`.catch((error) => {
-    const e = new NoPyPIPackageManagerBinaryError(
-      pkg,
-      pm,
-      `>=${minRequiredVersion}`,
-    );
+  const { stdout } = await (async () => {
+    try {
+      return await $({
+        cwd: pm.root,
+        env,
+        lines: false,
+      })`${pm.name} --version`;
+    } catch (error) {
+      const e = new NoPyPIPackageManagerBinaryError(
+        pkg,
+        pm,
+        `>=${minRequiredVersion}`,
+      );
 
-    e.cause = error;
+      e.cause = error;
 
-    throw e;
-  });
+      throw e;
+    }
+  })();
 
   const version = findVersions(stripAnsi(stdout), { loose: true })[0];
 
