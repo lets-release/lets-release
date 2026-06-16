@@ -54,15 +54,17 @@ export async function verifyAuth(
 
   switch (pm?.name) {
     case NpmPackageManagerName.pnpm: {
-      await verify(
-        $({
-          ...options,
-          cwd: pkg.path,
-        })`pnpm whoami --registry ${registry}`,
-      ).catch(
-        async () =>
-          await verify($(options)`pnpm whoami --registry ${registry}`),
-      );
+      try {
+        await verify(
+          $({
+            ...options,
+            cwd: pkg.path,
+          })`pnpm whoami --registry ${registry}`,
+        );
+      } catch {
+        await verify($(options)`pnpm whoami --registry ${registry}`);
+      }
+
       break;
     }
 

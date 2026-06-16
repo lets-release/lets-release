@@ -13,7 +13,7 @@ import { Ranges } from "src/schemas/Ranges";
  */
 export const BaseBranchObject = z.object({
   /**
-   * The name of the git branch.
+   * The name of the Git branch.
    *
    * A `name` is required for all types of branch. It can be defined as a
    * [glob][] in which case the definition will be expanded to one per

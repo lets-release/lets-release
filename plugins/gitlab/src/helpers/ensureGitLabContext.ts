@@ -35,6 +35,7 @@ export async function ensureGitLabContext<T extends Step>(
   const { owner, repo } = parseGitLabUrl(rest, { url });
   const projectId = `${owner}/${repo}`;
   // https://github.com/jdalrymple/gitbeaker/blob/main/docs/FAQ.md#support-for-node-v1618
+  // eslint-disable-next-line unicorn/no-global-object-property-assignment
   globalThis.fetch = generateFetchFunction(proxy) as typeof fetch;
   const gitlab = new Gitlab({
     host: url,

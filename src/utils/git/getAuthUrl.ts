@@ -12,7 +12,7 @@ import { verifyAuthUrl } from "src/utils/git/verifyAuthUrl";
 const namespace = `${name}:utils.git.getAuthUrl`;
 
 /**
- * Determine the git repository URL to use to push, either:
+ * Determine the Git repository URL to use to push, either:
  * - The `repositoryUrl` as is if allowed to push
  * - The `repositoryUrl` converted to `https` or `http` with Basic Authentication
  *
@@ -28,7 +28,7 @@ export async function getAuthUrl(
   const gitTokens = {
     GIT_CREDENTIALS: undefined,
     GH_TOKEN: undefined,
-    // GitHub Actions require the "x-access-token:" prefix for git access
+    // GitHub Actions require the "x-access-token:" prefix for Git access
     // https://developer.github.com/apps/building-github-apps/authenticating-with-github-apps/#http-based-git-access-by-an-installation
     GITHUB_TOKEN: isNil(options.env?.GITHUB_ACTION)
       ? undefined
@@ -43,7 +43,7 @@ export async function getAuthUrl(
 
   const normalizedUrl = normalizeGitUrl(repositoryUrl);
 
-  // Test if push is allowed without transforming the URL (e.g. is ssh keys are set up)
+  // Test if push is allowed without transforming the URL (e.g. is SSH keys are set up)
   try {
     debug(namespace)(
       `Verifying ssh auth by attempting to push to ${normalizedUrl}`,

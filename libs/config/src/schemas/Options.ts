@@ -49,26 +49,26 @@ export const Options = CliOptions.extend({
  */
 export interface Options extends CliOptions {
   /**
-   * The git repository url.
+   * The Git repository URL.
    *
-   * Any valid git url format is supported (see [git protocols][])
+   * Any valid Git URL format is supported (see [Git protocols][])
    *
-   * Default: `repository` property in `package.json`, or git origin url.
+   * Default: `repository` property in `package.json`, or Git origin URL.
    *
-   * [git protocols]: https://git-scm.com/book/en/v2/Git-on-the-Server-The-Protocols
+   * [Git protocols]: https://git-scm.com/book/en/v2/Git-on-the-Server-The-Protocols
    */
   repositoryUrl?: string;
 
   /**
-   * The git tag format used by **lets-release** to identify releases. The tag name
+   * The Git tag format used by **lets-release** to identify releases. The tag name
    * is generated with [Lodash template][] and will be compiled with the `version`
    * variable (and the package name joined by the `refSeparator` in monorepo).
    *
    * **Note**: The `tagFormat` must contain the `version` variable exactly once and
-   * compile to a [valid git reference][].
+   * compile to a [valid Git reference][].
    *
    * [Lodash template]: https://lodash.com/docs#template
-   * [valid git reference]: https://git-scm.com/docs/git-check-ref-format#_description
+   * [valid Git reference]: https://git-scm.com/docs/git-check-ref-format#_description
    *
    * @default v${version}
    */
@@ -78,7 +78,7 @@ export interface Options extends CliOptions {
    * The separator used by **lets-release** to identify tags and branches
    * with package name.
    *
-   * **Note**: The `refSeparator` must be a valid git reference string.
+   * **Note**: The `refSeparator` must be a valid Git reference string.
    *
    * @default /
    */

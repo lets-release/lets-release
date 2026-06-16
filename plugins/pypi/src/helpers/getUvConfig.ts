@@ -38,7 +38,7 @@ export async function getUvConfig(
 
   const os = platform();
 
-  const userConfigDir = os === "win32" ? env.APPDATA : env.XDG_CONFIG_HOME;
+  const userConfigDir = env[os === "win32" ? "APPDATA" : "XDG_CONFIG_HOME"];
   const userConfigDirAlternative =
     os === "win32"
       ? undefined

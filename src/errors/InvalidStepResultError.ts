@@ -4,6 +4,16 @@ import { name, version } from "src/program";
 import { stringify } from "src/utils/stringify";
 
 export class InvalidStepResultError extends LetsReleaseError {
+  constructor(
+    protected step: Step,
+    protected pluginName: string,
+    protected result: unknown,
+    protected error: unknown,
+    readonly pkg?: Package,
+  ) {
+    super();
+  }
+
   get message() {
     return `The \`${this.step}\` step returned an invalid value.`;
   }
@@ -17,15 +27,5 @@ We recommend to report the issue to the \`${this.pluginName}\` authors, providin
 - The value returned by the plugin: \`${stringify(this.result)}\`
 
 ${stringify(this.error)}`;
-  }
-
-  constructor(
-    protected step: Step,
-    protected pluginName: string,
-    protected result: unknown,
-    protected error: unknown,
-    readonly pkg?: Package,
-  ) {
-    super();
   }
 }

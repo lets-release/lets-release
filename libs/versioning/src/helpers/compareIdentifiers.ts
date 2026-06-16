@@ -1,10 +1,10 @@
 export function compareIdentifiers(a: number | string, b: number | string) {
-  const isANumber = typeof a === "number";
-  const isBNumber = typeof b === "number";
-
   if (a === b) {
     return 0;
   }
+
+  const isANumber = typeof a === "number";
+  const isBNumber = typeof b === "number";
 
   if (isANumber && !isBNumber) {
     return -1;

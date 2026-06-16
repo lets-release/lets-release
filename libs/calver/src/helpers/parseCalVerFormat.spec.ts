@@ -18,7 +18,7 @@ describe("parseCalVerFormat", () => {
       expect(parsed.regex, format).toBe(regex);
 
       const { tokens: parsedTokens } = parseCalVerFormat(
-        format.replaceAll(".", [".", "_", "-"][random(0, 2)]),
+        format.replaceAll(".", () => [".", "_", "-"][random(0, 2)]),
       );
 
       for (const key in parsedTokens) {

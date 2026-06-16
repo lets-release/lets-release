@@ -38,7 +38,7 @@ export const findPackages: StepFunction<Step.findPackages, NpmOptions> = async (
     ),
   );
 
-  for (const folder of folders.toSorted()) {
+  for (const folder of folders.toSorted((a, b) => a.localeCompare(b))) {
     const pkgRoot = path.resolve(repositoryRoot, folder);
     const relativePkgRoot = `./${path.relative(repositoryRoot, pkgRoot)}`;
 

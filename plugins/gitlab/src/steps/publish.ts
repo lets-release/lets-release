@@ -68,7 +68,7 @@ export const publish: StepFunction<Step.publish, GitLabOptions> = async (
   debug(namespace)(`release tag hash: ${hash}`);
   debug(namespace)("milestones: %o", milestones);
 
-  // Skip glob if url is provided
+  // Skip glob if URL is provided
   const urlAssets =
     assets?.filter(
       (asset): asset is ResolvedGitLabAssetObjectWithUrl =>

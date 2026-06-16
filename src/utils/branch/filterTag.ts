@@ -76,7 +76,7 @@ export function filterTag(
 
     if (
       artifactChannels?.length &&
-      intersection(artifactChannels, pluginChannels).length <= 0
+      intersection(artifactChannels, pluginChannels).length === 0
     ) {
       return false;
     }

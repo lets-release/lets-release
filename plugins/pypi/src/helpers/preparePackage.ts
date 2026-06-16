@@ -69,11 +69,13 @@ export async function preparePackage(
 
         // https://github.com/astral-sh/uv/issues/13213
         if (
-          !versionStdout.some((line) =>
-            new RegExp(
+          !versionStdout.some((line) => {
+            const regExp = new RegExp(
               String.raw`^${name} \S+ => ${escapeRegExp(version)}$`,
-            ).test(line),
-          )
+            );
+
+            return regExp.test(line);
+          })
         ) {
           throw new Error("error: uv issue #13213");
         }

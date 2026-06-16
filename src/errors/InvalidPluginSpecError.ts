@@ -3,6 +3,13 @@ import { LetsReleaseError } from "@lets-release/config";
 import { stringify } from "src/utils/stringify";
 
 export class InvalidPluginSpecError extends LetsReleaseError {
+  constructor(
+    private spec: unknown,
+    private error: unknown,
+  ) {
+    super();
+  }
+
   get message() {
     return "A plugin is invalid in the `plugins` configuration.";
   }
@@ -13,12 +20,5 @@ export class InvalidPluginSpecError extends LetsReleaseError {
 The invalid configuration is \`${stringify(this.spec)}\`.
 
 ${stringify(this.error)}`;
-  }
-
-  constructor(
-    private spec: unknown,
-    private error: unknown,
-  ) {
-    super();
   }
 }

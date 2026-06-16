@@ -27,9 +27,9 @@ export function formatSemVer(
     const prerelease = `${prereleaseName}${number === 0 && options.ignoreZeroNumber ? "" : `.${number}`}`;
 
     return `${major}.${minor}.${patch}-${prerelease}${buildMetadata}`;
-  } else if (isNil(prereleaseNumber)) {
-    return `${major}.${minor}.${patch}${buildMetadata}`;
-  } else {
-    return `${major}.${minor}.${patch}-${prereleaseNumber}${buildMetadata}`;
   }
+
+  return isNil(prereleaseNumber)
+    ? `${major}.${minor}.${patch}${buildMetadata}`
+    : `${major}.${minor}.${patch}-${prereleaseNumber}${buildMetadata}`;
 }

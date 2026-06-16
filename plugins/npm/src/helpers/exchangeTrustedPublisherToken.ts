@@ -18,8 +18,9 @@ export async function exchangeTrustedPublisherToken(
   const namespace = `${name}:${uniqueName}`;
 
   try {
+    const url = new URL(registry);
     const response = await fetch(
-      `${new URL(registry).origin}/-/npm/v1/oidc/token/exchange/package/${encodeURIComponent(pkgName)}`,
+      `${url.origin}/-/npm/v1/oidc/token/exchange/package/${encodeURIComponent(pkgName)}`,
       {
         method: "POST",
         headers: { Authorization: `Bearer ${idToken}` },

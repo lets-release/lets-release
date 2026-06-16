@@ -1,7 +1,7 @@
 import { $, Options } from "execa";
 
 /**
- * Unshallow the git repository if necessary and fetch all the notes.
+ * Unshallow the Git repository if necessary and fetch all the notes.
  *
  * @param repositoryUrl The remote repository URL.
  * @param options Options to pass to `execa`.

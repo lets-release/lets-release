@@ -24,7 +24,7 @@ export async function loadConfig(
 
   debug(namespace)(`config loaded from: ${filepath}`);
 
-  // Set repository url and verify options
+  // Set repository URL and verify options
   const options = (await Options.required({ repositoryUrl: true }).parseAsync({
     repositoryUrl:
       (await getRepoUrl({ cwd: repositoryRoot, normalize: false })) ??

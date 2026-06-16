@@ -7,12 +7,12 @@ import { ProxyOptions } from "src/schemas/ProxyOptions";
 
 export const GitHostOptions = z.object({
   /**
-   * The git host server endpoint.
+   * The Git host server endpoint.
    */
   url: NonEmptyString.optional(),
 
   /**
-   * The git host api endpoint.
+   * The Git host API endpoint.
    */
   apiUrl: NonEmptyString.optional(),
 

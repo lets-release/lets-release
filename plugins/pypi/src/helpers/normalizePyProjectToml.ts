@@ -19,6 +19,11 @@ export function normalizePyProjectToml(
 ): NormalizedPyProjectToml {
   const project = getMaybeValue(raw.project, isObject);
   const name = getMaybeValue(project?.name, isString);
+
+  if (!name) {
+    throw new NoPyPIPackageNameError();
+  }
+
   const version = getMaybeValue(project?.version, isString);
   const classifiers = getMaybeValue(project?.classifiers, isArray)?.filter(
     (element) => isString(element),
@@ -37,10 +42,6 @@ export function normalizePyProjectToml(
       return [];
     }),
   );
-
-  if (!name) {
-    throw new NoPyPIPackageNameError();
-  }
 
   const dependencyGroups = Object.fromEntries(
     Object.entries(

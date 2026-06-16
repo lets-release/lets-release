@@ -8,5 +8,7 @@ export function isValidPrereleaseName(value: string): boolean {
     return true;
   }
 
-  return new RegExp(`^${PRERELEASE}$`).test(`-${value}`);
+  const regExp = new RegExp(`^${PRERELEASE}$`);
+
+  return regExp.test(`-${value}`);
 }

@@ -17,10 +17,6 @@ export class Verdaccio extends Service {
   host = SERVER_HOST;
   npmToken?: string;
 
-  get url() {
-    return `http://${this.host}:${this.port}`;
-  }
-
   constructor(
     name: string,
     public port = 4873,
@@ -28,12 +24,16 @@ export class Verdaccio extends Service {
     super(IMAGE, name);
   }
 
+  get url() {
+    return `http://${this.host}:${this.port}`;
+  }
+
   async start() {
     await super.start({
       Tty: true,
       HostConfig: {
         PortBindings: {
-          [`4873/tcp`]: [{ HostPort: `${this.port}` }],
+          [`4873/tcp`]: [{ HostPort: String(this.port) }],
         },
         Binds: [
           `${path.join(path.dirname(fileURLToPath(import.meta.url)), "config.yaml")}:/verdaccio/conf/config.yaml`,
@@ -74,7 +74,7 @@ export class Verdaccio extends Service {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Basic ${Buffer.from(`${NPM_USERNAME}:${NPM_PASSWORD}`).toString("base64")}`,
+        Authorization: `Basic ${Buffer.from(`${NPM_USERNAME}:${NPM_PASSWORD}`).toBase64()}`,
       },
       body: JSON.stringify({
         password: NPM_PASSWORD,

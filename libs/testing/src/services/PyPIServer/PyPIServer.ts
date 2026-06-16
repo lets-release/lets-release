@@ -19,10 +19,6 @@ export class PyPIServer extends Service {
   pypiUsername = PYPI_USERNAME;
   pypiPassword = PYPI_PASSWORD;
 
-  get url() {
-    return `http://${this.host}:${this.port}`;
-  }
-
   constructor(
     name: string,
     public port = 8080,
@@ -30,12 +26,16 @@ export class PyPIServer extends Service {
     super(IMAGE, name);
   }
 
+  get url() {
+    return `http://${this.host}:${this.port}`;
+  }
+
   async start() {
     await super.start({
       Tty: true,
       HostConfig: {
         PortBindings: {
-          [`8080/tcp`]: [{ HostPort: `${this.port}` }],
+          [`8080/tcp`]: [{ HostPort: String(this.port) }],
         },
         Binds: [
           `${path.join(path.dirname(fileURLToPath(import.meta.url)), ".htpasswd")}:/data/.htpasswd`,

@@ -16,9 +16,10 @@ export function parseCalVerXRange(
 
   const trimmedFormat = format.trim().toUpperCase();
   const trimmedRange = range.trim().toLowerCase();
-  const hasMinorToken = new RegExp(
+  const regExp = new RegExp(
     `${SEPARATOR}${CalVerToken.MINOR}${SEPARATOR}${CalVerToken.MICRO}$`,
-  ).test(trimmedFormat);
+  );
+  const hasMinorToken = regExp.test(trimmedFormat);
   const separatorRegExp = new RegExp(SEPARATOR);
   const tokens = trimmedFormat.split(separatorRegExp);
   const values = trimmedRange.split(separatorRegExp);

@@ -12,16 +12,22 @@ export function compareIdentifierLists(
 
     if (a === undefined && b === undefined) {
       return 0;
-    } else if (b === undefined) {
+    }
+
+    if (b === undefined) {
       return 1;
-    } else if (a === undefined) {
+    }
+
+    if (a === undefined) {
       return -1;
-    } else if (a === b) {
+    }
+
+    if (a === b) {
       i += 1;
       continue;
-    } else {
-      return compareIdentifiers(a, b);
     }
+
+    return compareIdentifiers(a, b);
   } while (aList[i] !== undefined || bList[i] !== undefined);
 
   return 0;

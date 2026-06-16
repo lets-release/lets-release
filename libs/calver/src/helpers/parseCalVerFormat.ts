@@ -42,10 +42,11 @@ export function parseCalVerFormat(format: string): ParsedCalVerFormat {
         return regex;
       }
 
-      return regex.replace(
-        token,
-        `(?<${key}>${tokenRegexes[token]}${key === "year" && new RegExp(`^${token}(?=[0-9a-z])`, "i").test(trimmed) ? "?" : ""})`,
-      );
+      return regex.replace(token, () => {
+        const regExp = new RegExp(`^${token}(?=[0-9a-z])`, "i");
+
+        return `(?<${key}>${tokenRegexes[token]}${key === "year" && regExp.test(trimmed) ? "?" : ""})`;
+      });
     },
     escapeRegExp(trimmed),
   );

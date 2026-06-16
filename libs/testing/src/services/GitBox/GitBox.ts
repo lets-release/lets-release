@@ -21,7 +21,7 @@ export class GitBox extends Service {
       Tty: true,
       HostConfig: {
         PortBindings: {
-          [`80/tcp`]: [{ HostPort: `${this.port}` }],
+          [`80/tcp`]: [{ HostPort: String(this.port) }],
         },
       },
       ExposedPorts: { [`80/tcp`]: {} },

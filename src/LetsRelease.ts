@@ -86,185 +86,92 @@ export class LetsRelease {
   private pluginPackageContexts: Record<string, unknown>[] = [];
   private releases: Record<
     string,
+    | undefined
     | {
         type: ReleaseType;
         version: string;
         commit: Commit;
       }
-    | undefined
   > = {};
 
-  async run(options: Partial<Options> = {}, context: Context = {}) {
-    const { cwd = process.cwd(), env = process.env } = context;
-    const extendedEnv = {
-      GIT_AUTHOR_NAME: defaultGitUsername,
-      GIT_AUTHOR_EMAIL: defaultGitUserEmail,
-      GIT_COMMITTER_NAME: defaultGitUsername,
-      GIT_COMMITTER_EMAIL: defaultGitUserEmail,
-      ...env,
-      GIT_ASKPASS: "echo",
-      GIT_TERMINAL_PROMPT: 0 as never,
+  private getPluginContext = <T>(
+    index: number,
+    pluginName: string,
+  ): T | undefined => {
+    return this.pluginContexts[index]?.[pluginName] as T | undefined;
+  };
+
+  private setPluginContext = <T>(
+    index: number,
+    pluginName: string,
+    value: T,
+  ) => {
+    this.pluginContexts[index] = {
+      ...this.pluginContexts[index],
+      [pluginName]: value,
     };
-    const { unhook } = hookStd(
-      {
-        silent: false,
-        streams: [
-          process.stdout,
-          process.stderr,
-          context.stdout,
-          context.stderr,
-        ].filter(Boolean) as NodeJS.WritableStream[],
-      },
-      getMaskingHandler(extendedEnv),
-    );
-    const stdout = context.stdout ?? process.stdout;
-    const stderr = context.stderr ?? process.stderr;
-    const logger = new Signale({
-      config: {
-        displayTimestamp: true,
-        underlineMessage: false,
-        displayLabel: false,
-      },
-      disabled: false,
-      interactive: false,
-      scope: name,
-      stream: [stdout],
-      types: {
-        log: {
-          badge: figures.info,
-          color: "magenta",
-          label: "",
-          stream: [stdout],
-        },
-        warn: {
-          badge: figures.warning,
-          color: "yellow",
-          label: "",
-          stream: [stderr],
-        },
-        error: {
-          badge: figures.cross,
-          color: "red",
-          label: "",
-          stream: [stderr],
-        },
-        success: {
-          badge: figures.tick,
-          color: "green",
-          label: "",
-          stream: [stdout],
-        },
-      },
-    });
+  };
 
-    logger.log(`Running ${name} version ${version}`);
+  private getPluginPackageContext = <T>(
+    index: number,
+    pluginName: string,
+    packageType: string,
+    packageName: string,
+  ): T | undefined => {
+    const key = `${pluginName}-${packageType}:${packageName}`;
 
-    try {
-      verifyEngines();
-      await verifyGitVersion({ cwd, env: extendedEnv });
+    return this.pluginPackageContexts[index]?.[key] as T | undefined;
+  };
 
-      if (!(await isGitRepo({ cwd, env: extendedEnv }))) {
-        throw new NoGitRepoError(cwd);
-      }
+  private setPluginPackageContext = <T>(
+    index: number,
+    pluginName: string,
+    packageType: string,
+    packageName: string,
+    value: T,
+  ) => {
+    this.pluginPackageContexts[index] = {
+      ...this.pluginPackageContexts[index],
+      [`${pluginName}-${packageType}:${packageName}`]: value,
+    };
+  };
 
-      const repositoryRoot = await getRoot({ cwd, env: extendedEnv });
-      const normalizedOptions = await loadConfig(options, {
-        env: extendedEnv,
-        repositoryRoot,
-      });
-
-      const ciEnv = envCi({ cwd: repositoryRoot, env: extendedEnv });
-      const { isCi, isPr, branch, prBranch } = ciEnv as JenkinsEnv;
-
-      if (isCi && isPr && !normalizedOptions.skipCiVerifications) {
-        logger.log("Triggered by a pull request, skip releasing");
-
-        return;
-      }
-
-      if (
-        !isCi &&
-        !normalizedOptions.dryRun &&
-        !normalizedOptions.skipCiVerifications
-      ) {
-        normalizedOptions.dryRun = true;
-
-        logger.warn(
-          "NOT triggered in a known CI environment, running in dry-run mode",
-        );
-      }
-
-      const ciBranch =
-        (isPr ? prBranch : branch) ??
-        (await getHeadName({ cwd: repositoryRoot, env: extendedEnv }));
-      const repoAuthUrl = await getAuthUrl(
-        normalizedOptions.repositoryUrl,
-        ciBranch,
-        {
-          cwd: repositoryRoot,
-          env: extendedEnv,
-        },
-      );
-
-      try {
-        await verifyAuth(repoAuthUrl, ciBranch, {
-          cwd: repositoryRoot,
-          env: extendedEnv,
-        });
-      } catch (error) {
-        if (
-          !(await isBranchUpToDate(repoAuthUrl, ciBranch, {
-            cwd: repositoryRoot,
-            env: extendedEnv,
-          }))
-        ) {
-          logger.log(
-            `The local branch ${ciBranch} is not up to date, skip releasing`,
-          );
-
-          return;
-        }
-
-        throw new NoGitRepoPermissionError(
-          normalizedOptions.repositoryUrl,
-          ciBranch,
-          error,
-        );
-      }
-
-      return await this.runWorkflows(
-        repoAuthUrl,
-        ciBranch,
-        {
-          cwd,
-          // When running on CI, set the commits author and committer info and prevent the `git` CLI to prompt for username/password.
-          env: extendedEnv,
-          stdout,
-          stderr,
-          logger,
-          ciEnv,
-          repositoryRoot,
-          options: normalizedOptions,
-        },
-        await getStepPipelinesList({
-          cwd,
-          stdout,
-          stderr,
-          logger,
-          repositoryRoot,
-          options: normalizedOptions,
-        }),
-      );
-    } catch (error) {
-      await logErrors({ stderr, logger }, error);
-
-      throw error;
-      // FIXME: v8 report `} finally {` as uncovered line
-      /* v8 ignore next 1 */
-    } finally {
-      unhook();
-    }
-  }
+  private normalizeContext = <T extends Step>(
+    context: PartialNormalizedStepContext<T>,
+    index: number,
+  ): NormalizedStepContext<T> => {
+    return {
+      ...context,
+      getPluginContext: <T>(pluginName: string) =>
+        this.getPluginContext<T>(index, pluginName),
+      setPluginContext: <T>(pluginName: string, value: T) =>
+        this.setPluginContext<T>(index, pluginName, value),
+      getPluginPackageContext: <T>(
+        pluginName: string,
+        packageType: string,
+        packageName: string,
+      ) =>
+        this.getPluginPackageContext<T>(
+          index,
+          pluginName,
+          packageType,
+          packageName,
+        ),
+      setPluginPackageContext: <T>(
+        pluginName: string,
+        packageType: string,
+        packageName: string,
+        value: T,
+      ) =>
+        this.setPluginPackageContext<T>(
+          index,
+          pluginName,
+          packageType,
+          packageName,
+          value,
+        ),
+    };
+  };
 
   private async runWorkflows(
     repoAuthUrl: string,
@@ -305,10 +212,8 @@ export class LetsRelease {
 
         return {
           ...rest,
-          ...((mainPackage && uniqueName === mainPackage) ||
-          flattenRawPkgs.length === 1
-            ? { main: true }
-            : {}),
+          ...(((mainPackage && uniqueName === mainPackage) ||
+            flattenRawPkgs.length === 1) && { main: true }),
           type,
           name,
           uniqueName,
@@ -318,7 +223,7 @@ export class LetsRelease {
     const flattenPackages = packages.flat();
     const duplicates = flattenPackages
       .map(({ uniqueName }) => uniqueName)
-      .toSorted()
+      .toSorted((a, b) => a.localeCompare(b))
       .filter(
         (_, idx, array) =>
           array[idx] === array[idx + 1] && array[idx] !== array[idx - 1],
@@ -532,7 +437,7 @@ export class LetsRelease {
 
           return (
             !dependencies?.length ||
-            !!dependencies.every(({ type, name }) =>
+            dependencies.every(({ type, name }) =>
               handledPackages.has(`${type}/${name}`),
             )
           );
@@ -627,85 +532,6 @@ export class LetsRelease {
     return result;
   }
 
-  private getPluginContext = <T>(
-    index: number,
-    pluginName: string,
-  ): T | undefined => {
-    return this.pluginContexts[index]?.[pluginName] as T | undefined;
-  };
-
-  private setPluginContext = <T>(
-    index: number,
-    pluginName: string,
-    value: T,
-  ) => {
-    this.pluginContexts[index] = {
-      ...this.pluginContexts[index],
-      [pluginName]: value,
-    };
-  };
-
-  private getPluginPackageContext = <T>(
-    index: number,
-    pluginName: string,
-    packageType: string,
-    packageName: string,
-  ): T | undefined => {
-    return this.pluginPackageContexts[index]?.[
-      `${pluginName}-${packageType}:${packageName}`
-    ] as T | undefined;
-  };
-
-  private setPluginPackageContext = <T>(
-    index: number,
-    pluginName: string,
-    packageType: string,
-    packageName: string,
-    value: T,
-  ) => {
-    this.pluginPackageContexts[index] = {
-      ...this.pluginPackageContexts[index],
-      [`${pluginName}-${packageType}:${packageName}`]: value,
-    };
-  };
-
-  private normalizeContext = <T extends Step>(
-    context: PartialNormalizedStepContext<T>,
-    index: number,
-  ): NormalizedStepContext<T> => {
-    return {
-      ...context,
-      getPluginContext: <T>(pluginName: string) =>
-        this.getPluginContext<T>(index, pluginName),
-      setPluginContext: <T>(pluginName: string, value: T) =>
-        this.setPluginContext<T>(index, pluginName, value),
-      getPluginPackageContext: <T>(
-        pluginName: string,
-        packageType: string,
-        packageName: string,
-      ) =>
-        this.getPluginPackageContext<T>(
-          index,
-          pluginName,
-          packageType,
-          packageName,
-        ),
-      setPluginPackageContext: <T>(
-        pluginName: string,
-        packageType: string,
-        packageName: string,
-        value: T,
-      ) =>
-        this.setPluginPackageContext<T>(
-          index,
-          pluginName,
-          packageType,
-          packageName,
-          value,
-        ),
-    };
-  };
-
   private async handleMergedReleases(
     repoAuthUrl: string,
     allPackages: Package[],
@@ -791,27 +617,33 @@ export class LetsRelease {
           },
         };
 
-        const artifacts =
-          (await stepPipelines
-            .addChannels?.(stepPipelines, addChannelsContext)
-            .catch(async (error) => {
-              try {
-                await stepPipelines.fail?.(stepPipelines, {
-                  ...addChannelsContext,
-                  error,
-                });
-              } catch (failError) {
-                throw new AggregateError(
-                  [...extractErrors(error), ...extractErrors(failError)],
-                  "AggregateError",
-                  {
-                    cause: failError,
-                  },
-                );
-              }
+        const artifacts = await (async () => {
+          try {
+            return (
+              (await stepPipelines.addChannels?.(
+                stepPipelines,
+                addChannelsContext,
+              )) ?? []
+            );
+          } catch (error) {
+            try {
+              await stepPipelines.fail?.(stepPipelines, {
+                ...addChannelsContext,
+                error,
+              });
+            } catch (failError) {
+              throw new AggregateError(
+                [...extractErrors(error), ...extractErrors(failError)],
+                "AggregateError",
+                {
+                  cause: failError,
+                },
+              );
+            }
 
-              throw error;
-            })) ?? [];
+            throw error;
+          }
+        })();
 
         const mergedArtifacts = mergeArtifacts(
           currentRelease.artifacts,
@@ -912,7 +744,7 @@ export class LetsRelease {
             name: pkg.formerName,
             uniqueName: pkg.uniqueName.replace(
               new RegExp(`${escapeRegExp(pkg.name)}$`),
-              pkg.formerName,
+              () => pkg.formerName!,
             ),
           };
           const { tags: formerNameTags } = await mapMatchBranch(
@@ -1148,25 +980,31 @@ export class LetsRelease {
             index,
           );
 
-        const artifacts =
-          (await stepPipelines
-            .publish?.(stepPipelines, normalizedContext)
-            .catch(async (error) => {
-              try {
-                await stepPipelines.fail?.(stepPipelines, {
-                  ...normalizedContext,
-                  error,
-                });
-              } catch (failError) {
-                throw new AggregateError(
-                  [...extractErrors(error), ...extractErrors(failError)],
-                  "AggregateError",
-                  { cause: failError },
-                );
-              }
+        const artifacts = await (async () => {
+          try {
+            return (
+              (await stepPipelines.publish?.(
+                stepPipelines,
+                normalizedContext,
+              )) ?? []
+            );
+          } catch (error) {
+            try {
+              await stepPipelines.fail?.(stepPipelines, {
+                ...normalizedContext,
+                error,
+              });
+            } catch (failError) {
+              throw new AggregateError(
+                [...extractErrors(error), ...extractErrors(failError)],
+                "AggregateError",
+                { cause: failError },
+              );
+            }
 
-              throw error;
-            })) ?? [];
+            throw error;
+          }
+        })();
 
         if (!dryRun) {
           await addNote(
@@ -1214,5 +1052,177 @@ export class LetsRelease {
     );
 
     return releases.flat();
+  }
+
+  async run(options: Partial<Options> = {}, context: Context = {}) {
+    const { cwd = process.cwd(), env = process.env } = context;
+    const extendedEnv = {
+      GIT_AUTHOR_NAME: defaultGitUsername,
+      GIT_AUTHOR_EMAIL: defaultGitUserEmail,
+      GIT_COMMITTER_NAME: defaultGitUsername,
+      GIT_COMMITTER_EMAIL: defaultGitUserEmail,
+      ...env,
+      GIT_ASKPASS: "echo",
+      GIT_TERMINAL_PROMPT: 0 as never,
+    };
+    const { unhook } = hookStd(
+      {
+        silent: false,
+        streams: [
+          process.stdout,
+          process.stderr,
+          context.stdout,
+          context.stderr,
+        ].filter(Boolean) as NodeJS.WritableStream[],
+      },
+      getMaskingHandler(extendedEnv),
+    );
+    const stdout = context.stdout ?? process.stdout;
+    const stderr = context.stderr ?? process.stderr;
+    const logger = new Signale({
+      config: {
+        displayTimestamp: true,
+        underlineMessage: false,
+        displayLabel: false,
+      },
+      disabled: false,
+      interactive: false,
+      scope: name,
+      stream: [stdout],
+      types: {
+        log: {
+          badge: figures.info,
+          color: "magenta",
+          label: "",
+          stream: [stdout],
+        },
+        warn: {
+          badge: figures.warning,
+          color: "yellow",
+          label: "",
+          stream: [stderr],
+        },
+        error: {
+          badge: figures.cross,
+          color: "red",
+          label: "",
+          stream: [stderr],
+        },
+        success: {
+          badge: figures.tick,
+          color: "green",
+          label: "",
+          stream: [stdout],
+        },
+      },
+    });
+
+    logger.log(`Running ${name} version ${version}`);
+
+    try {
+      verifyEngines();
+      await verifyGitVersion({ cwd, env: extendedEnv });
+
+      if (!(await isGitRepo({ cwd, env: extendedEnv }))) {
+        throw new NoGitRepoError(cwd);
+      }
+
+      const repositoryRoot = await getRoot({ cwd, env: extendedEnv });
+      const normalizedOptions = await loadConfig(options, {
+        env: extendedEnv,
+        repositoryRoot,
+      });
+
+      const ciEnv = envCi({ cwd: repositoryRoot, env: extendedEnv });
+      const { isCi, isPr, branch, prBranch } = ciEnv as JenkinsEnv;
+
+      if (isCi && isPr && !normalizedOptions.skipCiVerifications) {
+        logger.log("Triggered by a pull request, skip releasing");
+
+        return;
+      }
+
+      if (
+        !isCi &&
+        !normalizedOptions.dryRun &&
+        !normalizedOptions.skipCiVerifications
+      ) {
+        normalizedOptions.dryRun = true;
+
+        logger.warn(
+          "NOT triggered in a known CI environment, running in dry-run mode",
+        );
+      }
+
+      const ciBranch =
+        (isPr ? prBranch : branch) ??
+        (await getHeadName({ cwd: repositoryRoot, env: extendedEnv }));
+      const repoAuthUrl = await getAuthUrl(
+        normalizedOptions.repositoryUrl,
+        ciBranch,
+        {
+          cwd: repositoryRoot,
+          env: extendedEnv,
+        },
+      );
+
+      try {
+        await verifyAuth(repoAuthUrl, ciBranch, {
+          cwd: repositoryRoot,
+          env: extendedEnv,
+        });
+      } catch (error) {
+        if (
+          !(await isBranchUpToDate(repoAuthUrl, ciBranch, {
+            cwd: repositoryRoot,
+            env: extendedEnv,
+          }))
+        ) {
+          logger.log(
+            `The local branch ${ciBranch} is not up to date, skip releasing`,
+          );
+
+          return;
+        }
+
+        throw new NoGitRepoPermissionError(
+          normalizedOptions.repositoryUrl,
+          ciBranch,
+          error,
+        );
+      }
+
+      return await this.runWorkflows(
+        repoAuthUrl,
+        ciBranch,
+        {
+          cwd,
+          // When running on CI, set the commits author and committer info and prevent the `git` CLI to prompt for username/password.
+          env: extendedEnv,
+          stdout,
+          stderr,
+          logger,
+          ciEnv,
+          repositoryRoot,
+          options: normalizedOptions,
+        },
+        await getStepPipelinesList({
+          cwd,
+          stdout,
+          stderr,
+          logger,
+          repositoryRoot,
+          options: normalizedOptions,
+        }),
+      );
+    } catch (error) {
+      await logErrors({ stderr, logger }, error);
+
+      throw error;
+      // FIXME: v8 report `} finally {` as uncovered line
+      /* v8 ignore next 1 */
+    } finally {
+      unhook();
+    }
   }
 }

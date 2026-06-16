@@ -26,6 +26,7 @@ export async function getStepPipelinesList({
 >): Promise<StepPipelines[]> {
   const errors: unknown[] = [];
   const steps = Object.values(Step);
+  // eslint-disable-next-line unicorn/no-declarations-before-early-exit
   const list = await Promise.all(
     packages.map(async ({ plugins, ...rest }) => {
       const stepSpecs: {
@@ -47,9 +48,9 @@ export async function getStepPipelinesList({
               : plugin,
           )) as PluginObject;
 
-          for (const step of steps) {
+          const handleStep = (step: Step) => {
             if (!pluginObject[step]) {
-              continue;
+              return;
             }
 
             Reflect.defineProperty(pluginObject[step], "pluginName", {
@@ -62,6 +63,10 @@ export async function getStepPipelinesList({
               ...(stepSpecs[step] ?? []),
               [pluginObject[step], pluginOptions],
             ] as never;
+          };
+
+          for (const step of steps) {
+            handleStep(step);
           }
         } catch (error) {
           errors.push(new InvalidPluginSpecError(spec, error));

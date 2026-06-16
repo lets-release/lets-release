@@ -19,12 +19,16 @@ export function comparePrereleaseVersions(a: CommonVersion, b: CommonVersion) {
     bPrereleaseIdentifiers.length === 0
   ) {
     return -1;
-  } else if (
+  }
+
+  if (
     aPrereleaseIdentifiers.length === 0 &&
     bPrereleaseIdentifiers.length > 0
   ) {
     return 1;
-  } else if (
+  }
+
+  if (
     aPrereleaseIdentifiers.length === 0 &&
     bPrereleaseIdentifiers.length === 0
   ) {

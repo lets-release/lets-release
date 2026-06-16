@@ -7,13 +7,12 @@ export function isValidCalVerMajorXRange(format: string, range: string) {
     return false;
   }
 
+  const formatRegExp = new RegExp(
+    `${SEPARATOR}${CalVerToken.MINOR}${SEPARATOR}${CalVerToken.MICRO}$`,
+  );
   const trimmedFormat = format.trim().toUpperCase();
 
-  if (
-    !new RegExp(
-      `${SEPARATOR}${CalVerToken.MINOR}${SEPARATOR}${CalVerToken.MICRO}$`,
-    ).test(trimmedFormat)
-  ) {
+  if (!formatRegExp.test(trimmedFormat)) {
     return true;
   }
 
@@ -24,10 +23,14 @@ export function isValidCalVerMajorXRange(format: string, range: string) {
   const values = trammedRange.split(separatorRegExp);
 
   if (tokens.length === values.length) {
-    return new RegExp(String.raw`^(\d+${SEPARATOR})+x${SEPARATOR}x$`).test(
-      trammedRange,
+    const minorMicroRegExp = new RegExp(
+      String.raw`^(\d+${SEPARATOR})+x${SEPARATOR}x$`,
     );
+
+    return minorMicroRegExp.test(trammedRange);
   }
 
-  return new RegExp(String.raw`^(\d+${SEPARATOR})+x$`).test(trammedRange);
+  const minorRegExp = new RegExp(String.raw`^(\d+${SEPARATOR})+x$`);
+
+  return minorRegExp.test(trammedRange);
 }

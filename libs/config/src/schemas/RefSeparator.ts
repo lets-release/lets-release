@@ -9,7 +9,7 @@ import { verifyGitTagName } from "src/helpers/verifyGitTagName";
  * Git ref separator.
  */
 export const RefSeparator = NonEmptyString.check(async (ctx) => {
-  // Verify that the `refSeparator` is a valid git reference character
+  // Verify that the `refSeparator` is a valid Git reference character
   const isValidBranchNameChar = await verifyGitBranchName(
     `lets-release${ctx.value}0.0.x`,
   );

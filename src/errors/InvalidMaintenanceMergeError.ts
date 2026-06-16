@@ -8,6 +8,15 @@ import {
 import { getRange } from "src/utils/branch/getRange";
 
 export class InvalidMaintenanceMergeError extends LetsReleaseError {
+  constructor(
+    readonly pkg: Package,
+    private range: MaintenanceVersionRange,
+    private branch: string,
+    private release: NormalizedNextRelease,
+  ) {
+    super();
+  }
+
   get message() {
     return `The release \`${this.release.version}\` of package \`${this.pkg.uniqueName}\` on branch \`${this.branch}\` cannot be published as it is out of range.`;
   }
@@ -18,14 +27,5 @@ export class InvalidMaintenanceMergeError extends LetsReleaseError {
 The branch \`${this.branch}\` head should be [reset][] to a previous commit so the commit with tag \`${this.release.tag}\` is removed from the branch history.
 
 [reset]: https://git-scm.com/docs/git-reset`;
-  }
-
-  constructor(
-    readonly pkg: Package,
-    private range: MaintenanceVersionRange,
-    private branch: string,
-    private release: NormalizedNextRelease,
-  ) {
-    super();
   }
 }

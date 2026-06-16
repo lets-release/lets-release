@@ -8,7 +8,7 @@ import { name } from "src/program";
  *
  * @param options Options to pass to `execa`.
  *
- * @return `true` if the current working directory is in a git repository, falsy otherwise.
+ * @return `true` if the current working directory is in a Git repository, falsy otherwise.
  */
 export async function isGitRepo(options: Partial<Options> = {}) {
   try {

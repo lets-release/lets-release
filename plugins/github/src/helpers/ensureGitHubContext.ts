@@ -34,7 +34,7 @@ export async function ensureGitHubContext(
   const resolvedOptions = await resolveGitHubOptions(rest, options);
   const { token, apiUrl, proxy } = resolvedOptions;
   const octokit = new LetsReleaseOctokit({
-    ...(apiUrl ? { baseUrl: apiUrl } : {}),
+    ...(apiUrl && { baseUrl: apiUrl }),
     auth: token,
     request: {
       fetch: generateFetchFunction(proxy),
@@ -65,10 +65,22 @@ export async function ensureGitHubContext(
         errors.push(new MismatchGitHubUrlError(repositoryUrl, clone_url));
       }
 
+      const hasAccess = await (async () => {
+        try {
+          await octokit.request("HEAD /installation/repositories", {
+            per_page: 1,
+          });
+
+          return true;
+        } catch {
+          return false;
+        }
+      })();
+
       // https://github.com/semantic-release/github/issues/182
       // Do not check for permissions in GitHub actions, as the provided token is an installation access token.
       // octokit.request("GET /repos/{owner}/{repo}", {repo, owner}) does not return the "permissions" key in that case.
-      // But GitHub Actions have all permissions required for @lets-release/github to work
+      // But GitHub Actions have all permissions required for @lets-release/GitHub to work
       if (
         !env.GITHUB_ACTION &&
         // If authenticated as GitHub App installation, `push` will always be false.
@@ -76,9 +88,7 @@ export async function ensureGitHubContext(
         // We send another request to check if current authentication is an installation.
         // Note: we cannot check if the installation has all required permissions, it's
         // up to the user to make sure it has
-        !(await octokit
-          .request("HEAD /installation/repositories", { per_page: 1 })
-          .catch(() => false))
+        !hasAccess
       ) {
         errors.push(new NoGitHubPermissionError(owner, repo));
       }

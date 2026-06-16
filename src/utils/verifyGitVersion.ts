@@ -9,16 +9,20 @@ import { UnsupportedGitVersionError } from "src/errors/UnsupportedGitVersionErro
 const minRequiredVersion = "2.7.1";
 
 export async function verifyGitVersion(options: Partial<Options> = {}) {
-  const { stdout } = await $<{ lines: false }>({
-    ...options,
-    lines: false,
-  })`git --version`.catch((error) => {
-    const e = new NoGitBinaryError(`>=${minRequiredVersion}`);
+  const { stdout } = await (async () => {
+    try {
+      return await $<{ lines: false }>({
+        ...options,
+        lines: false,
+      })`git --version`;
+    } catch (error) {
+      const e = new NoGitBinaryError(`>=${minRequiredVersion}`);
 
-    e.cause = error;
+      e.cause = error;
 
-    throw e;
-  });
+      throw e;
+    }
+  })();
 
   const version = findVersions(stripAnsi(stdout), { loose: true })[0];
 

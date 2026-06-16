@@ -95,7 +95,7 @@ export interface Commit {
   message: string;
 
   /**
-   * List of git tags. See https://git-scm.com/docs/git-log#Documentation/git-log.txt-emdem
+   * List of Git tags. See https://git-scm.com/docs/git-log#Documentation/git-log.txt-emdem
    *
    * May used by `conventional-changelog` libs.
    */

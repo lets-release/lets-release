@@ -13,16 +13,18 @@ export function parseSemVer(
   }
 
   const major = +match.groups.major;
-  const minor = +match.groups.minor;
-  const patch = +match.groups.patch;
 
   if (major > Number.MAX_SAFE_INTEGER || major < 0) {
     throw new TypeError("Invalid major version");
   }
 
+  const minor = +match.groups.minor;
+
   if (minor > Number.MAX_SAFE_INTEGER || minor < 0) {
     throw new TypeError("Invalid minor version");
   }
+
+  const patch = +match.groups.patch;
 
   if (patch > Number.MAX_SAFE_INTEGER || patch < 0) {
     throw new TypeError("Invalid patch version");

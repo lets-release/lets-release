@@ -6,7 +6,7 @@ import { getHeadHash } from "src/utils/git/getHeadHash";
 /**
  * Verify the local branch is up to date with the remote one.
  *
- * @param repositoryUrl The remote repository url.
+ * @param repositoryUrl The remote repository URL.
  * @param branch The repository branch for which to verify status.
  * @param options Options to pass to `execa`.
  *

@@ -6,7 +6,7 @@ import { name } from "src/program";
 /**
  * Verify the write access authorization to remote repository with push dry-run.
  *
- * @param repositoryUrl The remote repository url.
+ * @param repositoryUrl The remote repository URL.
  * @param branch The repository branch for which to verify write access.
  * @param options Options to pass to `execa`.
  *

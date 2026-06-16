@@ -31,8 +31,7 @@ export function formatCalVer(
 
       const valueString = String(value);
 
-      return version.replace(
-        token,
+      return version.replace(token, () =>
         token.startsWith("0") ? valueString.padStart(2, "0") : valueString,
       );
     }, format.trim().toUpperCase());
@@ -46,9 +45,9 @@ export function formatCalVer(
     const prerelease = `${prereleaseName}${number === 0 && options.ignoreZeroNumber ? "" : `.${number}`}`;
 
     return `${main}-${prerelease}${buildMetadata}`;
-  } else if (isNil(prereleaseNumber)) {
-    return `${main}${buildMetadata}`;
-  } else {
-    return `${main}-${prereleaseNumber}${buildMetadata}`;
   }
+
+  return isNil(prereleaseNumber)
+    ? `${main}${buildMetadata}`
+    : `${main}-${prereleaseNumber}${buildMetadata}`;
 }

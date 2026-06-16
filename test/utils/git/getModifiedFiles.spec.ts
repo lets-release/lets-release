@@ -30,8 +30,10 @@ describe("getModifiedFiles", () => {
 
     const files = await getModifiedFiles({ cwd });
 
-    expect(files.toSorted()).toEqual(
-      ["file1.js", "dir/file2.js", "file3.js", "file4.js"].toSorted(),
+    expect(files.toSorted((a, b) => a.localeCompare(b))).toEqual(
+      ["file1.js", "dir/file2.js", "file3.js", "file4.js"].toSorted((a, b) =>
+        a.localeCompare(b),
+      ),
     );
   });
 

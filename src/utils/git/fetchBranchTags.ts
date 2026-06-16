@@ -12,9 +12,9 @@ import { getHeadName } from "src/utils/git/getHeadName";
  *
  * The goal is to retrieve the information on all the release branches without "disturbing" the CI, leaving the trigger branch or the detached head intact.
  *
- * @param repositoryUrl The remote repository url.
+ * @param repositoryUrl The remote repository URL.
  * @param branch The repository branch to fetch.
- * @param ciBranch The ci branch.
+ * @param ciBranch The CI branch.
  * @param options Options to pass to `execa`.
  */
 export async function fetchBranchTags(

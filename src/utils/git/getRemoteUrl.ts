@@ -5,11 +5,11 @@ import stripAnsi from "strip-ansi";
 import { name } from "src/program";
 
 /**
- * Get the repository remote url.
+ * Get the repository remote URL.
  *
  * @param options Options to pass to `execa`.
  *
- * @return The value of the remote git url.
+ * @return The value of the remote Git URL.
  */
 export async function getRemoteUrl(
   remote = "origin",

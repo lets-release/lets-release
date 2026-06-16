@@ -27,14 +27,26 @@ export async function getNote(
   options: Partial<Options> = {},
 ): Promise<TagNote> {
   try {
-    const { stdout: stdoutA } = await $<{ lines: false }>({
-      ...options,
-      lines: false,
-    })`git notes --ref ${name} show ${ref}`.catch(handleError);
-    const { stdout: stdoutB } = await $<{ lines: false }>({
-      ...options,
-      lines: false,
-    })`git notes --ref ${`${name}-${ref}`} show ${ref}`.catch(handleError);
+    const { stdout: stdoutA } = await (async () => {
+      try {
+        return await $<{ lines: false }>({
+          ...options,
+          lines: false,
+        })`git notes --ref ${name} show ${ref}`;
+      } catch (error) {
+        return handleError(error as ExecaError);
+      }
+    })();
+    const { stdout: stdoutB } = await (async () => {
+      try {
+        return await $<{ lines: false }>({
+          ...options,
+          lines: false,
+        })`git notes --ref ${`${name}-${ref}`} show ${ref}`;
+      } catch (error) {
+        return handleError(error as ExecaError);
+      }
+    })();
 
     return merge(
       JSON.parse(stripAnsi(stdoutA).trim()),

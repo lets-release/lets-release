@@ -8,7 +8,8 @@ export async function createRepo(
   name: string,
   description = `Repository ${name}`,
 ) {
-  const exec = await new Docker().getContainer(containerId)?.exec({
+  const docker = new Docker();
+  const exec = await docker.getContainer(containerId)?.exec({
     Cmd: ["repo-admin", "-n", name, "-d", description],
     AttachStdout: true,
     AttachStderr: true,

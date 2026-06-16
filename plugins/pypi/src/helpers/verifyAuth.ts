@@ -46,7 +46,7 @@ export async function verifyAuth(
     method: "POST",
     headers: {
       ...form.getHeaders(),
-      Authorization: `Basic ${Buffer.from(token ? `${DEFAULT_PYPI_USERNAME}:${token}` : `${username}:${password}`).toString("base64")}`,
+      Authorization: `Basic ${Buffer.from(token ? `${DEFAULT_PYPI_USERNAME}:${token}` : `${username}:${password}`).toBase64()}`,
     },
     body: form,
   });

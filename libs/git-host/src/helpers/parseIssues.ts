@@ -15,7 +15,7 @@ export function parseIssues(
       message
         ? parser(message).actions.close.flatMap((action) => {
             if (isNil(action.slug) || action.slug === `${owner}/${repo}`) {
-              return [Number.parseInt(action.issue, 10)];
+              return [Math.trunc(Number(action.issue))];
             }
 
             return [];

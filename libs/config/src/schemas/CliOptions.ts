@@ -3,7 +3,7 @@ import { z } from "zod";
 import { PrereleaseName } from "@lets-release/versioning";
 
 /**
- * lets-release cli options.
+ * lets-release CLI options.
  */
 export const CliOptions = z.object({
   /**
