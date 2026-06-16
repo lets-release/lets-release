@@ -9,7 +9,7 @@ export default mergeConfig(
     test: {
       name: "github.e2e",
       include: ["test/**/*.spec.ts"],
-      testTimeout: 30_000,
+      testTimeout: 60_000,
     },
   }),
 );

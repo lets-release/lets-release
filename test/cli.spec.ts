@@ -68,10 +68,10 @@ describe("cli", () => {
           repository: { url },
           publishConfig: { registry },
           devDependencies: {
-            "conventional-changelog-conventionalcommits": "^9.0.0",
-            vite: "^6.0.7",
-            "vite-node": "^2.1.8",
-            "vite-tsconfig-paths": "^5.1.4",
+            vite: "^8.0.16",
+            "vite-node": "^6.0.0",
+            "vite-tsconfig-paths": "^6.1.1",
+            vitest: "^4.1.9",
           },
           release: {
             packages: [
@@ -249,10 +249,10 @@ describe("cli", () => {
       repository: { url },
       publishConfig: { registry },
       devDependencies: {
-        "conventional-changelog-conventionalcommits": "^9.0.0",
-        vite: "^6.0.7",
-        "vite-node": "^2.1.8",
-        "vite-tsconfig-paths": "^5.1.4",
+        vite: "^8.0.16",
+        "vite-node": "^6.0.0",
+        "vite-tsconfig-paths": "^6.1.1",
+        vitest: "^4.1.9",
       },
       release: {
         packages: [
@@ -430,10 +430,10 @@ describe("cli", () => {
           repository: { url },
           publishConfig: { registry },
           devDependencies: {
-            "conventional-changelog-conventionalcommits": "^9.0.0",
-            vite: "^6.0.7",
-            "vite-node": "^2.1.8",
-            "vite-tsconfig-paths": "^5.1.4",
+            vite: "^8.0.16",
+            "vite-node": "^6.0.0",
+            "vite-tsconfig-paths": "^6.1.1",
+            vitest: "^4.1.9",
           },
           release: {
             packages: [
@@ -498,10 +498,10 @@ describe("cli", () => {
           repository: { url },
           publishConfig: { registry },
           devDependencies: {
-            "conventional-changelog-conventionalcommits": "^9.0.0",
-            vite: "^6.0.7",
-            "vite-node": "^2.1.8",
-            "vite-tsconfig-paths": "^5.1.4",
+            vite: "^8.0.16",
+            "vite-node": "^6.0.0",
+            "vite-tsconfig-paths": "^6.1.1",
+            vitest: "^4.1.9",
           },
           release: {
             packages: [
@@ -583,10 +583,10 @@ describe("cli", () => {
           repository: { url },
           publishConfig: { registry },
           devDependencies: {
-            "conventional-changelog-conventionalcommits": "^9.0.0",
-            vite: "^6.0.7",
-            "vite-node": "^2.1.8",
-            "vite-tsconfig-paths": "^5.1.4",
+            vite: "^8.0.16",
+            "vite-node": "^6.0.0",
+            "vite-tsconfig-paths": "^6.1.1",
+            vitest: "^4.1.9",
           },
           release: {
             packages: [
@@ -701,10 +701,10 @@ describe("cli", () => {
           repository: { url },
           publishConfig: { registry },
           devDependencies: {
-            "conventional-changelog-conventionalcommits": "^9.0.0",
-            vite: "^6.0.7",
-            "vite-node": "^2.1.8",
-            "vite-tsconfig-paths": "^5.1.4",
+            vite: "^8.0.16",
+            "vite-node": "^6.0.0",
+            "vite-tsconfig-paths": "^6.1.1",
+            vitest: "^4.1.9",
           },
           release: {
             packages: [
@@ -769,10 +769,10 @@ describe("cli", () => {
           type: "module",
           publishConfig: { registry },
           devDependencies: {
-            "conventional-changelog-conventionalcommits": "^9.0.0",
-            vite: "^6.0.7",
-            "vite-node": "^2.1.8",
-            "vite-tsconfig-paths": "^5.1.4",
+            vite: "^8.0.16",
+            "vite-node": "^6.0.0",
+            "vite-tsconfig-paths": "^6.1.1",
+            vitest: "^4.1.9",
           },
           release: {
             packages: [
@@ -841,10 +841,10 @@ describe("cli", () => {
           repository: { url },
           publishConfig: { registry },
           devDependencies: {
-            "conventional-changelog-conventionalcommits": "^9.0.0",
-            vite: "^6.0.7",
-            "vite-node": "^2.1.8",
-            "vite-tsconfig-paths": "^5.1.4",
+            vite: "^8.0.16",
+            "vite-node": "^6.0.0",
+            "vite-tsconfig-paths": "^6.1.1",
+            vitest: "^4.1.9",
           },
           release: {
             packages: [

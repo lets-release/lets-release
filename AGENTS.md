@@ -84,7 +84,7 @@ pnpm test -- src/utils/git/getRoot.spec.ts
 
 Type-checking (`tsc --build`) works without ts-patch. Building (`tspc --build`) requires it.
 
-During development, packages export `./src/*.ts` directly (resolved by `vite-tsconfig-paths`). The `publishConfig` in each package.json overrides exports to `./dist/*.js` at publish time.
+During development, packages export `./src/*.ts` directly. The `publishConfig` in each package.json overrides exports to `./dist/*.js` at publish time.
 
 ## Import conventions
 

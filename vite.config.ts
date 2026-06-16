@@ -1,13 +1,12 @@
 import { defineConfig as defineViteConfig, mergeConfig } from "vite";
-import tsconfigPaths from "vite-tsconfig-paths";
 import { defineConfig as defineVitestConfig } from "vitest/config";
 
 export default mergeConfig(
   defineViteConfig({
     resolve: {
-      tsconfigPaths: false,
+      tsconfigPaths: true,
     },
-    plugins: [tsconfigPaths()],
+    plugins: [],
   }),
   defineVitestConfig({
     test: {
