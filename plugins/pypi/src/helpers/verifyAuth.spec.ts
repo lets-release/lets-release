@@ -334,7 +334,7 @@ describe("verifyAuth", () => {
 
       const expectedAuth = Buffer.from(
         `${DEFAULT_PYPI_USERNAME}:${testToken}`,
-      ).toBase64();
+      ).toString("base64");
 
       mockPool
         .intercept({
@@ -362,7 +362,7 @@ describe("verifyAuth", () => {
 
       const expectedAuth = Buffer.from(
         `${testUsername}:${testPassword}`,
-      ).toBase64();
+      ).toString("base64");
 
       mockPool
         .intercept({

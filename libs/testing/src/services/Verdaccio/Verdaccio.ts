@@ -74,7 +74,7 @@ export class Verdaccio extends Service {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Basic ${Buffer.from(`${NPM_USERNAME}:${NPM_PASSWORD}`).toBase64()}`,
+        Authorization: `Basic ${Buffer.from(`${NPM_USERNAME}:${NPM_PASSWORD}`).toString("base64")}`,
       },
       body: JSON.stringify({
         password: NPM_PASSWORD,

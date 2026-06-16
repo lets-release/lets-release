@@ -146,6 +146,7 @@ export default defineConfig(
       "unicorn/no-unreadable-object-destructuring": "off",
       "unicorn/no-unsafe-property-key": "off",
       "unicorn/prefer-minimal-ternary": "off",
+      "unicorn/prefer-uint8array-base64": "off",
       "vitest/valid-expect": [
         "error",
         {
