@@ -49,9 +49,9 @@ export const findPackages: StepFunction<
         onlyDirectories: true,
       }),
     ),
-  );
+  ).toSorted((a, b) => a.localeCompare(b));
 
-  for (const folder of folders.toSorted((a, b) => a.localeCompare(b))) {
+  for (const folder of folders) {
     const pkgRoot = path.resolve(repositoryRoot, folder);
     const relativePkgRoot = `./${path.relative(repositoryRoot, pkgRoot)}`;
 

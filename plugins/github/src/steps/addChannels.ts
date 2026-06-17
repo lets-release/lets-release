@@ -16,7 +16,7 @@ export const addChannels: StepFunction<
     octokit,
     owner,
     repo,
-    options: { mainPackageOnly },
+    options: { mainPackageOnly: isMainPackageOnly },
   } = await ensureGitHubContext(context, options);
 
   const {
@@ -27,7 +27,7 @@ export const addChannels: StepFunction<
     nextRelease: { tag, notes },
   } = context;
 
-  if (mainPackageOnly && !pkg.main) {
+  if (isMainPackageOnly && !pkg.main) {
     logger.warn({
       prefix: `[${pkg.uniqueName}]`,
       message: `Skip as it is not the main package`,

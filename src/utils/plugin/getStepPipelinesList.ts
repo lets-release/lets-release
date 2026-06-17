@@ -26,7 +26,6 @@ export async function getStepPipelinesList({
 >): Promise<StepPipelines[]> {
   const errors: unknown[] = [];
   const steps = Object.values(Step);
-  // eslint-disable-next-line unicorn/no-declarations-before-early-exit
   const list = await Promise.all(
     packages.map(async ({ plugins, ...rest }) => {
       const stepSpecs: {

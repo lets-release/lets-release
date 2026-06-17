@@ -32,9 +32,9 @@ describe("isBranchUpToDate", () => {
       stdout: `${remoteHash}\trefs/heads/${branch}\n`,
     });
 
-    const result = await isBranchUpToDate(repositoryUrl, branch, options);
+    const isResult = await isBranchUpToDate(repositoryUrl, branch, options);
 
-    expect(result).toBe(true);
+    expect(isResult).toBe(true);
   });
 
   it("should return false if the branch is not up to date", async () => {
@@ -44,8 +44,8 @@ describe("isBranchUpToDate", () => {
       stdout: `${remoteHash}\trefs/heads/${branch}\n`,
     });
 
-    const result = await isBranchUpToDate(repositoryUrl, branch, options);
+    const isResult = await isBranchUpToDate(repositoryUrl, branch, options);
 
-    expect(result).toBe(false);
+    expect(isResult).toBe(false);
   });
 });

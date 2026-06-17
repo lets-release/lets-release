@@ -1,6 +1,7 @@
 import { generateGetBatchCommitsQuery } from "src/helpers/generateGetBatchCommitsQuery";
 import { getAssociatedPullRequests } from "src/helpers/getAssociatedPullRequests";
 import { LetsReleaseOctokit } from "src/LetsReleaseOctokit";
+// eslint-disable-next-line unicorn/no-non-function-verb-prefix
 import { getCommitQuery } from "src/queries/getCommitQuery";
 
 vi.mock("src/LetsReleaseOctokit");

@@ -1,5 +1,6 @@
 import { generateGetBatchCommitsQuery } from "src/helpers/generateGetBatchCommitsQuery";
 import { LetsReleaseOctokit } from "src/LetsReleaseOctokit";
+// eslint-disable-next-line unicorn/no-non-function-verb-prefix
 import { getCommitQuery } from "src/queries/getCommitQuery";
 import { Commit } from "src/types/Commit";
 

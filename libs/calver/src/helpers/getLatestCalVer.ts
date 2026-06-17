@@ -22,10 +22,10 @@ export function getLatestCalVer(
       const shouldBefore = !isNil(before);
       const isBefore =
         shouldBefore && compareCalVers(format, version, before) < 0;
-      const must = !shouldBefore || isBefore;
+      const isMust = !shouldBefore || isBefore;
 
       if (withPrerelease && isNil(prereleaseName)) {
-        return must;
+        return isMust;
       }
 
       try {
@@ -33,11 +33,11 @@ export function getLatestCalVer(
 
         if (!withPrerelease && isNil(prereleaseName)) {
           return (
-            must && !calver.prereleaseName && isNil(calver.prereleaseNumber)
+            isMust && !calver.prereleaseName && isNil(calver.prereleaseNumber)
           );
         }
 
-        return must && calver.prereleaseName === prereleaseName;
+        return isMust && calver.prereleaseName === prereleaseName;
       } catch {
         return false;
       }

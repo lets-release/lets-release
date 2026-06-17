@@ -25,9 +25,9 @@ export const PackageInfo = PackageDependency.extend({
   dependencies: z.array(PackageDependency).optional(),
 }).check(async (ctx) => {
   const { type, name } = ctx.value;
-  const valid = await verifyGitTagName(`${type}/${name}`);
+  const isValid = await verifyGitTagName(`${type}/${name}`);
 
-  if (!valid) {
+  if (!isValid) {
     ctx.issues.push({
       input: ctx.value,
       code: "custom",

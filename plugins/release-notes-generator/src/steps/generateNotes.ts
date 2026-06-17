@@ -135,8 +135,8 @@ export const generateNotes: StepFunction<
   const currentTag = nextRelease.tag;
   const {
     host: hostConfig,
-    linkCompare,
-    linkReferences,
+    linkCompare: isLinkCompare,
+    linkReferences: isLinkReferences,
     commit: commitConfig,
     issue: issueConfig,
   } = parsedOptions;
@@ -160,8 +160,8 @@ export const generateNotes: StepFunction<
     },
     {
       host: hostConfig,
-      linkCompare,
-      linkReferences,
+      linkCompare: isLinkCompare,
+      linkReferences: isLinkReferences,
       commit: commitConfig,
       issue: issueConfig,
     },

@@ -26,7 +26,7 @@ export function normalizePrereleaseNameSpec(
     }
   }
 
-  normalized.default = normalized.default ?? defaultName;
+  normalized.default ??= defaultName;
 
   return normalized;
 }

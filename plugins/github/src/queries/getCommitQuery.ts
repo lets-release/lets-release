@@ -3,6 +3,7 @@ import { GRAPHQL_COMMIT_OBJECT } from "src/constants/GRAPHQL_COMMIT_OBJECT";
 /**
  * GraphQL Query to fetch additional associatedPR for commits that has more than 100 associatedPRs
  */
+// eslint-disable-next-line unicorn/no-non-function-verb-prefix
 export const getCommitQuery = `#graphql
   query getCommit($owner: String!, $repo: String!, $sha: String!, $cursor: String) {
     repository(owner: $owner, name: $repo) {

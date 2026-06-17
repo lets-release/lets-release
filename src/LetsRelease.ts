@@ -460,6 +460,7 @@ export class LetsRelease {
           errors.push(...extractErrors(error));
         }
 
+        // eslint-disable-next-line unicorn/no-unreadable-for-of-expression
         for (const { type, name } of unhandledPackages[index]) {
           handledPackages.add(`${type}/${name}`);
         }
@@ -608,6 +609,7 @@ export class LetsRelease {
           normalizedContext,
         );
 
+        // eslint-disable-next-line unicorn/no-non-function-verb-prefix
         const addChannelsContext: NormalizedStepContext<Step.addChannels> = {
           ...normalizedContext,
           currentRelease,

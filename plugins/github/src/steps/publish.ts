@@ -22,9 +22,9 @@ export const publish: StepFunction<Step.publish, GitHubOptions> = async (
     repo,
     options: {
       assets,
-      mainPackageOnly,
-      makeLatestMainPackageOnly,
-      draftRelease,
+      mainPackageOnly: isMainPackageOnly,
+      makeLatestMainPackageOnly: isMakeLatestMainPackageOnly,
+      draftRelease: isDraftRelease,
       releaseNameTemplate,
       releaseBodyTemplate,
       discussionCategoryName,
@@ -39,7 +39,7 @@ export const publish: StepFunction<Step.publish, GitHubOptions> = async (
     logger,
   } = context;
 
-  if (mainPackageOnly && !pkg.main) {
+  if (isMainPackageOnly && !pkg.main) {
     logger.warn({
       prefix: `[${pkg.uniqueName}]`,
       message: `Skip as it is not the main package`,
@@ -79,7 +79,7 @@ export const publish: StepFunction<Step.publish, GitHubOptions> = async (
     prerelease: branch.type === BranchType.prerelease || !!prerelease,
     make_latest:
       branch.type === BranchType.main &&
-      (!makeLatestMainPackageOnly || pkg.main)
+      (!isMakeLatestMainPackageOnly || pkg.main)
         ? ("true" as const)
         : ("false" as const),
   };
@@ -91,7 +91,7 @@ export const publish: StepFunction<Step.publish, GitHubOptions> = async (
   // When there are no assets, we publish a release directly.
   if (!assets || assets.length === 0) {
     // If draftRelease is true we create a draft release instead.
-    if (draftRelease) {
+    if (isDraftRelease) {
       const {
         data: { html_url: url, id: releaseId },
       } = await octokit.request(
@@ -154,7 +154,7 @@ export const publish: StepFunction<Step.publish, GitHubOptions> = async (
   );
 
   // If we want to create a draft we don't need to update the release again
-  if (draftRelease) {
+  if (isDraftRelease) {
     logger.log({
       prefix: `[${pkg.uniqueName}]`,
       message: `Created GitHub draft release: ${draftUrl}`,

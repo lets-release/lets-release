@@ -17,11 +17,11 @@ export function getMatchFiles(
 
   patterns = uniq([...sync(patterns, { cwd: repositoryRoot }), ...patterns]);
 
-  let nonegate = false;
+  let isNonegate = false;
 
   // Skip solo negated pattern (avoid to include every non js file with `!**/*.js`)
   if (patterns.length <= 1 && patterns[0].startsWith("!")) {
-    nonegate = true;
+    isNonegate = true;
 
     debug(`${name}:utils.getMatchFiles`)(
       `skipping the negated glob ${patterns[0]} as its alone in its group and would retrieve a large amount of files`,
@@ -31,6 +31,6 @@ export function getMatchFiles(
   return micromatch(files, patterns, {
     cwd: repositoryRoot,
     dot: true,
-    nonegate,
+    nonegate: isNonegate,
   });
 }

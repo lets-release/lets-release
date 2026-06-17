@@ -22,14 +22,14 @@ describe("filterPullRequest", () => {
       data: { merge_commit_sha: "sha3" },
     });
 
-    const result = await filterPullRequest(
+    const isFiltered = await filterPullRequest(
       octokit,
       owner,
       repo,
       shas,
       pullRequest,
     );
-    expect(result).toBe(true);
+    expect(isFiltered).toBe(true);
   });
 
   it("should return true if merge commit sha matches", async () => {
@@ -38,14 +38,14 @@ describe("filterPullRequest", () => {
       data: { merge_commit_sha: "sha2" },
     });
 
-    const result = await filterPullRequest(
+    const isFiltered = await filterPullRequest(
       octokit,
       owner,
       repo,
       shas,
       pullRequest,
     );
-    expect(result).toBe(true);
+    expect(isFiltered).toBe(true);
   });
 
   it("should return false if no commit sha matches", async () => {
@@ -54,14 +54,14 @@ describe("filterPullRequest", () => {
       data: { merge_commit_sha: "sha4" },
     });
 
-    const result = await filterPullRequest(
+    const isFiltered = await filterPullRequest(
       octokit,
       owner,
       repo,
       shas,
       pullRequest,
     );
-    expect(result).toBe(false);
+    expect(isFiltered).toBe(false);
   });
 
   it("should return false if no merge commit sha matches", async () => {
@@ -70,13 +70,13 @@ describe("filterPullRequest", () => {
       data: { merge_commit_sha: null },
     });
 
-    const result = await filterPullRequest(
+    const isFiltered = await filterPullRequest(
       octokit,
       owner,
       repo,
       shas,
       pullRequest,
     );
-    expect(result).toBe(false);
+    expect(isFiltered).toBe(false);
   });
 });

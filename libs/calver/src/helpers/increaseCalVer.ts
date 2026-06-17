@@ -155,9 +155,7 @@ export function increaseCalVer(
     // clear prerelease info
     calver.prereleaseName = undefined;
     calver.prereleaseNumber = undefined;
-  }
-
-  if (!shouldUpdateMajorVersion) {
+  } else {
     if (
       type.includes("major") ||
       type.includes("minor") ||

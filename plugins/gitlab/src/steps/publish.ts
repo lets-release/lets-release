@@ -26,7 +26,7 @@ export const publish: StepFunction<Step.publish, GitLabOptions> = async (
   const {
     gitlab,
     projectId,
-    options: { url, assets, mainPackageOnly, milestones },
+    options: { url, assets, mainPackageOnly: isMainPackageOnly, milestones },
   } = gitLabContext;
 
   const {
@@ -35,7 +35,7 @@ export const publish: StepFunction<Step.publish, GitLabOptions> = async (
     nextRelease: { tag, hash, notes },
   } = context;
 
-  if (mainPackageOnly && !pkg.main) {
+  if (isMainPackageOnly && !pkg.main) {
     logger.warn({
       prefix: `[${pkg.uniqueName}]`,
       message: `Skip as it is not the main package`,

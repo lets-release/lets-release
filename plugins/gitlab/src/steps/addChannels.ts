@@ -16,7 +16,7 @@ export const addChannels: StepFunction<
   const {
     gitlab,
     projectId,
-    options: { url, mainPackageOnly, milestones },
+    options: { url, mainPackageOnly: isMainPackageOnly, milestones },
   } = await ensureGitLabContext(context, options);
 
   const {
@@ -25,7 +25,7 @@ export const addChannels: StepFunction<
     nextRelease: { tag, notes },
   } = context;
 
-  if (mainPackageOnly && !pkg.main) {
+  if (isMainPackageOnly && !pkg.main) {
     logger.warn({
       prefix: `[${pkg.uniqueName}]`,
       message: `Skip as it is not the main package`,

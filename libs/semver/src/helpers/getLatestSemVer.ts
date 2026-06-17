@@ -20,10 +20,10 @@ export function getLatestSemVer(
     .filter((version: string) => {
       const shouldBefore = !isNil(before);
       const isBefore = shouldBefore && compareSemVers(version, before) < 0;
-      const must = !shouldBefore || isBefore;
+      const isMust = !shouldBefore || isBefore;
 
       if (withPrerelease && isNil(prereleaseName)) {
-        return must;
+        return isMust;
       }
 
       try {
@@ -31,11 +31,11 @@ export function getLatestSemVer(
 
         if (!withPrerelease && isNil(prereleaseName)) {
           return (
-            must && !semver.prereleaseName && isNil(semver.prereleaseNumber)
+            isMust && !semver.prereleaseName && isNil(semver.prereleaseNumber)
           );
         }
 
-        return must && semver.prereleaseName === prereleaseName;
+        return isMust && semver.prereleaseName === prereleaseName;
       } catch {
         return false;
       }

@@ -14,6 +14,7 @@ const cwd = process.cwd();
 const env = process.env;
 const stdout = process.stdout;
 const stderr = process.stderr;
+// eslint-disable-next-line unicorn/no-non-function-verb-prefix
 const addChannelsCmd = "echo 'Hello World'";
 
 const fn = vi.fn();
