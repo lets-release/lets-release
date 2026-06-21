@@ -102,6 +102,7 @@ describe("preparePackage", () => {
         ...process.env,
         PATH,
         Path: PATH,
+        UV_FROZEN: "0",
       };
       const cwd = temporaryDirectory();
       const pkgContext = {

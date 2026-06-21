@@ -796,7 +796,7 @@ describe("LetsRelease", () => {
 
     const env: Record<string, unknown> = {};
 
-    let newHash: string | undefined = undefined;
+    let newHash: string | undefined;
     const notes = "Release notes";
     const findPackages = vi
       .fn<StepFunction<Step.findPackages>>()

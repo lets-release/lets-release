@@ -26,7 +26,7 @@ export async function getTrustedPublisherIdToken(
     return;
   }
 
-  let audience: string | undefined = undefined;
+  let audience: string | undefined;
 
   try {
     const json = (await response.json()) as { audience?: unknown };

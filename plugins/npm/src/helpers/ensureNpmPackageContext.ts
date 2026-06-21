@@ -34,7 +34,7 @@ export async function ensureNpmPackageContext(
     throw new UnsupportedNpmPackageManagerError(uniqueName);
   }
 
-  let pmVersion: string | undefined = undefined;
+  let pmVersion: string | undefined;
 
   if (!pkgContext.verified) {
     pmVersion = await verifyNpmPackageManagerVersion(context, pkgContext);

@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/consistent-function-scoping */
 import path from "node:path";
 
 import { Interceptable, MockAgent, setGlobalDispatcher } from "undici";

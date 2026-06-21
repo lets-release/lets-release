@@ -13,14 +13,10 @@ export function filterParsedBranch(
     return true;
   }
 
-  if (
+  return Boolean(
     type === BranchType.maintenance &&
     pkgName &&
     range &&
-    micromatch.isMatch(range, pattern)
-  ) {
-    return true;
-  }
-
-  return false;
+    micromatch.isMatch(range, pattern),
+  );
 }

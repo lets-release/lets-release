@@ -26,6 +26,7 @@ const env = {
   ...process.env,
   PATH,
   Path: PATH,
+  UV_FROZEN: "0",
 };
 const stdout = new WritableStreamBuffer();
 const stderr = new WritableStreamBuffer();
@@ -348,6 +349,7 @@ describe("verifyConditions", () => {
         ...process.env,
         PATH,
         Path: PATH,
+        UV_FROZEN: "0",
       };
       const cwd = temporaryDirectory();
       const packages = [

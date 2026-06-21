@@ -35,7 +35,7 @@ export async function ensurePyPIPackageContext(
     throw new UnsupportedPyPIPackageManagerError(uniqueName);
   }
 
-  let pmVersion: string | undefined = undefined;
+  let pmVersion: string | undefined;
 
   if (!pkgContext.verified) {
     pmVersion = await verifyPyPIPackageManagerVersion(context, pkgContext);

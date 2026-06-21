@@ -4,7 +4,7 @@ import { ReleaseType } from "src/enums/ReleaseType";
 /**
  * Test if a release type is of higher level than the current one.
  */
-// eslint-disable-next-line unicorn/consistent-boolean-name
+
 export function compareReleaseTypes(
   releaseType: ReleaseType | null,
   currentReleaseType?: ReleaseType | null,

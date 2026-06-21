@@ -32,7 +32,7 @@ export const analyzeCommits: StepFunction<
     [pkg.path, repositoryRoot],
     cwd,
   );
-  let releaseType: ReleaseType | undefined = undefined;
+  let releaseType: ReleaseType | undefined;
 
   const namespace = `${name}:${pkg.uniqueName}`;
   const parsedCommits = parseCommits(pkg, commits, preset.parser);

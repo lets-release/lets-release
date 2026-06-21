@@ -14,8 +14,11 @@ vi.mocked(getHeadHash).mockResolvedValue(hash);
 describe("getPreparePipelineConfig", () => {
   it("should return prepare pipeline config", async () => {
     const config = getPreparePipelineConfig(
-      // eslint-disable-next-line @typescript-eslint/require-await
-      { generateNotes: async () => undefined },
+      {
+        generateNotes: async () => {
+          /* empty */
+        },
+      },
       {} as BaseContext["logger"],
     );
 

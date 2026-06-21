@@ -74,14 +74,10 @@ export function filterTag(
       return false;
     }
 
-    if (
+    return !(
       artifactChannels?.length &&
       intersection(artifactChannels, pluginChannels).length === 0
-    ) {
-      return false;
-    }
-
-    return true;
+    );
   };
 
   if (branch.type === BranchType.prerelease) {

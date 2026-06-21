@@ -32,6 +32,6 @@ export function getMaskingHandler(env: NodeJS.ProcessEnv) {
 
   return <T>(output: T): T =>
     output && isString(output) && toReplace.length > 0
-      ? (output.toString().replace(regexp, () => SECRET_REPLACEMENT) as T)
+      ? (output.replace(regexp, () => SECRET_REPLACEMENT) as T)
       : output;
 }
