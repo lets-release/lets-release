@@ -31,7 +31,7 @@
   "dependencies": {
     "@lets-release/config": "workspace:^",
     "@lets-release/conventional-changelog": "workspace:^",
-    "conventional-changelog-writer": "^8.4.0",
+    "conventional-changelog-writer": "^9.1.0",
     "debug": "^4.4.3",
     "get-stream": "^9.0.1",
     "into-stream": "^9.1.0",
@@ -40,9 +40,9 @@
     "read-pkg": "^10.1.0"
   },
   "devDependencies": {
-    "conventional-changelog-angular": "^8.3.1",
+    "conventional-changelog-angular": "^9.2.0",
     "conventional-changelog-atom": "^5.1.0",
-    "conventional-changelog-conventionalcommits": "^9.3.1",
+    "conventional-changelog-conventionalcommits": "^10.2.0",
     "conventional-changelog-ember": "^5.1.0",
     "conventional-changelog-eslint": "^6.1.0",
     "conventional-changelog-express": "^5.1.0",
