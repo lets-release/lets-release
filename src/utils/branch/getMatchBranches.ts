@@ -24,9 +24,7 @@ export function getMatchBranches(
     (match: { [K in BranchType]?: MatchBranch<K>[] }, type: BranchType) => {
       const objs = (
         (isArray(options[type]) ? options[type] : [options[type]]) as (
-          | ReleaseBranchSpec
-          | MaintenanceBranchSpec
-          | PrereleaseBranchSpec
+          ReleaseBranchSpec | MaintenanceBranchSpec | PrereleaseBranchSpec
         )[]
       ).map((branch) => (isString(branch) ? { name: branch } : branch));
 
