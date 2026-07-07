@@ -19,6 +19,4 @@ export const PluginStepSpec = z.union([
  * Plugin step specification.
  */
 export type PluginStepSpec<T extends Step = Step, U extends object = object> =
-  | string
-  | StepFunction<T, U>
-  | [string | StepFunction<T, U>, U?];
+  string | StepFunction<T, U> | [string | StepFunction<T, U>, U?];
