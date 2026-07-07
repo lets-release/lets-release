@@ -1,6 +1,6 @@
 import { format } from "node:url";
 
-import { Context, writeChangelogStream } from "conventional-changelog-writer";
+import { writeChangelogStream } from "conventional-changelog-writer";
 import debug from "debug";
 import getStream from "get-stream";
 import intoStream from "into-stream";
@@ -165,10 +165,7 @@ export const generateNotes: StepFunction<
       commit: commitConfig,
       issue: issueConfig,
     },
-  ) as Context & {
-    previousTag: string;
-    currentTag: string;
-  };
+  );
 
   const namespace = `${name}:${pkg.uniqueName}`;
   debug(namespace)(`version: ${changelogContext.version}`);

@@ -48,13 +48,13 @@ For example, the [Angular Commit Message Conventions][] require the `BREAKING CH
 
 | Option          | Description                                                                                                                                                                                                                                                              | Default                                      |
 | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------- |
-| `preset`        | [conventional-changelog][] preset (possible values: [`angular`][angular], [`atom`][atom], [`codemirror`][codemirror], [`conventionalcommits`][conventionalcommits], [`ember`][ember], [`eslint`][eslint], [`express`][express], [`jquery`][jquery], [`jshint`][jshint]). | [`conventionalcommits`][conventionalcommits] |
+| `preset`        | [conventional-changelog][] preset (possible values: [`angular`][angular], [`conventionalcommits`][conventionalcommits]). | [`conventionalcommits`][conventionalcommits] |
 | `presetConfig`  | Additional configuration passed to the [conventional-changelog][] preset. Used, for example, with [conventional-changelog-conventionalcommits][].                                                                                                                        | -                                            |
 | `config`        | Package name of a custom [conventional-changelog][] preset.                                                                                                                                                                                                              | -                                            |
 | `parserOptions` | Additional [conventional-commits-parser][] options that will extend the ones loaded by `preset` or `config`. This is convenient to use a [conventional-changelog][] preset with some customizations without having to create a new module.                               | -                                            |
 | `releaseRules`  | An external module, a path to a module, or an `Array` of rules. See [`releaseRules`][releaseRules].                                                                                                                                                                      | See [`releaseRules`][releaseRules]           |
 
-**Note**: In order to use a `preset`, it must be installed (for example, to use the [eslint preset][eslint], you must install it with `npm install conventional-changelog-eslint -D`)
+**Note**: In order to use a `preset`, it must be installed (for example, to use the [angular preset][angular], you must install it with `npm install conventional-changelog-angular -D`)
 
 **Note**: `config` will be overwritten by the values of `preset`. You should use either `preset` or `config`, but not both.
 
@@ -136,36 +136,7 @@ In the previous example the release type determined by the plugin will be `minor
 
 ##### Specific commit properties
 
-The properties to set in the rules will depend on the chosen commit style. For example [conventional-changelog-angular][angular] use the commit properties `type`, `scope` and `subject` but [conventional-changelog-eslint][eslint] uses `tag` and `message`.
-
-For example with `eslint` preset:
-
-```json
-{
-  "plugins": [
-    [
-      "@lets-release/commit-analyzer",
-      {
-        "preset": "eslint",
-        "releaseRules": [
-          { "tag": "Docs", "message": "*README*", "release": "patch" },
-          { "tag": "New", "release": "patch" }
-        ]
-      }
-    ],
-    "@lets-release/release-notes-generator"
-  ]
-}
-```
-
-With this configuration:
-
-- Commits with `tag` 'Docs', that contains 'README' in their header message will be associated with a `patch` release.
-- Commits with `tag` 'New' will be associated with a `patch` release.
-- Commits with `tag` 'Breaking' will be associated with a `major` release (per [default release rules][]).
-- Commits with `tag` 'Fix' will be associated with a `patch` release (per [default release rules][]).
-- Commits with `tag` 'Update' will be associated with a `minor` release (per [default release rules][]).
-- All other commits will not be associated with a release type.
+The properties to set in the rules will depend on the chosen commit style. For example [conventional-changelog-angular][angular] use the commit properties `type`, `scope` and `subject`.
 
 ##### External package / file
 
@@ -205,13 +176,6 @@ module.exports = [
 [conventional-changelog]: https://github.com/conventional-changelog/conventional-changelog
 [Angular Commit Message Conventions]: https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines
 [angular]: https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-angular
-[atom]: https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-atom
-[codemirror]: https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-codemirror
 [conventionalcommits]: https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-conventionalcommits
-[ember]: https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-ember
-[eslint]: https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-eslint
-[express]: https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-express
-[jquery]: https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-jquery
-[jshint]: https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-jshint
 [conventional-changelog-conventionalcommits]: https://github.com/conventional-changelog/conventional-changelog-config-spec
 [conventional-commits-parser]: https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-commits-parser

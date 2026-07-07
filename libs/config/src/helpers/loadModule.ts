@@ -1,6 +1,6 @@
 import { pathToFileURL } from "node:url";
 
-import resolveFrom from "resolve-from";
+import { resolveModulePath } from "src/helpers/resolveModulePath";
 
 /**
  * Load module (will only return default export if it exists).
@@ -17,9 +17,9 @@ export async function loadModule<T>(
   const file =
     dirs?.reduce(
       (file: string | undefined, dir: string) =>
-        file ?? resolveFrom.silent(dir, name),
+        file ?? resolveModulePath(dir, name, true),
       undefined,
-    ) ?? resolveFrom(cwd, name);
+    ) ?? resolveModulePath(cwd, name);
 
   const { default: cjsExport, ...esmNamedExports } = (await import(
     pathToFileURL(file).toString()

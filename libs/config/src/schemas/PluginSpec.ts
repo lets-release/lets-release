@@ -22,6 +22,4 @@ export const PluginSpec = z.union([
  * name or a plugin object and an options object.
  */
 export type PluginSpec<T extends object = object> =
-  | string
-  | PluginObject
-  | [string | PluginObject, T?];
+  string | PluginObject | [string | PluginObject, T?];

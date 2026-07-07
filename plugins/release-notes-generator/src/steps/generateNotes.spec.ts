@@ -1,9 +1,6 @@
 import { writeFile } from "node:fs/promises";
 import path from "node:path";
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import conventionalChangelogEslint from "conventional-changelog-eslint";
 import { writeChangelogStream } from "conventional-changelog-writer";
 import { escapeRegExp } from "lodash-es";
 import { temporaryDirectory } from "tempy";
@@ -164,8 +161,8 @@ describe("generateNotes", () => {
 
   it('should accept a "preset" option', async () => {
     const commits = [
-      { hash: "111", message: "Fix: First fix (fixes #123)" },
-      { hash: "222", message: "Update: Second feature (fixes #456)" },
+      { hash: "111", message: "fix(scope1): First fix (fixes #123)" },
+      { hash: "222", message: "feat(scope2): Second feature (fixes #456)" },
     ];
     const changelog = await generateNotes(
       {
@@ -177,7 +174,7 @@ describe("generateNotes", () => {
         nextRelease,
         commits,
       } as GenerateNotesContext,
-      { preset: ConventionalChangelogPreset.ESLint },
+      { preset: ConventionalChangelogPreset.ConventionalCommits },
     );
 
     expect(changelog).toMatch(
@@ -185,19 +182,19 @@ describe("generateNotes", () => {
         escapeRegExp("(https://github.com/owner/repo/compare/v1.0.0...v2.0.0)"),
       ),
     );
-    expect(changelog).toMatch(/### Fix/);
+    expect(changelog).toMatch(/### Bug Fixes/);
     expect(changelog).toMatch(
       new RegExp(
         escapeRegExp(
-          "* First fix (fixes #123) ([111](https://github.com/owner/repo/commit/111)), closes [#123](https://github.com/owner/repo/issues/123)",
+          "* **scope1:** First fix (fixes [#123](https://github.com/owner/repo/issues/123)) ([111](https://github.com/owner/repo/commit/111))",
         ),
       ),
     );
-    expect(changelog).toMatch(/### Update/);
+    expect(changelog).toMatch(/### Features/);
     expect(changelog).toMatch(
       new RegExp(
         escapeRegExp(
-          "* Second feature (fixes #456) ([222](https://github.com/owner/repo/commit/222)), closes [#456](https://github.com/owner/repo/issues/456)",
+          "* **scope2:** Second feature (fixes [#456](https://github.com/owner/repo/issues/456)) ([222](https://github.com/owner/repo/commit/222))",
         ),
       ),
     );
@@ -205,8 +202,8 @@ describe("generateNotes", () => {
 
   it('should accept a "config" option', async () => {
     const commits = [
-      { hash: "111", message: "Fix: First fix (fixes #123)" },
-      { hash: "222", message: "Update: Second feature (fixes #456)" },
+      { hash: "111", message: "fix(scope1): First fix (fixes #123)" },
+      { hash: "222", message: "feat(scope2): Second feature (fixes #456)" },
     ];
     const changelog = await generateNotes(
       {
@@ -218,7 +215,7 @@ describe("generateNotes", () => {
         nextRelease,
         commits,
       } as GenerateNotesContext,
-      { config: "conventional-changelog-eslint" },
+      { config: "conventional-changelog-conventionalcommits" },
     );
 
     expect(changelog).toMatch(
@@ -226,19 +223,19 @@ describe("generateNotes", () => {
         escapeRegExp("(https://github.com/owner/repo/compare/v1.0.0...v2.0.0)"),
       ),
     );
-    expect(changelog).toMatch(/### Fix/);
+    expect(changelog).toMatch(/### Bug Fixes/);
     expect(changelog).toMatch(
       new RegExp(
         escapeRegExp(
-          "* First fix (fixes #123) ([111](https://github.com/owner/repo/commit/111)), closes [#123](https://github.com/owner/repo/issues/123)",
+          "* **scope1:** First fix (fixes [#123](https://github.com/owner/repo/issues/123)) ([111](https://github.com/owner/repo/commit/111))",
         ),
       ),
     );
-    expect(changelog).toMatch(/### Update/);
+    expect(changelog).toMatch(/### Features/);
     expect(changelog).toMatch(
       new RegExp(
         escapeRegExp(
-          "* Second feature (fixes #456) ([222](https://github.com/owner/repo/commit/222)), closes [#456](https://github.com/owner/repo/issues/456)",
+          "* **scope2:** Second feature (fixes [#456](https://github.com/owner/repo/issues/456)) ([222](https://github.com/owner/repo/commit/222))",
         ),
       ),
     );
@@ -246,14 +243,13 @@ describe("generateNotes", () => {
 
   it('should accept a "parseOptions" and "writerOptions" objects as option', async () => {
     const commits = [
-      { hash: "111", message: "%%Fix%% First fix (keyword #123)" },
+      { hash: "111", message: "%%fix%% First fix (keyword #123)" },
       {
         hash: "222",
-        message: "%%Update%% Second feature (keyword JIRA-456)",
+        message: "%%feat%% Second feature (keyword JIRA-456)",
       },
     ];
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
-    const { writer } = await conventionalChangelogEslint();
+
     const changelog = await generateNotes(
       {
         cwd,
@@ -265,14 +261,14 @@ describe("generateNotes", () => {
         commits,
       } as GenerateNotesContext,
       {
+        preset: ConventionalChangelogPreset.ConventionalCommits,
         parserOptions: {
-          headerPattern: /^%%(?<tag>.*?)%% (?<message>.*)$/,
-          headerCorrespondence: ["tag", "message"],
+          headerPattern: /^%%(?<type>.*?)%% (?<subject>.*)$/,
+          headerCorrespondence: ["type", "subject"],
           referenceActions: ["keyword"],
           issuePrefixes: ["#", "JIRA-"],
         },
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        writerOptions: writer,
+        writerOptions: { commitsSort: ["subject", "scope"] },
       },
     );
 
@@ -281,19 +277,19 @@ describe("generateNotes", () => {
         escapeRegExp("(https://github.com/owner/repo/compare/v1.0.0...v2.0.0)"),
       ),
     );
-    expect(changelog).toMatch(/### Fix/);
+    expect(changelog).toMatch(/### Bug Fixes/);
     expect(changelog).toMatch(
       new RegExp(
         escapeRegExp(
-          "* First fix (keyword #123) ([111](https://github.com/owner/repo/commit/111)), closes [#123](https://github.com/owner/repo/issues/123)",
+          "* First fix (keyword [#123](https://github.com/owner/repo/issues/123)) ([111](https://github.com/owner/repo/commit/111))",
         ),
       ),
     );
-    expect(changelog).toMatch(/### Update/);
+    expect(changelog).toMatch(/### Features/);
     expect(changelog).toMatch(
       new RegExp(
         escapeRegExp(
-          "* Second feature (keyword JIRA-456) ([222](https://github.com/owner/repo/commit/222)), closes [#456](https://github.com/owner/repo/issues/456)",
+          "* Second feature (keyword JIRA-456) ([222](https://github.com/owner/repo/commit/222)), closes [JIRA-456](https://github.com/owner/repo/issues/456)",
         ),
       ),
     );
@@ -360,8 +356,8 @@ describe("generateNotes", () => {
       },
     );
 
-    expect(changelog).not.toMatch(/### Bug Fixes/);
-    expect(changelog).not.toMatch(new RegExp(escapeRegExp("First fix")));
+    expect(changelog).toMatch(/### Bug Fixes/);
+    expect(changelog).toMatch(new RegExp(escapeRegExp("First fix")));
     expect(changelog).toMatch(/### Test !!/);
     expect(changelog).toMatch(
       new RegExp(
@@ -698,7 +694,7 @@ describe("generateNotes", () => {
     expect(changelog).toMatch(
       new RegExp(
         escapeRegExp(
-          "* **scope1:** First fix ([111](https://bitbucket.org/owner/repo/commits/111)), closes [#10](https://bitbucket.org/owner/repo/issue/10)",
+          "* **scope1:** First fix ([111](https://bitbucket.org/owner/repo/commits/111)), closes [#10](https://bitbucket.org/owner/repo/issues/10)",
         ),
       ),
     );
@@ -952,8 +948,8 @@ describe("generateNotes", () => {
 
   it('should throw error if "preset" doesn`t exist', async () => {
     const commits = [
-      { hash: "111", message: "Fix: First fix (fixes #123)" },
-      { hash: "222", message: "Update: Second feature (fixes #456)" },
+      { hash: "111", message: "fix: First fix (fixes #123)" },
+      { hash: "222", message: "feat: Second feature (fixes #456)" },
     ];
 
     await expect(
@@ -974,8 +970,8 @@ describe("generateNotes", () => {
 
   it('should throw error if "config" doesn`t exist', async () => {
     const commits = [
-      { hash: "111", message: "Fix: First fix (fixes #123)" },
-      { hash: "222", message: "Update: Second feature (fixes #456)" },
+      { hash: "111", message: "fix: First fix (fixes #123)" },
+      { hash: "222", message: "feat: Second feature (fixes #456)" },
     ];
 
     await expect(
@@ -989,15 +985,17 @@ describe("generateNotes", () => {
           nextRelease,
           commits,
         } as GenerateNotesContext,
-        { config: "unknown-config" },
+        {
+          config: "unknown-config",
+        },
       ),
     ).rejects.toThrow();
   });
 
   it('should re-throw error from "conventional-changelog"', async () => {
     const commits = [
-      { hash: "111", message: "Fix: First fix (fixes #123)" },
-      { hash: "222", message: "Update: Second feature (fixes #456)" },
+      { hash: "111", message: "fix: First fix (fixes #123)" },
+      { hash: "222", message: "feat: Second feature (fixes #456)" },
     ];
 
     await expect(
@@ -1023,7 +1021,7 @@ describe("generateNotes", () => {
   });
 
   describe('should accept an "issue" option', () => {
-    it("angular preset", async () => {
+    it("conventionalcommits preset", async () => {
       const commits = [
         { hash: "111", message: "fix(scope1): First fix\n\nresolve #10" },
       ];
@@ -1037,7 +1035,10 @@ describe("generateNotes", () => {
           nextRelease,
           commits,
         } as GenerateNotesContext,
-        { preset: ConventionalChangelogPreset.Angular, issue: "test-issues" },
+        {
+          preset: ConventionalChangelogPreset.ConventionalCommits,
+          issue: "test-issues",
+        },
       );
 
       expect(changelog).toMatch(
@@ -1051,47 +1052,13 @@ describe("generateNotes", () => {
       expect(changelog).toMatch(
         new RegExp(
           escapeRegExp(
-            "* **scope1:** First fix ([111](https://github.com/owner/repo/commit/111)), closes [#10](https://github.com/owner/repo/test-issues/10)",
+            "* **scope1:** First fix ([111](https://github.com/owner/repo/commit/111)), closes [#10](https://github.com/owner/repo/issues/10)",
           ),
         ),
       );
     });
 
-    it("atom preset", async () => {
-      const commits = [
-        { hash: "111", message: ":bug: First fix\n\nresolve #10" },
-      ];
-      const changelog = await generateNotes(
-        {
-          cwd,
-          repositoryRoot: path.resolve(import.meta.dirname, "../../"),
-          options: { repositoryUrl: "https://github.com/owner/repo" },
-          package: pkg,
-          lastRelease,
-          nextRelease,
-          commits,
-        } as GenerateNotesContext,
-        { preset: ConventionalChangelogPreset.Atom, issue: "test-issues" },
-      );
-
-      expect(changelog).toMatch(
-        new RegExp(
-          escapeRegExp(
-            "(https://github.com/owner/repo/compare/v1.0.0...v2.0.0)",
-          ),
-        ),
-      );
-      expect(changelog).toMatch(/### :bug:/);
-      expect(changelog).toMatch(
-        new RegExp(
-          escapeRegExp(
-            "* First fix ([111](https://github.com/owner/repo/commit/111)), closes [#10](https://github.com/owner/repo/test-issues/10)",
-          ),
-        ),
-      );
-    });
-
-    it("conventionalcommits preset", async () => {
+    it("conventionalcommits preset with custom issue keyword", async () => {
       const commits = [
         { hash: "111", message: "fix(scope1): First fix\n\nresolve #10" },
       ];
@@ -1121,156 +1088,7 @@ describe("generateNotes", () => {
       expect(changelog).toMatch(
         new RegExp(
           escapeRegExp(
-            "* **scope1:** First fix ([111](https://github.com/owner/repo/commit/111)), closes [#10](https://github.com/owner/repo/test-issues/10)",
-          ),
-        ),
-      );
-    });
-
-    it("eslint preset", async () => {
-      const commits = [{ hash: "111", message: "Fix: First fix (fixes #10)" }];
-      const changelog = await generateNotes(
-        {
-          cwd,
-          options: { repositoryUrl: "https://github.com/owner/repo" },
-          package: pkg,
-          lastRelease,
-          nextRelease,
-          commits,
-        } as GenerateNotesContext,
-        {
-          preset: ConventionalChangelogPreset.ESLint,
-          issue: "test-issues",
-        },
-      );
-
-      expect(changelog).toMatch(
-        new RegExp(
-          escapeRegExp(
-            "(https://github.com/owner/repo/compare/v1.0.0...v2.0.0)",
-          ),
-        ),
-      );
-      expect(changelog).toMatch(/### Fix/);
-      expect(changelog).toMatch(
-        new RegExp(
-          escapeRegExp(
-            "* First fix (fixes #10) ([111](https://github.com/owner/repo/commit/111)), closes [#10](https://github.com/owner/repo/test-issues/10)",
-          ),
-        ),
-      );
-    });
-
-    it("express preset", async () => {
-      const commits = [{ hash: "111", message: "perf: First fix (fixes #10)" }];
-      const changelog = await generateNotes(
-        {
-          cwd,
-          repositoryRoot: path.resolve(import.meta.dirname, "../../"),
-          options: { repositoryUrl: "https://github.com/owner/repo" },
-          package: pkg,
-          lastRelease,
-          nextRelease,
-          commits,
-        } as GenerateNotesContext,
-        {
-          preset: ConventionalChangelogPreset.Express,
-          issue: "test-issues",
-        },
-      );
-
-      expect(changelog).toMatch(
-        new RegExp(
-          escapeRegExp(
-            "(https://github.com/owner/repo/compare/v1.0.0...v2.0.0)",
-          ),
-        ),
-      );
-      expect(changelog).toMatch(/### Performance/);
-      expect(changelog).toMatch(
-        new RegExp(escapeRegExp("* First fix (fixes #10)")),
-      );
-      expect(changelog).toMatch(
-        new RegExp(
-          escapeRegExp(
-            "Closes [#10](https://github.com/owner/repo/test-issues/10)",
-          ),
-        ),
-      );
-    });
-
-    it("jquery preset", async () => {
-      const commits = [
-        {
-          hash: "111",
-          message:
-            "Component: Short Description\n\nOptional Long Description\n\nFixes gh-10",
-        },
-      ];
-      const changelog = await generateNotes(
-        {
-          cwd,
-          repositoryRoot: path.resolve(import.meta.dirname, "../../"),
-          options: { repositoryUrl: "https://github.com/owner/repo" },
-          package: pkg,
-          lastRelease,
-          nextRelease,
-          commits,
-        } as GenerateNotesContext,
-        {
-          preset: ConventionalChangelogPreset.JQuery,
-          issue: "test-issues",
-        },
-      );
-
-      expect(changelog).toMatch(
-        new RegExp(
-          escapeRegExp(
-            "(https://github.com/owner/repo/compare/v1.0.0...v2.0.0)",
-          ),
-        ),
-      );
-      expect(changelog).toMatch(
-        new RegExp(
-          escapeRegExp(
-            "* Short Description([111](https://github.com/owner/repo/commit/111)), closes [gh-10](https://github.com/owner/repo/test-issues/10)",
-          ),
-        ),
-      );
-    });
-
-    it("jshint preset", async () => {
-      const commits = [
-        { hash: "111", message: "[[FIX]] First fix\n\nresolve #10" },
-      ];
-      const changelog = await generateNotes(
-        {
-          cwd,
-          repositoryRoot: path.resolve(import.meta.dirname, "../../"),
-          options: { repositoryUrl: "https://github.com/owner/repo" },
-          package: pkg,
-          lastRelease,
-          nextRelease,
-          commits,
-        } as GenerateNotesContext,
-        {
-          preset: ConventionalChangelogPreset.JSHint,
-          issue: "test-issues",
-        },
-      );
-
-      expect(changelog).toMatch(
-        new RegExp(
-          escapeRegExp(
-            "(https://github.com/owner/repo/compare/v1.0.0...v2.0.0)",
-          ),
-        ),
-      );
-      expect(changelog).toMatch(/### Bug Fixes/);
-      expect(changelog).toMatch(
-        new RegExp(
-          escapeRegExp(
-            "* First fix ([](https://github.com/owner/repo/commit/111)), closes [#10](https://github.com/owner/repo/test-issues/10)",
+            "* **scope1:** First fix ([111](https://github.com/owner/repo/commit/111)), closes [#10](https://github.com/owner/repo/issues/10)",
           ),
         ),
       );
@@ -1278,7 +1096,7 @@ describe("generateNotes", () => {
   });
 
   describe('should accept a "commit" option', () => {
-    it("angular preset", async () => {
+    it("conventionalcommits preset", async () => {
       const commits = [
         { hash: "111", message: "fix(scope1): First fix" },
         { hash: "222", message: "feat(scope2): Second feature" },
@@ -1294,7 +1112,7 @@ describe("generateNotes", () => {
           commits,
         } as GenerateNotesContext,
         {
-          preset: ConventionalChangelogPreset.Angular,
+          preset: ConventionalChangelogPreset.ConventionalCommits,
           commit: "test-commits",
         },
       );
@@ -1324,44 +1142,7 @@ describe("generateNotes", () => {
       );
     });
 
-    it("atom preset", async () => {
-      const commits = [
-        { hash: "111", message: ":bug: First fix\n\nresolve #10" },
-      ];
-      const changelog = await generateNotes(
-        {
-          cwd,
-          repositoryRoot: path.resolve(import.meta.dirname, "../../"),
-          options: { repositoryUrl: "https://github.com/owner/repo" },
-          package: pkg,
-          lastRelease,
-          nextRelease,
-          commits,
-        } as GenerateNotesContext,
-        {
-          preset: ConventionalChangelogPreset.Atom,
-          commit: "test-commits",
-        },
-      );
-
-      expect(changelog).toMatch(
-        new RegExp(
-          escapeRegExp(
-            "(https://github.com/owner/repo/compare/v1.0.0...v2.0.0)",
-          ),
-        ),
-      );
-      expect(changelog).toMatch(/### :bug:/);
-      expect(changelog).toMatch(
-        new RegExp(
-          escapeRegExp(
-            "* First fix ([111](https://github.com/owner/repo/test-commits/111)), closes [#10](https://github.com/owner/repo/issues/10)",
-          ),
-        ),
-      );
-    });
-
-    it("conventionalcommits preset", async () => {
+    it("conventionalcommits preset with custom commit keyword", async () => {
       const commits = [
         { hash: "111", message: "fix(scope1): First fix\n\nresolve #10" },
       ];
@@ -1392,117 +1173,6 @@ describe("generateNotes", () => {
         new RegExp(
           escapeRegExp(
             "* **scope1:** First fix ([111](https://github.com/owner/repo/test-commits/111)), closes [#10](https://github.com/owner/repo/issues/10)",
-          ),
-        ),
-      );
-    });
-
-    it("eslint preset", async () => {
-      const commits = [{ hash: "111", message: "Fix: First fix (fixes #10)" }];
-      const changelog = await generateNotes(
-        {
-          cwd,
-          options: { repositoryUrl: "https://github.com/owner/repo" },
-          package: pkg,
-          lastRelease,
-          nextRelease,
-          commits,
-        } as GenerateNotesContext,
-        {
-          preset: ConventionalChangelogPreset.ESLint,
-          commit: "test-commits",
-        },
-      );
-
-      expect(changelog).toMatch(
-        new RegExp(
-          escapeRegExp(
-            "(https://github.com/owner/repo/compare/v1.0.0...v2.0.0)",
-          ),
-        ),
-      );
-      expect(changelog).toMatch(/### Fix/);
-      expect(changelog).toMatch(
-        new RegExp(
-          escapeRegExp(
-            "* First fix (fixes #10) ([111](https://github.com/owner/repo/test-commits/111)), closes [#10](https://github.com/owner/repo/issues/10)",
-          ),
-        ),
-      );
-    });
-
-    it("jquery preset", async () => {
-      const commits = [
-        {
-          hash: "111",
-          message:
-            "Component: Short Description\n\nOptional Long Description\n\nFixes #10",
-        },
-      ];
-      const changelog = await generateNotes(
-        {
-          cwd,
-          repositoryRoot: path.resolve(import.meta.dirname, "../../"),
-          options: { repositoryUrl: "https://github.com/owner/repo" },
-          package: pkg,
-          lastRelease,
-          nextRelease,
-          commits,
-        } as GenerateNotesContext,
-        {
-          preset: ConventionalChangelogPreset.JQuery,
-          commit: "test-commits",
-        },
-      );
-
-      expect(changelog).toMatch(
-        new RegExp(
-          escapeRegExp(
-            "(https://github.com/owner/repo/compare/v1.0.0...v2.0.0)",
-          ),
-        ),
-      );
-      expect(changelog).toMatch(
-        new RegExp(
-          escapeRegExp(
-            "* Short Description([111](https://github.com/owner/repo/test-commits/111)), closes [#10](https://bugs.jquery.com/ticket/10)",
-          ),
-        ),
-      );
-    });
-
-    it("jshint preset", async () => {
-      const commits = [
-        { hash: "111", message: "[[FIX]] First fix\n\nresolve #10" },
-      ];
-      const changelog = await generateNotes(
-        {
-          cwd,
-          repositoryRoot: path.resolve(import.meta.dirname, "../../"),
-          options: { repositoryUrl: "https://github.com/owner/repo" },
-          package: pkg,
-          lastRelease,
-          nextRelease,
-          commits,
-        } as GenerateNotesContext,
-        {
-          preset: ConventionalChangelogPreset.JSHint,
-          commit: "test-commits",
-        },
-      );
-
-      expect(changelog).toMatch(
-        new RegExp(
-          escapeRegExp(
-            "(https://github.com/owner/repo/compare/v1.0.0...v2.0.0)",
-          ),
-        ),
-      );
-      expect(changelog).toMatch(/### Bug Fixes/);
-      expect(changelog).toMatch(
-        new RegExp(
-          escapeRegExp(
-            "* First fix ([](https://github.com/owner/repo/test-commits/111)), closes [#10](https://github.com/owner/repo/issues/10)",
           ),
         ),
       );

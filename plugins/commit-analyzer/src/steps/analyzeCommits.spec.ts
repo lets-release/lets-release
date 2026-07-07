@@ -83,10 +83,10 @@ describe("analyzeCommits", () => {
 
   it('should accept "preset" option', async () => {
     const commits = [
-      { hash: "123", message: "Fix: First fix (fixes #123)" },
+      { hash: "123", message: "fix: First fix (fixes #123)" },
       {
         hash: "456",
-        message: "Update: Second feature (fixes #456)",
+        message: "feat: Second feature (fixes #456)",
       },
     ];
 
@@ -99,7 +99,7 @@ describe("analyzeCommits", () => {
           package: pkg,
           commits,
         } as unknown as AnalyzeCommitsContext,
-        { preset: ConventionalChangelogPreset.ESLint },
+        { preset: ConventionalChangelogPreset.Angular },
       ),
     ).resolves.toBe("minor");
 
@@ -111,10 +111,10 @@ describe("analyzeCommits", () => {
 
   it('should accept "config" option', async () => {
     const commits = [
-      { hash: "123", message: "Fix: First fix (fixes #123)" },
+      { hash: "123", message: "fix: First fix (fixes #123)" },
       {
         hash: "456",
-        message: "Update: Second feature (fixes #456)",
+        message: "feat: Second feature (fixes #456)",
       },
     ];
 
@@ -128,7 +128,7 @@ describe("analyzeCommits", () => {
           commits,
         } as unknown as AnalyzeCommitsContext,
         {
-          config: "conventional-changelog-eslint",
+          config: "conventional-changelog-angular",
         },
       ),
     ).resolves.toBe("minor");
@@ -193,7 +193,7 @@ describe("analyzeCommits", () => {
           commits,
         } as unknown as AnalyzeCommitsContext,
         {
-          config: "conventional-changelog-eslint",
+          config: "conventional-changelog-angular",
           parserOptions: {
             headerPattern: /^%%(?<type>.*?)%% (?<subject>.*)$/,
             headerCorrespondence: ["type", "shortDesc"],
@@ -267,11 +267,11 @@ describe("analyzeCommits", () => {
 
   it('should return "major" if there is a breaking change, using default releaseRules', async () => {
     const commits = [
-      { hash: "123", message: "Fix: First fix (fixes #123)" },
+      { hash: "123", message: "fix: First fix (fixes #123)" },
       {
         hash: "456",
         message:
-          "Update: Second feature (fixes #456) \n\n BREAKING CHANGE: break something",
+          "feat: Second feature (fixes #456) \n\n BREAKING CHANGE: break something",
       },
     ];
 
@@ -285,7 +285,7 @@ describe("analyzeCommits", () => {
           commits,
         } as unknown as AnalyzeCommitsContext,
         {
-          preset: ConventionalChangelogPreset.ESLint,
+          preset: ConventionalChangelogPreset.Angular,
         },
       ),
     ).resolves.toBe("major");
@@ -350,8 +350,8 @@ describe("analyzeCommits", () => {
 
   it('should allow to use glob in "releaseRules" configuration', async () => {
     const commits = [
-      { hash: "123", message: "Chore: First chore (fixes #123)" },
-      { hash: "456", message: "Docs: update README (fixes #456)" },
+      { hash: "123", message: "chore: First chore (fixes #123)" },
+      { hash: "456", message: "docs: update README (fixes #456)" },
     ];
 
     await expect(
@@ -364,9 +364,9 @@ describe("analyzeCommits", () => {
           commits,
         } as unknown as AnalyzeCommitsContext,
         {
-          preset: ConventionalChangelogPreset.ESLint,
+          preset: ConventionalChangelogPreset.Angular,
           releaseRules: [
-            { tag: "Chore", release: ReleaseType.patch },
+            { type: "chore", release: ReleaseType.patch },
             { message: "*README*", release: ReleaseType.minor },
           ],
         },
@@ -406,8 +406,8 @@ describe("analyzeCommits", () => {
 
   it("should process rules in order and apply highest match", async () => {
     const commits = [
-      { hash: "123", message: "Chore: First chore (fixes #123)" },
-      { hash: "456", message: "Docs: update README (fixes #456)" },
+      { hash: "123", message: "chore: First chore (fixes #123)" },
+      { hash: "456", message: "docs: update README (fixes #456)" },
     ];
 
     await expect(
@@ -420,10 +420,10 @@ describe("analyzeCommits", () => {
           commits,
         } as unknown as AnalyzeCommitsContext,
         {
-          preset: ConventionalChangelogPreset.ESLint,
+          preset: ConventionalChangelogPreset.Angular,
           releaseRules: [
-            { tag: "Chore", release: ReleaseType.minor },
-            { tag: "Chore", release: ReleaseType.patch },
+            { type: "chore", release: ReleaseType.minor },
+            { type: "chore", release: ReleaseType.patch },
           ],
         },
       ),
@@ -437,11 +437,11 @@ describe("analyzeCommits", () => {
 
   it("should process rules in order and apply highest match from config even if default has an higher match", async () => {
     const commits = [
-      { hash: "123", message: "Chore: First chore (fixes #123)" },
+      { hash: "123", message: "chore: First chore (fixes #123)" },
       {
         hash: "456",
         message:
-          "Docs: update README (fixes #456) \n\n BREAKING CHANGE: break something",
+          "docs: update README (fixes #456) \n\n BREAKING CHANGE: break something",
       },
     ];
 
@@ -455,9 +455,9 @@ describe("analyzeCommits", () => {
           commits,
         } as unknown as AnalyzeCommitsContext,
         {
-          preset: ConventionalChangelogPreset.ESLint,
+          preset: ConventionalChangelogPreset.Angular,
           releaseRules: [
-            { tag: "Chore", release: ReleaseType.patch },
+            { type: "chore", release: ReleaseType.patch },
             { breaking: true, release: ReleaseType.minor },
           ],
         },
@@ -559,8 +559,8 @@ describe("analyzeCommits", () => {
 
   it('should use default "releaseRules" if none of provided match', async () => {
     const commits = [
-      { hash: "123", message: "Chore: First chore" },
-      { hash: "456", message: "Update: new feature" },
+      { hash: "123", message: "chore: First chore" },
+      { hash: "456", message: "feat: new feature" },
     ];
 
     await expect(
@@ -573,8 +573,8 @@ describe("analyzeCommits", () => {
           commits,
         } as unknown as AnalyzeCommitsContext,
         {
-          preset: ConventionalChangelogPreset.ESLint,
-          releaseRules: [{ tag: "Chore", release: ReleaseType.patch }],
+          preset: ConventionalChangelogPreset.Angular,
+          releaseRules: [{ type: "chore", release: ReleaseType.patch }],
         },
       ),
     ).resolves.toBe("minor");
@@ -651,10 +651,10 @@ describe("analyzeCommits", () => {
 
   it('should throw error if "config" doesn`t exist', async () => {
     const commits = [
-      { hash: "123", message: "Fix: First fix (fixes #123)" },
+      { hash: "123", message: "fix: First fix (fixes #123)" },
       {
         hash: "456",
-        message: "Update: Second feature (fixes #456)",
+        message: "feat: Second feature (fixes #456)",
       },
     ];
 
@@ -684,8 +684,8 @@ describe("analyzeCommits", () => {
           package: pkg,
         } as unknown as AnalyzeCommitsContext,
         {
-          preset: ConventionalChangelogPreset.ESLint,
-          releaseRules: [{ tag: "Update", release: "invalid" }],
+          preset: ConventionalChangelogPreset.Angular,
+          releaseRules: [{ type: "feat", release: "invalid" }],
         } as never,
       ),
     ).rejects.toThrow(ZodError);
@@ -693,10 +693,10 @@ describe("analyzeCommits", () => {
 
   it('should re-throw error from "conventional-changelog-parser"', async () => {
     const commits = [
-      { hash: "123", message: "Fix: First fix (fixes #123)" },
+      { hash: "123", message: "fix: First fix (fixes #123)" },
       {
         hash: "456",
-        message: "Update: Second feature (fixes #456)",
+        message: "feat: Second feature (fixes #456)",
       },
     ];
 

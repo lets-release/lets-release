@@ -18,9 +18,7 @@ import { MatchBranchWithTags } from "src/types/MatchBranchWithTags";
 
 export function normalizeReleaseBranch<
   T extends BranchType.main | BranchType.next | BranchType.nextMajor =
-    | BranchType.main
-    | BranchType.next
-    | BranchType.nextMajor,
+    BranchType.main | BranchType.next | BranchType.nextMajor,
 >(
   packages: Package[],
   {

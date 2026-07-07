@@ -27,10 +27,7 @@ export function increaseSemVer(
 ): string;
 export function increaseSemVer(
   type:
-    | "major-prerelease"
-    | "minor-prerelease"
-    | "patch-prerelease"
-    | "prerelease",
+    "major-prerelease" | "minor-prerelease" | "patch-prerelease" | "prerelease",
   version: string,
   options?: VersioningPrereleaseOptions & {
     prereleaseName?: string;

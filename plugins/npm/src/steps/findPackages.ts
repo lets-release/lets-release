@@ -59,8 +59,7 @@ export const findPackages: StepFunction<Step.findPackages, NpmOptions> = async (
       logger.info(`Found package ${pkgContext.pkg.name} at ${relativePkgRoot}`);
 
       const letsRelease = pkgContext.pkg["lets-release"] as
-        | Record<string, unknown>
-        | undefined;
+        Record<string, unknown> | undefined;
       const formerName =
         letsRelease &&
         typeof letsRelease === "object" &&
