@@ -10,7 +10,7 @@ pnpm workspace (`pnpm-workspace.yaml`) includes the root package plus two packag
 - `plugins/*` — release plugins (npm, pypi, github, gitlab, changelog, commit-analyzer, release-notes-generator, exec)
 - Root package (`lets-release`) — the CLI and orchestrator
 
-All packages are ESM (`"type": "module"`). Node `>=22.13.0` and pnpm `11.10.0` are pinned in the root manifest.
+All packages are ESM (`"type": "module"`). Node `>=22.14.0` and pnpm `11.10.0` are pinned in the root manifest.
 
 ## Entrypoints
 
