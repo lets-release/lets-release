@@ -1,16 +1,22 @@
 # AGENTS.md
 
-Automated workspace package release tool (fork of semantic-release). Supports semver + calver, monorepo-aware.
+Automated workspace package release tool, forked from semantic-release. Supports semver, calver, and monorepo package releases.
 
 ## Monorepo structure
 
-pnpm workspace (`pnpm-workspace.yaml`) with two package groups:
+pnpm workspace (`pnpm-workspace.yaml`) includes the root package plus two package groups:
 
 - `libs/*` — internal libraries (versioning, config, semver, calver, conventional-changelog, git-host, testing)
 - `plugins/*` — release plugins (npm, pypi, github, gitlab, changelog, commit-analyzer, release-notes-generator, exec)
 - Root package (`lets-release`) — the CLI and orchestrator
 
-All packages are ESM (`"type": "module"`). Node >= 22.13.0 required.
+All packages are ESM (`"type": "module"`). Node `>=22.13.0` and pnpm `11.10.0` are pinned in the root manifest.
+
+## Entrypoints
+
+- CLI binary: `src/cli.ts` (`lets-release` in root `package.json`)
+- Public API: `src/index.ts`; orchestrator implementation: `src/LetsRelease.ts`
+- Package entrypoints are `src/index.ts` during development; `publishConfig` rewrites them to `dist/*.js` for published packages.
 
 ## Commands
 
@@ -30,7 +36,7 @@ pnpm run type-check        # rimraf ./dist && tsc --build
 pnpm run build             # rimraf ./dist && tspc --build tsconfig.build.json
 ```
 
-CI runs in this order: `knip → lint → type-check → test:cov → test:e2e`.
+CI runs `knip`, `lint`, then recursive type-check in the lint job. Tests run after that with recursive coverage and e2e suites at `--workspace-concurrency=1`.
 
 ### Tests
 
@@ -64,6 +70,7 @@ Or from root with workspace filters:
 ```sh
 pnpm --recursive --workspace-concurrency=1 run test:cov run
 pnpm --filter @lets-release/npm test
+pnpm --filter @lets-release/config run type-check
 ```
 
 **`--workspace-concurrency=1`** is used in CI because packages share test infrastructure (Docker containers, temp dirs).
@@ -108,7 +115,7 @@ ESLint enforces `import-x/no-relative-parent-imports`. Do not use `../` to cross
 
 - Strict mode, ESNext target/module, bundler module resolution
 - Vitest globals enabled (`describe`, `it`, `expect` available without import)
-- Zod **v4** (not v3) — `zod ^4.3.6`
+- Zod **v4** (not v3) — currently `zod ^4.4.3`
 
 ### Zod schema convention
 
@@ -126,6 +133,7 @@ export type Foo = z.infer<typeof FooSchema>;
 - **E2E tests**: in `test/` directories with separate vitest configs
 - **Coverage**: 100% threshold on root package (see `vite.config.ts` `thresholds`)
 - **Shared test utilities**: `@lets-release/testing` provides `createRepo`, `GitBox`, `Verdaccio`, `PyPIServer`
+- For non-trivial behavior changes, add/update the nearest colocated `*.spec.ts` first, run the focused test, then widen to package/root verification.
 
 ### E2E prerequisites
 
@@ -145,7 +153,7 @@ Requirements: **Docker daemon running**, corepack available, Python for PyPI tes
 
 ## Release
 
-The repo dogfoods itself (see `release.config.ts`). Release branches: `main`, `next`, `*.x`. CI builds with `tspc`, then runs `pnpm vite-node src/cli.ts` to release all packages.
+The repo dogfoods itself (`release.config.ts`): release package paths are `./`, `libs/*`, and `plugins/*`; `lets-release` is the main package; `pnpm-lock.yaml` is shared workspace release state. Release branches are `main`, `next`, `*.x`. CI builds recursively with `tspc`, then runs `pnpm vite-node src/cli.ts`.
 
 ## Formatting
 

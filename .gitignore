@@ -35,3 +35,5 @@ coverage
 !.vscode/extensions.json
 
 .npmrc
+
+.omo
