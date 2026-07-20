@@ -286,7 +286,9 @@ describe("addChannels", () => {
           preferLocal: true,
         })`pnpm view ${pkg.name} dist-tags --registry ${registry} --json`;
 
-        expect(JSON.parse(output)).toEqual(
+        const distTags = JSON.parse(output);
+
+        expect(Array.isArray(distTags) ? distTags[0] : distTags).toEqual(
           expect.objectContaining({
             next: "1.0.0",
             "release-1.x": "1.0.0",
@@ -511,7 +513,9 @@ describe("addChannels", () => {
           preferLocal: true,
         })`npm view ${pkg.name} dist-tags --registry ${registry} --json`;
 
-        expect(JSON.parse(output)).toEqual(
+        const distTags = JSON.parse(output);
+
+        expect(Array.isArray(distTags) ? distTags[0] : distTags).toEqual(
           expect.objectContaining({
             next: "1.0.0",
             "release-1.x": "1.0.0",

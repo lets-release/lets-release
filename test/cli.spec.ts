@@ -129,7 +129,6 @@ describe("cli", () => {
         mergedChannel?: string | null;
       } = {},
     ) => {
-      const context = `${version} on ${branch}`;
       const distTag = channel ?? "latest";
       const result = await $({
         ...options,
@@ -139,14 +138,14 @@ describe("cli", () => {
         },
       })`npx vite-node -c ${viteConfig} ${cli}`;
 
-      expect(result.exitCode, context).toBe(0);
-      expect(result.stdout, context).toContain(
+      expect(result.exitCode).toBe(0);
+      expect(result.stdout).toContain(
         `${mergedChannel === undefined ? "Publishing" : "Adding"} version ${version} to npm registry on dist-tag ${distTag}`,
       );
 
       const buffer = await readFile(path.resolve(cwd, "package.json"));
 
-      expect(JSON.parse(buffer.toString()), context).toEqual(
+      expect(JSON.parse(buffer.toString())).toEqual(
         expect.objectContaining({
           version,
         }),
@@ -162,8 +161,12 @@ describe("cli", () => {
         preferLocal: true,
       })`npm view ${packageName} dist-tags --registry ${registry} --json`;
 
-      expect(viewResult.exitCode, context).toBe(0);
-      expect(JSON.parse(viewResult.stdout.trim()), context).toEqual(
+      expect(viewResult.exitCode).toBe(0);
+
+      const distTags = JSON.parse(viewResult.stdout.trim()) as
+        Record<string, string> | Record<string, string>[];
+
+      expect(Array.isArray(distTags) ? distTags[0] : distTags).toEqual(
         expect.objectContaining({
           [distTag]: version,
         }),
@@ -184,9 +187,9 @@ describe("cli", () => {
       const remoteTagHash = await getRemoteTagHash(cwd, authUrl, `v${version}`);
       const note = await getNote(`v${version}`, { cwd });
 
-      expect(tagHash.stdout?.trim(), context).toBe(hash.stdout?.trim());
-      expect(remoteTagHash, context).toBe(hash.stdout?.trim());
-      expect(note, context).toEqual(
+      expect(tagHash.stdout?.trim()).toBe(hash.stdout?.trim());
+      expect(remoteTagHash).toBe(hash.stdout?.trim());
+      expect(note).toEqual(
         expect.objectContaining({
           artifacts: [
             expect.objectContaining({
@@ -312,7 +315,6 @@ describe("cli", () => {
         mergedChannel?: string | null;
       } = {},
     ) => {
-      const context = `${version} on ${branch}`;
       const distTag = channel ?? "latest";
       const result = await $({
         ...options,
@@ -322,14 +324,14 @@ describe("cli", () => {
         },
       })`npx vite-node -c ${viteConfig} ${cli}`;
 
-      expect(result.exitCode, context).toBe(0);
-      expect(result.stdout, context).toContain(
+      expect(result.exitCode).toBe(0);
+      expect(result.stdout).toContain(
         `${mergedChannel === undefined ? "Publishing" : "Adding"} version ${version} to npm registry on dist-tag ${distTag}`,
       );
 
       const buffer = await readFile(path.resolve(cwd, "package.json"));
 
-      expect(JSON.parse(buffer.toString()), context).toEqual(
+      expect(JSON.parse(buffer.toString())).toEqual(
         expect.objectContaining({
           version,
         }),
@@ -345,8 +347,12 @@ describe("cli", () => {
         preferLocal: true,
       })`npm view ${pkgName} dist-tags --registry ${registry} --json`;
 
-      expect(viewResult.exitCode, context).toBe(0);
-      expect(JSON.parse(viewResult.stdout.trim()), context).toEqual(
+      expect(viewResult.exitCode).toBe(0);
+
+      const distTags2 = JSON.parse(viewResult.stdout.trim()) as
+        Record<string, string> | Record<string, string>[];
+
+      expect(Array.isArray(distTags2) ? distTags2[0] : distTags2).toEqual(
         expect.objectContaining({
           [distTag]: version,
         }),
@@ -367,9 +373,9 @@ describe("cli", () => {
       const remoteTagHash = await getRemoteTagHash(cwd, authUrl, `v${version}`);
       const note = await getNote(`v${version}`, { cwd });
 
-      expect(tagHash.stdout?.trim(), context).toBe(hash.stdout?.trim());
-      expect(remoteTagHash, context).toBe(hash.stdout?.trim());
-      expect(note, context).toEqual(
+      expect(tagHash.stdout?.trim()).toBe(hash.stdout?.trim());
+      expect(remoteTagHash).toBe(hash.stdout?.trim());
+      expect(note).toEqual(
         expect.objectContaining({
           artifacts: [
             expect.objectContaining({
@@ -651,7 +657,11 @@ describe("cli", () => {
     })`npm view ${packageName} dist-tags --registry ${registry} --json`;
 
     expect(viewResult.exitCode).toBe(0);
-    expect(JSON.parse(viewResult.stdout.trim())).toEqual(
+
+    const distTags3 = JSON.parse(viewResult.stdout.trim()) as
+      Record<string, string> | Record<string, string>[];
+
+    expect(Array.isArray(distTags3) ? distTags3[0] : distTags3).toEqual(
       expect.objectContaining({
         latest: version,
       }),

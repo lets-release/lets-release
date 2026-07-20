@@ -355,8 +355,10 @@ describe("publish", () => {
           cwd,
           preferLocal: true,
         })`pnpm view ${pkg.name} dist-tags --registry ${registry} --json`;
+        const distTags = JSON.parse(output) as
+          Record<string, string> | Record<string, string>[];
 
-        expect(JSON.parse(output)).toEqual(
+        expect(Array.isArray(distTags) ? distTags[0] : distTags).toEqual(
           expect.objectContaining({
             latest: "1.0.0",
             "latest-1": "1.0.0",
@@ -581,8 +583,10 @@ describe("publish", () => {
           cwd,
           preferLocal: true,
         })`npm view ${pkg.name} dist-tags --registry ${registry} --json`;
+        const distTags = JSON.parse(output) as
+          Record<string, string> | Record<string, string>[];
 
-        expect(JSON.parse(output)).toEqual(
+        expect(Array.isArray(distTags) ? distTags[0] : distTags).toEqual(
           expect.objectContaining({
             latest: "1.0.0",
             "latest-1": "1.0.0",
