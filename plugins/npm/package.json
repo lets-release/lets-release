@@ -33,7 +33,7 @@
     "@actions/core": "^3.0.1",
     "@lets-release/config": "workspace:^",
     "debug": "^4.4.3",
-    "execa": "^9.6.1",
+    "execa": "^10.0.0",
     "find-versions": "^6.0.0",
     "normalize-url": "^9.0.1",
     "preferred-pm": "^5.0.0",

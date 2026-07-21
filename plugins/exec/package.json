@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@lets-release/config": "workspace:^",
-    "execa": "^9.6.1",
+    "execa": "^10.0.0",
     "strip-ansi": "^7.2.0",
     "zod": "^4.4.3"
   },
