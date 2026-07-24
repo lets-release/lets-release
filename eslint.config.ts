@@ -104,6 +104,7 @@ export default defineConfig(
             caseInsensitive: true,
           },
           warnOnUnassignedImports: true,
+          sortTypesGroup: true,
         },
       ],
       "import-x/newline-after-import": "error",
@@ -147,8 +148,6 @@ export default defineConfig(
       // "unicorn/no-unsafe-property-key": "off",
       "unicorn/prefer-minimal-ternary": "off",
       "unicorn/prefer-uint8array-base64": "off",
-      // FIXME: https://github.com/vitest-dev/eslint-plugin-vitest/pull/925
-      "vitest/valid-expect": "warn",
     },
   },
 );
