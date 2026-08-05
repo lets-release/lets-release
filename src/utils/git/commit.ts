@@ -6,6 +6,6 @@ import { $, Options } from "execa";
  * @param message Commit message.
  * @param options Options to pass to `execa`.
  */
-export async function commit(message: string, options: Partial<Options> = {}) {
+export async function commit(message: string, options: Options = {}) {
   await $(options)`git commit -m ${message}`;
 }

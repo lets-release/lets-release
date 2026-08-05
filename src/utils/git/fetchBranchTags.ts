@@ -21,7 +21,7 @@ export async function fetchBranchTags(
   repositoryUrl: string,
   branch: string,
   ciBranch?: string,
-  options: Partial<Options> = {},
+  options: Options = {},
 ) {
   const head = await getHeadName(options);
   const isDetachedHead = head === "HEAD";

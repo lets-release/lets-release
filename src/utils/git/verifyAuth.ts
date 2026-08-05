@@ -15,7 +15,7 @@ import { name } from "src/program";
 export async function verifyAuth(
   repositoryUrl: string,
   branch: string,
-  options: Partial<Options> = {},
+  options: Options = {},
 ) {
   try {
     await $(

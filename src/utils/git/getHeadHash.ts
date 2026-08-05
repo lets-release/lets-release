@@ -8,7 +8,7 @@ import stripAnsi from "strip-ansi";
  *
  * @return The sha of the HEAD commit.
  */
-export async function getHeadHash(options: Partial<Options> = {}) {
+export async function getHeadHash(options: Options = {}) {
   const { stdout } = await $<{ lines: false }>({
     ...options,
     lines: false,

@@ -13,7 +13,7 @@ import { name } from "src/program";
 export async function pushNote(
   repositoryUrl: string,
   ref: string,
-  options: Partial<Options> = {},
+  options: Options = {},
 ) {
   await $(options)`git push ${repositoryUrl} ${`refs/notes/${name}-${ref}`}`;
 }

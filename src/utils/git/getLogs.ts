@@ -16,7 +16,7 @@ import { Commit } from "@lets-release/config";
 export async function getLogs(
   to: string,
   from?: string,
-  options: Partial<Options> = {},
+  options: Options = {},
 ): Promise<Commit[]> {
   Object.assign(fields, {
     hash: "H",

@@ -3,7 +3,7 @@ import stripAnsi from "strip-ansi";
 
 export async function getPoetryConfig(
   key: string,
-  options: Partial<Options> = {},
+  options: Options = {},
 ): Promise<string | undefined> {
   try {
     const { stdout } = await $<{ lines: false; reject: true }>({

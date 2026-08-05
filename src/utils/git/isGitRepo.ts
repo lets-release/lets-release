@@ -10,7 +10,7 @@ import { name } from "src/program";
  *
  * @return `true` if the current working directory is in a Git repository, falsy otherwise.
  */
-export async function isGitRepo(options: Partial<Options> = {}) {
+export async function isGitRepo(options: Options = {}) {
   try {
     await $(options)`git rev-parse --git-dir`;
 

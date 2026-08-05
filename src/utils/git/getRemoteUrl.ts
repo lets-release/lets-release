@@ -11,10 +11,7 @@ import { name } from "src/program";
  *
  * @return The value of the remote Git URL.
  */
-export async function getRemoteUrl(
-  remote = "origin",
-  options: Partial<Options> = {},
-) {
+export async function getRemoteUrl(remote = "origin", options: Options = {}) {
   try {
     const { stdout } = await $<{ lines: false }>({
       ...options,

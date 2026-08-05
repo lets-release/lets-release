@@ -10,6 +10,6 @@ const {
 }: NormalizedPackageJson = readPackageSync({
   cwd: path.resolve(import.meta.dirname, "../"),
 });
-const [homepagePath] = homepage.split("#");
+const [homepagePath] = homepage.split("#", 1);
 
 export { name, description, version, homepagePath as homepage };

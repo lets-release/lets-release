@@ -12,7 +12,7 @@ import stripAnsi from "strip-ansi";
  */
 export async function getRemoteBranches(
   repositoryUrl: string,
-  options: Partial<Options> = {},
+  options: Options = {},
 ): Promise<string[]> {
   const { stdout } = await $<{ lines: true }>({
     ...options,

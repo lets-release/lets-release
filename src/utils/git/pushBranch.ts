@@ -3,7 +3,7 @@ import { $, Options } from "execa";
 export async function pushBranch(
   repositoryUrl: string,
   branch: string,
-  options: Partial<Options> = {},
+  options: Options = {},
 ) {
   await $(options)`git push ${repositoryUrl} ${`HEAD:${branch}`}`;
 }

@@ -11,7 +11,7 @@ import stripAnsi from "strip-ansi";
  */
 export async function getTagHash(
   tag: string,
-  options: Partial<Options> = {},
+  options: Options = {},
 ): Promise<string> {
   const { stdout } = await $<{ lines: false }>({
     ...options,

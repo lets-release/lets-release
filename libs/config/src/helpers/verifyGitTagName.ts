@@ -8,10 +8,7 @@ import { $, Options } from "execa";
  *
  * @return `true` if valid, falsy otherwise.
  */
-export async function verifyGitTagName(
-  tag: string,
-  options: Partial<Options> = {},
-) {
+export async function verifyGitTagName(tag: string, options: Options = {}) {
   const { exitCode } = await $({
     ...options,
     reject: false,

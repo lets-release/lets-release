@@ -15,7 +15,7 @@ import { getHeadHash } from "src/utils/git/getHeadHash";
 export async function isBranchUpToDate(
   repositoryUrl: string,
   branch: string,
-  options: Partial<Options> = {},
+  options: Options = {},
 ) {
   const head = await getHeadHash(options);
   const { stdout } = await $<{ lines: false }>({

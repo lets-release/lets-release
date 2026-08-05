@@ -6,7 +6,7 @@ export async function getRepoInfo(octokit: LetsReleaseOctokit, url: string) {
     data: { full_name },
   } = await octokit.request("GET /repos/{owner}/{repo}", parseGitHubUrl(url));
 
-  const [owner, repo] = full_name.split("/");
+  const [owner, repo] = full_name.split("/", 2);
 
   return { owner, repo };
 }

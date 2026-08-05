@@ -148,6 +148,12 @@ export default defineConfig(
       // "unicorn/no-unsafe-property-key": "off",
       "unicorn/prefer-minimal-ternary": "off",
       "unicorn/prefer-uint8array-base64": "off",
+      "vitest/valid-expect": [
+        "error",
+        {
+          maxArgs: 2,
+        },
+      ],
     },
   },
 );

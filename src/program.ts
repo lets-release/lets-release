@@ -13,7 +13,7 @@ const {
 });
 const defaultGitUsername = `${name}[bot]`;
 const defaultGitUserEmail = `245835403+${name}[bot]@users.noreply.github.com`;
-const [homepagePath] = homepage.split("#");
+const [homepagePath] = homepage.split("#", 1);
 
 export {
   name,

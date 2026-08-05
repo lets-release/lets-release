@@ -23,7 +23,7 @@ const namespace = `${name}:utils.git.getAuthUrl`;
 export async function getAuthUrl(
   repositoryUrl: string,
   branch: string,
-  options: Partial<Options> = {},
+  options: Options = {},
 ) {
   const gitTokens = {
     GIT_CREDENTIALS: undefined,

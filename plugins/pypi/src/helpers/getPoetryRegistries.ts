@@ -3,7 +3,7 @@ import normalizeUrl from "normalize-url";
 import stripAnsi from "strip-ansi";
 
 export async function getPoetryRegistries(
-  options: Partial<Options> = {},
+  options: Options = {},
 ): Promise<{ name: string; publishUrl: string }[]> {
   const { stdout } = await $<{ lines: true }>({
     ...options,

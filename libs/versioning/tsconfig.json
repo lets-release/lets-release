@@ -1,6 +1,10 @@
 {
   "extends": "./tsconfig.base.json",
   "include": ["./src/**/*.ts", "./vitest.unit.config.ts"],
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "emitDeclarationOnly": true
+  },
   "references": [
     {
       "path": "../../tsconfig.eslint.json"

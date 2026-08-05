@@ -10,10 +10,7 @@ import stripAnsi from "strip-ansi";
  * @return List of Git tags.
  * @throws If the `git` command fails.
  */
-export async function getBranchTags(
-  branch: string,
-  options: Partial<Options> = {},
-) {
+export async function getBranchTags(branch: string, options: Options = {}) {
   const { stdout } = await $<{ lines: true }>({
     ...options,
     lines: true,

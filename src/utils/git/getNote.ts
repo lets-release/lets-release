@@ -24,7 +24,7 @@ const handleError = (error: ExecaError) => {
  */
 export async function getNote(
   ref: string,
-  options: Partial<Options> = {},
+  options: Options = {},
 ): Promise<TagNote> {
   try {
     const { stdout: stdoutA } = await (async () => {

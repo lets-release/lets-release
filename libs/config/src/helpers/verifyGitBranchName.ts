@@ -10,7 +10,7 @@ import { $, Options } from "execa";
  */
 export async function verifyGitBranchName(
   branch: string,
-  options: Partial<Options> = {},
+  options: Options = {},
 ) {
   const { exitCode } = await $({
     ...options,

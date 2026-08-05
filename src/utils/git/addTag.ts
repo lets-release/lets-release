@@ -9,10 +9,6 @@ import { $, Options } from "execa";
  *
  * @throws {Error} if the tag creation failed.
  */
-export async function addTag(
-  ref: string,
-  tag: string,
-  options: Partial<Options> = {},
-) {
+export async function addTag(ref: string, tag: string, options: Options = {}) {
   await $(options)`git tag ${tag} ${ref}`;
 }

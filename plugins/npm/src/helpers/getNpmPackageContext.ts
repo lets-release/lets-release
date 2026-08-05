@@ -37,7 +37,7 @@ export async function getNpmPackageContext(
     root: resolveWorkspaceRoot(pkgRoot) ?? pkgRoot,
   } as NpmPackageManager;
   const pkg = await getPackage(pkgRoot);
-  const [pkgScope] = pkg.name.split("/");
+  const [pkgScope] = pkg.name.split("/", 1);
   const scope = pkgScope.startsWith("@") ? pkgScope : undefined;
   const pkgContext = {
     pm,

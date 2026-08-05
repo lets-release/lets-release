@@ -1,5 +1,9 @@
 {
   "extends": "./tsconfig.base.root.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "emitDeclarationOnly": true
+  },
   "include": [
     "./eslint.config.ts",
     "./knip.config.ts",

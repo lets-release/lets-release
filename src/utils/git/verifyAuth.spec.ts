@@ -11,7 +11,7 @@ vi.mocked($).mockReturnValue(exec as never);
 describe("verifyAuth", () => {
   const repositoryUrl = "https://example.com/repo.git";
   const branch = "main";
-  const options: Partial<Options> = {};
+  const options: Options = {};
 
   beforeEach(() => {
     vi.mocked($).mockClear();

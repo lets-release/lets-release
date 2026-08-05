@@ -16,7 +16,7 @@ import { verifyAuth } from "src/utils/git/verifyAuth";
 export async function verifyAuthUrl(
   url: string,
   branch: string,
-  options: Partial<Options> = {},
+  options: Options = {},
 ) {
   try {
     await verifyAuth(url, branch, options);

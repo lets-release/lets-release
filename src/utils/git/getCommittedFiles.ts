@@ -1,10 +1,7 @@
 import { $, Options } from "execa";
 import stripAnsi from "strip-ansi";
 
-export async function getCommittedFiles(
-  commit: string,
-  options: Partial<Options> = {},
-) {
+export async function getCommittedFiles(commit: string, options: Options = {}) {
   const { stdout } = await $<{ lines: true }>({
     ...options,
     lines: true,

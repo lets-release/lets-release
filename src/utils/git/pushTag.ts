@@ -10,7 +10,7 @@ import { $, Options } from "execa";
 export async function pushTag(
   repositoryUrl: string,
   tag: string,
-  options: Partial<Options> = {},
+  options: Options = {},
 ) {
   await $(options)`git push ${repositoryUrl} ${tag}`;
 }

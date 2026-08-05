@@ -13,7 +13,7 @@ import { TagNote } from "src/types/TagNote";
 export async function addNote(
   ref: string,
   note: TagNote,
-  options: Partial<Options> = {},
+  options: Options = {},
 ) {
   await $(
     options,

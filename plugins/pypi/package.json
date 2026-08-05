@@ -33,15 +33,15 @@
     "@actions/core": "^3.0.1",
     "@lets-release/config": "workspace:^",
     "debug": "^4.4.3",
-    "execa": "^9.6.1",
+    "execa": "^10.0.1",
     "find-up-simple": "^1.0.1",
     "form-data": "^4.0.6",
     "lodash-es": "^4.18.1",
     "normalize-url": "^9.0.1",
-    "smol-toml": "^1.7.0",
+    "smol-toml": "^1.7.1",
     "strip-ansi": "^7.2.0",
     "tinyglobby": "^0.2.17",
-    "undici": "^8.7.0",
+    "undici": "^8.10.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {

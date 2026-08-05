@@ -6,10 +6,7 @@ import { $, Options } from "execa";
  * @param repositoryUrl The remote repository URL.
  * @param options Options to pass to `execa`.
  */
-export async function fetchNotes(
-  repositoryUrl: string,
-  options: Partial<Options> = {},
-) {
+export async function fetchNotes(repositoryUrl: string, options: Options = {}) {
   try {
     await $(
       options,

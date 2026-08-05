@@ -1,7 +1,7 @@
 import { defineConfig, mergeConfig } from "vitest/config";
 
 // eslint-disable-next-line import-x/no-relative-parent-imports
-import viteConfig from "../../vite.config";
+import viteConfig from "../../vite.config.ts";
 
 export default mergeConfig(
   viteConfig,

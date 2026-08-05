@@ -6,10 +6,7 @@ import { $, Options } from "execa";
  * @param files Array of files path to add to the index.
  * @param options Options to pass to `execa`.
  */
-export async function addFiles(
-  files: string[],
-  options: Partial<Options> = {},
-) {
+export async function addFiles(files: string[], options: Options = {}) {
   await $({
     ...options,
     reject: false,
