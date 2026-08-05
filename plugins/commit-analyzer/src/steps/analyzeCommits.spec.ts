@@ -271,7 +271,7 @@ describe("analyzeCommits", () => {
       {
         hash: "456",
         message:
-          "feat: Second feature (fixes #456) \n\n BREAKING CHANGE: break something",
+          "feat: Second feature (fixes #456) \n\nBREAKING CHANGE: break something",
       },
     ];
 
@@ -441,7 +441,7 @@ describe("analyzeCommits", () => {
       {
         hash: "456",
         message:
-          "docs: update README (fixes #456) \n\n BREAKING CHANGE: break something",
+          "docs: update README (fixes #456) \n\nBREAKING CHANGE: break something",
       },
     ];
 
