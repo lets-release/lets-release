@@ -38,8 +38,8 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "conventional-changelog-angular": "^9.2.1",
-    "conventional-changelog-conventionalcommits": "^10.2.1"
+    "conventional-changelog-angular": "^9.4.0",
+    "conventional-changelog-conventionalcommits": "^10.4.0"
   },
   "files": [
     "package.json",
