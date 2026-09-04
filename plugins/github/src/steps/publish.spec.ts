@@ -48,7 +48,6 @@ const error = new RequestError("Not Found", 404, {
     url: "/abc",
     headers: {},
     data: {},
-    retryCount: 1,
   },
 });
 
@@ -119,7 +118,6 @@ describe("publish", () => {
         url: "/abc",
         headers: {},
         data: {},
-        retryCount: 1,
       },
     });
     request.mockRejectedValueOnce(error);

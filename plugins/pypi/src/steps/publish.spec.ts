@@ -151,10 +151,10 @@ describe("publish", () => {
       vi.mocked(ensurePyPIPackageContext).mockResolvedValue({
         ...uvPkgContext,
         registry: {
-          ...uvPkgContext,
+          ...uvPkgContext.registry,
           url: "https://test.registry",
         },
-      } as unknown as PyPIPackageContext);
+      });
       vi.mocked(getAuth).mockResolvedValue({
         token: "",
         username: "test-username",

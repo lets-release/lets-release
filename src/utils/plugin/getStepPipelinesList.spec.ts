@@ -10,7 +10,10 @@ import { StepPipeline } from "src/types/StepPipeline";
 import { getStepPipeline } from "src/utils/plugin/getStepPipeline";
 import { getStepPipelinesList } from "src/utils/plugin/getStepPipelinesList";
 
-vi.mock("@lets-release/config");
+vi.mock("@lets-release/config", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@lets-release/config")>()),
+  loadModule: vi.fn(),
+}));
 vi.mock("src/utils/logErrors");
 vi.mock("src/utils/plugin/getStepPipeline");
 

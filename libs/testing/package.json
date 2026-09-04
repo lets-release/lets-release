@@ -34,8 +34,8 @@
   },
   "dependencies": {
     "dockerode": "^5.0.1",
-    "p-retry": "^8.0.0",
-    "undici": "^8.10.0"
+    "p-retry": "^8.0.1",
+    "undici": "^8.10.1"
   },
   "devDependencies": {
     "@types/dockerode": "^4.0.1"

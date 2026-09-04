@@ -8,7 +8,6 @@ import { PyPIPackageContext } from "src/types/PyPIPackageContext";
 
 vi.mock("src/helpers/ensurePyPIPackageContext");
 vi.mock("src/helpers/preparePackage");
-vi.mock("src/schemas/PyPIOptions");
 
 const context = {
   cwd: "/path/to/cwd",

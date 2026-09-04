@@ -80,7 +80,6 @@ describe("ensureGitHubContext", () => {
           url: "/abc",
           headers: {},
           data: {},
-          retryCount: 1,
         },
       }),
     );
@@ -101,7 +100,6 @@ describe("ensureGitHubContext", () => {
           url: "/abc",
           headers: {},
           data: {},
-          retryCount: 1,
         },
       }),
     );

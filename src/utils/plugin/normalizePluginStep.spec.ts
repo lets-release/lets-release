@@ -12,7 +12,11 @@ import { NormalizedStepContext } from "src/types/NormalizedStepContext";
 import { StepDefinition } from "src/types/StepDefinition";
 import { normalizePluginStep } from "src/utils/plugin/normalizePluginStep";
 
-vi.mock("@lets-release/config");
+vi.mock("@lets-release/config", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@lets-release/config")>()),
+  extractErrors: vi.fn(),
+  loadModule: vi.fn(),
+}));
 vi.mock("src/utils/plugin/denormalizeHistoricalRelease");
 
 const logger = {

@@ -5,7 +5,7 @@ const config: KnipConfig = {
     ".": {
       entry: "src/{index,cli}.ts",
       project: ["src/**", "test/**", "!**/*.spec.ts"],
-      ignore: ["test/__fixtures__/**"],
+      ignore: ["test/__fixtures__/**", "dist/**"],
       ignoreDependencies: [
         "@aliser/ts-transformer-append-js-extension",
         "prettier-eslint",
@@ -15,11 +15,14 @@ const config: KnipConfig = {
     },
     "libs/*": {
       project: ["**/*.ts", "!**/*.spec.ts"],
+      ignore: ["dist/**"],
     },
     "plugins/*": {
       project: ["**/*.ts", "!**/*.spec.ts"],
+      ignore: ["dist/**"],
     },
     "plugins/(commit-analyzer|release-notes-generator)": {
+      ignore: ["dist/**"],
       ignoreDependencies: [/conventional-changelog-.*/],
     },
   },

@@ -32,7 +32,7 @@
   "dependencies": {
     "@lets-release/config": "workspace:^",
     "read-pkg": "^10.1.0",
-    "zod": "^4.4.3"
+    "zod": "^4.5.4"
   },
   "devDependencies": {
     "tempy": "^3.2.0"

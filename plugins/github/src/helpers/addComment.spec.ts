@@ -199,7 +199,6 @@ describe("addComment", () => {
           url: "/abc",
           headers: {},
           data: {},
-          retryCount: 1,
         },
       }),
     );
@@ -233,7 +232,6 @@ describe("addComment", () => {
           url: "/abc",
           headers: {},
           data: {},
-          retryCount: 1,
         },
       }),
     );

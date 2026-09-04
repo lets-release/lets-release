@@ -117,7 +117,6 @@ describe("addChannels", () => {
             url: "/abc",
             headers: {},
             data: {},
-            retryCount: 1,
           },
         }),
       ) // GET request
@@ -172,7 +171,6 @@ describe("addChannels", () => {
           url: "/abc",
           headers: {},
           data: {},
-          retryCount: 1,
         },
       }),
     );
