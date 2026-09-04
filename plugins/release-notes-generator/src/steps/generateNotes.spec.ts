@@ -1,7 +1,7 @@
 import { writeFile } from "node:fs/promises";
 import path from "node:path";
 
-import { writeChangelogStream } from "conventional-changelog-writer";
+import { ConventionalChangelog } from "conventional-changelog";
 import { escapeRegExp } from "lodash-es";
 import { temporaryDirectory } from "tempy";
 import { ZodError } from "zod";
@@ -10,8 +10,6 @@ import { GenerateNotesContext } from "@lets-release/config";
 import { ConventionalChangelogPreset } from "@lets-release/conventional-changelog";
 
 import { generateNotes } from "src/steps/generateNotes";
-
-vi.mock("conventional-changelog-writer", { spy: true });
 
 const cwd = path.resolve(import.meta.dirname, "../../");
 const host = "https://github.com";
@@ -25,10 +23,13 @@ const pkg = {
 const repositoryRoot = process.cwd();
 const lastRelease = { tag: "v1.0.0" };
 const nextRelease = { tag: "v2.0.0", version: "2.0.0" };
+const contextSpy = vi.spyOn(ConventionalChangelog.prototype, "context");
+const packageSpy = vi.spyOn(ConventionalChangelog.prototype, "package");
 
 describe("generateNotes", () => {
   beforeEach(() => {
-    vi.mocked(writeChangelogStream).mockClear();
+    contextSpy.mockClear();
+    packageSpy.mockClear();
   });
 
   it('should use "conventional-changelog-conventionalcommits" by default', async () => {
@@ -72,7 +73,7 @@ describe("generateNotes", () => {
     );
   });
 
-  it("should set conventional-changelog-writer context", async () => {
+  it("should set conventional-changelog context", async () => {
     const cwd = temporaryDirectory();
     const pkg = {
       path: cwd,
@@ -95,22 +96,36 @@ describe("generateNotes", () => {
       {},
     );
 
-    expect(vi.mocked(writeChangelogStream)).toHaveBeenCalledWith(
+    expect(contextSpy).toHaveBeenCalledWith({
+      version: nextRelease.version,
+      host,
+      previousTag: lastRelease.tag,
+      currentTag: nextRelease.tag,
+      linkCompare: !!nextRelease.tag && !!lastRelease.tag,
+      issue: undefined,
+      commit: undefined,
+      linkReferences: true,
+    });
+    expect(packageSpy).toHaveBeenCalledWith({
+      version: nextRelease.version,
+    });
+  });
+
+  it("should handle repositories without an owner or previous release", async () => {
+    const changelog = await generateNotes(
       {
-        version: nextRelease.version,
-        host,
-        owner,
-        repository,
-        previousTag: lastRelease.tag,
-        currentTag: nextRelease.tag,
-        linkCompare: !!nextRelease.tag && !!lastRelease.tag,
-        issue: "issues",
-        commit: "commit",
-        packageData: undefined,
-        linkReferences: true,
-      },
-      expect.any(Object),
+        cwd,
+        repositoryRoot,
+        options: { repositoryUrl: "https://domain.com" },
+        package: pkg,
+        lastRelease: undefined,
+        nextRelease: { tag: undefined, version: "1.0.0" },
+        commits: [{ hash: "111", message: "fix: First fix" }],
+      } as unknown as GenerateNotesContext,
+      {},
     );
+
+    expect(changelog).toContain("First fix");
   });
 
   it("should set conventional-changelog-writer context with package.json", async () => {
@@ -141,22 +156,10 @@ describe("generateNotes", () => {
       {},
     );
 
-    expect(vi.mocked(writeChangelogStream)).toHaveBeenCalledWith(
-      {
-        version: nextRelease.version,
-        host,
-        owner,
-        repository,
-        previousTag: lastRelease.tag,
-        currentTag: nextRelease.tag,
-        linkCompare: !!nextRelease.tag && !!lastRelease.tag,
-        issue: "issues",
-        commit: "commit",
-        packageData,
-        linkReferences: true,
-      },
-      expect.any(Object),
-    );
+    expect(packageSpy).toHaveBeenCalledWith({
+      ...packageData,
+      version: nextRelease.version,
+    });
   });
 
   it('should accept a "preset" option', async () => {
@@ -728,14 +731,16 @@ describe("generateNotes", () => {
 
     expect(changelog).toMatch(
       new RegExp(
-        escapeRegExp("(https://gitlab.com/owner/repo/compare/v1.0.0...v2.0.0)"),
+        escapeRegExp(
+          "(https://gitlab.com/owner/repo/-/compare/v1.0.0...v2.0.0)",
+        ),
       ),
     );
     expect(changelog).toMatch(/### Bug Fixes/);
     expect(changelog).toMatch(
       new RegExp(
         escapeRegExp(
-          "* **scope1:** First fix ([111](https://gitlab.com/owner/repo/commit/111)), closes [#10](https://gitlab.com/owner/repo/issues/10)",
+          "* **scope1:** First fix ([111](https://gitlab.com/owner/repo/-/commit/111)), closes [#10](https://gitlab.com/owner/repo/-/issues/10)",
         ),
       ),
     );
@@ -743,7 +748,7 @@ describe("generateNotes", () => {
     expect(changelog).toMatch(
       new RegExp(
         escapeRegExp(
-          "* **scope2:** Second feature ([222](https://gitlab.com/owner/repo/commit/222))",
+          "* **scope2:** Second feature ([222](https://gitlab.com/owner/repo/-/commit/222))",
         ),
       ),
     );
@@ -1052,7 +1057,7 @@ describe("generateNotes", () => {
       expect(changelog).toMatch(
         new RegExp(
           escapeRegExp(
-            "* **scope1:** First fix ([111](https://github.com/owner/repo/commit/111)), closes [#10](https://github.com/owner/repo/issues/10)",
+            "* **scope1:** First fix ([111](https://github.com/owner/repo/commit/111)), closes [#10](https://github.com/owner/repo/test-issues/10)",
           ),
         ),
       );
@@ -1088,7 +1093,7 @@ describe("generateNotes", () => {
       expect(changelog).toMatch(
         new RegExp(
           escapeRegExp(
-            "* **scope1:** First fix ([111](https://github.com/owner/repo/commit/111)), closes [#10](https://github.com/owner/repo/issues/10)",
+            "* **scope1:** First fix ([111](https://github.com/owner/repo/commit/111)), closes [#10](https://github.com/owner/repo/test-issues/10)",
           ),
         ),
       );
