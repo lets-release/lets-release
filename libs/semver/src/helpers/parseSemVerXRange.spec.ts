@@ -8,14 +8,14 @@ describe("parseSemVerXRange", () => {
   it.each(validRanges)(
     "should parse valid semver x range: $range",
     ({ range, parsed }) => {
-      expect(parseSemVerXRange(range), range).toEqual(parsed);
+      expect(parseSemVerXRange(range)).toEqual(parsed);
     },
   );
 
   it.each(invalidRanges)(
     "should throw error for invalid semver x range: $range",
     ({ range }) => {
-      expect(() => parseSemVerXRange(range), range).toThrow(TypeError);
+      expect(() => parseSemVerXRange(range)).toThrow(TypeError);
     },
   );
 });

@@ -5,7 +5,7 @@ describe("isValidBuildMetadata", () => {
   it.each(builds)(
     "should validate build metadata: $value",
     ({ value, isValid }) => {
-      expect(isValidBuildMetadata(value), value).toBe(isValid ?? false);
+      expect(isValidBuildMetadata(value)).toBe(isValid ?? false);
     },
   );
 });

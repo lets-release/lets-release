@@ -19,7 +19,6 @@ describe("isValidPrereleaseCalVer", () => {
       ({ value, parsed }) => {
         expect(
           isValidPrereleaseCalVer(format, value, parsed?.prereleaseName),
-          value,
         ).toBe(true);
       },
     );
@@ -29,7 +28,6 @@ describe("isValidPrereleaseCalVer", () => {
       ({ value, parsed }) => {
         expect(
           isValidPrereleaseCalVer(format, value, parsed?.prereleaseName),
-          value,
         ).toBe(false);
       },
     );

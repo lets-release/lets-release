@@ -4,7 +4,7 @@ import { isValidSemVerXRange } from "src/helpers/isValidSemVerXRange";
 describe("isValidSemVerXRange", () => {
   it("should validate semver x range", () => {
     for (const { range, parsed } of xRanges) {
-      expect(isValidSemVerXRange(range), range).toBe(!!parsed);
+      expect(isValidSemVerXRange(range)).toBe(!!parsed);
     }
   });
 });

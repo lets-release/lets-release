@@ -16,7 +16,7 @@ describe("formatSemVer", () => {
       } => !!x.parsed,
     ),
   )("should format semver: $value", ({ value, options, parsed }) => {
-    expect(formatSemVer(parsed, options), value).toBe(value);
+    expect(formatSemVer(parsed, options)).toBe(value);
   });
 
   it("should ignore prefix option if prerelease name is digits", () => {

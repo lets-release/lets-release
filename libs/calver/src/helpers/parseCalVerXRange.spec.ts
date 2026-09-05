@@ -9,16 +9,14 @@ describe("parseCalVerXRange", () => {
     it.each(validRanges)(
       "should parse valid calver x range: $range",
       ({ range, parsed }) => {
-        expect(parseCalVerXRange(format, range), range).toEqual(parsed);
+        expect(parseCalVerXRange(format, range)).toEqual(parsed);
       },
     );
 
     it.each(invalidRanges)(
       "should throw error for invalid calver x range: $range",
       ({ range }) => {
-        expect(() => parseCalVerXRange(format, range), range).toThrow(
-          TypeError,
-        );
+        expect(() => parseCalVerXRange(format, range)).toThrow(TypeError);
       },
     );
   });

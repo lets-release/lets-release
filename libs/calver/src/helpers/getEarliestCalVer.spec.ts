@@ -6,10 +6,7 @@ import { getEarliestCalVer } from "src/helpers/getEarliestCalVer";
 describe("getEarliestCalVer", () => {
   it("should get earliest calver", () => {
     for (const [format, { min, versions }] of Object.entries(comparisons)) {
-      expect(
-        getEarliestCalVer(format, shuffle([min, ...versions])),
-        format,
-      ).toBe(min);
+      expect(getEarliestCalVer(format, shuffle([min, ...versions]))).toBe(min);
     }
   });
 

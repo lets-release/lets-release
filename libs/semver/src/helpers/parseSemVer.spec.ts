@@ -8,16 +8,14 @@ describe("parseSemVer", () => {
   it.each(validSemvers)(
     "should parse valid semver: $value",
     ({ value, prereleaseName, parsed }) => {
-      expect(parseSemVer(value, prereleaseName), value).toEqual(parsed);
+      expect(parseSemVer(value, prereleaseName)).toEqual(parsed);
     },
   );
 
   it.each(invalidSemvers)(
     "should throw error for invalid semver: $value",
     ({ value, prereleaseName }) => {
-      expect(() => parseSemVer(value, prereleaseName), value).toThrow(
-        TypeError,
-      );
+      expect(() => parseSemVer(value, prereleaseName)).toThrow(TypeError);
     },
   );
 });

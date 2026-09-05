@@ -11,10 +11,7 @@ describe("parseCalVer", () => {
       it.each(validCalvers)(
         "should parse valid calver: $value",
         ({ value, parsed }) => {
-          expect(
-            parseCalVer(format, value, parsed?.prereleaseName),
-            value,
-          ).toEqual({
+          expect(parseCalVer(format, value, parsed?.prereleaseName)).toEqual({
             ...parsed,
             tokens,
             tokenValues,
@@ -25,9 +22,8 @@ describe("parseCalVer", () => {
       it.each(invalidCalvers)(
         "should throw error for invalid calver: $value",
         ({ value, parsed }) => {
-          expect(
-            () => parseCalVer(format, value, parsed?.prereleaseName),
-            value,
+          expect(() =>
+            parseCalVer(format, value, parsed?.prereleaseName),
           ).toThrow(TypeError);
         },
       );

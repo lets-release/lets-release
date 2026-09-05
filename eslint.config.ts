@@ -4,6 +4,7 @@ import vitestPlugin from "@vitest/eslint-plugin";
 import { defineConfig } from "eslint/config";
 import { createTypeScriptImportResolver } from "eslint-import-resolver-typescript";
 import { flatConfigs } from "eslint-plugin-import-x";
+import oxlint from "eslint-plugin-oxlint";
 import prettierPluginRecommended from "eslint-plugin-prettier/recommended";
 import unicornPlugin from "eslint-plugin-unicorn";
 import unusedImportsPlugin from "eslint-plugin-unused-imports";
@@ -19,6 +20,7 @@ export default defineConfig(
   unicornPlugin.configs.unopinionated,
   prettierPluginRecommended,
   vitestPlugin.configs.recommended,
+  ...oxlint.configs["flat/recommended"],
   // global ignores
   { ignores: ["**/coverage", "**/dist"] },
   {

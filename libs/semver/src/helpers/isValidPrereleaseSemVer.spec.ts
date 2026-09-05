@@ -16,14 +16,14 @@ describe("isValidPrereleaseSemVer", () => {
   it.each(validPrereleaseSemvers)(
     "should return true for valid prerelease semver: $value",
     ({ value, prereleaseName }) => {
-      expect(isValidPrereleaseSemVer(value, prereleaseName), value).toBe(true);
+      expect(isValidPrereleaseSemVer(value, prereleaseName)).toBe(true);
     },
   );
 
   it.each(invalidPrereleaseSemvers)(
     "should return false for invalid prerelease semver: $value",
     ({ value, prereleaseName }) => {
-      expect(isValidPrereleaseSemVer(value, prereleaseName), value).toBe(false);
+      expect(isValidPrereleaseSemVer(value, prereleaseName)).toBe(false);
     },
   );
 });

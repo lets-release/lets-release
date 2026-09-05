@@ -16,16 +16,14 @@ describe("BuildMetadata", () => {
   it.each(validBuilds)(
     "should return valid build metadata: $value",
     async ({ value }) => {
-      await expect(BuildMetadata.parseAsync(value), value).resolves.toBe(value);
+      await expect(BuildMetadata.parseAsync(value)).resolves.toBe(value);
     },
   );
 
   it.each(invalidBuilds)(
     "should throw for invalid build metadata: $value",
     async ({ value }) => {
-      await expect(BuildMetadata.parseAsync(value), value).rejects.toThrow(
-        ZodError,
-      );
+      await expect(BuildMetadata.parseAsync(value)).rejects.toThrow(ZodError);
     },
   );
 });

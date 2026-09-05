@@ -32,7 +32,7 @@
     "test:e2e": "vitest --config ./vitest.e2e.config.ts",
     "test:workspace": "vitest --workspace ./vitest.vscode.workspace.ts",
     "type-check": "rimraf ./dist && tsc --build",
-    "lint": "eslint --fix",
+    "lint": "oxlint --fix && eslint --fix",
     "build": "rimraf ./dist && tspc --build tsconfig.build.json",
     "knip": "cross-env KNIP_DISABLE_RAW_TRANSFER=1 knip"
   },
@@ -84,13 +84,14 @@
     "@types/stream-to-array": "^2.3.3",
     "@typescript-eslint/parser": "^8.69.0",
     "@typescript-eslint/utils": "^8.69.0",
-    "@vitest/coverage-v8": "^5.0.0",
+    "@vitest/coverage-v8": "^4.1.11",
     "@vitest/eslint-plugin": "^1.6.27",
     "cross-env": "^10.1.0",
     "eslint": "^10.9.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.5",
     "eslint-plugin-import-x": "^4.17.1",
+    "eslint-plugin-oxlint": "^1.81.0",
     "eslint-plugin-prettier": "^5.5.6",
     "eslint-plugin-unicorn": "^74.0.0",
     "eslint-plugin-unused-imports": "^4.4.1",
@@ -101,6 +102,8 @@
     "knip": "^6.34.0",
     "lint-staged": "^17.4.1",
     "ncp": "^2.0.0",
+    "oxlint": "^1.81.0",
+    "oxlint-tsgolint": "^7.0.2001",
     "p-retry": "^8.0.1",
     "prettier": "^3.9.6",
     "prettier-eslint": "^17.1.2",
@@ -114,7 +117,7 @@
     "vite": "^8.2.2",
     "vite-node": "^6.0.0",
     "vite-tsconfig-paths": "^6.1.1",
-    "vitest": "^5.0.0"
+    "vitest": "^4.1.11"
   },
   "engines": {
     "node": ">=22.14.0"
@@ -147,6 +150,7 @@
   "lint-staged": {
     "*.ts": [
       "prettier --write",
+      "oxlint --fix",
       "eslint --fix"
     ]
   },
@@ -162,5 +166,5 @@
       ]
     }
   },
-  "packageManager": "pnpm@11.20.0+sha512.9a6f330a95b66446ea088faf1521405a8a01f07fde7124cc9958dfed52d4bb436737e65b08f85f37b46fcba375092558ac51262b816844b22f63406ed166bfee"
+  "packageManager": "pnpm@11.25.0+sha512.5cde925b4f075f725eb71fbae18a42ffe784524789f19b61c731cb8721ec28aaee160e01a8d5af4fedb2a42cdbf300efe23db356b0d4a17b4d63e11f8ab7c956"
 }

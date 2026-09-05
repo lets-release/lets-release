@@ -5,7 +5,7 @@ describe("isValidPrereleaseName", () => {
   it.each(prereleaseNames)(
     "should validate prerelease name $value",
     ({ value, isValid }) => {
-      expect(isValidPrereleaseName(value), value).toBe(isValid ?? false);
+      expect(isValidPrereleaseName(value)).toBe(isValid ?? false);
     },
   );
 });

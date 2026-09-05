@@ -8,10 +8,9 @@ describe("getLatestCalVer", () => {
     "format: %s",
     (format, { min, max, versions }) => {
       it("should get latest calver", () => {
-        expect(
-          getLatestCalVer(format, shuffle([min, max, ...versions])),
-          format,
-        ).toBe(max);
+        expect(getLatestCalVer(format, shuffle([min, max, ...versions]))).toBe(
+          max,
+        );
       });
 
       it("should get latest calver before specific version", () => {
@@ -19,7 +18,6 @@ describe("getLatestCalVer", () => {
           getLatestCalVer(format, shuffle([min, max, ...versions]), {
             before: max,
           }),
-          format,
         ).toBe(getLatestCalVer(format, shuffle([min, ...versions])));
       });
     },

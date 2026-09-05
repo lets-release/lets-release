@@ -23,18 +23,14 @@ describe("PrereleaseName", () => {
   it.each(validPrereleaseNames)(
     "should return valid prerelease name: $value",
     async ({ value }) => {
-      await expect(PrereleaseName.parseAsync(value), value).resolves.toBe(
-        value,
-      );
+      await expect(PrereleaseName.parseAsync(value)).resolves.toBe(value);
     },
   );
 
   it.each(invalidPrereleaseNames)(
     "should throw for invalid prerelease name: $value",
     async ({ value }) => {
-      await expect(PrereleaseName.parseAsync(value), value).rejects.toThrow(
-        ZodError,
-      );
+      await expect(PrereleaseName.parseAsync(value)).rejects.toThrow(ZodError);
     },
   );
 });
