@@ -10,7 +10,6 @@ const config: KnipConfig = {
         "@aliser/ts-transformer-append-js-extension",
         "prettier-eslint",
         "typescript-transform-paths",
-        "vite-tsconfig-paths",
       ],
     },
     "libs/*": {

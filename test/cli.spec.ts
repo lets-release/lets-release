@@ -68,10 +68,9 @@ describe("cli", () => {
           repository: { url },
           publishConfig: { registry },
           devDependencies: {
-            vite: "^8.0.16",
+            vite: "^8.2.2",
             "vite-node": "^6.0.0",
-            "vite-tsconfig-paths": "^6.1.1",
-            vitest: "^4.1.9",
+            vitest: "^5.0.0",
           },
           release: {
             packages: [
@@ -252,10 +251,9 @@ describe("cli", () => {
       repository: { url },
       publishConfig: { registry },
       devDependencies: {
-        vite: "^8.0.16",
+        vite: "^8.2.2",
         "vite-node": "^6.0.0",
-        "vite-tsconfig-paths": "^6.1.1",
-        vitest: "^4.1.9",
+        vitest: "^5.0.0",
       },
       release: {
         packages: [
@@ -436,10 +434,9 @@ describe("cli", () => {
           repository: { url },
           publishConfig: { registry },
           devDependencies: {
-            vite: "^8.0.16",
+            vite: "^8.2.2",
             "vite-node": "^6.0.0",
-            "vite-tsconfig-paths": "^6.1.1",
-            vitest: "^4.1.9",
+            vitest: "^5.0.0",
           },
           release: {
             packages: [
@@ -504,10 +501,9 @@ describe("cli", () => {
           repository: { url },
           publishConfig: { registry },
           devDependencies: {
-            vite: "^8.0.16",
+            vite: "^8.2.2",
             "vite-node": "^6.0.0",
-            "vite-tsconfig-paths": "^6.1.1",
-            vitest: "^4.1.9",
+            vitest: "^5.0.0",
           },
           release: {
             packages: [
@@ -589,10 +585,9 @@ describe("cli", () => {
           repository: { url },
           publishConfig: { registry },
           devDependencies: {
-            vite: "^8.0.16",
+            vite: "^8.2.2",
             "vite-node": "^6.0.0",
-            "vite-tsconfig-paths": "^6.1.1",
-            vitest: "^4.1.9",
+            vitest: "^5.0.0",
           },
           release: {
             packages: [
@@ -711,10 +706,9 @@ describe("cli", () => {
           repository: { url },
           publishConfig: { registry },
           devDependencies: {
-            vite: "^8.0.16",
+            vite: "^8.2.2",
             "vite-node": "^6.0.0",
-            "vite-tsconfig-paths": "^6.1.1",
-            vitest: "^4.1.9",
+            vitest: "^5.0.0",
           },
           release: {
             packages: [
@@ -779,10 +773,9 @@ describe("cli", () => {
           type: "module",
           publishConfig: { registry },
           devDependencies: {
-            vite: "^8.0.16",
+            vite: "^8.2.2",
             "vite-node": "^6.0.0",
-            "vite-tsconfig-paths": "^6.1.1",
-            vitest: "^4.1.9",
+            vitest: "^5.0.0",
           },
           release: {
             packages: [
@@ -851,10 +844,9 @@ describe("cli", () => {
           repository: { url },
           publishConfig: { registry },
           devDependencies: {
-            vite: "^8.0.16",
+            vite: "^8.2.2",
             "vite-node": "^6.0.0",
-            "vite-tsconfig-paths": "^6.1.1",
-            vitest: "^4.1.9",
+            vitest: "^5.0.0",
           },
           release: {
             packages: [
