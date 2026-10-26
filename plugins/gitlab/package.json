@@ -36,10 +36,10 @@
     "@lets-release/config": "workspace:^",
     "@lets-release/git-host": "workspace:^",
     "read-pkg": "^10.1.0",
-    "url-join": "^5.0.0"
+    "url-join": "^5.1.1"
   },
   "devDependencies": {
-    "undici": "^8.10.2"
+    "undici": "^8.12.3"
   },
   "files": [
     "package.json",
