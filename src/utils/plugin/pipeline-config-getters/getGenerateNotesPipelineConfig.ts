@@ -7,11 +7,11 @@ import { postProcessGenerateNotesResults } from "src/utils/plugin/post-processor
 export const getGenerateNotesPipelineConfig: StepPipelineConfigGetter<
   Step.generateNotes
 > = () => ({
-  getNextContext: ({ nextRelease, ...context }, notes) => ({
+  getNextContext: ({ nextRelease, ...context }, notes = "") => ({
     ...context,
     nextRelease: {
       ...nextRelease,
-      notes: `${nextRelease.notes ? `${nextRelease.notes}${RELEASE_NOTES_SEPARATOR}` : ""}${notes ?? ""}`,
+      notes: `${nextRelease.notes ? `${nextRelease.notes}${RELEASE_NOTES_SEPARATOR}` : ""}${notes}`,
     },
   }),
   postProcess: postProcessGenerateNotesResults,

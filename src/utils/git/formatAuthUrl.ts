@@ -21,7 +21,7 @@ export function formatAuthUrl(repositoryUrl: string, gitCredentials: string) {
     hash,
     href,
     auth: gitCredentials,
-    host: `${hostname}${protocol === "ssh:" ? "" : port ? `:${port}` : ""}`,
+    host: `${hostname}${protocol === "ssh:" || !port ? "" : `:${port}`}`,
     protocol: protocol && /http[^s]/.test(protocol) ? "http" : "https",
   });
 }

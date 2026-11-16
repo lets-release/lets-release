@@ -78,7 +78,6 @@ import { getStepPipelinesList } from "src/utils/plugin/getStepPipelinesList";
 import { verifyEngines } from "src/utils/verifyEngines";
 import { verifyGitVersion } from "src/utils/verifyGitVersion";
 
-// eslint-disable-next-line import-x/no-named-as-default-member
 const { Signale } = signale;
 
 export class LetsRelease {
