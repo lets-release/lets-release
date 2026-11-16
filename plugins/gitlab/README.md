@@ -91,7 +91,8 @@ Can be a [glob][], an `Array` of [globs][glob], or an `Object` with the followin
 | `type`     | The asset type displayed on the GitLab release. Can be `runbook`, `package`, `image` and `other` (see official documents on [release assets][]).                                        | `other`                              |
 | `filepath` | A file path for creating a permalink pointing to the asset (requires GitLab 12.9+, see official documents on [permanent links][]). Ignored if `path` matches more than one file.        | -                                    |
 | `target`   | Controls where the file is uploaded to. Can be set to `project_upload` for storing the file as [project upload][] or `generic_package` for storing the file as [generic package][].     | `project_upload`                     |
-| `status`   | This is only applied if `target` is set to `generic_package`. The generic package status. Can be `default` or `hidden` (see official documents on [generic packages][generic package]). | `default`                            |
+
+Generic package assets use GitLab's default package status. Specifying `status` is no longer supported.
 
 Each entry in the `assets` `Array` is globed individually.
 A [glob][] can be a `String` (`"dist/**/*.js"` or `"dist/mylib.js"`) or an `Array` of `String`s that will be globed together (`["dist/**", "!**/*.css"]`).

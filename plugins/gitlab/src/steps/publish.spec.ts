@@ -6,7 +6,6 @@ import { PublishContext } from "@lets-release/config";
 import { GITLAB_ARTIFACT_NAME } from "src/constants/GITLAB_ARTIFACT_NAME";
 import { AssetTarget } from "src/enums/AssetTarget";
 import { AssetType } from "src/enums/AssetType";
-import { GenericPackageStatus } from "src/enums/GenericPackageStatus";
 import { ensureGitLabContext } from "src/helpers/ensureGitLabContext";
 import { uploadReleaseAsset } from "src/helpers/uploadReleaseAsset";
 import { publish } from "src/steps/publish";
@@ -42,13 +41,11 @@ const gitLabContext = {
       {
         type: AssetType.Other,
         target: AssetTarget.ProjectUpload,
-        status: GenericPackageStatus.Default,
         path: "test2.txt",
       },
       {
         type: AssetType.Other,
         target: AssetTarget.ProjectUpload,
-        status: GenericPackageStatus.Default,
         url: "https://example.com/asset",
       },
     ],

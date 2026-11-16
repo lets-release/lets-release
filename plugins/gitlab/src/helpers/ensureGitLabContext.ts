@@ -36,12 +36,13 @@ export async function ensureGitLabContext<T extends Step>(
   const projectId = `${owner}/${repo}`;
   // https://github.com/jdalrymple/gitbeaker/blob/main/docs/FAQ.md#support-for-node-v1618
   // eslint-disable-next-line unicorn/no-global-object-property-assignment
-  globalThis.fetch = generateFetchFunction(proxy) as typeof fetch;
+  globalThis.fetch = generateFetchFunction(proxy);
+  // Gitbeaker selects authentication by key presence, even for undefined values.
   const gitlab = new Gitlab({
     host: url,
-    token,
-    oauthToken,
-    jobToken,
+    ...(token && { token }),
+    ...(oauthToken && { oauthToken }),
+    ...(jobToken && { jobToken }),
   });
 
   const errors = [];

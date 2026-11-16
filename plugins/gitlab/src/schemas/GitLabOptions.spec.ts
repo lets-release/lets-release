@@ -20,7 +20,6 @@ describe("GitLabOptions schema", () => {
           type: "package",
           filepath: "path/to/file",
           target: "project_upload",
-          status: "default",
         },
       ],
       milestones: ["v1.0"],

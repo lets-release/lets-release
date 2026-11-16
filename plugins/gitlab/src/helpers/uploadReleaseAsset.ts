@@ -66,33 +66,23 @@ export async function uploadReleaseAsset(
       if (!isString(asset) && asset.target === AssetTarget.GenericPackage) {
         // Upload generic packages
         try {
-          const {
-            file: { url },
-          } = await gitlab.PackageRegistry.publish(
-            projectId,
-            "release",
-            version,
-            {
-              filename,
-              content: new Blob([await readFile(file)]),
-            },
-            {
-              select: "package_file",
-              status: asset.status,
-            },
-          );
+          await gitlab.PackageRegistry.publish(projectId, "release", version, {
+            filename,
+            content: new Blob([await readFile(file)]),
+          });
 
+          const encodedProjectId = encodeURIComponent(projectId);
           const encodedVersion = encodeURIComponent(version);
           const encodedFilename = encodeURIComponent(filename);
           // https://docs.gitlab.com/ee/user/packages/generic_packages/#download-package-file
           const downloadUrl = urlJoin(
             apiUrl ?? urlJoin(host, "/api/v4"),
-            `/projects/${projectId}/packages/generic/release/${encodedVersion}/${encodedFilename}`,
+            `/projects/${encodedProjectId}/packages/generic/release/${encodedVersion}/${encodedFilename}`,
           );
 
           logger.log({
             prefix: `[${pkg.uniqueName}]`,
-            message: `Uploaded file: ${downloadUrl} (${url})`,
+            message: `Uploaded file: ${downloadUrl}`,
           });
 
           return [

@@ -18,7 +18,11 @@ import { resolveGitLabOptions } from "src/helpers/resolveGitLabOptions";
 import { ResolvedGitLabOptions } from "src/schemas/GitLabOptions";
 
 vi.mock("@gitbeaker/rest");
-vi.mock("src/helpers/generateFetchFunction");
+vi.mock("@lets-release/git-host", async () => {
+  const origin = await vi.importActual("@lets-release/git-host");
+
+  return { ...origin, generateFetchFunction: vi.fn(() => vi.fn()) };
+});
 vi.mock("src/helpers/parseGitLabUrl");
 vi.mock("src/helpers/resolveGitLabOptions");
 
@@ -52,9 +56,14 @@ vi.mocked(Gitlab).mockImplementation(function () {
 
 describe("ensureGitLabContext", () => {
   beforeEach(() => {
+    vi.stubGlobal("fetch", globalThis.fetch);
     vi.mocked(parseGitLabUrl).mockReset().mockReturnValue({ owner, repo });
     vi.mocked(resolveGitLabOptions).mockReset().mockResolvedValue(options);
     getPluginContext.mockReset();
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
   });
 
   it("should return existing GitLab context if it exists", async () => {
@@ -70,6 +79,46 @@ describe("ensureGitLabContext", () => {
     const result = await ensureGitLabContext(context, {});
 
     expect(result).toBe(existingContext);
+  });
+
+  it("should initialize GitLab with OAuth token", async () => {
+    const oauthToken = "oauth-token";
+    const optionsWithOauthToken = {
+      ...options,
+      token: undefined,
+      oauthToken,
+    };
+    vi.mocked(resolveGitLabOptions).mockResolvedValue(optionsWithOauthToken);
+    show.mockResolvedValue({
+      permissions: {
+        project_access: { access_level: 40 },
+        group_access: { access_level: 40 },
+      },
+    });
+
+    await ensureGitLabContext(context, {});
+
+    expect(Gitlab).toHaveBeenLastCalledWith({ host: url, oauthToken });
+  });
+
+  it("should initialize GitLab with CI job token", async () => {
+    const jobToken = "job-token";
+    const optionsWithJobToken = {
+      ...options,
+      token: undefined,
+      jobToken,
+    };
+    vi.mocked(resolveGitLabOptions).mockResolvedValue(optionsWithJobToken);
+    show.mockResolvedValue({
+      permissions: {
+        project_access: { access_level: 40 },
+        group_access: { access_level: 40 },
+      },
+    });
+
+    await ensureGitLabContext(context, {});
+
+    expect(Gitlab).toHaveBeenLastCalledWith({ host: url, jobToken });
   });
 
   it("should throw NoGitLabTokenError if no token is provided", async () => {

@@ -7,7 +7,6 @@ import { ReleaseAsset } from "@lets-release/git-host";
 
 import { AssetTarget } from "src/enums/AssetTarget";
 import { AssetType } from "src/enums/AssetType";
-import { GenericPackageStatus } from "src/enums/GenericPackageStatus";
 import { uploadReleaseAsset } from "src/helpers/uploadReleaseAsset";
 import {
   ResolvedGitLabAssetObjectWithPath,
@@ -76,7 +75,6 @@ describe("uploadReleaseAsset", () => {
       path: "test-file.txt",
       type: AssetType.Other,
       target: AssetTarget.GenericPackage,
-      status: GenericPackageStatus.Default,
       filepath: "test-file.txt",
     };
 
@@ -113,7 +111,6 @@ describe("uploadReleaseAsset", () => {
       label: "Test File",
       type: AssetType.Other,
       target: AssetTarget.ProjectUpload,
-      status: GenericPackageStatus.Default,
       filepath: "test-file.txt",
     };
 
@@ -134,7 +131,6 @@ describe("uploadReleaseAsset", () => {
       url: "https://example.com/test-file.txt",
       type: AssetType.Other,
       target: AssetTarget.ProjectUpload,
-      status: GenericPackageStatus.Default,
       filepath: "test-file.txt",
     };
 
@@ -156,7 +152,6 @@ describe("uploadReleaseAsset", () => {
       label: "Test File",
       type: AssetType.Other,
       target: AssetTarget.ProjectUpload,
-      status: GenericPackageStatus.Default,
       filepath: "test-file.txt",
     };
 
@@ -177,7 +172,6 @@ describe("uploadReleaseAsset", () => {
       path: "test-file.txt",
       type: AssetType.Other,
       target: AssetTarget.ProjectUpload,
-      status: GenericPackageStatus.Default,
       filepath: "test-file.txt",
     };
 
@@ -197,7 +191,6 @@ describe("uploadReleaseAsset", () => {
       path: "test-file.txt",
       type: AssetType.Other,
       target: AssetTarget.ProjectUpload,
-      status: GenericPackageStatus.Default,
       filepath: "test-file.txt",
     };
 
@@ -217,7 +210,6 @@ describe("uploadReleaseAsset", () => {
       path: "test-file.txt",
       type: AssetType.Other,
       target: AssetTarget.GenericPackage,
-      status: GenericPackageStatus.Default,
       filepath: "test-file.txt",
     };
 
@@ -242,7 +234,6 @@ describe("uploadReleaseAsset", () => {
       path: "test-file.txt",
       type: AssetType.Other,
       target: AssetTarget.ProjectUpload,
-      status: GenericPackageStatus.Default,
       filepath: "test-file.txt",
     };
 

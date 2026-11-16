@@ -28,7 +28,6 @@ describe("GitLabAsset schema", () => {
       type: "package",
       filepath: "path/to/file",
       target: "project_upload",
-      status: "default",
     };
     const result = GitLabAsset.safeParse(validObject);
     expect(result.success).toBe(true);
@@ -40,7 +39,6 @@ describe("GitLabAsset schema", () => {
       type: "package",
       filepath: "path/to/file",
       target: "project_upload",
-      status: "default",
     };
     const result = GitLabAsset.safeParse(invalidObject);
     expect(result.success).toBe(false);
@@ -53,7 +51,6 @@ describe("GitLabAsset schema", () => {
       type: "invalid-type",
       filepath: "path/to/file",
       target: "project_upload",
-      status: "default",
     };
     const result = GitLabAsset.safeParse(invalidObject);
     expect(result.success).toBe(false);

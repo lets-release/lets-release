@@ -5,7 +5,6 @@ import { AssetObject } from "@lets-release/git-host";
 
 import { AssetTarget } from "src/enums/AssetTarget";
 import { AssetType } from "src/enums/AssetType";
-import { GenericPackageStatus } from "src/enums/GenericPackageStatus";
 
 export const GitLabAssetObject = AssetObject.partial()
   .extend({
@@ -47,15 +46,6 @@ export const GitLabAssetObject = AssetObject.partial()
     target: z
       .enum(Object.values(AssetTarget) as [AssetTarget, ...AssetTarget[]])
       .default(AssetTarget.ProjectUpload),
-
-    /**
-     * This is only applied, if `target` is set to `generic_package`. The generic package status. Can be `default` and `hidden` (see official documents on [generic packages][generic package]).
-     *
-     * @default GenericPackageStatus.Default
-     *
-     * [generic package]: https://docs.gitlab.com/ee/user/packages/generic_packages/
-     */
-    status: z.enum(GenericPackageStatus).default(GenericPackageStatus.Default),
   })
   .check((ctx) => {
     if (!ctx.value.path && !ctx.value.url) {
