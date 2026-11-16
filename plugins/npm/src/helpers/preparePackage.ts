@@ -1,7 +1,7 @@
 import { mkdir, rename } from "node:fs/promises";
 import path from "node:path";
 
-import { $, ResultPromise } from "execa";
+import { $ } from "execa";
 import { gte } from "semver";
 import stripAnsi from "strip-ansi";
 
@@ -36,7 +36,7 @@ export async function preparePackage(
     preferLocal: true as const,
   };
 
-  let versionPromise: ResultPromise<typeof options>;
+  let versionPromise;
 
   switch (pm.name) {
     case NpmPackageManagerName.pnpm: {
@@ -76,7 +76,7 @@ export async function preparePackage(
       message: `Creating npm package version ${version}`,
     });
 
-    let promise: ResultPromise<typeof options>;
+    let promise;
 
     switch (pm.name) {
       case NpmPackageManagerName.pnpm: {

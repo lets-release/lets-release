@@ -1,4 +1,4 @@
-import { $, ResultPromise } from "execa";
+import { $ } from "execa";
 import stripAnsi from "strip-ansi";
 
 import { VerifyReleaseContext } from "@lets-release/config";
@@ -7,10 +7,7 @@ import { NpmPackageManagerName } from "src/enums/NpmPackageManagerName";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
 
 const isPublished = async (
-  promise: ResultPromise<{
-    preferLocal: true;
-    reject: false;
-  }>,
+  promise: Promise<{ exitCode?: number; stdout: string }>,
 ) => {
   const { exitCode, stdout } = await promise;
 

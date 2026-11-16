@@ -25,7 +25,7 @@ describe("formatCalVer", () => {
 
       it.each(regular)(
         "should format regular calver: $value",
-        ({ value, formatted, options, parsed }) => {
+        ({ value, formatted = value, options, parsed }) => {
           expect(
             formatCalVer(
               format,
@@ -36,13 +36,13 @@ describe("formatCalVer", () => {
               options,
             ),
             `${format} ${value}`,
-          ).toBe(formatted ?? value);
+          ).toBe(formatted);
         },
       );
 
       it.each(numeric)(
         "should format calver with number as prerelease name: $value",
-        ({ value, formatted, options, parsed }) => {
+        ({ value, formatted = value, options, parsed }) => {
           expect(
             formatCalVer(
               format,
@@ -53,7 +53,7 @@ describe("formatCalVer", () => {
               options,
             ),
             `${format} ${value}`,
-          ).toBe(formatted ?? value);
+          ).toBe(formatted);
         },
       );
     },

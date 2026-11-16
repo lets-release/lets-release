@@ -1,7 +1,7 @@
 import { writeFile } from "node:fs/promises";
 import path from "node:path";
 
-import { $, ResultPromise } from "execa";
+import { $ } from "execa";
 import { escapeRegExp } from "lodash-es";
 import { stringify } from "smol-toml";
 
@@ -37,7 +37,7 @@ export async function preparePackage(
     preferLocal: true as const,
   };
 
-  let versionPromise: ResultPromise<typeof options>;
+  let versionPromise;
 
   switch (pm.name) {
     case PyPIPackageManagerName.poetry: {
@@ -114,7 +114,7 @@ export async function preparePackage(
     message: `Building PyPI package version ${version}`,
   });
 
-  let promise: ResultPromise<typeof options>;
+  let promise;
 
   switch (pm.name) {
     case PyPIPackageManagerName.poetry: {

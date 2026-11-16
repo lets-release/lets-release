@@ -31,14 +31,14 @@ export function parseCalVerXRange(
     "",
   );
   const major =
-    !hasMinorToken || !isFullRange
-      ? trimmedRange.replace(new RegExp(`${SEPARATOR}x$`), "")
-      : trimmedRange.replace(
+    hasMinorToken && isFullRange
+      ? trimmedRange.replace(
           new RegExp(
             String.raw`((${SEPARATOR}x){2}|${SEPARATOR}\d+${SEPARATOR}x)$`,
           ),
           "",
-        );
+        )
+      : trimmedRange.replace(new RegExp(`${SEPARATOR}x$`), "");
   const nextMajor = getNextCalVerMajorVersion(majorFormat, major);
   const { tokenValues: majorTokenValues } = parseCalVer(majorFormat, major);
   const { tokenValues: nextMajorTokenValues } = parseCalVer(

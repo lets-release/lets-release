@@ -3,7 +3,10 @@ import { ProxyAgent, Request, fetch as undiciFetch } from "undici";
 
 import { generateFetchFunction } from "src/helpers/generateFetchFunction";
 
-vi.mock("undici");
+vi.mock("undici", () => ({
+  fetch: vi.fn(),
+  ProxyAgent: vi.fn(),
+}));
 
 describe("generateFetchFunction", () => {
   it("should call undiciFetch with correct URL and options when no proxy is provided", async () => {

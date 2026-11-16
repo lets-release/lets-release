@@ -4,8 +4,8 @@ import { isValidBuildMetadata } from "src/helpers/isValidBuildMetadata";
 describe("isValidBuildMetadata", () => {
   it.each(builds)(
     "should validate build metadata: $value",
-    ({ value, isValid }) => {
-      expect(isValidBuildMetadata(value)).toBe(isValid ?? false);
+    ({ value, isValid = false }) => {
+      expect(isValidBuildMetadata(value)).toBe(isValid);
     },
   );
 });

@@ -2,7 +2,6 @@ import hostedGitInfo from "hosted-git-info";
 
 import { getUrlProtocol } from "src/helpers/getUrlProtocol";
 
-// eslint-disable-next-line import-x/no-named-as-default-member
 const { fromUrl } = hostedGitInfo;
 
 export function normalizeGitUrl(url: string) {

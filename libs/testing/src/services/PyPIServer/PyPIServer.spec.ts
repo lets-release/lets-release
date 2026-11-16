@@ -8,7 +8,7 @@ import { Service } from "src/services/Service";
 
 vi.mock("timers/promises");
 vi.mock("p-retry");
-vi.mock("undici");
+vi.mock("undici", () => ({ fetch: vi.fn() }));
 
 const pypiServer = new PyPIServer("pypiserver");
 const superStart = vi

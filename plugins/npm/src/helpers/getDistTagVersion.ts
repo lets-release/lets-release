@@ -1,4 +1,4 @@
-import { $, ResultPromise } from "execa";
+import { $ } from "execa";
 import stripAnsi from "strip-ansi";
 
 import { VerifyReleaseContext } from "@lets-release/config";
@@ -18,7 +18,7 @@ export async function getDistTagVersion(
     preferLocal: true as const,
   };
   const getVersion = async (
-    promise: ResultPromise<typeof options>,
+    promise: Promise<{ stdout: string[] }>,
     { json }: { json: boolean } = { json: false },
   ) => {
     const { stdout } = await promise;

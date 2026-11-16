@@ -13,9 +13,11 @@ export function handleRateLimit(
     `Request quota exhausted for request ${options.method} ${options.url}`,
   );
 
-  if (retryCount <= OCTOKIT_MAX_RETRIES) {
-    octokit.log.debug(`Retrying after ${retryAfter} seconds!`);
-
-    return true;
+  if (retryCount > OCTOKIT_MAX_RETRIES) {
+    return;
   }
+
+  octokit.log.debug(`Retrying after ${retryAfter} seconds!`);
+
+  return true;
 }

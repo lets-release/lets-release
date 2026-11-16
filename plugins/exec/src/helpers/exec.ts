@@ -12,7 +12,7 @@ import { StepCommand } from "src/types/StepCommand";
 export async function exec<T extends Step>(
   cmd: StepCommand<T>,
   { cwd, env, stdout, stderr, logger, ...context }: StepContext<T>,
-  { shell, cwd: execCwd, ...options }: ExecOptions,
+  { shell = true, cwd: execCwd, ...options }: ExecOptions,
 ) {
   const script = template(options[cmd])({ ...context, ...options });
   const { package: pkg } = context as unknown as Partial<
@@ -25,7 +25,7 @@ export async function exec<T extends Step>(
   });
 
   const result = $({
-    shell: shell ?? true,
+    shell: shell,
     cwd: execCwd ? path.resolve(cwd, execCwd) : cwd,
     env,
   })`${script}`;

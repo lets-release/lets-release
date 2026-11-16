@@ -1,4 +1,4 @@
-import { $, ResultPromise } from "execa";
+import { $ } from "execa";
 import stripAnsi from "strip-ansi";
 
 import { FindPackagesContext, PackageInfo } from "@lets-release/config";
@@ -8,7 +8,7 @@ import { NpmPackageManagerName } from "src/enums/NpmPackageManagerName";
 import { NpmPackageContext } from "src/types/NpmPackageContext";
 
 const getConfig = async (
-  promise: ResultPromise<{ preferLocal: true; reject: false }>,
+  promise: Promise<{ stdout: string }>,
 ): Promise<string> => {
   const { stdout } = await promise;
 

@@ -8,7 +8,7 @@ import { Verdaccio } from "src/services/Verdaccio/Verdaccio";
 
 vi.mock("timers/promises");
 vi.mock("p-retry");
-vi.mock("undici");
+vi.mock("undici", () => ({ fetch: vi.fn() }));
 
 const verdaccio = new Verdaccio("verdaccio");
 const superStart = vi

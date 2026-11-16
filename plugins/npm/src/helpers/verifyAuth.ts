@@ -1,4 +1,4 @@
-import { $, ResultPromise } from "execa";
+import { $ } from "execa";
 
 import { AnalyzeCommitsContext } from "@lets-release/config";
 
@@ -40,7 +40,7 @@ export async function verifyAuth(
     preferLocal: true as const,
   };
 
-  const verify = async (promise: ResultPromise<typeof options>) => {
+  const verify = async (promise: Promise<unknown>) => {
     try {
       await promise;
     } catch (error) {

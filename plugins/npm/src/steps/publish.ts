@@ -1,4 +1,4 @@
-import { $, ResultPromise } from "execa";
+import { $ } from "execa";
 
 import { Step, StepFunction } from "@lets-release/config";
 
@@ -63,7 +63,7 @@ export const publish: StepFunction<Step.publish, NpmOptions> = async (
         preferLocal: true as const,
       };
 
-      let result: ResultPromise<typeof execaOptions>;
+      let result;
 
       switch (pm.name) {
         case NpmPackageManagerName.pnpm: {

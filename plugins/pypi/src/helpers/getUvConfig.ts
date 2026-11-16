@@ -40,11 +40,7 @@ export async function getUvConfig(
 
   const userConfigDir = env[os === "win32" ? "APPDATA" : "XDG_CONFIG_HOME"];
   const userConfigDirAlternative =
-    os === "win32"
-      ? undefined
-      : env.HOME
-        ? path.resolve(env.HOME, ".config")
-        : undefined;
+    os === "win32" || !env.HOME ? undefined : path.resolve(env.HOME, ".config");
   const userUvToml = userConfigDir
     ? path.resolve(userConfigDir, "uv", "uv.toml")
     : undefined;
