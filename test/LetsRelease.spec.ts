@@ -1233,16 +1233,19 @@ describe("LetsRelease", () => {
     expect(addChannels).not.toHaveBeenCalled();
   });
 
+  // oxlint-disable-next-line vitest/expect-expect -- Assertions are inside testAddChannels.
   it("should add version to channels after a fast-forward merge", async () =>
     await testAddChannels(
       async (cwd, ref) => await mergeBranch(cwd, ref, true),
     ));
 
+  // oxlint-disable-next-line vitest/expect-expect -- Assertions are inside testAddChannels.
   it("should add version to channels after a non fast-forward merge", async () =>
     await testAddChannels(
       async (cwd, ref) => await mergeBranch(cwd, ref, false),
     ));
 
+  // oxlint-disable-next-line vitest/expect-expect -- Assertions are inside testAddChannels.
   it("should add version to channels after a rebase", async () =>
     await testAddChannels(async (cwd, ref) => await rebaseBranch(cwd, ref)));
 

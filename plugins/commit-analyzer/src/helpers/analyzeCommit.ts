@@ -28,7 +28,7 @@ export function analyzeCommit(
   let releaseType: ReleaseType | null | undefined;
 
   const matches = releaseRules.filter(
-    ({ breaking, revert, release: _, ...rule }) =>
+    ({ breaking, revert, release: _release, ...rule }) =>
       // If the rule is not `breaking` or the commit doesn't have a breaking change note
       (!breaking || (commit.notes && commit.notes.length > 0)) &&
       // If the rule is not `revert` or the commit is not a revert
