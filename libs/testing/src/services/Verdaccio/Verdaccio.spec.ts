@@ -8,7 +8,10 @@ import { Verdaccio } from "src/services/Verdaccio/Verdaccio";
 
 vi.mock("timers/promises");
 vi.mock("p-retry");
-vi.mock("undici", () => ({ fetch: vi.fn() }));
+vi.mock(import("undici"), async (importOriginal) => ({
+  ...(await importOriginal()),
+  fetch: vi.fn(),
+}));
 
 const verdaccio = new Verdaccio("verdaccio");
 const superStart = vi
@@ -16,9 +19,6 @@ const superStart = vi
   .mockResolvedValue(undefined);
 
 const token = "fake-token";
-const res = {
-  json: vi.fn().mockResolvedValue({ token }),
-};
 
 describe("Verdaccio", () => {
   beforeEach(() => {
@@ -28,18 +28,22 @@ describe("Verdaccio", () => {
       .mockImplementation(async (fn) => await fn(1));
     vi.mocked(fetch)
       .mockReset()
-      .mockResolvedValue(res as unknown as Response);
+      .mockResolvedValueOnce(new Response())
+      .mockResolvedValueOnce(Response.json({ token }, { status: 201 }))
+      .mockResolvedValue(
+        Response.json(
+          { error: "bad username/password, access denied" },
+          { status: 401 },
+        ),
+      );
     superStart.mockClear();
-    res.json.mockClear();
   });
 
-  it("should start container", async () => {
+  it("should start container and use the token returned when creating the user", async () => {
     await expect(verdaccio.start()).resolves.toBeUndefined();
     expect(setTimeout).toHaveBeenCalledWith(4000);
     expect(pRetry).toHaveBeenCalledOnce();
-    expect(fetch).toHaveBeenCalledTimes(3);
     expect(superStart).toHaveBeenCalledOnce();
-    expect(res.json).toHaveBeenCalledOnce();
     expect(verdaccio.npmToken).toBe(token);
   });
 
