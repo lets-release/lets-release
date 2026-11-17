@@ -67,6 +67,7 @@ describe("preparePackage", () => {
       };
       await $(options)`corepack use ${`pnpm@${version}`}`;
       await $(options)`pnpm install`;
+      const { stdout: pmVersion } = await $(options)`pnpm --version`;
 
       ctx = {
         ...context,
@@ -84,7 +85,7 @@ describe("preparePackage", () => {
         },
       } as unknown as PrepareContext;
       pkgContext = {
-        pm: { name: "pnpm", version: "10.10.0", root: cwd },
+        pm: { name: "pnpm", version: pmVersion.trim(), root: cwd },
         registry,
       } as NpmPackageContext;
 

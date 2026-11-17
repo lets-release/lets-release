@@ -85,11 +85,11 @@ export async function preparePackage(
           ? $({
               ...options,
               cwd: pm.root,
-            })`pnpm --filter ${name} pack ${pkgRoot} --pack-destination ${pkgRoot}`
+            })`pnpm --filter ${name} pack --pack-destination ${pkgRoot}`
           : $({
               ...options,
               cwd: pkgRoot,
-            })`pnpm pack ${pkgRoot} --pack-destination ${pkgRoot}`;
+            })`pnpm pack --pack-destination ${pkgRoot}`;
         break;
       }
 

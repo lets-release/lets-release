@@ -14,6 +14,7 @@ export default mergeConfig(
       globalSetup: "./test/__global__/setup.ts",
       env: {
         COREPACK_ENABLE_STRICT: "0",
+        YARN_ENABLE_IMMUTABLE_INSTALLS: "false",
       },
     },
   }),
