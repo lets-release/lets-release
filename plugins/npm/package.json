@@ -42,7 +42,7 @@
     "semver": "^7.8.6",
     "strip-ansi": "^7.2.0",
     "tinyglobby": "^0.2.17",
-    "undici": "^8.12.4",
+    "undici": "^8.13.1",
     "zod": "^4.6.7"
   },
   "devDependencies": {
